@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- *  lakjsdlfa;f
+ *  
  */
 @protocol EMChatManagerDelegateBase <NSObject>
 

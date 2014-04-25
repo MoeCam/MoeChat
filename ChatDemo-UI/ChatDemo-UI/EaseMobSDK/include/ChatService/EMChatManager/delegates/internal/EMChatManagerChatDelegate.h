@@ -21,26 +21,64 @@
 @protocol EMChatManagerChatDelegate <EMChatManagerDelegateBase>
 
 @optional
-// message delegate
--(void)willSendMessage:(EMMessage *)message 
-        inConversation:(EMConversation *)conversation 
+
+/**
+ *  将要发送消息时的回调
+ *
+ *  @param message      将要发送的消息对象
+ *  @param error        错误信息
+ */
+-(void)willSendMessage:(EMMessage *)message
                  error:(EMError *)error;
--(void)didSendMessage:(EMMessage *)message 
-       inConversation:(EMConversation *)conversation 
+
+/**
+ *  发送消息后的回调
+ *
+ *  @param message      将要发送的消息对象
+ *  @param error        错误信息 */
+-(void)didSendMessage:(EMMessage *)message
                 error:(EMError *)error;
 
--(void)didReceiveMessage:(EMMessage *)message 
-          inConversation:(EMConversation *)conversation;
+/**
+ *  收到消息时的回调
+ *
+ *  @param message      消息对象
+ */
+-(void)didReceiveMessage:(EMMessage *)message;
 
--(void)didFetchMessage:(EMMessage *)message 
-                 error:(EMError *)error;
+/**
+ *  主动获取消息后的回调
+ *
+ *  @param message 获取到的消息对象
+ *  @param error   错误信息
+ */
+//-(void)didFetchMessage:(EMMessage *)message 
+//                 error:(EMError *)error;
 
-// ack
+/**
+ *  收到回执request时的回调方法(即发送方需要接收方发送一个收到消息的回执, 如发送方未收到接收方返回的回执, 则用户下次登录后, 仍会收到该消息)
+ *
+ *  @param req 收到的回执request对象
+ */
 -(void)didReceiveReceiptReq:(EMReceiptReq *)req;
+
+/**
+ *  收到回执response时的回调方法
+ *
+ *  @param resp 收到的回执response对象
+ */
 -(void)didReceiveReceiptResp:(EMReceiptResp *)resp;
 
-// conversation delegate
+/**
+ *  会话列表信息更新时的回调
+ *
+ *  @param conversationList 会话列表
+ */
 -(void)didUpdateConversationList:(NSArray *)conversationList;
+
+/**
+ *  未读消息数改变时的回调
+ */
 -(void)didUnreadMessagesCountChanged;
 
 @end

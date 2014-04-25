@@ -42,7 +42,13 @@
     ContactsViewController *contactsVC = [[ContactsViewController alloc] initWithNibName:nil bundle:nil];
     contactsVC.title = @"通讯录";
     self.viewControllers = @[chatListVC,contactsVC];
-    [self login];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if(![[EaseMob sharedInstance].userManager loginInfo]){
+        [self login];
+    }
 }
 
 // 登陆
@@ -50,7 +56,7 @@
     
     [self showHudInView:self.view hint:@"登录中..."];
     [[EaseMob sharedInstance].userManager
-     asyncLoginWithUsername:@"13520805435"
+     asyncLoginWithUsername:@"test2"
      password:@"123456"
      completion:^(NSDictionary *loginInfo, EMError *error) {
          [self hideHud];

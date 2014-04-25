@@ -31,4 +31,6 @@
  */
 @property (nonatomic, readonly, strong) id<IUserManager> userManager;
 
+@property (nonatomic, readonly, strong) id<IPushManager> pushManager;
+
 @end

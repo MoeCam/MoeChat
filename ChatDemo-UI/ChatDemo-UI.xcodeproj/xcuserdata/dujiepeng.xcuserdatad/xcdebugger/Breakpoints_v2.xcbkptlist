@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ChatDemo-UI/Chat/ChatListView/ChatListViewController.m"
-            timestampString = "419660670.379903"
+            timestampString = "420118187.862806"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "280"
-            endingLineNumber = "280"
+            startingLineNumber = "308"
+            endingLineNumber = "308"
             landmarkName = "-didReceiveMessage:"
             landmarkType = "5">
          </BreakpointContent>

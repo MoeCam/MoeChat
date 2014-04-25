@@ -22,24 +22,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>EASEMOB_API_URL</key>
-	<string>api.easemob.com</string>
 	<key>EASEMOB_APPKEY</key>
-	<string>weiquan4773567</string>
-	<key>EASEMOB_CHATROOM_DOMAIN</key>
-	<string>conference.ac2</string>
-	<key>EASEMOB_CHAT_ADDRESS</key>
-	<string>push.easemob.com</string>
-	<key>EASEMOB_CHAT_DOMAIN</key>
-	<string>ac2</string>
-	<key>EASEMOB_CHAT_PORT</key>
-	<string>5222</string>
-	<key>EASEMOB_CLOUDCODE_URL</key>
-	<string>cloudcode.easemob.com</string>
-	<key>EASEMOB_ORGKEY</key>
-	<string>weiquan</string>
-	<key>EASEMOB_STORAGE_URL</key>
-	<string>storage.easemob.com</string>
+	<string>weiquan9849682</string>
 	<key>EASEMOB_USERSERVICE_FACTORY_CLASS</key>
 	<string>UGUserServiceFactory</string>
 	<key>LSRequiresIPhoneOS</key>

@@ -9,7 +9,7 @@
 #ifndef EaseMobClientSDK_DeviceManager_h
 #define EaseMobClientSDK_DeviceManager_h
 
-#import "internal/DeviceManagerDefs.h"
+#import "DeviceManagerDefs.h"
 
 #import "internal/DeviceManager+ProximitySensor.h"
 #import "internal/DeviceManager+Location.h"

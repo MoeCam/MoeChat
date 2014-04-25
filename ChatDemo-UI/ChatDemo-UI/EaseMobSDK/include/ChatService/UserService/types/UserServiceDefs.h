@@ -11,10 +11,25 @@
 
 #import "commonDefs.h"
 
-#define kEaseMobAPIUrl [[[NSBundle mainBundle] infoDictionary] objectForKey:@"EASEMOB_API_URL"]
-#define kEaseMobCloudCodeUrl [[[NSBundle mainBundle] infoDictionary] objectForKey:@"EASEMOB_CLOUDCODE_URL"]
-#define kEaseMobOrgKey [[[NSBundle mainBundle] infoDictionary] objectForKey:@"EASEMOB_ORGKEY"]
 #define kEaseMobAppKey [[[NSBundle mainBundle] infoDictionary] objectForKey:@"EASEMOB_APPKEY"]
+
+#define kEaseMobAPIUrl [[NSDictionary dictionaryWithContentsOfURL:\
+                        [[NSBundle bundleWithURL:[[NSBundle mainBundle] \
+                        URLForResource:@"EaseMob" withExtension:@"bundle"]] \
+                        URLForResource:@"SDKConfig" withExtension:@"plist"]] \
+                        objectForKey:@"EASEMOB_API_URL"]
+
+#define kEaseMobCloudCodeUrl [[NSDictionary dictionaryWithContentsOfURL:\
+                        [[NSBundle bundleWithURL:[[NSBundle mainBundle] \
+                        URLForResource:@"EaseMob" withExtension:@"bundle"]] \
+                        URLForResource:@"SDKConfig" withExtension:@"plist"]] \
+                        objectForKey:@"EASEMOB_CLOUDCODE_URL"]
+
+#define kEaseMobOrgKey [[NSDictionary dictionaryWithContentsOfURL:\
+                        [[NSBundle bundleWithURL:[[NSBundle mainBundle] \
+                        URLForResource:@"EaseMob" withExtension:@"bundle"]] \
+                        URLForResource:@"SDKConfig" withExtension:@"plist"]] \
+                        objectForKey:@"EASEMOB_ORGKEY"]
 
 // login info keys
 #define kUserLoginInfoUsername     @"kUserLoginInfoUsername"

@@ -15,4 +15,5 @@
     #import <Foundation/Foundation.h>
     #import "EaseMob.h"
     #import "XDDefine.h"
+    #import "WCAlertView.h"
 #endif

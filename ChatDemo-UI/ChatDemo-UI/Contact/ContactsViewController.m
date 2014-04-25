@@ -15,6 +15,7 @@
 @interface ContactsViewController ()<UITableViewDataSource,UITableViewDelegate>{
     NSArray *_contacts;
     UITableView *_tableView;
+    NSString *_currentUsername;
 }
 
 @end
@@ -70,10 +71,31 @@
 
 -(void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     NSString *toUsername = ((Contact *)[_contacts
                                         objectAtIndex:indexPath.row]).username;
- 
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSDictionary *loginInfo = [[EaseMob sharedInstance].userManager
+                               loginInfo];
+    if(!_currentUsername){
+        _currentUsername = [loginInfo objectForKey:@"kUserLoginInfoUsername"];
+        if ([_currentUsername isEqualToString:toUsername]) {
+            [WCAlertView showAlertWithTitle:nil
+                                    message:@"不能给自己发消息"
+                         customizationBlock:^(WCAlertView *alertView)
+             {
+                 
+             } completionBlock:^(NSUInteger buttonIndex,
+                                 WCAlertView *alertView)
+             {
+                 
+             } cancelButtonTitle:@"确定"
+                          otherButtonTitles: nil];
+            return;
+
+        }
+    }
+    
     [ChatSendHelper sendMessageWithUsername:toUsername
                               andIsChatroom:NO];
 }

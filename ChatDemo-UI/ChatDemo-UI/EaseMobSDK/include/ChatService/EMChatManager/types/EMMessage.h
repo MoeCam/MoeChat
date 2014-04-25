@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "EMMessageBody.h"
 
+@class EMConversation;
 @interface EMMessage : NSObject
 
 @property (nonatomic, copy) NSString *from; // should be username for now
@@ -18,6 +19,7 @@
 @property (nonatomic) long long timestamp;
 @property (nonatomic) BOOL isRead;
 @property (nonatomic, strong) NSArray *messageBodies;
+@property (nonatomic, weak) EMConversation *conversation;
 
 @property (nonatomic) BOOL isChatroom;
 @property (nonatomic, copy) NSString *chatroomSenderName;

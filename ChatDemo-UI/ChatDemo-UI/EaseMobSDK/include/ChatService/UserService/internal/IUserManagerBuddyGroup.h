@@ -101,8 +101,8 @@
 /**
  *  异步将用户从分组中移除
  *
- *  @param username
- *  @param groupName
+ *  @param username  用户名
+ *  @param groupName 分组名
  */
 -(void)asyncRemoveBuddy:(NSString *)username
               fromGroup:(NSString *)groupName;
@@ -110,10 +110,10 @@
 /**
  *  异步将用户从分组中移除
  *
- *  @param username
- *  @param groupName
- *  @param completion
- *  @param aQueue
+ *  @param username   用户名
+ *  @param groupName  分组名
+ *  @param completion 回调
+ *  @param aQueue     回调时的线程
  */
 -(void)asyncRemoveBuddy:(NSString *)username
               fromGroup:(NSString *)groupName
@@ -127,10 +127,10 @@
 /**
  *  判断当前用户是否屏蔽了某个用户
  *
- *  @param username
- *  @param pError
+ *  @param username 用户名
+ *  @param pError   错误信息
  *
- *  @return
+ *  @return 某个用户是否在黑名单中
  */
 -(BOOL)isBlocked:(NSString *)username
            error:(EMError **)pError;
@@ -139,8 +139,8 @@
 /**
  *  同步方法, 将某个用户加入黑名单
  *
- *  @param username
- *  @param pError
+ *  @param username 用户名
+ *  @param pError   错误信息
  *
  *  @return
  */
@@ -150,16 +150,16 @@
 /**
  *  异步方法, 将某个用户加入黑名单
  *
- *  @param username
+ *  @param username 用户名
  */
 -(void)asyncBlockBuddy:(NSString *)username;
 
 /**
  *  异步方法, 将某个用户加入黑名单
  *
- *  @param username
- *  @param completion
- *  @param aQueue
+ *  @param username     用户名
+ *  @param completion   回调
+ *  @param aQueue       回调时的线程
  */
 -(void)asyncBlockBuddy:(NSString *)username 
             completion:(void (^)(id<IUserBase> contact, 
@@ -170,8 +170,8 @@
 /**
  *  同步方法, 将某个用户从黑名单中移除
  *
- *  @param username
- *  @param pError
+ *  @param username 用户名
+ *  @param pError   错误信息
  *
  *  @return
  */
@@ -180,16 +180,16 @@
 /**
  *  异步方法, 将某个用户从黑名单中移除
  *
- *  @param username
+ *  @param username 用户名
  */
 -(void)asyncUnBlockBuddy:(NSString *)username;
 
 /**
  *  异步方法, 将某个用户从黑名单中移除
  *
- *  @param username
- *  @param completion
- *  @param aQueue
+ *  @param username    用户名
+ *  @param completion  回调
+ *  @param aQueue      回调时的线程
  */
 -(void)asyncUnBlockBuddy:(NSString *)username 
               completion:(void (^)(id<IUserBase> contact, 
@@ -200,10 +200,10 @@
 /**
  *  同步方法, 创建分组
  *
- *  @param groupName
- *  @param pError
+ *  @param groupName  分组名
+ *  @param pError     错误信息
  *
- *  @return
+ *  @return 创建成功后的分组信息
  */
 -(id<IBuddyGroup>)createBuddyGroupWithName:(NSString *)groupName 
                                      error:(EMError **)pError;
@@ -211,16 +211,16 @@
 /**
  *  异步方法, 创建分组
  *
- *  @param groupName
+ *  @param groupName 分组名
  */
 -(void)asyncCreateBuddyGroupWithName:(NSString *)groupName;
 
 /**
  *  异步方法, 创建分组
  *
- *  @param groupName
- *  @param completion
- *  @param aQueue
+ *  @param groupName    分组名
+ *  @param completion   回调
+ *  @param aQueue       回调时的线程
  */
 -(void)asyncCreateBuddyGroupWithName:(NSString *)groupName 
                           completion:(void (^)(id<IBuddyGroup> buddyGroup, 
@@ -232,10 +232,10 @@
 /**
  *  同步方法, 删除分组
  *
- *  @param groupName
- *  @param pError
+ *  @param groupName 分组名
+ *  @param pError    错误信息
  *
- *  @return
+ *  @return 删除后的分组信息
  */
 -(id<IBuddyGroup>)deleteBuddyGroup:(NSString *)groupName
                              error:(EMError **)pError;
@@ -243,16 +243,16 @@
 /**
  *  异步方法, 删除分组
  *
- *  @param groupName
+ *  @param groupName 分组名
  */
 -(void)asyncDeleteBuddyGroup:(NSString *)groupName;
 
 /**
  *  异步方法, 删除分组
  *
- *  @param groupName
- *  @param completion
- *  @param aQueue     
+ *  @param groupName   分组名
+ *  @param completion  回调
+ *  @param aQueue      回调时的线程
  */
 -(void)asyncDeleteBuddyGroup:(NSString *)groupName 
                   completion:(void (^)(id<IBuddyGroup> buddyGroup, 

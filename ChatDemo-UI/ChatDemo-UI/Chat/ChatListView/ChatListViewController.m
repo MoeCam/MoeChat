@@ -24,6 +24,7 @@ IChatManagerDelegate
 >{
     NSMutableArray *_conversations;
     SRRefreshView   *_slimeView;
+    NSString *_currentUsername;
 }
 @property (nonatomic, strong) UISearchDisplayController *searchDisplayController;
 @property (nonatomic, strong) UITableView *tableView;
@@ -49,8 +50,14 @@ IChatManagerDelegate
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     [self registerNotifications];
-    
     [self.view addSubview:self.tableView];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if (_conversations && _conversations.count > 0) {
+        [self reloadConversationList];
+    }
 }
 
 -(UITableView *)tableView{
@@ -87,19 +94,40 @@ IChatManagerDelegate
     XDChatListCell *cell = [tableView
                             dequeueReusableCellWithIdentifier:@"chatListCell"];
     EMConversation *conversation = [_conversations objectAtIndex:indexPath.row];
-
+    
     cell.name = conversation.chatter;
     cell.detailMsg = [self subTitleMessageByConversation:conversation];
     cell.time = [self lastMessageTimeByConversation:conversation];
-   // cell.imageURL = [NSURL URLWithString:contact.avatar];
+    // cell.imageURL = [NSURL URLWithString:contact.avatar];
     cell.placeholderImage = [UIImage imageNamed:@"account_defaultHead.png"];
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     EMConversation *item = [_conversations objectAtIndex:indexPath.row];
+    if(!_currentUsername){
+        NSDictionary *loginInfo = [[EaseMob sharedInstance].userManager
+                                   loginInfo];
+        
+        _currentUsername = [loginInfo objectForKey:@"kUserLoginInfoUsername"];
+    }
+    if (!_currentUsername) {
+        [WCAlertView showAlertWithTitle:nil
+                                message:@"未登录"
+                     customizationBlock:^(WCAlertView *alertView)
+         {
+             
+         } completionBlock:^(NSUInteger buttonIndex,
+                             WCAlertView *alertView)
+         {
+             
+         } cancelButtonTitle:@"确定"
+                      otherButtonTitles: nil];
+        return;
+    }
     [self pushToChatVC:item];
 }
 
@@ -152,8 +180,8 @@ canEditRowAtIndexPath:(NSIndexPath *)indexPath{
 
 -(void)pushToChatVC:(EMConversation *)item{
     ChatViewController *chatVC = [[ChatViewController alloc]
-                                    initWithUsername:item.chatter
-                                    isChatroom:item.isChatroom];
+                                  initWithUsername:item.chatter
+                                  isChatroom:item.isChatroom];
     [self.navigationController pushViewController:chatVC animated:YES];
 }
 
@@ -246,8 +274,8 @@ canEditRowAtIndexPath:(NSIndexPath *)indexPath{
                        boolValue];
     
     ChatViewController *chatVC = [[ChatViewController alloc]
-                                    initWithUsername:chatter
-                                    isChatroom:isChatroom];
+                                  initWithUsername:chatter
+                                  isChatroom:isChatroom];
     [self.navigationController pushViewController:chatVC animated:YES];
 }
 
@@ -273,7 +301,7 @@ canEditRowAtIndexPath:(NSIndexPath *)indexPath{
 -(void)didSendMessage:(EMMessage *)message
        inConversation:(EMConversation *)conversation
                 error:(EMError *)error{
-
+    
 }
 
 // 接收到消息

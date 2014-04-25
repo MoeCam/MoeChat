@@ -16,11 +16,33 @@
 @protocol EMChatManagerLoginDelegate <NSObject>
 
 @optional
+/**
+ *  用户登录后的回调
+ *
+ *  @param loginInfo 登录的用户信息
+ *  @param error     错误信息
+ */
 -(void)didLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error;
+
+/**
+ *  用户注销后的回调
+ *
+ *  @param error 错误信息
+ */
 -(void)didLogoffWithError:(EMError *)error;
+
+/**
+ *  修改密码后的回调
+ *
+ *  @param aLoginInfo 登录的用户信息
+ *  @param aError     错误信息
+ */
 -(void)didChangePassword:(NSDictionary *)aLoginInfo
                    error:(EMError *)aError;
 
+/**
+ *  当前登录账号在其它设备登录时的通知回调
+ */
 -(void)didLoginFromOtherDevice;
 
 @end

@@ -275,8 +275,6 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 #pragma mark - MenuItem actions
 - (void)handleCopyCell:(id)sender{
     // todo by du. 复制
-    UIMenuController *menuController = (UIMenuController *)sender;
-    XDMenuItem *item = menuController.menuItems.firstObject;
 }
 
 - (void)handleDeleteCell:(id)sender{
@@ -306,13 +304,21 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     }
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    if(_messages.count == 0){
+        // 如果没有发送消息，则删除这条chat
+        [[EaseMob sharedInstance].chatManager
+         removeConversationByChatter:_conversation.chatter
+         deleteMessages:YES];
+    }
+}
+
 -(void)dealloc{
     [self unregisterNotification];
     // 该conversation dealloc后，继续相应unreadCount 变化回调
     _conversation.enableUnreadMessagesCountEvent = YES;
     // 设置当前conversation的所有message为已读
     [_conversation markMessagesAsRead:YES];
-    NSLog(@"chatView dealloc---");
 }
 
 
@@ -372,7 +378,6 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 #pragma mark - IChatManagerDelegate
 
 -(void)didSendMessage:(EMMessage *)message
-       inConversation:(EMConversation *)conversation
                 error:(EMError *)error{
     NSIndexPath *indexPath = nil;
     for (int i = 0; i < _messages.count; i ++) {
@@ -395,9 +400,8 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     }
 }
 
--(void)didReceiveMessage:(EMMessage *)message
-          inConversation:(EMConversation *)conversation{
-    if ([conversation.chatter isEqualToString:_conversation.chatter]) {
+-(void)didReceiveMessage:(EMMessage *)message {
+    if ([message.conversation.chatter isEqualToString:_conversation.chatter]) {
         [self addChatDataToMessage:message];
     }
 }

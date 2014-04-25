@@ -12,12 +12,15 @@
 // defs
 #import "UserServiceDefs.h"
 #import "EMChatServiceDefs.h"
+#import "EMPushServiceDefs.h"
 
 // managers & delegates
 #import "IChatManager.h"
 #import "IUserManager.h"
+#import "IPushManager.h"
 #import "IChatManagerDelegate.h"
 #import "IUserManagerDelegate.h"
+#import "IPushManagerDelegate.h"
 
 // messages
 #import "EMMessage.h"
@@ -39,6 +42,9 @@
 #import "EMChatLocation.h"
 #import "EMChatImage.h"
 #import "EMChatFile.h"
+
+// push notifications
+#import "EMPushData.h"
 
 // commands
 #import "LBSCommandProcessor.h"
