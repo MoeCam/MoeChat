@@ -16,6 +16,12 @@
 #import "AppDelegate.h"
 
 @interface MainViewController ()
+{
+    UIBarButtonItem *_loginItem;
+    
+    ChatListViewController *_chatListVC;
+    ContactsViewController *_contactsVC;
+}
 
 @end
 
@@ -33,19 +39,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"EaseMobDemo";
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    ChatListViewController *chatListVC = [[ChatListViewController alloc] initWithNibName:nil bundle:nil];
-    chatListVC.title = @"消息";
-    ContactsViewController *contactsVC = [[ContactsViewController alloc] initWithNibName:nil bundle:nil];
-    contactsVC.title = @"通讯录";
-    self.viewControllers = @[chatListVC,contactsVC];
+    
+    self.title = @"EaseMobDemo";
+    _loginItem = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(login)];
+    
+    _chatListVC = [[ChatListViewController alloc] initWithNibName:nil bundle:nil];
+    _chatListVC.title = @"消息";
+    _contactsVC = [[ContactsViewController alloc] initWithNibName:nil bundle:nil];
+    _contactsVC.title = @"通讯录";
+    self.viewControllers = @[_chatListVC,_contactsVC];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
     if(![[EaseMob sharedInstance].userManager loginInfo]){
         [self login];
     }
@@ -69,6 +79,7 @@
              {
                  [self hideHud];
                  if (users) {
+                     self.navigationItem.leftBarButtonItem = nil;
                      NSMutableArray *contacts = [[NSMutableArray alloc]
                                                  initWithCapacity:0];
                      for (id<IUserBase>user in users) {
@@ -76,13 +87,21 @@
                          [contacts addObject:contact];
                      }
                      [ContactManager setContacts:contacts];
+                     
+                     NSDictionary *loginInfo = [[EaseMob sharedInstance].userManager loginInfo];
+                     NSString *loginUserName = [loginInfo objectForKey:@"kUserLoginInfoUsername"];
+                     self.title = [NSString stringWithFormat:@"%@的ChatDemo", loginUserName];
+                     
                      [MBProgressHUD showSuccess:@"获取成功" toView:self.view];
                  }else {
+                     self.navigationItem.leftBarButtonItem = _loginItem;
                      [MBProgressHUD showError:@"通讯录获取失败" toView:self.view];
                  }
 
              } onQueue:nil];
-                     }else {
+                     }
+         else {
+             self.navigationItem.leftBarButtonItem = _loginItem;
              [MBProgressHUD showError:@"登录失败" toView:self.view];
          }
      } onQueue:nil];
@@ -94,15 +113,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
- {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end
