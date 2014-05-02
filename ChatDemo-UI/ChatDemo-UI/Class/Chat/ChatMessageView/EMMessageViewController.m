@@ -50,7 +50,7 @@
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:talker];
         
         //通过会话管理者获取已收发消息
-        NSArray *chats = [_conversation loadNumbersOfMessages:2 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
+        NSArray *chats = [_conversation loadNumbersOfMessages:5 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
         [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
     }
     return self;
@@ -65,6 +65,9 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
+    
+    // 设置当前conversation 接收到message不再回调didUnreadMessagesCountChanged;
+    _conversation.enableUnreadMessagesCountEvent = NO;
     
 #warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
@@ -95,8 +98,13 @@
 
 - (void)dealloc
 {
-#warning 以下一行代码必须写，将self从ChatManager的代理中移除
+#warning 以下第一行代码必须写，将self从ChatManager的代理中移除
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    
+    // 该conversation dealloc后，继续相应unreadCount 变化回调
+    _conversation.enableUnreadMessagesCountEvent = YES;
+    // 设置当前conversation的所有message为已读
+    [_conversation markMessagesAsRead:YES];
 }
 
 #pragma mark - getter
