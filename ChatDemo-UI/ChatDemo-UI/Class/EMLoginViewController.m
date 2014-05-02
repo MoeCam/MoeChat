@@ -13,6 +13,9 @@
 
 @interface EMLoginViewController ()
 {
+    UISegmentedControl *_segmentController;
+    UIBarButtonItem *_autoGetItem;
+    
     UITextField *_nameField;
     UITextField *_passwordField;
 }
@@ -34,7 +37,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"登录";
+//    self.title = @"登录";
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -43,7 +46,15 @@
     tap.cancelsTouchesInView = YES;
     [self.view addGestureRecognizer:tap];
     
-    _nameField = [[UITextField alloc] initWithFrame:CGRectMake(40, 30, self.view.frame.size.width - 80, 35)];
+    _segmentController = [[UISegmentedControl alloc] initWithItems:@[@"有APPKey", @"无AppKey"]];
+    _segmentController.frame = CGRectMake((self.view.frame.size.width - _segmentController.frame.size.width) / 2, (44 - _segmentController.frame.size.height) / 2, _segmentController.frame.size.width, _segmentController.frame.size.height);
+    _segmentController.selectedSegmentIndex = 0;
+    [_segmentController addTarget:self action:@selector(segmentValueChange:) forControlEvents:UIControlEventValueChanged];
+    [self.navigationController.navigationBar addSubview:_segmentController];
+    
+    _autoGetItem = [[UIBarButtonItem alloc] initWithTitle:@"生成账号" style:UIBarButtonItemStyleBordered target:self action:@selector(autoUserAction)];
+    
+    _nameField = [[UITextField alloc] initWithFrame:CGRectMake(40, 40, self.view.frame.size.width - 80, 35)];
     _nameField.borderStyle = UITextBorderStyleRoundedRect;
     _nameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _nameField.placeholder = @"用户名";
@@ -90,6 +101,21 @@
         [_nameField resignFirstResponder];
         [_passwordField resignFirstResponder];
     }
+}
+
+- (void)segmentValueChange:(id)sender
+{
+    if (_segmentController.selectedSegmentIndex == 0) {
+        self.navigationItem.leftBarButtonItem = nil;
+    }
+    else{
+        self.navigationItem.leftBarButtonItem = _autoGetItem;
+    }
+}
+
+- (void)autoUserAction
+{
+    
 }
 
 - (void)loginAction

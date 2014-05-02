@@ -19,10 +19,11 @@
 #import "EMChatSendHelper.h"
 #import "EMMessageManager.h"
 #import "EMMessageModelManager.h"
+#import "SendLocationViewController.h"
 
 #import "NSDate+Category.h"
 
-@interface EMMessageViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, EMChatToolBarDelegate, EMChatBarMoreViewDelegate, EMRecordDelegate, EMFaceDelegate>
+@interface EMMessageViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, EMChatToolBarDelegate, EMChatBarMoreViewDelegate, EMRecordDelegate, EMFaceDelegate, LocationDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;//tableView数据源
 @property (strong, nonatomic) UITableView *tableView;
@@ -387,7 +388,18 @@
 {
     // 隐藏键盘
     [self keyBoardHidden];
-    [self sendLocationMessage:nil];
+    
+    SendLocationViewController *sendVC = [SendLocationViewController sendLocation];
+    sendVC.delegate = self;
+    [self.navigationController pushViewController:sendVC animated:YES];
+}
+
+#pragma mark - LocationDelegate
+
+-(void)sendLocationLatitude:(double)latitude longitude:(double)longitude andAddress:(NSString *)address{
+    
+    EMMessage *tempMessage = [EMChatSendHelper sendLocationLatitude:latitude longitude:longitude address:address toUsername:_conversation.chatter];
+    [self addChatDataToMessage:tempMessage];
 }
 
 #pragma mark - EMFaceDelegate
