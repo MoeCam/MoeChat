@@ -312,7 +312,8 @@
 // 位置的bubble被点击
 -(void)chatLocationCellBubblePressed:(EMMessageModel *)message
 {
-    // todo by du. 显示位置详情（目前无需求）
+    SendLocationViewController *locationVC = [SendLocationViewController readLocationLatitude:message.latitude longitude:message.longitude address:message.address];
+    [self.navigationController pushViewController:locationVC animated:YES];
 }
 
 // 图片的bubble被点击

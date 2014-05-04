@@ -13,9 +13,6 @@
 
 @interface EMLoginViewController ()
 {
-    UISegmentedControl *_segmentController;
-    UIBarButtonItem *_autoGetItem;
-    
     UITextField *_nameField;
     UITextField *_passwordField;
 }
@@ -37,7 +34,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-//    self.title = @"登录";
+    self.title = @"登录";
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -46,15 +43,7 @@
     tap.cancelsTouchesInView = YES;
     [self.view addGestureRecognizer:tap];
     
-    _segmentController = [[UISegmentedControl alloc] initWithItems:@[@"有APPKey", @"无AppKey"]];
-    _segmentController.frame = CGRectMake((self.view.frame.size.width - _segmentController.frame.size.width) / 2, (44 - _segmentController.frame.size.height) / 2, _segmentController.frame.size.width, _segmentController.frame.size.height);
-    _segmentController.selectedSegmentIndex = 0;
-    [_segmentController addTarget:self action:@selector(segmentValueChange:) forControlEvents:UIControlEventValueChanged];
-    [self.navigationController.navigationBar addSubview:_segmentController];
-    
-    _autoGetItem = [[UIBarButtonItem alloc] initWithTitle:@"生成账号" style:UIBarButtonItemStyleBordered target:self action:@selector(autoUserAction)];
-    
-    _nameField = [[UITextField alloc] initWithFrame:CGRectMake(40, 40, self.view.frame.size.width - 80, 35)];
+    _nameField = [[UITextField alloc] initWithFrame:CGRectMake(40, 40, self.view.frame.size.width - 140, 35)];
     _nameField.borderStyle = UITextBorderStyleRoundedRect;
     _nameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _nameField.placeholder = @"用户名";
@@ -64,6 +53,15 @@
     _nameField.leftView = nameLeftView;
     _nameField.leftViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:_nameField];
+    
+    UIButton *resigerButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_nameField.frame) + 10, 45, 60, 30)];
+    resigerButton.layer.cornerRadius = 3.0;
+    resigerButton.clipsToBounds = YES;
+    [resigerButton setTitle:@"自动生成" forState:UIControlStateNormal];
+    [resigerButton addTarget:self action:@selector(resigerAction) forControlEvents:UIControlEventTouchUpInside];
+    [resigerButton setBackgroundImage:[[UIImage imageNamed:@"blueImage"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
+    resigerButton.titleLabel.font = [UIFont systemFontOfSize:11];
+    [self.view addSubview:resigerButton];
     
     _passwordField = [[UITextField alloc] initWithFrame:CGRectMake(40, CGRectGetMaxY(_nameField.frame) + 20, self.view.frame.size.width - 80, 35)];
     _passwordField.borderStyle = UITextBorderStyleRoundedRect;
@@ -103,19 +101,47 @@
     }
 }
 
-- (void)segmentValueChange:(id)sender
-{
-    if (_segmentController.selectedSegmentIndex == 0) {
-        self.navigationItem.leftBarButtonItem = nil;
-    }
-    else{
-        self.navigationItem.leftBarButtonItem = _autoGetItem;
-    }
-}
-
 - (void)autoUserAction
 {
     
+}
+
+- (void)resigerAction
+{
+    NSString *randString = @"";
+    int i,j,k,b;
+    char a[10][10],tmp[10];
+    srand((unsigned)time(NULL));
+    for (j=1;j<10;j++)
+    {
+        for (i=0;i<10;i++)
+        {
+            b=rand()%93+48;
+            if ((b>='0' && b<='9')||
+                (b>='a' && b<='z')||
+                (b>='A' && b<='Z'))
+            {
+                tmp[i] =(char) b;
+                for (k=0;k<j;k++)
+                {
+                    if (strcmp(tmp,a[0])==0)
+                    {
+                        i--;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                i--;
+            }
+        }
+    }
+    randString = [NSString stringWithFormat:@"%s",tmp];
+    randString = [randString substringToIndex:10];
+    
+    _nameField.text = randString;
+    _passwordField.text = @"123456";
 }
 
 - (void)loginAction

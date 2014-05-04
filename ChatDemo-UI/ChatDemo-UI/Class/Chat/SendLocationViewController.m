@@ -28,12 +28,13 @@
     return locationVC;
 }
 
-+(instancetype)readLocation:(CLLocation *)location
++(instancetype)readLocationLatitude:(double)latitude
+                          longitude:(double)longitude
                     address:(NSString *)address{
     SendLocationViewController *locationVC = [[SendLocationViewController alloc] init];
     locationVC.currentAddress = address;
-    locationVC.latitude = location.coordinate.latitude;
-    locationVC.longitude = location.coordinate.longitude;
+    locationVC.latitude = latitude;
+    locationVC.longitude = longitude;
     return locationVC;
 }
 
@@ -45,9 +46,14 @@
     _mapView.zoomLevel = 19;
     [self.view addSubview:_mapView];
     
-    if (_currentAddress && _latitude == 0 && _longitude == 0)
+    if (_currentAddress)
     { // 读取位置使用
-        
+        _mapView.centerCoordinate = (CLLocationCoordinate2D){_latitude,_longitude};
+        BMKPointAnnotation* item = [[BMKPointAnnotation alloc]init];
+		item.coordinate = _mapView.centerCoordinate;
+		item.title = _currentAddress;
+		[_mapView addAnnotation:item];
+
     }else
     { // 发送位置使用
         _search = [[BMKSearch alloc] init];
@@ -73,6 +79,7 @@
     [super viewWillAppear:animated];
     [_mapView viewWillAppear];
     _mapView.delegate = self;
+    _search.delegate = self;
 }
 
 -(void)viewWillDisappear:(BOOL)animated{

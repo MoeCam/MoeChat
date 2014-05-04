@@ -19,6 +19,7 @@
 @property (nonatomic, assign) id <LocationDelegate> delegate;
 
 +(instancetype)sendLocation;
-+(instancetype)readLocation:(CLLocation *)location
++(instancetype)readLocationLatitude:(double)latitude
+                          longitude:(double)longitude
                     address:(NSString *)address;
 @end
