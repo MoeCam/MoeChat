@@ -14,11 +14,15 @@
 @protocol DeviceManagerLocationDelegate <DeviceManagerDelegateBase>
 
 @optional
--(void)didDecodeAddress:(NSString *)address
+- (void)didDecodeAddress:(NSString *)address
            fromLatitude:(double)latitude
            andLongitude:(double)longitude
                   error:(EMError *)error;
 
--(void)didUpdateLocation:(CLLocation *)updatedLocation;
+- (void)didUpdateLocation:(CLLocation *)updatedLocation;
+
+- (void)didStopLocation;
+
+- (void)didFailToLocateUserWithError:(EMError *)error;
 
 @end

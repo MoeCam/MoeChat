@@ -54,10 +54,7 @@
 +(EMMessage *)sendMessage:(NSString *)username
               messageBody:(EMMessageBody *)body
 {
-    NSDictionary *userInfo = [[EaseMob sharedInstance].userManager loginInfo];
-    NSString *sender = [userInfo objectForKey:kUserLoginInfoUsername];
- 
-    EMMessage *msg = [[EMMessage alloc] initWithSender:sender receiver:username bodies:[NSArray arrayWithObject:body]];
+    EMMessage *msg = [[EMMessage alloc] initWithReceiver:username bodies:[NSArray arrayWithObject:body]];
     
     EMMessage *message = [[EaseMob sharedInstance].chatManager asyncSendMessage:msg progress:nil];
     

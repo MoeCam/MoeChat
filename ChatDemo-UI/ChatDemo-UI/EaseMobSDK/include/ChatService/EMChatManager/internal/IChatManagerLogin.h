@@ -1,132 +1,149 @@
-//
-//  IChatManagerLogin.h
-//  EaseMobClientSDK
-//
-//  Created by Ji Fang on 3/26/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
+/*!
+ @header IChatManagerLogin.h
+ @abstract 为ChatManager提供基础登陆操作
+ @author Ji Fang
+ @version 1.00 2014/01/01 Creation (1.00)
+ */
 
 #import <Foundation/Foundation.h>
 #import "IChatManagerBase.h"
 
-/**
- *  本协议包括：登录、退出、修改密码等方法
- *  所有不带Block回调的异步方法, 需要监听回调时, 需要先将要接受回调的对象注册到delegate中, 示例代码如下:
- *  [[[EaseMob sharedInstance] chatManager] addDelegate:self delegateQueue:dispatch_get_main_queue]
+/*!
+ @protocol
+ @abstract 本协议包括：登录、退出、修改密码等方法
+ @discussion 所有不带Block回调的异步方法, 需要监听回调时, 需要先将要接受回调的对象注册到delegate中, 示例代码如下:
+    [[[EaseMob sharedInstance] chatManager] addDelegate:self delegateQueue:dispatch_get_main_queue()]
  */
 @protocol IChatManagerLogin <IChatManagerBase>
 
 #pragma mark - login
-/**
- *  同步方法, 使用用户名密码登录聊天服务器
- *
- *  @param username 用户名
- *  @param password 密码
- *  @param aError   错误信息
- *
- *  @return 登录后返回的用户信息
+
+/*!
+ @method
+ @abstract 在聊天服务器上创建账号
+ @discussion
+ @param username 用户名
+ @param password 密码
+ @param aError   错误信息
+ @result 是否注册成功
  */
--(NSDictionary *)loginWithUsername:(NSString *)username
+- (BOOL)registerNewAccount:(NSString *)username password:(NSString *)password error:(EMError **)pError;
+
+/*!
+ @method
+ @abstract 异步方法, 在聊天服务器上创建账号
+ @discussion 在注册过程中, EMChatManagerLoginDelegate中的didRegisterNewAccount:password:error:回调会被触发
+ @param username 用户名
+ @param password 密码
+ @result
+ */
+- (void)asyncRegisterNewAccount:(NSString *)username
+                      password:(NSString *)password;
+
+/*!
+ @method
+ @abstract 异步方法, 使用用户名密码登录聊天服务器
+ @discussion
+ @param username 用户名
+ @param password 密码
+ @param completion 回调
+ @param aQueue 回调时的线程
+ @result
+ */
+- (void)asyncRegisterNewAccount:(NSString *)username
+                      password:(NSString *)password
+                withCompletion:(void (^)(NSString *username,
+                                         NSString *password,
+                                         EMError *error))completion
+                       onQueue:(dispatch_queue_t)aQueue;
+
+/*!
+ @method
+ @abstract 使用用户名密码登录聊天服务器
+ @discussion 如果登陆失败, 返回nil
+ @param username 用户名
+ @param password 密码
+ @param aError   错误信息
+ @result 登录后返回的用户信息
+ */
+- (NSDictionary *)loginWithUsername:(NSString *)username
                           password:(NSString *)password
                              error:(EMError **)aError;
 
-/**
- *  异步方法, 使用用户名密码登录聊天服务器
- *
- *  @param username 用户名
- *  @param password 密码
+/*!
+ @method
+ @abstract 异步方法, 使用用户名密码登录聊天服务器
+ @discussion 在登陆过程中, EMChatManagerLoginDelegate中的didLoginWithInfo:error:回调会被触发
+ @param username 用户名
+ @param password 密码
+ @result
  */
--(void)asyncLoginWithUsername:(NSString *)username
+- (void)asyncLoginWithUsername:(NSString *)username
                      password:(NSString *)password;
 
-/**
- *  异步方法, 使用用户名密码登录聊天服务器
- *
- *  @param username 用户名
- *  @param password 密码
- *  @param completion 回调
- *  @param aQueue     回调时的线程
+/*!
+ @method
+ @abstract 异步方法, 使用用户名密码登录聊天服务器
+ @discussion 在登陆过程中, EMChatManagerLoginDelegate中的didLoginWithInfo:error:回调会被触发
+ @param username 用户名
+ @param password 密码
+ @param completion 回调
+ @param aQueue 回调时的线程
+ @result
  */
--(void)asyncLoginWithUsername:(NSString *)username
+- (void)asyncLoginWithUsername:(NSString *)username
                      password:(NSString *)password
                    completion:(void (^)(NSDictionary *loginInfo, EMError *error))completion
                       onQueue:(dispatch_queue_t)aQueue;
 
 #pragma mark - logoff
-/**
- *  注销当前登录用户
- *
- *  @param pError 错误信息
- *
- *  @return 注销后的用户信息
- */
--(NSDictionary *)logoffWithError:(EMError **)pError;
 
-/**
- *  注销当前登录用户
+/*!
+ @method
+ @abstract 注销当前登录用户
+ @discussion 目前注销信息不可用
+ @param pError 错误信息
+ @result 返回注销信息
  */
--(void)asyncLogoff;
+- (NSDictionary *)logoffWithError:(EMError **)pError;
 
-/**
- *  注销当前登录用户
- *
- *  @param completion 回调
- *  @param aQueue     回调时的线程
+/*!
+ @method
+ @abstract 异步方法, 注销当前登录用户
+ @discussion 在注销过程中, EMChatManagerLoginDelegate中的didLogoffWithError:回调会被触发. 目前注销信息不可用
+ @result
  */
--(void)asyncLogoffWithCompletion:(void (^)(NSDictionary *info, EMError *error))completion
+- (void)asyncLogoff;
+
+/*!
+ @method
+ @abstract 异步方法, 注销当前登录用户
+ @discussion 目前注销信息不可用
+ @param completion 回调
+ @param aQueue     回调时的线程
+ @result
+ */
+- (void)asyncLogoffWithCompletion:(void (^)(NSDictionary *info, EMError *error))completion
                          onQueue:(dispatch_queue_t)aQueue;
 
-#pragma mark - change password
-/**
- *  同步方法, 修改当前登录用户的密码
- *
- *  @param oldPassword 旧密码
- *  @param newPassword 新密码
- *  @param username    需要修改密码的用户(需要与当前登录的用户名一致, 否则不能修改成功)
- *  @param pError      错误信息
- *
- *  @return 密码是否修改成功
- */
--(BOOL)changePassword:(NSString *)oldPassword
-          newPassword:(NSString *)newPassword
-              forUser:(NSString *)username
-                error:(EMError **)pError;
-
-/**
- *  异步方法, 修改当前登录用户的密码
- *
- *  @param oldPassword 旧密码
- *  @param newPassword 新密码
- *  @param username    需要修改密码的用户(需要与当前登录的用户名一致, 否则不能修改成功)
- */
--(void)asyncChangePassword:(NSString *)oldPassword
-               newPassword:(NSString *)newPassword
-                   forUser:(NSString *)username;
-
-/**
- *  异步方法, 修改当前登录用户的密码
- *
- *  @param oldPassword 旧密码
- *  @param newPassword 新密码
- *  @param username    需要修改密码的用户(需要与当前登录的用户名一致, 否则不能修改成功)
- *  @param completion  回调
- *  @param aQueue      回调时的线程
- */
--(void)asyncChangePassword:(NSString *)oldPassword
-               newPassword:(NSString *)newPassword
-                   forUser:(NSString *)username
-                completion:(void (^)(NSDictionary *info, EMError *error))completion
-                   onQueue:(dispatch_queue_t)aQueue;
-
 #pragma mark - properties
-/**
- *  当前登录的用户信息
+
+/*!
+ @property
+ @abstract 当前登录的用户信息
  */
 @property (nonatomic, strong, readonly) NSDictionary *loginInfo;
 
-/**
- *  当前是否已有登录的用户
+/*!
+ @property
+ @abstract 当前是否已有登录的用户
  */
 @property (nonatomic, readonly) BOOL isLoggedIn;
+
+/*!
+ @property
+ @abstract 当前登陆用户的昵称, 默认为用户名
+ */
+@property (nonatomic, copy) NSString *nickname;
 
 @end

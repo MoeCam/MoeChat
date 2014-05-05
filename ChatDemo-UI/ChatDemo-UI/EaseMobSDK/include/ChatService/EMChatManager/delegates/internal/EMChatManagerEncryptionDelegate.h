@@ -1,13 +1,17 @@
-//
-//  EMChatManagerEncryptionDelegate.h
-//  EaseMobClientSDK
-//
-//  Created by Ji Fang on 2/16/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
+/*!
+ @header EMChatManagerEncryptionDelegate.h
+ @abstract 关于ChatManager中加密解密相关功能的异步回调
+ @author Ji Fang
+ @version 1.00 2014/01/01 Creation (1.00)
+ */
 
 #import <Foundation/Foundation.h>
 
+/*!
+ @protocol
+ @abstract 关于ChatManager中加密解密相关功能的异步回调协议接口
+ @discussion
+ */
 @protocol EMChatManagerEncryptionDelegate <NSObject>
 
 @optional

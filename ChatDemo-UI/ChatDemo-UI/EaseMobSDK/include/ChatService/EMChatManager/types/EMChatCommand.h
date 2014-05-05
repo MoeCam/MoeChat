@@ -13,6 +13,6 @@
 @property (nonatomic, copy) NSString *cmd;
 @property (nonatomic, strong) NSArray *params;
 
--(NSString *)description;
+- (NSString *)description;
 
 @end

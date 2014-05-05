@@ -9,34 +9,27 @@
 #ifndef EaseMobClientSDK_commonDefs_h
 #define EaseMobClientSDK_commonDefs_h
 
-#define kEaseMobChatDomain [[NSDictionary dictionaryWithContentsOfURL:\
-                            [[NSBundle bundleWithURL:[[NSBundle mainBundle] \
-                            URLForResource:@"EaseMob" withExtension:@"bundle"]] \
-                            URLForResource:@"SDKConfig" withExtension:@"plist"]] \
-                            objectForKey:@"EASEMOB_CHAT_DOMAIN"]
+#define kEaseMobAppKey [[[NSBundle mainBundle] infoDictionary] objectForKey:@"EASEMOB_APPKEY"]
+#define kUserServiceFactoryClassName [[[NSBundle mainBundle] infoDictionary] objectForKey:@"EASEMOB_USERSERVICE_FACTORY_CLASS"]
 
-#define kEaseMobChatroomDomain [[NSDictionary dictionaryWithContentsOfURL:\
-                                [[NSBundle bundleWithURL:[[NSBundle mainBundle] \
-                                URLForResource:@"EaseMob" withExtension:@"bundle"]] \
-                                URLForResource:@"SDKConfig" withExtension:@"plist"]] \
-                                objectForKey:@"EASEMOB_CHATROOM_DOMAIN"]
+#define kSDKPassword   @"password"
+#define kSDKUsername   @"username"
 
-#define kEaseMobChatAddress [[NSDictionary dictionaryWithContentsOfURL:\
-                            [[NSBundle bundleWithURL:[[NSBundle mainBundle] \
-                            URLForResource:@"EaseMob" withExtension:@"bundle"]] \
-                            URLForResource:@"SDKConfig" withExtension:@"plist"]] \
-                            objectForKey:@"EASEMOB_CHAT_ADDRESS"]
+#pragma mark - buddy chatting state
+typedef enum _EMChatState {
+    eChatState_Stopped = 0,
+    eChatState_Composing,
+    eChatState_Paused,
+}EMChatState;
 
-#define kEaseMobChatPort [[[NSDictionary dictionaryWithContentsOfURL:\
-                            [[NSBundle bundleWithURL:[[NSBundle mainBundle] \
-                            URLForResource:@"EaseMob" withExtension:@"bundle"]] \
-                            URLForResource:@"SDKConfig" withExtension:@"plist"]] \
-                            objectForKey:@"EASEMOB_CHAT_PORT"] integerValue]
-
-#define kEaseMobStorageUrl [[NSDictionary dictionaryWithContentsOfURL:\
-                            [[NSBundle bundleWithURL:[[NSBundle mainBundle] \
-                            URLForResource:@"EaseMob" withExtension:@"bundle"]] \
-                            URLForResource:@"SDKConfig" withExtension:@"plist"]] \
-                            objectForKey:@"EASEMOB_STORAGE_URL"]
+#pragma mark - buddy online state
+typedef enum _EMOnlineStatus {
+    eOnlineStatus_OffLine = 0,
+    eOnlineStatus_Online,
+    eOnlineStatus_Away,
+    eOnlineStatus_Busy,
+    eOnlineStatus_Invisible,
+    eOnlineStatus_Do_Not_Disturb
+}EMOnlineStatus;
 
 #endif

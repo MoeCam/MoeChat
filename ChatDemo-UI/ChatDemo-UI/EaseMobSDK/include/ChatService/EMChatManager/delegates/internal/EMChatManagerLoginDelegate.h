@@ -1,48 +1,64 @@
-//
-//  EMChatManagerLoginDelegate.h
-//  EaseMobClientSDK
-//
-//  Created by Ji Fang on 3/26/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
+/*!
+ @header EMChatManagerLoginDelegate.h
+ @abstract 关于ChatManager中登陆相关功能的异步回调
+ @author Ji Fang
+ @version 1.00 2014/01/01 Creation (1.00)
+ */
 
 #import <Foundation/Foundation.h>
 
 @class EMError;
 
-/**
- *  本协议包括：登录成功的回调、登录失败的回调、修改密码的回调、账号在其它设置上登录时的回调操作
+/*!
+ @protocol
+ @abstract 本协议包括：登录成功的回调、登录失败的回调、修改密码的回调、账号在其它设置上登录时的回调操作
+ @discussion
  */
 @protocol EMChatManagerLoginDelegate <NSObject>
 
 @optional
-/**
- *  用户登录后的回调
- *
- *  @param loginInfo 登录的用户信息
- *  @param error     错误信息
- */
--(void)didLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error;
 
-/**
- *  用户注销后的回调
- *
- *  @param error 错误信息
+/*!
+ @method
+ @abstract 用户登录后的回调
+ @discussion
+ @param loginInfo 登录的用户信息
+ @param error        错误信息
+ @result
  */
--(void)didLogoffWithError:(EMError *)error;
+- (void)didLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error;
 
-/**
- *  修改密码后的回调
- *
- *  @param aLoginInfo 登录的用户信息
- *  @param aError     错误信息
+/*!
+ @method
+ @abstract 用户注销后的回调
+ @discussion
+ @param error        错误信息
+ @result
  */
--(void)didChangePassword:(NSDictionary *)aLoginInfo
-                   error:(EMError *)aError;
+- (void)didLogoffWithError:(EMError *)error;
 
-/**
- *  当前登录账号在其它设备登录时的通知回调
+/*!
+ @method
+ @abstract 当前登录账号在其它设备登录时的通知回调
+ @discussion
+ @result
  */
--(void)didLoginFromOtherDevice;
+- (void)didLoginFromOtherDevice;
+
+/*!
+ @method
+ @abstract 当前登陆用户掉线重连后发生的通知回调
+ @discussion
+ @result
+ */
+- (void)didReconnect;
+
+/*!
+ @method
+ @abstract 成功注册新用户后的回调
+ @discussion
+ @result
+ */
+- (void)didRegisterNewAccount:(NSString *)username password:(NSString *)password error:(EMError *)error;
 
 @end

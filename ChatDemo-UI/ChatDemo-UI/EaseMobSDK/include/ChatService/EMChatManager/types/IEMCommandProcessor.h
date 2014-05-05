@@ -12,7 +12,7 @@
 @protocol IEMCommandProcessor <NSObject>
 
 @required
--(BOOL)process:(EMChatCommand *)cmd;
--(BOOL)canProcess:(EMChatCommand *)cmd;
+- (BOOL)process:(EMChatCommand *)cmd;
+- (BOOL)canProcess:(EMChatCommand *)cmd;
 
 @end

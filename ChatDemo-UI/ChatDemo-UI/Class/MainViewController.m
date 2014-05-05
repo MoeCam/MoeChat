@@ -9,13 +9,12 @@
 #import "MainViewController.h"
 #import "ChatListViewController.h"
 #import "ContactsViewController.h"
-#import "Contact.h"
-#import "ContactManager.h"
+
 #import "UIViewController+HUD.h"
 #import "MBProgressHUD+Add.h"
 #import "AppDelegate.h"
 
-@interface MainViewController ()
+@interface MainViewController ()<UITabBarDelegate>
 {
     UIBarButtonItem *_loginItem;
     
@@ -43,24 +42,19 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    self.title = @"EaseMobDemo";
+    self.title = @"消息列表";
 //    _loginItem = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(login)];
     
     _chatListVC = [[ChatListViewController alloc] initWithNibName:nil bundle:nil];
-    _chatListVC.title = @"消息";
+    _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"消息列表" image:nil tag:0];
     _contactsVC = [[ContactsViewController alloc] initWithNibName:nil bundle:nil];
-    _contactsVC.title = @"通讯录";
+    _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"好友列表" image:nil tag:1];
     self.viewControllers = @[_chatListVC,_contactsVC];
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-    
-    [self loadContacts];
-    
-//    if(![[EaseMob sharedInstance].userManager loginInfo]){
-//        [self login];
-//    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,33 +63,16 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - data
+#pragma mark - 
 
-- (void)loadContacts
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    [self showHudInView:self.view hint:@"获取通讯录..."];
-    id<IUserManager> userMgr = [EaseMob sharedInstance].userManager;
-    [userMgr asyncFindAllUsersWithCompletion:^(NSArray *users, EMError *error)
-     {
-         [self hideHud];
-         if (users) {
-             NSMutableArray *contacts = [[NSMutableArray alloc] initWithCapacity:0];
-             for (id<IUserBase>user in users) {
-                 Contact *contact = [[Contact alloc] initWithRawUser:user];
-                 [contacts addObject:contact];
-             }
-             [ContactManager setContacts:contacts];
-             
-             NSDictionary *loginInfo = [[EaseMob sharedInstance].userManager loginInfo];
-             NSString *loginUserName = [loginInfo objectForKey:@"kUserLoginInfoUsername"];
-             self.title = [NSString stringWithFormat:@"%@的ChatDemo", loginUserName];
-             
-             [MBProgressHUD showSuccess:@"获取成功" toView:self.view];
-         }else {
-             [MBProgressHUD showError:@"通讯录获取失败" toView:self.view];
-         }
-         
-     } onQueue:nil];
+    if (item.tag == 0) {
+        self.title = @"消息列表";
+    }
+    else{
+        self.title = @"好友列表";
+    }
 }
 
 @end

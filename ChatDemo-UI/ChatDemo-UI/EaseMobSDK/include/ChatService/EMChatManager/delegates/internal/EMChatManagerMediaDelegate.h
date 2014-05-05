@@ -1,10 +1,9 @@
-//
-//  EMChatManagerMediaDelegate.h
-//  EaseMobClientSDK
-//
-//  Created by jifang on 3/12/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
+/*!
+ @header EMChatManagerMediaDelegate.h
+ @abstract 关于ChatManager中媒体相关功能的异步回调
+ @author Ji Fang
+ @version 1.00 2014/01/01 Creation (1.00)
+ */
 
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
@@ -12,41 +11,52 @@
 
 @class EMChatVoice;
 
-/**
- *  本协议包括：播放声音时的回调、录制时的回调、取消录制时的回调等
+/*!
+ @protocol
+ @abstract 本协议包括：播放声音时的回调、录制时的回调、取消录制时的回调等
+ @discussion
  */
 @protocol EMChatManagerMediaDelegate <EMChatManagerDelegateBase>
 
 @optional
-/**
- *  播放系统声音时的回调
- *
- *  @param soundId 系统声音id
- */
--(void)didPlaySystemSound:(SystemSoundID)soundId;
 
-/**
- *  播放录音时的回调
- *
- *  @param aChatVoice 播放的音频对象
- *  @param error      错误信息
+/*!
+ @method
+ @abstract 播放完系统声音时的回调
+ @discussion
+ @param soundId      iOS内部声音文件ID
+ @result
  */
--(void)didPlayAudio:(EMChatVoice *)aChatVoice error:(EMError *)error;
+- (void)didPlaySystemSound:(SystemSoundID)soundId;
 
-/**
- *  录制声音完成后的回调
- *
- *  @param aChatVoice 录制完的音频对象
- *  @param error      错误信息
+/*!
+ @method
+ @abstract 播放完声音对象时的回调
+ @discussion
+ @param aChatVoice 声音对象
+ @param error 错误信息
+ @result
  */
--(void)didRecordAudio:(EMChatVoice *)aChatVoice error:(EMError *)error;
+- (void)didPlayAudio:(EMChatVoice *)aChatVoice error:(EMError *)error;
 
-/**
- *  取消录音后的回调
- *
- *  @param aChatVoice 取消录制的音频对象
- *  @param error      错误信息
+/*!
+ @method
+ @abstract 录制声音完成后的回调
+ @discussion
+ @param aChatVoice 录制完的音频对象
+ @param error 错误信息
+ @result
  */
--(void)didCancelRecordAudio:(EMChatVoice *)aChatVoice error:(EMError *)error;
+- (void)didRecordAudio:(EMChatVoice *)aChatVoice error:(EMError *)error;
+
+/*!
+ @method
+ @abstract 取消录音后的回调
+ @discussion
+ @param aChatVoice 录制完的音频对象
+ @param error 错误信息
+ @result
+ */
+- (void)didCancelRecordAudio:(EMChatVoice *)aChatVoice error:(EMError *)error;
 
 @end

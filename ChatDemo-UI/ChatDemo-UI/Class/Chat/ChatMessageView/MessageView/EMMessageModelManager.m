@@ -9,14 +9,15 @@
 #import "EMMessageModelManager.h"
 
 #import "EMMessageModel.h"
+#import "EaseMob.h"
 
 @implementation EMMessageModelManager
 
 + (id)modelWithMessage:(EMMessage *)message
 {
     EMMessageBody *messageBody = [message.messageBodies firstObject];
-    NSDictionary *userInfo = [[EaseMob sharedInstance].userManager loginInfo];
-    NSString *login = [userInfo objectForKey:kUserLoginInfoUsername];
+    NSDictionary *userInfo = [[EaseMob sharedInstance].chatManager loginInfo];
+    NSString *login = [userInfo objectForKey:kSDKUsername];
     BOOL isSender = [login isEqualToString:message.from] ? YES : NO;
     
     EMMessageModel *model = [[EMMessageModel alloc] init];

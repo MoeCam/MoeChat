@@ -1,151 +1,189 @@
-//
-//  IChatManagerMedia.h
-//  EaseMobClientSDK
-//
-//  Created by jifang on 3/13/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
+/*!
+ @header IChatManagerMedia.h
+ @abstract 为ChatManager提供基础的媒体操作
+ @author Ji Fang
+ @version 1.00 2014/01/01 Creation (1.00)
+ */
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import "IChatManagerBase.h"
 
-/**
- *  本协议主要处理：录音、播放录音、停止录音、震动等操作
- *  所有不带Block回调的异步方法, 需要监听回调时, 需要先将要接受回调的对象注册到delegate中, 示例代码如下:
- *  [[[EaseMob sharedInstance] chatManager] addDelegate:self delegateQueue:dispatch_get_main_queue]
- */
 @class EMChatVoice;
 @class EMError;
+
+/*!
+ @protocol
+ @abstract 本协议主要处理：录音、播放录音、停止录音、震动等操作
+ @discussion 所有不带Block回调的异步方法, 需要监听回调时, 需要先将要接受回调的对象注册到delegate中, 示例代码如下:
+ [[[EaseMob sharedInstance] chatManager] addDelegate:self delegateQueue:dispatch_get_main_queue()]
+ */
 @protocol IChatManagerMedia <IChatManagerBase>
 
 @required
-/**
- *  是否正在播放音频
+
+/*!
+ @property
+ @abstract 是否正在播放音频
  */
 @property (nonatomic, readonly) BOOL isPlayingAudio;
 
-/**
- *  收到新消息时, 播放声音提示
+/*!
+ @method
+ @abstract 收到新消息时, 播放声音提示
+ @discussion
+ @result
  */
--(void)playNewMessageSound;
+- (void)playNewMessageSound;
 
-/**
- *  异步方法, 收到新消息时, 播放声音提示
+/*!
+ @method
+ @abstract 异步方法, 收到新消息时, 播放声音提示
+ @discussion 播放完成后, EMChatManagerDelegateMedia中的didPlaySystemSound:回调会被触发
+ @result
  */
--(void)asyncPlayNewMessageSound;
+- (void)asyncPlayNewMessageSound;
 
-/**
- *  异步方法, 收到新消息时, 播放声音提示
- *
- *  @param completion 回调
- *  @param aQueue     回调时的线程
+/*!
+ @method
+ @abstract 异步方法, 收到新消息时, 播放声音提示
+ @discussion
+ @param completion 回调
+ @param aQueue     回调时的线程
+ @result
  */
--(void)asyncPlayNewMessageWithCompletion:(void (^)(SystemSoundID soundId))completion
+- (void)asyncPlayNewMessageWithCompletion:(void (^)(SystemSoundID soundId))completion
                                  onQueue:(dispatch_queue_t)aQueue;
 
-/**
- *  收到新消息时, 播放震动提示
+/*!
+ @method
+ @abstract 收到新消息时, 播放震动提示
+ @discussion
+ @result
  */
--(void)playVibration;
+- (void)playVibration;
 
-/**
- *  异步方法, 收到新消息时, 播放震动提示
+/*!
+ @method
+ @abstract 异步方法, 收到新消息时, 播放震动提示
+ @discussion 播放完成后, EMChatManagerDelegateMedia中的didPlaySystemSound:回调会被触发
+ @result
  */
--(void)asyncPlayVibration;
+- (void)asyncPlayVibration;
 
-/**
- *  异步方法, 收到新消息时, 播放震动提示
- *
- *  @param completion 回调
- *  @param aQueue     震动完成后的回调
+/*!
+ @method
+ @abstract 异步方法, 收到新消息时, 播放震动提示
+ @discussion
+ @param completion 回调
+ @param aQueue     回调时的线程
+ @result
  */
--(void)asyncPlayVibrationWithCompletion:(void (^)(SystemSoundID soundId))completion
+- (void)asyncPlayVibrationWithCompletion:(void (^)(SystemSoundID soundId))completion
                                 onQueue:(dispatch_queue_t)aQueue;
 
-/**
- *  判断是否正在播放该聊天声音
- *
- *  @param aChatVoice 聊天记录声音对象
- *
- *  @return YES为正在播放, NO为未播放
+/*!
+ @method
+ @abstract 判断是否正在播放该聊天声音
+ @discussion
+ @param aChatVoice 聊天记录声音对象
+ @result 是否正在播放该声音对象
  */
--(BOOL)isPlayingAudioChat:(EMChatVoice *)aChatVoice;
+- (BOOL)isPlayingAudioChat:(EMChatVoice *)aChatVoice;
 
-/**
- *  判断是否正在播放音频
- *
- *  @return YES为正在播放, NO为未播放
+/*!
+ @method
+ @abstract 判断是否正在播放音频
+ @discussion
+ @result 是否正在播放声音对象
  */
--(BOOL)isPlayingAudio;
+- (BOOL)isPlayingAudio;
 
-/**
- *  异步方法, 播放一个聊天记录的声音对象
- *
- *  @param aChatVoice 需要播放的聊天音频对象
+/*!
+ @method
+ @abstract 异步方法, 播放一个聊天记录的声音对象
+ @discussion 播放完成后, EMChatManagerDelegateMedia中的didPlayAudio:error:回调会被触发
+ @param aChatVoice 需要播放的聊天音频对象
+ @result
  */
--(void)asyncPlayAudio:(EMChatVoice *)aChatVoice;
+- (void)asyncPlayAudio:(EMChatVoice *)aChatVoice;
 
-/**
- *  异步方法, 播放一个聊天记录的声音对象
- *
- *  @param aChatVoice 需要播放的聊天音频对象
- *  @param completion 回调
- *  @param aQueue     回调时的线程
+/*!
+ @method
+ @abstract 异步方法, 播放一个聊天记录的声音对象
+ @discussion
+ @param aChatVoice 需要播放的聊天音频对象
+ @param completion 回调
+ @param aQueue     回调时的线程
+ @result
  */
--(void)asyncPlayAudio:(EMChatVoice *)aChatVoice
+- (void)asyncPlayAudio:(EMChatVoice *)aChatVoice
            completion:(void (^)(EMError *error))completion
               onQueue:(dispatch_queue_t)aQueue;
 
-/**
- *  停止当前正在播放的音频
- *
- *  @return 是否stop成功
+/*!
+ @method
+ @abstract 停止当前正在播放的音频
+ @discussion
+ @result 是否成功停止了语音的播放
  */
--(BOOL)stopPlayingAudio;
+- (BOOL)stopPlayingAudio;
 
-/**
- *  同步方法, 开始录制音频
- *
- *  @param pError 错误信息
+/*!
+ @method
+ @abstract 开始录制音频
+ @discussion
+ @param pError 错误信息
+ @result
  */
--(void)startRecordingAudioWithError:(EMError **)pError;
+- (void)startRecordingAudioWithError:(EMError **)pError;
 
-/**
- *  异步方法, 停止录制音频
+/*!
+ @method
+ @abstract 异步方法, 停止录制音频
+ @discussion 录制完成后, EMChatManagerDelegateMedia中的didRecordAudio:error:回调会被触发
+ @result
  */
--(void)asyncStopRecordingAudio;
+- (void)asyncStopRecordingAudio;
 
-/**
- *  异步方法, 停止录制音频
- *
- *  @param completion 回调
- *  @param aQueue     回调时的线程
+/*!
+ @method
+ @abstract 异步方法, 停止录制音频
+ @discussion
+ @param completion 回调
+ @param aQueue     回调时的线程
+ @result
  */
--(void)asyncStopRecordingAudioWithCompletion:(void (^)(EMChatVoice *aChatVoice,
+- (void)asyncStopRecordingAudioWithCompletion:(void (^)(EMChatVoice *aChatVoice,
                                                        EMError *error))completion
                                      onQueue:(dispatch_queue_t)aQueue;
 
-/**
- *  异步方法, 取消录制音频
+/*!
+ @method
+ @abstract 异步方法, 取消录制音频
+ @discussion 取消录制后, EMChatManagerDelegateMedia中的didCancelRecordAudio:error:回调会被触发
+ @result
  */
--(void)asyncCancelRecordingAudio;
+- (void)asyncCancelRecordingAudio;
 
-/**
- *  异步方法, 取消录制音频
- *
- *  @param completion 回调
- *  @param aQueue     回调时的线程
+/*!
+ @method
+ @abstract 异步方法, 取消录制音频
+ @discussion
+ @param completion 回调
+ @param aQueue     回调时的线程
+ @result
  */
--(void)asyncCancelRecordingAudioWithCompletion:(void (^)(EMChatVoice *aChatVoice,
+- (void)asyncCancelRecordingAudioWithCompletion:(void (^)(EMChatVoice *aChatVoice,
                                                          EMError *error))completion
                                        onQueue:(dispatch_queue_t)aQueue;
 
-/**
- *  获取录制音频的时长(stop后, 再去调用该方法, 会返回最后一次录制音频的时长)
- *
- *  @return 音频的时长
+/*!
+ @method
+ @abstract 获取录制音频时的音量
+ @discussion 停止录音后, 再去调用该方法, 会返回最后一次录制音频的音量
+ @result 音量, 值域为0到1.0的浮点数
  */
--(double)peekRecorderVoiceMeter;
+- (double)peekRecorderVoiceMeter;
 
 @end

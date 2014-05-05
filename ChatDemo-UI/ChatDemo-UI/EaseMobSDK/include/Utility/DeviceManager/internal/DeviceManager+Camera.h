@@ -16,7 +16,7 @@
  @returns boolean to indicate the result.
  @comments result block let users do the future process.
  */
--(BOOL)checkCameraAvailability:(void (^)(BOOL available))result
+- (BOOL)checkCameraAvailability:(void (^)(BOOL available))result
                        onQueue:(dispatch_queue_t)aQueue;
 
 @end

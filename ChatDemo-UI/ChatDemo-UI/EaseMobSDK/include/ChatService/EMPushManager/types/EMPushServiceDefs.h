@@ -9,6 +9,4 @@
 #ifndef EaseMobClientSDK_EMPushServiceDefs_h
 #define EaseMobClientSDK_EMPushServiceDefs_h
 
-
-
 #endif

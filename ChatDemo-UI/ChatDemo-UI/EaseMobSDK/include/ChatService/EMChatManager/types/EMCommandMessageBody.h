@@ -11,8 +11,8 @@
 @class EMChatCommand;
 @interface EMCommandMessageBody : EMMessageBody
 
--(id)initWithMessage:(EMChatCommand *)message;
+- (id)initWithMessage:(EMChatCommand *)message;
 
--(NSString *)description;
+- (NSString *)description;
 
 @end

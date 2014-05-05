@@ -12,8 +12,8 @@
 @interface DeviceManager (Audio)<AVAudioPlayerDelegate, AVAudioRecorderDelegate>
 
 #pragma mark - audio channel
--(BOOL)chooseAudioPlaybackMode:(EMAudioPlaybackMode)mode;
--(BOOL)switchAudioOutputDevice:(EMAudioOutputDevice)outputDevice;
+- (BOOL)chooseAudioPlaybackMode:(EMAudioPlaybackMode)mode;
+- (BOOL)switchAudioOutputDevice:(EMAudioOutputDevice)outputDevice;
 
 @property (nonatomic, readonly) EMAudioPlaybackMode currentPlaybackMode;
 
@@ -23,22 +23,22 @@
 @property (nonatomic, readonly) BOOL isPlayingAudio;
 
 #pragma mark - methods
--(void)playNewMessageSound;
+- (void)playNewMessageSound;
 /**
  play sound for new message's arrival
  @returns none
  */
--(void)asyncPlayNewMessageSound;
--(void)asyncPlayNewMessageWithCompletion:(void (^)(SystemSoundID soundId))completion
+- (void)asyncPlayNewMessageSound;
+- (void)asyncPlayNewMessageWithCompletion:(void (^)(SystemSoundID soundId))completion
                                  onQueue:(dispatch_queue_t)aQueue;
 
--(void)playVibration;
+- (void)playVibration;
 /**
  play vibration for new message's arrival
  @returns none
  */
--(void)asyncPlayVibration;
--(void)asyncPlayVibrationWithCompletion:(void (^)(SystemSoundID soundId))completion
+- (void)asyncPlayVibration;
+- (void)asyncPlayVibrationWithCompletion:(void (^)(SystemSoundID soundId))completion
                                 onQueue:(dispatch_queue_t)aQueue;
 
 /**
@@ -46,7 +46,7 @@
  @param filePath, path of the audio file.
  @returns boolean value indicates if it is playing the specific audio chat.
  */
--(BOOL)isPlayingAudioChat:(NSString *)aFilePath;
+- (BOOL)isPlayingAudioChat:(NSString *)aFilePath;
 
 /**
  play audio
@@ -55,8 +55,8 @@
  @comments file should be of amr encoded, it will be converted to wav to play,
  and the wav file will be deleted after finished playing.
  */
--(void)asyncPlayAudio:(NSString *)aFilePath;
--(void)asyncPlayAudio:(NSString *)aFilePath
+- (void)asyncPlayAudio:(NSString *)aFilePath;
+- (void)asyncPlayAudio:(NSString *)aFilePath
            completion:(void (^)(EMError *error))completion
               onQueue:(dispatch_queue_t)aQueue;
 
@@ -65,16 +65,16 @@
  @returns boolean value to indicate if we have stopped the audio.
  @comments none.
  */
--(BOOL)stopPlayingAudio;
+- (BOOL)stopPlayingAudio;
 
--(void)startRecordingAudio:(NSString *)aFilePath error:(EMError **)pError;
+- (void)startRecordingAudio:(NSString *)aFilePath error:(EMError **)pError;
 
 /**
  stop recording audio
  @returns the full filepath of the file recorded.
  */
--(void)asyncStopRecordingAudio;
--(void)asyncStopRecordingAudioWithCompletion:(void (^)(NSString *aFilePath,
+- (void)asyncStopRecordingAudio;
+- (void)asyncStopRecordingAudioWithCompletion:(void (^)(NSString *aFilePath,
                                                        NSInteger duration,
                                                        EMError *error))completion
                                      onQueue:(dispatch_queue_t)aQueue;
@@ -83,22 +83,22 @@
  cancel recording for chatter.
  @returns boolean to indicate if the operation is success.
  */
--(void)asyncCancelRecordingAudio;
--(void)asyncCancelRecordingAudioWithCompletion:(void (^)(NSString *filePath, EMError *error))completion
+- (void)asyncCancelRecordingAudio;
+- (void)asyncCancelRecordingAudioWithCompletion:(void (^)(NSString *filePath, EMError *error))completion
                                        onQueue:(dispatch_queue_t)aQueue;
 
 /**
  get meter of the recorded voice.
  @returns double to indicate the meter.
  */
--(double)peekRecorderVoiceMeter;
+- (double)peekRecorderVoiceMeter;
 
 /**
  check if microphone is available.
  @returns boolean to indicate the result.
  @comments result block let users do the future process.
  */
--(BOOL)checkMicrophoneAvailability:(void (^)(BOOL available))result
+- (BOOL)checkMicrophoneAvailability:(void (^)(BOOL available))result
                            onQueue:(dispatch_queue_t)aQueue;
 
 @end

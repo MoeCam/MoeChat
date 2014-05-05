@@ -125,7 +125,7 @@
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.backgroundColor = [UIColor lightGrayColor];
         _tableView.tableFooterView = [[UIView alloc] init];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         

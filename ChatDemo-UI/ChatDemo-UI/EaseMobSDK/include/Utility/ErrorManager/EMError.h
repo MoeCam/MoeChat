@@ -13,9 +13,9 @@
 @property (nonatomic) NSInteger errorCode;
 @property (nonatomic, copy) NSString *description;
 
-+(EMError *)errorWithCode:(NSInteger)errCode 
++ (EMError *)errorWithCode:(NSInteger)errCode 
            andDescription:(NSString *)description;
 
-+(EMError *)errorWithNSError:(NSError *)error;
++ (EMError *)errorWithNSError:(NSError *)error;
 
 @end

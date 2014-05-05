@@ -20,10 +20,10 @@
     dispatch_queue_t _push_queue;
 }
 
-+(EMPushManager *)sharedInstance;
++ (EMPushManager *)sharedInstance;
 
 #pragma mark - delegate
--(void)addDelegate:(id<EMPushManagerDelegate>)delegate delegateQueue:(dispatch_queue_t)queue;
--(void)removeDelegate:(id<EMPushManagerDelegate>)delegate;
+- (void)addDelegate:(id<EMPushManagerDelegate>)delegate delegateQueue:(dispatch_queue_t)queue;
+- (void)removeDelegate:(id<EMPushManagerDelegate>)delegate;
 
 @end

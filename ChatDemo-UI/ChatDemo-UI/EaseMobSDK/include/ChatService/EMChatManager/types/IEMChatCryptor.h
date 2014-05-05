@@ -11,13 +11,13 @@
 @protocol IEMChatCryptor <NSObject>
 
 @required
--(NSData *)encryptData:(NSData *)data withKey:(NSData *)key;
--(NSData *)decryptData:(NSData *)data withKey:(NSData *)key;
+- (NSData *)encryptData:(NSData *)data withKey:(NSData *)key;
+- (NSData *)decryptData:(NSData *)data withKey:(NSData *)key;
 
--(NSString *)encryptString:(NSString *)string withKey:(NSData *)key;
--(NSString *)decryptString:(NSString *)string withKey:(NSData *)key;
+- (NSString *)encryptString:(NSString *)string withKey:(NSData *)key;
+- (NSString *)decryptString:(NSString *)string withKey:(NSData *)key;
 
 @optional
--(NSData *)keyForName:(NSString *)keyName;
+- (NSData *)keyForName:(NSString *)keyName;
 
 @end

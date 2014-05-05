@@ -15,7 +15,7 @@
 @property (nonatomic, readonly) BOOL isCloseToUser;
 @property (nonatomic, readonly) BOOL isProximitySensorEnabled;
 
--(BOOL)enableProximitySensor;
--(BOOL)disableProximitySensor;
+- (BOOL)enableProximitySensor;
+- (BOOL)disableProximitySensor;
 
 @end

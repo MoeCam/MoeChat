@@ -13,9 +13,10 @@
 @class EMError;
 @protocol DeviceManagerAudioDelegate <DeviceManagerDelegateBase>
 
--(void)didPlaySystemSound:(SystemSoundID)soundId;
--(void)didPlayAudio:(NSString *)aFilePath error:(EMError *)error;
--(void)didRecordAudio:(NSString *)aFilePath duration:(NSInteger)duration error:(EMError *)error;
--(void)didCancelRecordAudio:(NSString *)aFilePath error:(EMError *)error;
+@optional
+- (void)didPlaySystemSound:(SystemSoundID)soundId;
+- (void)didPlayAudio:(NSString *)aFilePath error:(EMError *)error;
+- (void)didRecordAudio:(NSString *)aFilePath duration:(NSInteger)duration error:(EMError *)error;
+- (void)didCancelRecordAudio:(NSString *)aFilePath error:(EMError *)error;
 
 @end

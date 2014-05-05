@@ -7,17 +7,15 @@
 //
 
 #import "ContactsViewController.h"
-#import "Contact.h"
 #import "EMMessageViewController.h"
-#import "ContactManager.h"
 #import "EMChatSendHelper.h"
 
 @interface ContactsViewController ()<UITableViewDataSource,UITableViewDelegate>{
-    NSMutableArray *_contacts;
     UITableView *_tableView;
 }
 
 @property (strong, nonatomic) NSString *currentUsername;
+@property (strong, nonatomic) NSMutableArray *dataSource;;
 
 @end
 
@@ -27,7 +25,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
+        _dataSource = [NSMutableArray array];
     }
     return self;
 }
@@ -44,13 +42,7 @@
        forCellReuseIdentifier:@"cell"];
     [self.view addSubview:_tableView];
     
-    _contacts = [NSMutableArray arrayWithArray:[ContactManager contacts]];
-    for (Contact *contact in _contacts) {
-        if ([contact.username isEqualToString:self.currentUsername]) {
-            [_contacts removeObject:contact];
-            break;
-        }
-    }
+    [self loadContacts];
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,8 +54,7 @@
 - (NSString *)currentUsername
 {
     if (_currentUsername == nil || _currentUsername.length == 0) {
-        NSDictionary *loginInfo = [[EaseMob sharedInstance].userManager
-                                   loginInfo];
+        NSDictionary *loginInfo = [[EaseMob sharedInstance].chatManager loginInfo];
         _currentUsername = [loginInfo objectForKey:@"kUserLoginInfoUsername"];
     }
     
@@ -74,47 +65,43 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger ret = 0;
-    if (_contacts) {
-        ret = _contacts.count;
+    if (self.dataSource) {
+        ret = self.dataSource.count;
     }
     return ret;
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView
-        cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView
-                             dequeueReusableCellWithIdentifier:@"cell"];
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+
+    cell.textLabel.text = [self.dataSource objectAtIndex:indexPath.row];
     
-    Contact *contact = [_contacts objectAtIndex:indexPath.row];
-    cell.textLabel.text = contact.nickname?contact.nickname:contact.username;
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView
-didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSString *toUsername = ((Contact *)[_contacts
-                                        objectAtIndex:indexPath.row]).username;
-   
-    if ([_currentUsername isEqualToString:toUsername]) {
-        [WCAlertView showAlertWithTitle:nil
-                                message:@"不能给自己发消息"
-                     customizationBlock:^(WCAlertView *alertView)
-         {
-             
-         } completionBlock:^(NSUInteger buttonIndex,
-                             WCAlertView *alertView)
-         {
-             
-         } cancelButtonTitle:@"确定"
-                      otherButtonTitles: nil];
-        return;
-        
-    }
+    NSString *toUsername = [self.dataSource objectAtIndex:indexPath.row];
+    [EMChatSendHelper sendMessageWithUsername:toUsername andIsChatroom:NO];
+}
+
+#pragma mark - data
+
+- (void)loadContacts
+{
+    [self.dataSource removeAllObjects];
+    NSArray *array = @[@"test1", @"test2", @"test3", @"test4"];
+    [self.dataSource addObjectsFromArray:array];
     
-    [EMChatSendHelper sendMessageWithUsername:toUsername
-                              andIsChatroom:NO];
+//    [self.dataSource addObjectsFromArray:[[EaseMob sharedInstance].chatManager buddyList]];
+    [_tableView reloadData];
 }
 
 @end

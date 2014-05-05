@@ -10,6 +10,7 @@
 
 #import "MainViewController.h"
 #import "EMLoginViewController.h"
+#import "BMKMapManager.h"
 
 @interface AppDelegate ()
 
@@ -24,6 +25,14 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
+    
+#warning Baidu地图SDK测试Key值
+    // 如果要关注网络及授权验证事件，请设定generalDelegate参数
+    BMKMapManager *mapManager = [[BMKMapManager alloc]init];
+    BOOL ret = [mapManager start:@"akCmCtku7GVde6q2FcCpGo69"  generalDelegate:nil];
+    if (!ret) {
+        NSLog(@"manager start failed!");
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange) name:KNOTIFICATION_LOGINCHANGE object:nil];
     
@@ -66,7 +75,7 @@
 - (void)loginStateChange
 {
     UINavigationController *nacontroller = nil;
-    NSDictionary *info = [[EaseMob sharedInstance].userManager loginInfo];
+    NSDictionary *info = [[EaseMob sharedInstance].chatManager loginInfo];
     if (info && [info count] > 0) {
         nacontroller = [[UINavigationController alloc] initWithRootViewController:self.mainVC];
     }

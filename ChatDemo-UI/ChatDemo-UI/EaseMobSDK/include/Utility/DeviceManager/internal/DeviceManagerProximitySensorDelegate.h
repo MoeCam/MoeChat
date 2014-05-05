@@ -12,6 +12,6 @@
 @protocol DeviceManagerProximitySensorDelegate <DeviceManagerDelegateBase>
 
 @optional
--(void)proximitySensorChanged:(BOOL)isCloseToUser;
+- (void)proximitySensorChanged:(BOOL)isCloseToUser;
 
 @end

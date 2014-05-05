@@ -7,15 +7,19 @@
 	<key>EASEMOB_CHATROOM_DOMAIN</key>
 	<string>conference.ac2</string>
 	<key>EASEMOB_CHAT_ADDRESS</key>
-	<string>push.easemob.com</string>
+	<string>im1.easemob.com</string>
 	<key>EASEMOB_CHAT_DOMAIN</key>
-	<string>ac2</string>
+	<string>im1.easemob.com</string>
 	<key>EASEMOB_CHAT_PORT</key>
 	<integer>5222</integer>
 	<key>EASEMOB_CLOUDCODE_URL</key>
 	<string>cloudcode.easemob.com</string>
 	<key>EASEMOB_ORGKEY</key>
 	<string>weiquan</string>
+	<key>EASEMOB_PUSH_ADDRESS</key>
+	<string>push.easemob.com</string>
+	<key>EASEMOB_PUSH_PORT</key>
+	<integer>7874</integer>
 	<key>EASEMOB_STORAGE_URL</key>
 	<string>storage.easemob.com</string>
 </dict>

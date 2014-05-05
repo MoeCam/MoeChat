@@ -11,13 +11,12 @@
 
 @protocol EMPushManagerDelegate <EMPushManagerDelegateChat>
 
+@optional
 - (void)didReceiveRemoteNotification:(NSDictionary *)userInfo;
 
-- (void)didRegisterTokenFinishWithError:(EMError *)error;
+- (void)didRegisterTokenFinishWithToken:(NSString *)deviceToken
+                                  error:(EMError *)error;
 
 - (void)didUnregisterDeviceFinishWithError:(EMError *)error;
-
-- (void)didRegisterTopicsFinishWithError:(EMError *)error
-                                  topics:(NSArray *)topics;
 
 @end

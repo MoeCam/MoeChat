@@ -10,8 +10,9 @@
 #import "EMMessageViewController.h"
 #import "ChatListCell.h"
 #import "NSDate+Category.h"
-#import "Contact.h"
 #import "SRRefreshView.h"
+
+#import "EaseMob.h"
 
 
 @interface ChatListViewController ()
@@ -19,8 +20,7 @@
 SRRefreshDelegate,
 UISearchBarDelegate,
 UISearchDisplayDelegate,
-UITableViewDelegate,UITableViewDataSource,
-IChatManagerDelegate
+UITableViewDelegate,UITableViewDataSource
 >{
     NSMutableArray *_conversations;
     SRRefreshView   *_slimeView;
@@ -108,26 +108,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     EMConversation *item = [_conversations objectAtIndex:indexPath.row];
-    if(!_currentUsername){
-        NSDictionary *loginInfo = [[EaseMob sharedInstance].userManager
-                                   loginInfo];
-        
-        _currentUsername = [loginInfo objectForKey:@"kUserLoginInfoUsername"];
-    }
-    if (!_currentUsername) {
-        [WCAlertView showAlertWithTitle:nil
-                                message:@"未登录"
-                     customizationBlock:^(WCAlertView *alertView)
-         {
-             
-         } completionBlock:^(NSUInteger buttonIndex,
-                             WCAlertView *alertView)
-         {
-             
-         } cancelButtonTitle:@"确定"
-                      otherButtonTitles: nil];
-        return;
-    }
     [self pushToChatVC:item];
 }
 

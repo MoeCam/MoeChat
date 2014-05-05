@@ -29,13 +29,11 @@
     // audio playback
     AVAudioPlayer *_audioPlayer;
     AVAudioRecorder *_audioRecorder;
-    dispatch_semaphore_t _playAudioSem;
-    dispatch_semaphore_t _recordAudioSem;
 }
 
-+(DeviceManager *)sharedInstance;
++ (DeviceManager *)sharedInstance;
 
--(void)addDelegate:(id<DeviceManagerDelegate>)delegate onQueue:(dispatch_queue_t)aQueue;
--(void)removeDelegate:(id<DeviceManagerDelegate>)delegate;
+- (void)addDelegate:(id<DeviceManagerDelegate>)delegate onQueue:(dispatch_queue_t)aQueue;
+- (void)removeDelegate:(id<DeviceManagerDelegate>)delegate;
 
 @end

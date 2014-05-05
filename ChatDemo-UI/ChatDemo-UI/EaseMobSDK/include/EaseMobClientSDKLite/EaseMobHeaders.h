@@ -10,17 +10,17 @@
 #define demoApp_EaseMobHeaders_h
 
 // defs
-#import "UserServiceDefs.h"
 #import "EMChatServiceDefs.h"
 #import "EMPushServiceDefs.h"
+#import "EMDeviceManagerDefs.h"
 
 // managers & delegates
 #import "IChatManager.h"
-#import "IUserManager.h"
 #import "IPushManager.h"
+#import "IDeviceManager.h"
 #import "IChatManagerDelegate.h"
-#import "IUserManagerDelegate.h"
 #import "IPushManagerDelegate.h"
+#import "IDeviceManagerDelegate.h"
 
 // messages
 #import "EMMessage.h"

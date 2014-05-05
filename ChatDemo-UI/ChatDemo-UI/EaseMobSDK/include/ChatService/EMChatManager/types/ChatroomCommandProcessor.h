@@ -13,7 +13,7 @@
 @interface ChatroomCommandProcessor : NSObject<IEMCommandProcessor>
 
 #pragma mark - IEMChatCommandProcessor protocol
--(BOOL)process:(EMChatCommand *)cmd;
--(BOOL)canProcess:(EMChatCommand *)cmd;
+- (BOOL)process:(EMChatCommand *)cmd;
+- (BOOL)canProcess:(EMChatCommand *)cmd;
 
 @end

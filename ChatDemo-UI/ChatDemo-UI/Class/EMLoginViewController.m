@@ -68,7 +68,7 @@
     _passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _passwordField.layer.cornerRadius = 3.0;
     _passwordField.placeholder = @"密码";
-    _passwordField.secureTextEntry = YES;
+//    _passwordField.secureTextEntry = YES;
     UIImageView *pswdLeftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 16)];
     pswdLeftView.contentMode = UIViewContentModeScaleAspectFit;
     pswdLeftView.image = [UIImage imageNamed:@"password"];
@@ -139,9 +139,19 @@
     }
     randString = [NSString stringWithFormat:@"%s",tmp];
     randString = [randString substringToIndex:10];
-    
-    _nameField.text = randString;
     _passwordField.text = @"123456";
+    _nameField.text = randString;
+    
+    [self showHudInView:self.view hint:@"注册中..."];
+    [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:randString password:_passwordField.text withCompletion:^(NSString *username, NSString *password, EMError *error) {
+        [self hideHud];
+        if (!error) {
+            [MBProgressHUD showError:@"注册成功，请登录" toView:self.view];
+        }
+        else {
+            [MBProgressHUD showError:@"注册失败" toView:self.view];
+        }
+    } onQueue:nil];
 }
 
 - (void)loginAction
@@ -172,7 +182,7 @@
     [_nameField resignFirstResponder];
     [_passwordField resignFirstResponder];
     [self showHudInView:self.view hint:@"登录中..."];
-    [[EaseMob sharedInstance].userManager asyncLoginWithUsername:_nameField.text password:_passwordField.text completion:^(NSDictionary *loginInfo, EMError *error) {
+    [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:_nameField.text password:_passwordField.text completion:^(NSDictionary *loginInfo, EMError *error) {
          [self hideHud];
          if (!error) {
              [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:nil];

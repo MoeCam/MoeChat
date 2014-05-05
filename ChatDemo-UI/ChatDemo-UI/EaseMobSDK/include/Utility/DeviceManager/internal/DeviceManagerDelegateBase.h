@@ -10,4 +10,6 @@
 
 @protocol DeviceManagerDelegateBase <NSObject>
 
+@optional
+
 @end
