@@ -16,10 +16,12 @@
 
 - (BOOL)addBuddy:(NSString *)username
     withNickName:(NSString *)nickname
+         message:(NSString *)message
            error:(EMError **)error;
 
 - (BOOL)addBuddy:(NSString *)username
     withNickName:(NSString *)nickname
+         message:(NSString *)message
         toGroups:(NSArray *)groupNames
            error:(EMError **)error;
 

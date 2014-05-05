@@ -10,7 +10,6 @@
 #define demoApp_EaseMobHeaders_h
 
 // defs
-//#import "EMUserServiceDefs.h"
 #import "EMChatServiceDefs.h"
 #import "EMPushServiceDefs.h"
 #import "EMDeviceManagerDefs.h"

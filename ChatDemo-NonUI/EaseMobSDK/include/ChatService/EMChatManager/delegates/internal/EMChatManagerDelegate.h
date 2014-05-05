@@ -183,8 +183,10 @@
  @abstract 接收到好友请求时的通知
  @discussion
  @param username 发起好友请求的用户username
+ @param message  收到好友请求时的say hello消息
  */
-- (void)didReceiveBuddyRequest:(NSString *)username;
+- (void)didReceiveBuddyRequest:(NSString *)username
+                       message:(NSString *)message;
 
 /*!
  @method
