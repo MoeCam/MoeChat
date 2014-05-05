@@ -18,8 +18,23 @@
  @abstract 接收到好友请求时的通知
  @discussion
  @param username 发起好友请求的用户username
+ @param message  收到好友请求时的say hello消息
  */
-- (void)didReceiveBuddyRequest:(NSString *)username;
+- (void)didReceiveBuddyRequest:(NSString *)username
+                       message:(NSString *)message;
+
+- (void)didAcceptedByBuddy:(NSString *)username
+                   message:(NSString *)message;
+
+/*!
+ @method
+ @abstract 发出的好友请求被拒绝
+ @discussion
+ @param username 发起好友请求的用户username
+ @param message  收到好友请求时的say hello消息
+ */
+- (void)didRejectedByBuddy:(NSString *)username
+                   message:(NSString *)message;
 
 /*!
  @method
