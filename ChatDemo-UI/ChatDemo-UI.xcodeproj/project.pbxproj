@@ -222,6 +222,11 @@
 		3C63A0CE1917339900306E49 /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3C63A0BA1917339900306E49 /* ringtone.mp3 */; };
 		3C63A0CF1917339900306E49 /* NgnDataBase.db in Resources */ = {isa = PBXBuildFile; fileRef = 3C63A0BC1917339900306E49 /* NgnDataBase.db */; };
 		3C63A0D01917339900306E49 /* NgnDataBase.sql in Resources */ = {isa = PBXBuildFile; fileRef = 3C63A0BD1917339900306E49 /* NgnDataBase.sql */; };
+		3CF68EDD19179007007DE4DF /* libEaseMobClientSDKLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CF68EDC19179007007DE4DF /* libEaseMobClientSDKLite.a */; };
+		3CF68EE2191792A0007DE4DF /* Contacts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CF68EDE191792A0007DE4DF /* Contacts@2x.png */; };
+		3CF68EE3191792A0007DE4DF /* ContactsSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CF68EDF191792A0007DE4DF /* ContactsSelected@2x.png */; };
+		3CF68EE4191792A0007DE4DF /* Messages@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CF68EE0191792A0007DE4DF /* Messages@2x.png */; };
+		3CF68EE5191792A0007DE4DF /* MessagesSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CF68EE1191792A0007DE4DF /* MessagesSelected@2x.png */; };
 		901B63C9190A780B006482CB /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 901B63C8190A780B006482CB /* NSDateFormatter+Category.m */; };
 		901B63D3190A7D13006482CB /* MBProgressHUD+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 901B63CD190A7D13006482CB /* MBProgressHUD+Add.m */; };
 		901B63D4190A7D13006482CB /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 901B63CF190A7D13006482CB /* MBProgressHUD.m */; };
@@ -715,6 +720,11 @@
 		3C63A0BC1917339900306E49 /* NgnDataBase.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = NgnDataBase.db; sourceTree = "<group>"; };
 		3C63A0BD1917339900306E49 /* NgnDataBase.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NgnDataBase.sql; sourceTree = "<group>"; };
 		3C63A0D11917342500306E49 /* Emoji.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Emoji.h; sourceTree = "<group>"; };
+		3CF68EDC19179007007DE4DF /* libEaseMobClientSDKLite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libEaseMobClientSDKLite.a; sourceTree = "<group>"; };
+		3CF68EDE191792A0007DE4DF /* Contacts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Contacts@2x.png"; sourceTree = "<group>"; };
+		3CF68EDF191792A0007DE4DF /* ContactsSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ContactsSelected@2x.png"; sourceTree = "<group>"; };
+		3CF68EE0191792A0007DE4DF /* Messages@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Messages@2x.png"; sourceTree = "<group>"; };
+		3CF68EE1191792A0007DE4DF /* MessagesSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MessagesSelected@2x.png"; sourceTree = "<group>"; };
 		901B63C7190A780B006482CB /* NSDateFormatter+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+Category.h"; sourceTree = "<group>"; };
 		901B63C8190A780B006482CB /* NSDateFormatter+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+Category.m"; sourceTree = "<group>"; };
 		901B63CC190A7D13006482CB /* MBProgressHUD+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+Add.h"; sourceTree = "<group>"; };
@@ -767,6 +777,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CF68EDD19179007007DE4DF /* libEaseMobClientSDKLite.a in Frameworks */,
 				90CDBF93190112F200206567 /* Foundation.framework in Frameworks */,
 				90CDC1091901144900206567 /* MobileCoreServices.framework in Frameworks */,
 				90CDC1071901144300206567 /* libresolv.dylib in Frameworks */,
@@ -1686,6 +1697,7 @@
 		3C63A0A61917339900306E49 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				3CF68EDC19179007007DE4DF /* libEaseMobClientSDKLite.a */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -1775,6 +1787,10 @@
 		9048CEE719037BB4003A775C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3CF68EDE191792A0007DE4DF /* Contacts@2x.png */,
+				3CF68EDF191792A0007DE4DF /* ContactsSelected@2x.png */,
+				3CF68EE0191792A0007DE4DF /* Messages@2x.png */,
+				3CF68EE1191792A0007DE4DF /* MessagesSelected@2x.png */,
 				3C2340BD1913A1A7009A65EF /* blueImage@2x.png */,
 				3C2340B919139E26009A65EF /* password@2x.png */,
 				3C2340BB19139E39009A65EF /* user@2x.png */,
@@ -2031,6 +2047,7 @@
 				3C23404E191391B6009A65EF /* VoiceSearchFeedback013.png in Resources */,
 				3C234037191391B6009A65EF /* VoiceSearchFeedback001@2x.png in Resources */,
 				3C234086191391B6009A65EF /* chat_location_detail_disclosure.png in Resources */,
+				3CF68EE3191792A0007DE4DF /* ContactsSelected@2x.png in Resources */,
 				3C23404C191391B6009A65EF /* VoiceSearchFeedback012.png in Resources */,
 				3C234047191391B6009A65EF /* VoiceSearchFeedback009@2x.png in Resources */,
 				3C23408E191391B6009A65EF /* chat_receiver_audio_playing001.png in Resources */,
@@ -2110,8 +2127,10 @@
 				3C234078191391B6009A65EF /* chatBar_moreSelected.png in Resources */,
 				3C23403E191391B6009A65EF /* VoiceSearchFeedback005.png in Resources */,
 				3C234084191391B6009A65EF /* chat_location_annotation_someone.png in Resources */,
+				3CF68EE5191792A0007DE4DF /* MessagesSelected@2x.png in Resources */,
 				3C23403B191391B6009A65EF /* VoiceSearchFeedback003@2x.png in Resources */,
 				3C234075191391B6009A65EF /* chatBar_more_photo@2x.png in Resources */,
+				3CF68EE2191792A0007DE4DF /* Contacts@2x.png in Resources */,
 				3C23407F191391B6009A65EF /* chatBar_recordSelected@2x.png in Resources */,
 				3C23404F191391B6009A65EF /* VoiceSearchFeedback013@2x.png in Resources */,
 				3C23403A191391B6009A65EF /* VoiceSearchFeedback003.png in Resources */,
@@ -2131,6 +2150,7 @@
 				3C63A0C01917339900306E49 /* dtmf-0.wav in Resources */,
 				3C23405F191391B6009A65EF /* chatBar_keyboard@2x.png in Resources */,
 				3C63A0CA1917339900306E49 /* dtmf-pound.wav in Resources */,
+				3CF68EE4191792A0007DE4DF /* Messages@2x.png in Resources */,
 				3C234071191391B6009A65EF /* chatBar_more_location@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

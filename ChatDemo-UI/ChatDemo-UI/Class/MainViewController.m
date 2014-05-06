@@ -16,7 +16,7 @@
 
 @interface MainViewController ()<UITabBarDelegate>
 {
-    UIBarButtonItem *_loginItem;
+    UIBarButtonItem *_logoutItem;
     
     ChatListViewController *_chatListVC;
     ContactsViewController *_contactsVC;
@@ -43,12 +43,15 @@
     }
     
     self.title = @"消息列表";
-//    _loginItem = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(login)];
+    _logoutItem = [[UIBarButtonItem alloc] initWithTitle:@"退出" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
+    [self.navigationItem setLeftBarButtonItem:_logoutItem];
     
     _chatListVC = [[ChatListViewController alloc] initWithNibName:nil bundle:nil];
-    _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"消息列表" image:nil tag:0];
+    _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"消息列表" image:[UIImage imageNamed:@"Messages"] selectedImage:[UIImage imageNamed:@"MessagesSelected"]];
+    _chatListVC.tabBarItem.tag = 0;
     _contactsVC = [[ContactsViewController alloc] initWithNibName:nil bundle:nil];
-    _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"好友列表" image:nil tag:1];
+    _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"好友列表" image:[UIImage imageNamed:@"Contacts"] selectedImage:[UIImage imageNamed:@"ContactsSelected"]];
+    _contactsVC.tabBarItem.tag = 1;
     self.viewControllers = @[_chatListVC,_contactsVC];
 }
 
@@ -73,6 +76,21 @@
     else{
         self.title = @"好友列表";
     }
+}
+
+#pragma mark - action
+
+- (void)logout
+{
+    [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
+        if (error) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告" message:@"退出当前账号失败，请重新操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alertView show];
+        }
+        else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:nil];
+        }
+    } onQueue:nil];
 }
 
 @end

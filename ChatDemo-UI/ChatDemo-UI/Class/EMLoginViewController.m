@@ -146,10 +146,12 @@
     [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:randString password:_passwordField.text withCompletion:^(NSString *username, NSString *password, EMError *error) {
         [self hideHud];
         if (!error) {
-            [MBProgressHUD showError:@"注册成功，请登录" toView:self.view];
+            [self loginAction];
         }
         else {
-            [MBProgressHUD showError:@"注册失败" toView:self.view];
+            _passwordField.text = @"";
+            _nameField.text = @"";
+            [MBProgressHUD showError:@"注册失败,请重新生成账号" toView:self.view];
         }
     } onQueue:nil];
 }
