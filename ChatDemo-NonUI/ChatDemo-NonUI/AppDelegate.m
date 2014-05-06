@@ -21,7 +21,7 @@
     UIViewController *rootView = [[RootViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc]
                                    initWithRootViewController:rootView];
-    rootView.title = @"易聊Demo";
+    rootView.title = @"环信演示";
     self.window.rootViewController = nav;
     [self.window makeKeyAndVisible];
     
