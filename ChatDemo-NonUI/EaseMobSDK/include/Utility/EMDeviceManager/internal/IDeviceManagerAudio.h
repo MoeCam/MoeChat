@@ -95,12 +95,11 @@
  */
 - (double)peekRecorderVoiceMeter;
 
-/**
- check if microphone is available.
- @returns boolean to indicate the result.
- @comments result block let users do the future process.
+/*!
+ @method
+ @abstract check if microphone is available.
+ @return boolean to indicate the result.
  */
-- (BOOL)checkMicrophoneAvailability:(void (^)(BOOL available))result
-                            onQueue:(dispatch_queue_t)aQueue;
+- (BOOL)checkMicrophoneAvailability;
 
 @end

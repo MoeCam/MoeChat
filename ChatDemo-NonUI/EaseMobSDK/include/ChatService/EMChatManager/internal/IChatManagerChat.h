@@ -77,7 +77,7 @@
  @param message 从服务器收到的消息
  @result
  */
-- (void)sendReceiptForMessage:(EMMessage *)message;
+- (void)sendReceiptResponseForMessage:(EMMessage *)message;
 
 #pragma mark - resend message
 

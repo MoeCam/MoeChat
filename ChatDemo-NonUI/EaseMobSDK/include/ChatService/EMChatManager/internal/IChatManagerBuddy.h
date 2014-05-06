@@ -15,23 +15,25 @@
 @property (nonatomic, strong, readonly) NSArray *groupList;
 
 - (BOOL)addBuddy:(NSString *)username
-    withNickName:(NSString *)nickname
+    withNickname:(NSString *)nickname
          message:(NSString *)message
-           error:(EMError **)error;
+           error:(EMError **)pError;
 
 - (BOOL)addBuddy:(NSString *)username
-    withNickName:(NSString *)nickname
+    withNickname:(NSString *)nickname
          message:(NSString *)message
         toGroups:(NSArray *)groupNames
-           error:(EMError **)error;
+           error:(EMError **)pError;
 
 - (BOOL)removeBuddy:(NSString *)username
-              error:(EMError **)error;
+   removeFromRemote:(BOOL)removeFromRemote
+              error:(EMError **)pError;
 
 - (BOOL)acceptBuddyRequest:(NSString *)username
-                     error:(EMError **)error;
+                     error:(EMError **)pError;
 
 - (BOOL)rejectBuddyRequest:(NSString *)username
-                     error:(EMError **)error;
+                    reason:(NSString *)reason
+                     error:(EMError **)pError;
 
 @end

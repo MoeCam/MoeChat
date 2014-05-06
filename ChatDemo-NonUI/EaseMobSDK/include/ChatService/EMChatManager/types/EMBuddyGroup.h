@@ -18,7 +18,7 @@
 @property (copy, nonatomic, readonly)NSString *groupName;
 
 /*!
- *  由EMBuddy对象组成
+ *  由NSString对象(username)组成
  */
 @property (strong, nonatomic)NSArray *members;
 

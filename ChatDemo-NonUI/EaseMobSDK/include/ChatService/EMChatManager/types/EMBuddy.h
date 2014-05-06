@@ -13,5 +13,7 @@
 + (instancetype)buddyWithUsername:(NSString *)username;
 
 @property (copy, nonatomic, readonly)NSString *username;
+@property (nonatomic) BOOL isOnline;
+@property (nonatomic) BOOL isPendingApproval;
 
 @end

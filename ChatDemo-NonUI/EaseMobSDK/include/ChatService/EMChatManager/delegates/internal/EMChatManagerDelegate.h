@@ -202,6 +202,15 @@
 
 /*!
  @method
+ @abstract 好友分组信息发生变化时的通知
+ @discussion
+ @param buddyGroupList 好友分组信息
+ @since 
+ */
+- (void)didUpdateBuddyGroupList:(NSArray *)buddyGroupList;
+
+/*!
+ @method
  @abstract 好友上线和下线时的通知
  @discussion
  @param isOnline 好友信息列表

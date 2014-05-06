@@ -14,9 +14,9 @@
 @optional
 - (void)didReceiveRemoteNotification:(NSDictionary *)userInfo;
 
-- (void)didRegisterTokenFinishWithToken:(NSString *)deviceToken
+- (void)didRegisterDeviceWithToken:(NSString *)deviceToken
                                   error:(EMError *)error;
 
-- (void)didUnregisterDeviceFinishWithError:(EMError *)error;
+- (void)didUnregisterDeviceWithError:(EMError *)error;
 
 @end

@@ -23,19 +23,6 @@
 - (void)didReceiveBuddyRequest:(NSString *)username
                        message:(NSString *)message;
 
-- (void)didAcceptedByBuddy:(NSString *)username
-                   message:(NSString *)message;
-
-/*!
- @method
- @abstract 发出的好友请求被拒绝
- @discussion
- @param username 发起好友请求的用户username
- @param message  收到好友请求时的say hello消息
- */
-- (void)didRejectedByBuddy:(NSString *)username
-                   message:(NSString *)message;
-
 /*!
  @method
  @abstract 通讯录信息发生变化时的通知
@@ -47,6 +34,15 @@
 - (void)didUpdateBuddyList:(NSArray *)buddyList
             changedBuddies:(NSArray *)changedBuddies
                      isAdd:(BOOL)isAdd;
+
+/*!
+ @method
+ @abstract 好友分组信息发生变化时的通知
+ @discussion
+ @param buddyGroupList 好友分组信息
+ @since 
+ */
+- (void)didUpdateBuddyGroupList:(NSArray *)buddyGroupList;
 
 /*!
  @method

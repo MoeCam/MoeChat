@@ -14,12 +14,12 @@
 @required
 
 #pragma mark - camera support
-/**
- check if camera is available.
- @returns boolean to indicate the result.
- @comments result block let users do the future process.
+
+/*!
+ @method
+ @abstract check if camera is available.
+ @return boolean to indicate the result.
  */
-- (BOOL)checkCameraAvailability:(void (^)(BOOL available))result
-                        onQueue:(dispatch_queue_t)aQueue;
+- (BOOL)checkCameraAvailability;
 
 @end
