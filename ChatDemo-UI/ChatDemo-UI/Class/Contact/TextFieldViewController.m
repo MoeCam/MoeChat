@@ -35,7 +35,7 @@
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
     
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(saveAction)]];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(saveAction)]];
     
     [self.view addSubview:self.textField];
     viewDidLoadCompletion(self);
@@ -71,7 +71,9 @@
 
 - (void)saveAction
 {
-    saveFinishCompletion(self.textField.text);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        saveFinishCompletion(self.textField.text);
+    });
 }
 
 @end
