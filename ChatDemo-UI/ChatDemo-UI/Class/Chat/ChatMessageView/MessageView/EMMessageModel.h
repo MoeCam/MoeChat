@@ -16,7 +16,7 @@
     NSMutableDictionary *_observerKeys;
 }
 
-@property (nonatomic) MessageType type;
+@property (nonatomic) MessageBodyType type;
 @property (nonatomic) MessageDeliveryState status;
 
 @property (nonatomic) BOOL isSender;    //是否是发送者

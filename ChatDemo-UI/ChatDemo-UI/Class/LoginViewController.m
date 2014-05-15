@@ -1,17 +1,16 @@
 //
-//  EMLoginViewController.m
+//  LoginViewController.m
 //  ChatDemo-UI
 //
-//  Created by dhcdht on 14-5-2.
+//  Created by xieyajie on 14-5-2.
 //  Copyright (c) 2014年 djp. All rights reserved.
 //
 
-#import "EMLoginViewController.h"
+#import "LoginViewController.h"
 
-#import "MBProgressHUD+Add.h"
 #import "UIViewController+HUD.h"
 
-@interface EMLoginViewController ()
+@interface LoginViewController ()
 {
     UITextField *_nameField;
     UITextField *_passwordField;
@@ -19,7 +18,7 @@
 
 @end
 
-@implementation EMLoginViewController
+@implementation LoginViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -39,11 +38,14 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
+    UIBarButtonItem *autoItem = [[UIBarButtonItem alloc] initWithTitle:@"自动登录" style:UIBarButtonItemStyleBordered target:self action:@selector(autoResigerAction)];
+    [self.navigationItem setRightBarButtonItem:autoItem];
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
     tap.cancelsTouchesInView = YES;
     [self.view addGestureRecognizer:tap];
     
-    _nameField = [[UITextField alloc] initWithFrame:CGRectMake(40, 40, self.view.frame.size.width - 140, 35)];
+    _nameField = [[UITextField alloc] initWithFrame:CGRectMake(40, 40, self.view.frame.size.width - 80, 35)];
     _nameField.borderStyle = UITextBorderStyleRoundedRect;
     _nameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _nameField.placeholder = @"用户名";
@@ -53,15 +55,6 @@
     _nameField.leftView = nameLeftView;
     _nameField.leftViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:_nameField];
-    
-    UIButton *resigerButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_nameField.frame) + 10, 45, 60, 30)];
-    resigerButton.layer.cornerRadius = 3.0;
-    resigerButton.clipsToBounds = YES;
-    [resigerButton setTitle:@"自动生成" forState:UIControlStateNormal];
-    [resigerButton addTarget:self action:@selector(resigerAction) forControlEvents:UIControlEventTouchUpInside];
-    [resigerButton setBackgroundImage:[[UIImage imageNamed:@"blueImage"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
-    resigerButton.titleLabel.font = [UIFont systemFontOfSize:11];
-    [self.view addSubview:resigerButton];
     
     _passwordField = [[UITextField alloc] initWithFrame:CGRectMake(40, CGRectGetMaxY(_nameField.frame) + 20, self.view.frame.size.width - 80, 35)];
     _passwordField.borderStyle = UITextBorderStyleRoundedRect;
@@ -76,7 +69,15 @@
     _passwordField.leftViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:_passwordField];
     
-    UIButton *loginButton = [[UIButton alloc] initWithFrame:CGRectMake(50, CGRectGetMaxY(_passwordField.frame) + 20, self.view.frame.size.width - 100, 35)];
+    UIButton *resigerButton = [[UIButton alloc] initWithFrame:CGRectMake(40, CGRectGetMaxY(_passwordField.frame) + 20, (self.view.frame.size.width - 100) / 2, 35)];
+    resigerButton.layer.cornerRadius = 3.0;
+    resigerButton.clipsToBounds = YES;
+    [resigerButton setTitle:@"注册" forState:UIControlStateNormal];
+    [resigerButton addTarget:self action:@selector(resigerAction) forControlEvents:UIControlEventTouchUpInside];
+    [resigerButton setBackgroundImage:[[UIImage imageNamed:@"blueImage"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
+    [self.view addSubview:resigerButton];
+    
+    UIButton *loginButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(resigerButton.frame) + 20, CGRectGetMaxY(_passwordField.frame) + 20, CGRectGetWidth(resigerButton.frame), 35)];
     loginButton.layer.cornerRadius = 3.0;
     loginButton.clipsToBounds = YES;
     [loginButton setTitle:@"登录" forState:UIControlStateNormal];
@@ -101,12 +102,7 @@
     }
 }
 
-- (void)autoUserAction
-{
-    
-}
-
-- (void)resigerAction
+- (void)autoResigerAction
 {
     NSString *randString = @"";
     int i,j,k,b;
@@ -151,7 +147,29 @@
         else {
             _passwordField.text = @"";
             _nameField.text = @"";
-            [MBProgressHUD showError:@"注册失败,请重新生成账号" toView:self.view];
+            [self showHint:@"注册失败,请重新生成账号"];
+        }
+    } onQueue:nil];
+}
+
+- (void)resigerAction
+{
+    if (_nameField.text.length == 0 || _passwordField.text.length == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:@"用户名和密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+        
+        return;
+    }
+    
+    [self.view endEditing:YES];
+    [self showHudInView:self.view hint:@"注册中..."];
+    [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:_nameField.text password:_passwordField.text withCompletion:^(NSString *username, NSString *password, EMError *error) {
+        [self hideHud];
+        if (!error) {
+            [self loginAction];
+        }
+        else {
+            [self showHint:@"注册失败,请重试"];
         }
     } onQueue:nil];
 }
@@ -165,24 +183,17 @@
         return;
     }
     
-    //检测XXInfo.plist中得AppKey是否填写
-    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-    NSString *appKey = [infoDict objectForKey:@"EASEMOB_APPKEY"];
-    if (appKey == nil || appKey.length == 0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告" message:@"请在工程XXInfo.plist文件中添加AppKey。如果您还没有AppKey，请前往。。。注册" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alertView show];
-        
-        return;
-    }
-    
-//    if ([appKey isEqualToString:@"weiquan9849682"]) {
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告" message:@"您使用了测试的AppKey,请填写您申请的AppKey" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//    //检测XXInfo.plist中得AppKey是否填写
+//    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+//    NSString *appKey = [infoDict objectForKey:@"EASEMOB_APPKEY"];
+//    if (appKey == nil || appKey.length == 0) {
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告" message:@"请在工程XXInfo.plist文件中添加AppKey。如果您还没有AppKey，请前往。。。注册" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
 //        [alertView show];
 //        
 //        return;
 //    }
-    [_nameField resignFirstResponder];
-    [_passwordField resignFirstResponder];
+    
+    [self.view endEditing:YES];
     [self showHudInView:self.view hint:@"登录中..."];
     [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:_nameField.text password:_passwordField.text completion:^(NSDictionary *loginInfo, EMError *error) {
          [self hideHud];
@@ -190,7 +201,7 @@
              [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:nil];
          }
          else {
-             [MBProgressHUD showError:@"登录失败" toView:self.view];
+             [self showHint:@"登录失败"];
          }
      } onQueue:nil];
 }

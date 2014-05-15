@@ -9,13 +9,14 @@
 #import "AppDelegate.h"
 
 #import "MainViewController.h"
-#import "EMLoginViewController.h"
+#import "LoginViewController.h"
+#import "DataManager.h"
 #import "BMKMapManager.h"
 
 @interface AppDelegate ()
 
 @property (strong, nonatomic) MainViewController *mainVC;
-@property (strong, nonatomic) EMLoginViewController *loginController;
+@property (strong, nonatomic) LoginViewController *loginController;
 
 @end
 
@@ -36,9 +37,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange) name:KNOTIFICATION_LOGINCHANGE object:nil];
     
-    self.mainVC = [[MainViewController alloc] init];
-    self.loginController = [[EMLoginViewController alloc] init];
-    
+    [DataManager defaultManager];
     [self loginStateChange];
     
     [self.window makeKeyAndVisible];
@@ -77,9 +76,11 @@
     UINavigationController *nacontroller = nil;
     NSDictionary *info = [[EaseMob sharedInstance].chatManager loginInfo];
     if (info && [info count] > 0) {
+        self.mainVC = [[MainViewController alloc] init];
         nacontroller = [[UINavigationController alloc] initWithRootViewController:self.mainVC];
     }
     else{
+        self.loginController = [[LoginViewController alloc] init];
         nacontroller = [[UINavigationController alloc] initWithRootViewController:self.loginController];
     }
     

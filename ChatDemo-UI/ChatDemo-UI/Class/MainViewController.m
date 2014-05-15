@@ -72,9 +72,13 @@
 {
     if (item.tag == 0) {
         self.title = @"消息列表";
+        [self.navigationItem setRightBarButtonItem:nil];
     }
     else{
         self.title = @"好友列表";
+        
+        UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithTitle:@"添加好友" style:UIBarButtonItemStyleBordered target:_contactsVC action:@selector(addFriendAction)];
+        [self.navigationItem setRightBarButtonItem:addItem];
     }
 }
 

@@ -13,7 +13,12 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+
     #import "EaseMob.h"
+    #import "EaseMobHeaders.h"
+
+    #import "DataManager.h"
+    #import "UIViewController+HUD.h"
     #import "WCAlertView.h"
     #import "EMLocalDefault.h"
 

@@ -34,7 +34,7 @@
 {
     if (_isPlaying != isPlaying) {
         _isPlaying = isPlaying;
-        if (self.type == eMessageType_Voice && [self observeKeyPath:@"isPlaying"]) {
+        if (self.type == eMessageBodyType_Voice && [self observeKeyPath:@"isPlaying"]) {
             [self setValue:[NSNumber numberWithInteger:isPlaying] forKeyPath:@"isPlaying"];
         }
     }

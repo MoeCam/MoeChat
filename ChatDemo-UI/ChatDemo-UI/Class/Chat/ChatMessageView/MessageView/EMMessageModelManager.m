@@ -22,7 +22,7 @@
     
     EMMessageModel *model = [[EMMessageModel alloc] init];
     model.isRead = message.isRead;
-    model.type = messageBody.messageType;
+    model.type = messageBody.messageBodyType;
     model.messageId = message.messageId;
     model.isSender = isSender;
     model.username = message.from;
@@ -39,13 +39,13 @@
         model.status = eMessageDeliveryState_Delivered;
     }
 
-    switch (messageBody.messageType) {
-        case eMessageType_Text:
+    switch (messageBody.messageBodyType) {
+        case eMessageBodyType_Text:
         {
-            model.content = ((EMTextMessageBody *)messageBody).text.text;
+            model.content = ((EMTextMessageBody *)messageBody).text;
         }
             break;
-        case eMessageType_Image:
+        case eMessageBodyType_Image:
         {
             EMImageMessageBody *imgMessageBody = (EMImageMessageBody*)messageBody;
             model.thumbnailSize = imgMessageBody.thumbnailSize;
@@ -60,24 +60,24 @@
             }
         }
             break;
-        case eMessageType_Location:
+        case eMessageBodyType_Location:
         {
             model.address = ((EMLocationMessageBody *)messageBody).address;
             model.latitude = ((EMLocationMessageBody *)messageBody).latitude;
             model.longitude = ((EMLocationMessageBody *)messageBody).longitude;
         }
             break;
-        case eMessageType_Voice:
+        case eMessageBodyType_Voice:
         {
             model.time = ((EMVoiceMessageBody *)messageBody).duration;
-            model.chatVoice = ((EMVoiceMessageBody *)messageBody).voice;
+//            model.chatVoice = ((EMVoiceMessageBody *)messageBody).voice;
             
             // 本地音频路径
             model.localPath = ((EMVoiceMessageBody *)messageBody).localPath;
             model.remotePath = ((EMVoiceMessageBody *)messageBody).remotePath;
         }
             break;
-        case eMessageType_Video:
+        case eMessageBodyType_Video:
             break;
         default:
             break;

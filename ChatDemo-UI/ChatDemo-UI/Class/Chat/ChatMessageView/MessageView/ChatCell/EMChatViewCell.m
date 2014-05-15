@@ -126,22 +126,22 @@
 - (EMChatBaseBubbleView *)bubbleViewForMessage:(EMMessageModel *)message
 {
     switch (message.type) {
-        case eMessageType_Text:
+        case eMessageBodyType_Text:
         {
             return [[EMChatTextBubbleView alloc] init];
         }
             break;
-        case eMessageType_Image:
+        case eMessageBodyType_Image:
         {
             return [[EMChatImageBubbleView alloc] init];
         }
             break;
-        case eMessageType_Voice:
+        case eMessageBodyType_Voice:
         {
             return [[EMChatAudioBubbleView alloc] init];
         }
             break;
-        case eMessageType_Location:
+        case eMessageBodyType_Location:
         {
             return [[EMChatLocationBubbleView alloc] init];
         }
@@ -157,22 +157,22 @@
 + (CGFloat)bubbleViewHeightForMessage:(EMMessageModel *)message
 {
     switch (message.type) {
-        case eMessageType_Text:
+        case eMessageBodyType_Text:
         {
             return [EMChatTextBubbleView heightForBubbleWithObject:message];
         }
             break;
-        case eMessageType_Image:
+        case eMessageBodyType_Image:
         {
             return [EMChatImageBubbleView heightForBubbleWithObject:message];
         }
             break;
-        case eMessageType_Voice:
+        case eMessageBodyType_Voice:
         {
             return [EMChatAudioBubbleView heightForBubbleWithObject:message];
         }
             break;
-        case eMessageType_Location:
+        case eMessageBodyType_Location:
         {
             return [EMChatLocationBubbleView heightForBubbleWithObject:message];
         }

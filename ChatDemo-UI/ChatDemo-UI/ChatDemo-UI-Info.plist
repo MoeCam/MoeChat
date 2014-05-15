@@ -23,7 +23,7 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>EASEMOB_APPKEY</key>
-	<string>weiquan9849682</string>
+	<string>chatdemo</string>
 	<key>EASEMOB_USERSERVICE_FACTORY_CLASS</key>
 	<string>UGUserServiceFactory</string>
 	<key>LSRequiresIPhoneOS</key>

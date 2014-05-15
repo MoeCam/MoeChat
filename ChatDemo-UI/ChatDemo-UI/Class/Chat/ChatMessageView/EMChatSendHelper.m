@@ -20,14 +20,14 @@
 {
     
     EMChatText *text = [[EMChatText alloc] initWithText:str];
-    EMMessageBody *body = [[EMTextMessageBody alloc] initWithMessage:text];
+    EMMessageBody *body = [[EMTextMessageBody alloc] initWithChatObject:text];
     return [self sendMessage:username messageBody:body];
 }
 
 +(EMMessage *)sendImageMessageWithImage:(UIImage *)image
                              toUsername:(NSString *)username
 {
-    EMChatImage *chatImage = [[EMChatImage alloc] initWithImage:image displayName:@"image"];
+    EMChatImage *chatImage = [[EMChatImage alloc] initWithUIImage:image displayName:@"image"];
     EMMessageBody *body = [[EMImageMessageBody alloc] initWithImage:chatImage thumbnailImage:nil];
     return [self sendMessage:username messageBody:body];
 }
@@ -36,7 +36,7 @@
 +(EMMessage *)sendVoice:(EMChatVoice *)voice
              toUsername:(NSString *)username
 {
-    EMMessageBody *body = [[EMVoiceMessageBody alloc]initWithMessage:voice];
+    EMMessageBody *body = [[EMVoiceMessageBody alloc] initWithChatObject:voice];
     return [self sendMessage:username messageBody:body];
 }
 
@@ -46,7 +46,7 @@
                         toUsername:(NSString *)username
 {
     EMChatLocation *chatLocation = [[EMChatLocation alloc] initWithLatitude:latitude longitude:longitude address:address];
-    EMMessageBody *body = [[EMLocationMessageBody alloc] initWithMessage:chatLocation];
+    EMMessageBody *body = [[EMLocationMessageBody alloc] initWithChatObject:chatLocation];
     return [self sendMessage:username messageBody:body];
 }
 

@@ -113,7 +113,7 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (object == _model && _model.type == eMessageType_Voice && [keyPath isEqualToString:@"isPlaying"])
+    if (object == _model && _model.type == eMessageBodyType_Voice && [keyPath isEqualToString:@"isPlaying"])
     {
         BOOL isPlaying = [[change objectForKey:NSKeyValueChangeNewKey] boolValue];
         if (isPlaying) {

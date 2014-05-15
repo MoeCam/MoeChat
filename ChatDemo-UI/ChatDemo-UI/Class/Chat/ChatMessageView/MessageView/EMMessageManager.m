@@ -139,7 +139,7 @@ static EMMessageManager *detailInstance = nil;
 - (void)startMessageAudio:(EMMessageModel *)message playBlock:(PlayBlock)block
 {
     BOOL isPlay = NO;
-    if(message.type == eMessageType_Voice)
+    if(message.type == eMessageBodyType_Voice)
     {
         if (self.audioMessage != message) {
             if (self.audioMessage) {
@@ -173,7 +173,7 @@ static EMMessageManager *detailInstance = nil;
 
 - (void)stopMessageAudio
 {
-    if (self.audioMessage.type == eMessageType_Voice) {
+    if (self.audioMessage.type == eMessageBodyType_Voice) {
         self.audioMessage.isPlaying = NO;
     }
 }

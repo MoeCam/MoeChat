@@ -7,7 +7,7 @@
 //
 
 #import "ChatListViewController.h"
-#import "EMMessageViewController.h"
+#import "MessageViewController.h"
 #import "ChatListCell.h"
 #import "NSDate+Category.h"
 #import "SRRefreshView.h"
@@ -159,7 +159,7 @@ canEditRowAtIndexPath:(NSIndexPath *)indexPath{
 }
 
 -(void)pushToChatVC:(EMConversation *)item{
-    EMMessageViewController *chatVC = [[EMMessageViewController alloc] initWithStyle:UITableViewStylePlain talkerUserName:item.chatter isChatroom:item.isChatroom];
+    MessageViewController *chatVC = [[MessageViewController alloc] initWithStyle:UITableViewStylePlain talkerUserName:item.chatter isChatroom:item.isChatroom];
     [self.navigationController pushViewController:chatVC animated:YES];
 }
 
@@ -182,6 +182,9 @@ canEditRowAtIndexPath:(NSIndexPath *)indexPath{
 #pragma mark - actions
 -(void)reloadConversationList{
     NSArray *conversationList = [[EaseMob sharedInstance].chatManager conversations];
+    for (EMConversation *tmpCon in conversationList) {
+        [tmpCon loadNumbersOfMessages:1 before:[[NSDate date] timeIntervalSince1970InMilliSecond] + 100000];
+    }
     NSArray*tempAry = [conversationList sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation* obj2){
         EMMessage *message1 = obj1.messages.lastObject;
         EMMessage *message2 = obj2.messages.lastObject;
@@ -212,8 +215,12 @@ canEditRowAtIndexPath:(NSIndexPath *)indexPath{
                              loadNumbersOfMessages:3
                              before:[[NSDate date]
                                      timeIntervalSince1970InMilliSecond] + 100000].lastObject;
-    
-    ret = [NSDate formattedTimeFromTimeInterval:lastMessage.timestamp];
+    if (lastMessage) {
+        ret = [NSDate formattedTimeFromTimeInterval:lastMessage.timestamp];
+    }
+    else{
+        ret = [[NSDate dateWithTimeIntervalInMilliSecondSince1970:[[NSDate date] timeIntervalSince1970]] formattedTime];
+    }
     return ret;
 }
 
@@ -225,16 +232,16 @@ canEditRowAtIndexPath:(NSIndexPath *)indexPath{
                              before:[[NSDate date]
                                      timeIntervalSince1970InMilliSecond] + 1000000].lastObject;
     EMMessageBody *messageBody = lastMessage.messageBodies.lastObject;
-    switch (messageBody.messageType) {
-        case eMessageType_Image:{
+    switch (messageBody.messageBodyType) {
+        case eMessageBodyType_Image:{
             ret = @"[图片]";
         }
             break;
-        case eMessageType_Text:{
-            ret = ((EMTextMessageBody *)messageBody).text.text;
+        case eMessageBodyType_Text:{
+            ret = ((EMTextMessageBody *)messageBody).text;
         }
             break;
-        case eMessageType_Voice:{
+        case eMessageBodyType_Voice:{
             ret = @"[声音]";
         }
             break;
@@ -251,7 +258,7 @@ canEditRowAtIndexPath:(NSIndexPath *)indexPath{
     BOOL isChatroom = [[sendDict objectForKey:WILLSENDMESSAGETOUSERNAME_CHATROOMMESSAGE]
                        boolValue];
     
-    EMMessageViewController *messageController = [[EMMessageViewController alloc] initWithStyle:UITableViewStylePlain talkerUserName:chatter isChatroom:isChatroom];
+    MessageViewController *messageController = [[MessageViewController alloc] initWithStyle:UITableViewStylePlain talkerUserName:chatter isChatroom:isChatroom];
     [self.navigationController pushViewController:messageController animated:YES];
 }
 

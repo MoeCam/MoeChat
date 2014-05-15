@@ -1,12 +1,12 @@
 //
-//  EMMessageViewController.m
+//  MessageViewController.m
 //  ChatDemo
 //
 //  Created by xieyajie on 14-4-29.
 //  Copyright (c) 2014年 easemob. All rights reserved.
 //
 
-#import "EMMessageViewController.h"
+#import "MessageViewController.h"
 
 #import "EaseMob.h"
 #import "EMChatToolBar.h"
@@ -23,7 +23,7 @@
 
 #import "NSDate+Category.h"
 
-@interface EMMessageViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, EMChatToolBarDelegate, EMChatBarMoreViewDelegate, EMRecordDelegate, EMFaceDelegate, LocationDelegate>
+@interface MessageViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, EMChatToolBarDelegate, EMChatBarMoreViewDelegate, EMRecordDelegate, EMFaceDelegate, LocationDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;//tableView数据源
 @property (strong, nonatomic) UITableView *tableView;
@@ -38,7 +38,7 @@
 
 @end
 
-@implementation EMMessageViewController
+@implementation MessageViewController
 
 - (id)initWithStyle:(UITableViewStyle)style talkerUserName:(NSString *)talker isChatroom:(BOOL)isChatroom
 {
@@ -295,7 +295,7 @@
 // 语音的bubble被点击
 -(void)chatAudioCellBubblePressed:(EMMessageModel *)message
 {
-    if (message.type == eMessageType_Voice) {
+    if (message.type == eMessageBodyType_Voice) {
         [self.messageReadManager startMessageAudio:message playBlock:^(BOOL playing) {
             if(playing){
                 [[EaseMob sharedInstance].chatManager asyncPlayAudio:message.chatVoice completion:^(EMError *error) {

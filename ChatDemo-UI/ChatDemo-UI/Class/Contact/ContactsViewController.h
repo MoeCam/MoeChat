@@ -10,4 +10,6 @@
 
 @interface ContactsViewController : UIViewController
 
+- (void)reloadContacts;
+
 @end
