@@ -14,8 +14,6 @@
 	<integer>5222</integer>
 	<key>EASEMOB_CLOUDCODE_URL</key>
 	<string>cloudcode.easemob.com</string>
-	<key>EASEMOB_ORGKEY</key>
-	<string>weiquan</string>
 	<key>EASEMOB_PUSH_ADDRESS</key>
 	<string>push.easemob.com</string>
 	<key>EASEMOB_PUSH_PORT</key>
