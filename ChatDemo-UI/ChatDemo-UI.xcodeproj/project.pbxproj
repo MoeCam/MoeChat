@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C0AFE611918C1D100BA5DD1 /* SendLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0AFE601918C1D100BA5DD1 /* SendLocationViewController.m */; };
 		3C233ECD19138A85009A65EF /* UIResponder+Router.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C233ECC19138A85009A65EF /* UIResponder+Router.m */; };
 		3C233EEF19138B5A009A65EF /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C233ED019138B5A009A65EF /* MKAnnotationView+WebCache.m */; };
 		3C233EF019138B5A009A65EF /* NSData+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C233ED219138B5A009A65EF /* NSData+GIF.m */; };
@@ -201,7 +202,6 @@
 		3C2340BA19139E26009A65EF /* password@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C2340B919139E26009A65EF /* password@2x.png */; };
 		3C2340BC19139E39009A65EF /* user@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C2340BB19139E39009A65EF /* user@2x.png */; };
 		3C2340BE1913A1A7009A65EF /* blueImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C2340BD1913A1A7009A65EF /* blueImage@2x.png */; };
-		3C2341521913AD52009A65EF /* SendLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2341511913AD52009A65EF /* SendLocationViewController.m */; };
 		3C2341801913ADCB009A65EF /* libbaidumapapi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C23417E1913ADCB009A65EF /* libbaidumapapi.a */; };
 		3C2341811913ADCC009A65EF /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3C23417F1913ADCB009A65EF /* mapapi.bundle */; };
 		3C63A0BF1917339900306E49 /* EaseMob.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3C63A0AA1917339900306E49 /* EaseMob.bundle */; };
@@ -276,6 +276,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3C0AFE5F1918C1D100BA5DD1 /* SendLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendLocationViewController.h; sourceTree = "<group>"; };
+		3C0AFE601918C1D100BA5DD1 /* SendLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendLocationViewController.m; sourceTree = "<group>"; };
 		3C233ECB19138A85009A65EF /* UIResponder+Router.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIResponder+Router.h"; sourceTree = "<group>"; };
 		3C233ECC19138A85009A65EF /* UIResponder+Router.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+Router.m"; sourceTree = "<group>"; };
 		3C233ECF19138B5A009A65EF /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
@@ -546,8 +548,6 @@
 		3C2340B919139E26009A65EF /* password@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "password@2x.png"; sourceTree = "<group>"; };
 		3C2340BB19139E39009A65EF /* user@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user@2x.png"; sourceTree = "<group>"; };
 		3C2340BD1913A1A7009A65EF /* blueImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueImage@2x.png"; sourceTree = "<group>"; };
-		3C2341501913AD52009A65EF /* SendLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendLocationViewController.h; sourceTree = "<group>"; };
-		3C2341511913AD52009A65EF /* SendLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendLocationViewController.m; sourceTree = "<group>"; };
 		3C2341551913ADCB009A65EF /* BMapKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMapKit.h; sourceTree = "<group>"; };
 		3C2341561913ADCB009A65EF /* BMKActionPaopaoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMKActionPaopaoView.h; sourceTree = "<group>"; };
 		3C2341571913ADCB009A65EF /* BMKAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMKAnnotation.h; sourceTree = "<group>"; };
@@ -958,8 +958,6 @@
 		3C233F53191391B5009A65EF /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				3C2341501913AD52009A65EF /* SendLocationViewController.h */,
-				3C2341511913AD52009A65EF /* SendLocationViewController.m */,
 				3C233F54191391B5009A65EF /* ChatListView */,
 				3C233F63191391B5009A65EF /* ChatMessageView */,
 				3C234012191391B6009A65EF /* macros.h */,
@@ -998,6 +996,8 @@
 		3C233F63191391B5009A65EF /* ChatMessageView */ = {
 			isa = PBXGroup;
 			children = (
+				3C0AFE5F1918C1D100BA5DD1 /* SendLocationViewController.h */,
+				3C0AFE601918C1D100BA5DD1 /* SendLocationViewController.m */,
 				3C233F64191391B5009A65EF /* EMChatSendHelper.h */,
 				3C233F65191391B5009A65EF /* EMChatSendHelper.m */,
 				3C233F66191391B5009A65EF /* EMMessageViewController.h */,
@@ -2215,6 +2215,7 @@
 				3C233F3819138C25009A65EF /* MWPhoto.m in Sources */,
 				3C233EFB19138B5A009A65EF /* UIImage+WebP.m in Sources */,
 				3C234027191391B6009A65EF /* EMChatBaseBubbleView.m in Sources */,
+				3C0AFE611918C1D100BA5DD1 /* SendLocationViewController.m in Sources */,
 				3C233F4219138C25009A65EF /* PSTCollectionViewData.m in Sources */,
 				901B63C9190A780B006482CB /* NSDateFormatter+Category.m in Sources */,
 				3C23401D191391B6009A65EF /* ChatListCell.m in Sources */,
@@ -2238,7 +2239,6 @@
 				3C233F4519138C25009A65EF /* PSTCollectionViewLayout.m in Sources */,
 				3C233F3D19138C25009A65EF /* DACircularProgressView.m in Sources */,
 				3C233EF519138B5A009A65EF /* SDWebImageDownloaderOperation.m in Sources */,
-				3C2341521913AD52009A65EF /* SendLocationViewController.m in Sources */,
 				3C233F3719138C25009A65EF /* MWGridViewController.m in Sources */,
 				90CDBF9F190112F200206567 /* main.m in Sources */,
 				3C233F3519138C25009A65EF /* MWCaptionView.m in Sources */,
