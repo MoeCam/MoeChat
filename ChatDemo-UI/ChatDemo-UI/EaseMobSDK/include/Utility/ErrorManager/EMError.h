@@ -1,7 +1,7 @@
 /*!
  @header EMError.h
  @abstract SDK错误信息定义文件
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.0
  */
 #import <Foundation/Foundation.h>

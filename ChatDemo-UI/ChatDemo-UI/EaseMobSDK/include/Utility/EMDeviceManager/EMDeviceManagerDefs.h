@@ -1,7 +1,7 @@
 /*!
  @header EMDeviceManagerDefs
  @abstract 硬件管理的一些enum定义信息
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.0
  */
 #ifndef EaseMobClientSDK_DeviceManagerDefs_h

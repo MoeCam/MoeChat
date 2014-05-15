@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>EASEMOB_API_URL</key>
-	<string>api.easemob.com</string>
+	<string>a1.easemob.com</string>
 	<key>EASEMOB_CHATROOM_DOMAIN</key>
 	<string>conference.ac2</string>
 	<key>EASEMOB_CHAT_ADDRESS</key>

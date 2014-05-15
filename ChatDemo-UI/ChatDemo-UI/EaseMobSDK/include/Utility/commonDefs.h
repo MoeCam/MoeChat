@@ -1,7 +1,7 @@
 /*!
  @header commonDefs.h
  @abstract 用户在线状态及聊天状态定义
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.0
  */
 #ifndef EaseMobClientSDK_commonDefs_h

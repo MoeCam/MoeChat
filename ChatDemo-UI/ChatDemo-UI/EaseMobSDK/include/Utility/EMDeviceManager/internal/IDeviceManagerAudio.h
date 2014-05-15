@@ -41,16 +41,12 @@
  */
 @property (nonatomic, readonly) EMAudioPlaybackMode currentPlaybackMode;
 
-#pragma mark - play audio functionalities
-#pragma mark - properties
-// flag to indicate if it is playing audio.
 /*!
  @property
  @abstract 当前是否正在播放音频
  */
 @property (nonatomic, readonly) BOOL isPlayingAudio;
 
-#pragma mark - methods
 /*!
  @method
  @abstract 收到新消息时, 播放声音
