@@ -1,7 +1,7 @@
 /*!
  @header EMChatManagerDelegateBase.h
  @abstract 关于ChatManager中基本的异步回调
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 

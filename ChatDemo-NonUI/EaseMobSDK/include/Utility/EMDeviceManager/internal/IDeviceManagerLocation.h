@@ -1,32 +1,94 @@
-//
-//  IDeviceManagerLocation.h
-//  EaseMobClientSDK
-//
-//  Created by Ji Fang on 5/3/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
-
+/*!
+ @header IDeviceManagerLocation.h
+ @abstract 此协议包括获取GPS定位信息,并将GPS定位信息解码成城市街道信息
+ @author EaseMob Inc.
+ @version 1.00 2014/01/01 Creation (1.00)
+ */
 #import <Foundation/Foundation.h>
 #import "IDeviceManagerBase.h"
 #import <CoreLocation/CLLocation.h>
 
+/*!
+ @protocol
+ @abstract 此协议包括获取GPS定位信息,并将GPS定位信息解码成城市街道信息
+ @discussion
+ */
 @protocol IDeviceManagerLocation <IDeviceManagerBase>
 
 @required
 
 #pragma mark - location service
+
+/*!
+ @property
+ @abstract GPS服务是否可用
+ */
 @property (nonatomic, readonly) BOOL isLocationServicesEnabled;
+
+/*!
+ @property
+ @abstract GPS返回的最后一次位置信息
+ */
 @property (nonatomic, readonly) CLLocation *lastLocation;
 
+/*!
+ @method
+ @abstract 开始GPS定位
+ @discussion
+ @result
+ */
 - (void)startUpdatingLocation;
+
+/*!
+ @method
+ @abstract 停止GPS定位
+ @discussion
+ @result
+ */
 - (void)stopUpdatingLocation;
+
+/*!
+ @method
+ @abstract 刷新用户的当前位置信息(重新通过GPS去获取)
+ @discussion
+ @result
+ */
 - (void)refreshLocation;
 
+/*!
+ @method
+ @abstract 将经纬度信息解码为城市街道信息(同步方法, 如果在主线程中使用, 会阻塞主线程)暂时只支持中国的火星坐标, 你懂的
+ @param latitude 经度
+ @param longitude 纬度
+ @param pError 错误信息
+ @discussion
+ @result 解码后的城市街道信息(eg: 中国北京市海淀区中关村彩和坊路)
+ */
 - (NSString *)decodeAddressFromLatitude:(double)latitude
                            andLongitude:(double)longitude
                                   error:(EMError **)pError;
+
+/*!
+ @method
+ @abstract 将经纬度信息解码为城市街道信息(异步方法, 解码完成后, 会调用didDecodeAddress 回调方法)暂时只支持中国的火星坐标, 你懂的
+ @param latitude 经度
+ @param longitude 纬度
+ @discussion
+ @result
+ */
 - (void)asyncDecodeAddressFromLatitude:(double)latitude
                           andLongitude:(double)longitude;
+
+/*!
+ @method
+ @abstract 将经纬度信息解码为城市街道信息(异步方法)暂时只支持中国的火星坐标, 你懂的
+ @param latitude 经度
+ @param longitude 纬度
+ @param completion 解码完成后的回调block
+ @param queue 回调block时的线程
+ @discussion
+ @result
+ */
 - (void)asyncDecodeAddressFromLatitude:(double)latitude
                           andLongitude:(double)longitude
                             completion:(void (^)(NSString *address, EMError *))completion

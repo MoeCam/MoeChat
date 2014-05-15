@@ -1,7 +1,7 @@
 /*!
  @header EMConversation.h
  @abstract 聊天的会话对象类型
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
@@ -61,19 +61,19 @@
  @method
  @abstract 删除会话对象和数据库中相关联的某一条消息
  @discussion 如果此消息不属于或不存在于此会话, 则不会进行删除
- @param message 将要删除的消息
+ @param aMessageId 将要删除的消息ID
  @result 是否成功删除此消息
  */
-- (BOOL)removeMessage:(EMMessage *)message;
+- (BOOL)removeMessage:(NSString *)aMessageId;
 
 /*!
  @method
  @abstract 删除会话对象和数据库中相关联的某几条消息
  @discussion 如果消息不属于或不存在于此会话, 则不会进行删除相应的消息
- @param messages 将要删除的消息列表
+ @param aMessageIds 将要删除的消息ID列表
  @result 成功删除的消息条数
  */
-- (NSUInteger)removeMessages:(NSArray *)messages;
+- (NSUInteger)removeMessages:(NSArray *)aMessageIds;
 
 /*!
  @method
@@ -87,19 +87,19 @@
  @method
  @abstract 根据消息ID从数据库中加载消息
  @discussion 如果数据库中没有这条消息, 方法返回nil
- @param messageId 消息ID
+ @param aMessageId 消息ID
  @result 加载的消息
  */
-- (EMMessage *)loadMessage:(NSString *)messageId;
+- (EMMessage *)loadMessage:(NSString *)aMessageId;
 
 /*!
  @method
  @abstract 根据消息ID列表从数据库中加载消息
  @discussion 如果数据库中没有某条消息对应的ID, 则不加载这条消息
- @param messageIds 消息ID列表
+ @param aMessageIds 消息ID列表
  @result 加载的消息列表
  */
-- (NSArray *)loadMessages:(NSArray *)messageIds;
+- (NSArray *)loadMessages:(NSArray *)aMessageIds;
 
 /*!
  @method
@@ -119,6 +119,13 @@
  */
 - (NSArray *)loadNumbersOfMessages:(NSUInteger)aCount before:(long long)timestamp;
 
+/*!
+ @method
+ @abstract 获取conversation的最后一条消息
+ @result conversation的最后一条消息
+ */
+- (EMMessage *)latestOneMessage;
+
 #pragma mark - mark conversation
 
 /*!
@@ -133,11 +140,12 @@
 /*!
  @method
  @abstract 把本条消息标记为已读/未读
- @discussion
+ @discussion 非此conversation的消息不会被标记
+ @param aMessageId 需要被标记的消息ID
  @param isRead 已读或未读
  @result 是否成功标记此条消息
  */
-- (BOOL)markMessage:(EMMessage *)message asRead:(BOOL)isRead;
+- (BOOL)markMessage:(NSString *)aMessageId asRead:(BOOL)isRead;
 
 #pragma mark - statistics
 

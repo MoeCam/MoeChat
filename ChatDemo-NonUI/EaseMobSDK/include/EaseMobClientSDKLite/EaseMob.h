@@ -1,12 +1,13 @@
 /*!
  @header EaseMob.h
  @abstract EaseMob客户端基本类
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
 #import <Foundation/Foundation.h>
 #import "EaseMobHeaders.h"
+#import <UIKit/UIKit.h>
 
 /*!
  @class

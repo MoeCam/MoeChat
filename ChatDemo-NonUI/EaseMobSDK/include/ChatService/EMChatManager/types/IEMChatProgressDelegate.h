@@ -1,7 +1,7 @@
 /*!
  @header IEMChatProgressDelegate.h
  @abstract 聊天消息发送接收进度条协议
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 

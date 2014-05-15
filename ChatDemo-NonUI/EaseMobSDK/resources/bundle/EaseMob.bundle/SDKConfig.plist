@@ -7,9 +7,9 @@
 	<key>EASEMOB_CHATROOM_DOMAIN</key>
 	<string>conference.ac2</string>
 	<key>EASEMOB_CHAT_ADDRESS</key>
-	<string>chat.easemob.com</string>
+	<string>im1.easemob.com</string>
 	<key>EASEMOB_CHAT_DOMAIN</key>
-	<string>ac2</string>
+	<string>easemob.com</string>
 	<key>EASEMOB_CHAT_PORT</key>
 	<integer>5222</integer>
 	<key>EASEMOB_CLOUDCODE_URL</key>

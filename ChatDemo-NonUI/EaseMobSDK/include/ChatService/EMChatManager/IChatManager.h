@@ -1,7 +1,7 @@
 /*!
  @header IChatManager.h
  @abstract 此接口提供了聊天的基本操作
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
@@ -78,12 +78,12 @@
 
 /*!
  @method
- @abstract 发送一个已收到消息的回执到服务器
+ @abstract 发送一个"已读消息"(在UI上显示了或者阅后即焚的销毁的时候发送)的回执到服务器
  @discussion
  @param message 从服务器收到的消息
  @result
  */
-- (void)sendReceiptResponseForMessage:(EMMessage *)message;
+- (void)sendHasReadResponseForMessage:(EMMessage *)message;
 
 /*!
  @method
@@ -195,7 +195,7 @@
  @discussion
  @param username 用户名
  @param password 密码
- @param aError   错误信息
+ @param pError   错误信息
  @result 是否注册成功
  */
 - (BOOL)registerNewAccount:(NSString *)username password:(NSString *)password error:(EMError **)pError;
@@ -234,12 +234,12 @@
  @discussion 如果登陆失败, 返回nil
  @param username 用户名
  @param password 密码
- @param aError   错误信息
+ @param pError   错误信息
  @result 登录后返回的用户信息
  */
 - (NSDictionary *)loginWithUsername:(NSString *)username
                           password:(NSString *)password
-                             error:(EMError **)aError;
+                             error:(EMError **)pError;
 
 /*!
  @method
@@ -421,26 +421,6 @@
 #pragma mark - Encryption
 
 /*!
- @method
- @abstract 对未加密的消息进行加密
- @discussion 如果消息已经加密,此方法不进行二次加密
- @param aMessage 要被加密的消息
- @param aKey 密钥
- @result 加密后的消息对象
- */
-- (EMMessage *)encryptMessage:(EMMessage *)aMessage forKey:(NSData *)aKey;
-
-/*!
- @method
- @abstract 对加密的消息进行解密
- @discussion 如果消息未被加密,此方法不进行解密
- @param aMessage 要被解密的消息
- @param aKey 密钥
- @result 解密后的消息对象
- */
-- (EMMessage *)decryptMessage:(EMMessage *)aMessage forKey:(NSData *)aKey;
-
-/*!
  @property
  @abstract 加解密器
  */
@@ -613,28 +593,86 @@
 - (double)peekRecorderVoiceMeter;
 
 #pragma mark - IChatManagerBuddy
-
+/*!
+ @method
+ @abstract 获取好友列表(由EMBuddy对象组成)
+ @discussion
+ @result 好友列表(由EMBuddy对象组成)
+ */
 @property (nonatomic, strong, readonly) NSArray *buddyList;
+
+/*!
+ @method
+ @abstract 获取好友分组信息(由EMBuddyGroup对象组成)
+ @discussion
+ @result 好友分组信息(由EMBuddyGroup对象组成)
+ */
 @property (nonatomic, strong, readonly) NSArray *groupList;
 
+/*!
+ @method
+ @abstract 申请添加某个用户为好友
+ @discussion
+ @param username 需要添加为好友的username
+ @param nickname 添加好友后的昵称
+ @param message  申请添加好友时的附带信息
+ @param pError   错误信息
+ @result 好友申请是否发送成功
+ */
 - (BOOL)addBuddy:(NSString *)username
     withNickname:(NSString *)nickname
          message:(NSString *)message
            error:(EMError **)pError;
 
+/*!
+ @method
+ @abstract 申请添加某个用户为好友,同时将该好友添加到分组中,好友与分组可以多对多
+ @discussion
+ @param username 需要添加为好友的username
+ @param nickname 添加好友后的昵称
+ @param message  申请添加好友时的附带信息
+ @param groupNames  将好友添加到分组中(groupNames由NSString对象组成)
+ @param pError   错误信息
+ @result 好友申请是否发送成功
+ */
 - (BOOL)addBuddy:(NSString *)username
     withNickname:(NSString *)nickname
          message:(NSString *)message
         toGroups:(NSArray *)groupNames
            error:(EMError **)pError;
 
+/*!
+ @method
+ @abstract 将某个用户从好友列表中移除
+ @discussion
+ @param username 需要移除的好友username
+ @param removeFromRemote 是否将自己从对方好友列表中移除
+ @param pError   错误信息
+ @result 是否移除成功
+ */
 - (BOOL)removeBuddy:(NSString *)username
    removeFromRemote:(BOOL)removeFromRemote
               error:(EMError **)pError;
 
+/*!
+ @method
+ @abstract 接受某个好友发送的好友请求
+ @discussion
+ @param username 需要接受的好友username
+ @param pError   错误信息
+ @result 是否接受成功
+ */
 - (BOOL)acceptBuddyRequest:(NSString *)username
                      error:(EMError **)pError;
 
+/*!
+ @method
+ @abstract 拒绝某个好友发送的好友请求
+ @discussion
+ @param username 需要拒绝的好友username
+ @param pError   错误信息
+ @result 是否拒绝成功
+ */
 - (BOOL)rejectBuddyRequest:(NSString *)username
                     reason:(NSString *)reason
                      error:(EMError **)pError;

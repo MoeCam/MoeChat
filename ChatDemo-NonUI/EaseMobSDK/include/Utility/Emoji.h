@@ -1,7 +1,7 @@
 /*!
  @header emoji.h
  @abstract 提供对iOS内置表情编码处理
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 

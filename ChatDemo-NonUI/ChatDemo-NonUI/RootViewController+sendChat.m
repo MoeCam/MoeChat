@@ -11,7 +11,7 @@
 @implementation RootViewController (sendChat)
 -(void)sendMessage:(NSString *)message{
     EMChatText *text = [[EMChatText alloc] initWithText:message];
-    EMMessageBody *body = [[EMTextMessageBody alloc] initWithMessage:text];
+    EMMessageBody *body = [[EMTextMessageBody alloc] initWithChatObject:text];
     
     EMMessage *msg = [[EMMessage alloc]
                       initWithReceiver:@"bot"

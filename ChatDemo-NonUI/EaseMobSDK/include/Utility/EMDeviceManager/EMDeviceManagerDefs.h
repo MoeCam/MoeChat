@@ -1,15 +1,13 @@
-//
-//  EMDeviceManagerDefs.h
-//  EaseMobClientSDK
-//
-//  Created by jifang on 1/30/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
-
+/*!
+ @header EMDeviceManagerDefs
+ @abstract 硬件管理的一些enum定义信息
+ @author Ji Fang
+ @version 1.0
+ */
 #ifndef EaseMobClientSDK_DeviceManagerDefs_h
 #define EaseMobClientSDK_DeviceManagerDefs_h
 
-typedef enum _EMAudioOutputDevice {
+typedef enum {
     // output to earphone
     eAudioOutputDevice_earphone = 0,
     
@@ -17,7 +15,7 @@ typedef enum _EMAudioOutputDevice {
     eAudioOutputDevice_speaker
 }EMAudioOutputDevice;
 
-typedef enum _EMAudioPlaybackMode {
+typedef enum {
     // play sound, stop in background&screen lock, mixed with others
     eAudioPlayMode_Simple = 0,
     
