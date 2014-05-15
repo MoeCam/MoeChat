@@ -47,10 +47,10 @@
     [self.navigationItem setLeftBarButtonItem:_logoutItem];
     
     _chatListVC = [[ChatListViewController alloc] initWithNibName:nil bundle:nil];
-    _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"消息列表" image:[UIImage imageNamed:@"Messages"] selectedImage:[UIImage imageNamed:@"MessagesSelected"]];
+    _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"消息列表" image:[UIImage imageNamed:@"Messages"] tag:0];
     _chatListVC.tabBarItem.tag = 0;
     _contactsVC = [[ContactsViewController alloc] initWithNibName:nil bundle:nil];
-    _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"好友列表" image:[UIImage imageNamed:@"Contacts"] selectedImage:[UIImage imageNamed:@"ContactsSelected"]];
+    _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"好友列表" image:[UIImage imageNamed:@"Contacts"] tag:1];
     _contactsVC.tabBarItem.tag = 1;
     self.viewControllers = @[_chatListVC,_contactsVC];
 }
