@@ -1,7 +1,7 @@
 /*!
  @header EMChatImage.h
  @abstract 聊天的图片对象类型
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
@@ -15,9 +15,7 @@
  @class 
  @abstract 聊天的图片对象类型
  */
-@interface EMChatImage : EMChatFile {
-    CGSize _size;
-}
+@interface EMChatImage : EMChatFile
 
 /*!
  @property
@@ -33,16 +31,6 @@
  @param aDisplayName 图片对象的显示名
  @result 图片对象
  */
-- (id)initWithImage:(UIImage *)aImage displayName:(NSString *)aDisplayName;
-
-/*!
- @method
- @abstract 以文件路径构造图片对象
- @discussion 
- @param imageFile 磁盘文件全路径
- @param aDisplayName 图片对象的显示名
- @result 图片对象
- */
-- (id)initWithFile:(NSString *)imageFile displayName:(NSString *)aDisplayName;
+- (id)initWithUIImage:(UIImage *)aImage displayName:(NSString *)aDisplayName;
 
 @end

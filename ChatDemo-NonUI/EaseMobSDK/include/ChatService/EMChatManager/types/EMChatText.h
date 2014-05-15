@@ -1,7 +1,7 @@
 /*!
  @header EMChatText.h
  @abstract 聊天的文本对象类型
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 

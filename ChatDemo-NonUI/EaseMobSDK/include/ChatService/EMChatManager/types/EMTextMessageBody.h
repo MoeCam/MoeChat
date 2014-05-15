@@ -1,7 +1,7 @@
 /*!
  @header EMTextMessageBody.h
  @abstract 聊天的文本消息体对象类型
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
@@ -17,17 +17,17 @@
 
 /*!
  @property
- @abstract 文本消息体的内部文本对象
+ @abstract 文本消息体的内部文本对象的文本
  */
-@property (nonatomic, readonly) EMChatText *text;
+@property (nonatomic, readonly) NSString *text;
 
 /*!
  @method
  @abstract 以文本对象创建文本消息体实例
  @discussion
- @param message 文本对象
+ @param aChatText 文本对象
  @result 文本消息体
  */
-- (id)initWithMessage:(EMChatText *)message;
+- (id)initWithChatObject:(EMChatText *)aChatText;
 
 @end

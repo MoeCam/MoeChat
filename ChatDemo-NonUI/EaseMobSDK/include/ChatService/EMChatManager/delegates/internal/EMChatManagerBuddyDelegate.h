@@ -1,15 +1,18 @@
-//
-//  EMChatManagerBuddyDelegate.h
-//  EaseMobClientSDK
-//
-//  Created by Li Zhiping on 14-5-3.
-//  Copyright (c) 2014年 EaseMob. All rights reserved.
-//
-
+/*!
+ @header EMChatManagerBuddyDelegate.h
+ @abstract 添加好友,删除好友,接收到好友请求时的回调协议
+ @author EaseMob Inc.
+ @version 1.00 2014/01/01 Creation (1.00)
+ */
 #import <Foundation/Foundation.h>
 #import "EMChatManagerDelegateBase.h"
 #import "IChatManager.h"
 
+/*!
+ @protocol
+ @abstract 添加好友,删除好友,接收到好友请求时的回调协议
+ @discussion
+ */
 @protocol EMChatManagerBuddyDelegate <NSObject>
 
 @optional

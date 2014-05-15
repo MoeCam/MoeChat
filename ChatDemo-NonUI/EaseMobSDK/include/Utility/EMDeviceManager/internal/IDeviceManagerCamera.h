@@ -1,14 +1,17 @@
-//
-//  IDeviceManagerCamera.h
-//  EaseMobClientSDK
-//
-//  Created by Ji Fang on 5/3/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
-
+/*!
+ @header IDeviceManagerCamera.h
+ @abstract 提供了关于摄像头的一些基础功能
+ @author EaseMob Inc.
+ @version 1.00 2014/01/01 Creation (1.00)
+ */
 #import <Foundation/Foundation.h>
 #import "IDeviceManagerBase.h"
 
+/*!
+ @protocol
+ @abstract 本协议主要用于提供对摄像头的判断, 操作等功能
+ @discussion
+ */
 @protocol IDeviceManagerCamera <IDeviceManagerBase>
 
 @required
@@ -17,8 +20,8 @@
 
 /*!
  @method
- @abstract check if camera is available.
- @return boolean to indicate the result.
+ @abstract 检查摄像头是否可用
+ @return 摄像头是否可用
  */
 - (BOOL)checkCameraAvailability;
 

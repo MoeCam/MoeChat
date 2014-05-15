@@ -1,7 +1,7 @@
 /*!
  @header EMImageMessageBody.h
  @abstract 聊天的图片消息体对象类型
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
@@ -33,7 +33,7 @@
  @property
  @abstract 图片消息体中的预览图文件的服务器远程路径
  */
-@property (nonatomic, readonly) NSString *thumbnailRemotePath;
+@property (nonatomic, copy) NSString *thumbnailRemotePath;
 
 /*!
  @property
@@ -58,12 +58,6 @@
  @abstract 图片消息体中的大图文件的本地路径
  */
 @property (nonatomic, readonly) NSString *localPath;
-
-/*!
- @property
- @abstract 图片消息体中的大图文件的服务器远程路径
- */
-@property (nonatomic, readonly) NSString *remotePath;
 
 /*!
  @property
