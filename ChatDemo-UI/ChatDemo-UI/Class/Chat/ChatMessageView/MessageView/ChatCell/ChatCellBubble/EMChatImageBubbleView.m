@@ -29,6 +29,10 @@ NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleT
 - (CGSize)sizeThatFits:(CGSize)size
 {
     CGSize retSize = self.model.size;
+    if (retSize.width == 0 || retSize.height == 0) {
+        retSize.width = 100;
+        retSize.height = 100;
+    }
     if (retSize.width > retSize.height) {
         CGFloat height =  MAX_SIZE / retSize.width  *  retSize.height;
         retSize.height = height;

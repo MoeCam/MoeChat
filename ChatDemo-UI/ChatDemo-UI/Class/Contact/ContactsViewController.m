@@ -147,10 +147,12 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         EMError *error;
-        [[EaseMob sharedInstance].chatManager removeBuddy:[self.dataSource objectAtIndex:indexPath.row] removeFromRemote:NO error:&error];
+        [[EaseMob sharedInstance].chatManager removeBuddy:[[self.dataSource objectAtIndex:indexPath.row] username] removeFromRemote:NO error:&error];
         if (!error) {
+            [tableView beginUpdates];
             [self.dataSource removeObjectAtIndex:indexPath.row];
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView endUpdates];
         }
         else{
             [self showHint:@"删除失败，请重新操作"];
