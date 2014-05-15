@@ -8,6 +8,8 @@
 
 #import "EMChatImageBubbleView.h"
 
+#import "UIImageView+WebCache.h"
+
 NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleTapEventName";
 
 @interface EMChatImageBubbleView ()
@@ -72,8 +74,8 @@ NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleT
     if (_model.isSender) {
         self.imageView.image = _model.thumbnailImage;
     }else{
-//        [self.imageView setImageWithURL:_model.thumbnailRemoteURL placeholderImage:nil];// todo by du. 需要一张还没有下载好时，默认的图片
-        self.imageView.image = [UIImage imageNamed:@"chat_location_preview"];
+        [self.imageView setImageWithURL:_model.thumbnailRemoteURL placeholderImage:_model.thumbnailImage];// todo by du. 需要一张还没有下载好时，默认的图片
+//        self.imageView.image = [UIImage imageNamed:@"chat_location_preview"];
     }
 }
 

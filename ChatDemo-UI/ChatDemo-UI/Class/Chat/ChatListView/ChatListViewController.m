@@ -52,6 +52,7 @@ UITableViewDelegate,UITableViewDataSource
     }
     [self registerNotifications];
     [self.view addSubview:self.tableView];
+    [self reloadConversationList];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -74,6 +75,7 @@ UITableViewDelegate,UITableViewDataSource
         _slimeView.slime.shadowColor = [UIColor grayColor];
         
         _tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
+        _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [_tableView addSubview:_slimeView];
@@ -183,9 +185,6 @@ canEditRowAtIndexPath:(NSIndexPath *)indexPath{
 #pragma mark - actions
 -(void)reloadConversationList{
     NSArray *conversationList = [[EaseMob sharedInstance].chatManager conversations];
-    for (EMConversation *tmpCon in conversationList) {
-        [tmpCon loadNumbersOfMessages:1 before:[[NSDate date] timeIntervalSince1970InMilliSecond] + 100000];
-    }
     NSArray*tempAry = [conversationList sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation* obj2){
         EMMessage *message1 = obj1.messages.lastObject;
         EMMessage *message2 = obj2.messages.lastObject;

@@ -455,7 +455,6 @@
 		90CC3DD51925526F0029BF72 /* EMMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMessage.h; sourceTree = "<group>"; };
 		90CC3DD61925526F0029BF72 /* EMMessageBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMessageBody.h; sourceTree = "<group>"; };
 		90CC3DD71925526F0029BF72 /* EMReceiptBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMReceiptBase.h; sourceTree = "<group>"; };
-		90CC3DD81925526F0029BF72 /* EMReceiptReq.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMReceiptReq.h; sourceTree = "<group>"; };
 		90CC3DD91925526F0029BF72 /* EMReceiptResp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMReceiptResp.h; sourceTree = "<group>"; };
 		90CC3DDA1925526F0029BF72 /* EMTextMessageBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMTextMessageBody.h; sourceTree = "<group>"; };
 		90CC3DDB1925526F0029BF72 /* EMVideoMessageBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMVideoMessageBody.h; sourceTree = "<group>"; };
@@ -1100,7 +1099,6 @@
 				90CC3DD51925526F0029BF72 /* EMMessage.h */,
 				90CC3DD61925526F0029BF72 /* EMMessageBody.h */,
 				90CC3DD71925526F0029BF72 /* EMReceiptBase.h */,
-				90CC3DD81925526F0029BF72 /* EMReceiptReq.h */,
 				90CC3DD91925526F0029BF72 /* EMReceiptResp.h */,
 				90CC3DDA1925526F0029BF72 /* EMTextMessageBody.h */,
 				90CC3DDB1925526F0029BF72 /* EMVideoMessageBody.h */,

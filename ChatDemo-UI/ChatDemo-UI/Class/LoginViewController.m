@@ -136,10 +136,10 @@
     randString = [NSString stringWithFormat:@"%s",tmp];
     randString = [randString substringToIndex:10];
     _passwordField.text = @"123456";
-    _nameField.text = randString;
+    _nameField.text = [randString lowercaseString];
     
     [self showHudInView:self.view hint:@"注册中..."];
-    [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:randString password:_passwordField.text withCompletion:^(NSString *username, NSString *password, EMError *error) {
+    [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:_nameField.text password:_passwordField.text withCompletion:^(NSString *username, NSString *password, EMError *error) {
         [self hideHud];
         if (!error) {
             [self loginAction];
