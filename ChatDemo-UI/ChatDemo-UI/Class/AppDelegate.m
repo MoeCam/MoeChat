@@ -70,13 +70,9 @@
 
 - (void)loginStateChange:(NSNotification *)notification
 {
-//    BOOL isLogin = NO;
-//    if (notification && [notification.object boolValue]) {
-//        isLogin = YES;
-//    }
-    BOOL isLogin = [[[EaseMob sharedInstance] chatManager] isLoggedIn];
+    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
     UINavigationController *nacontroller = nil;
-    if (isLogin) {
+    if (loginInfo && [loginInfo count] > 0) {
         MainViewController *mainVC = [[MainViewController alloc] init];
         nacontroller = [[UINavigationController alloc] initWithRootViewController:mainVC];
     }

@@ -202,11 +202,7 @@
 {
     [self.dataSource removeAllObjects];
     NSArray *array = [[EaseMob sharedInstance].chatManager buddyList];
-    for (EMBuddy *buddy in array) {
-        if (buddy.isPendingApproval) {
-            [self.dataSource addObject:buddy];
-        }
-    }
+    [self.dataSource addObjectsFromArray:array];
     [_tableView reloadData];
 }
 

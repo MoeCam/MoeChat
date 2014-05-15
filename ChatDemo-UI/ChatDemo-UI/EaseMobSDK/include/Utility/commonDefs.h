@@ -8,7 +8,7 @@
 #define EaseMobClientSDK_commonDefs_h
 
 #define kEaseMobAppKey [[[NSBundle mainBundle] infoDictionary] objectForKey:@"EASEMOB_APPKEY"]
-#define kUserServiceFactoryClassName [[[NSBundle mainBundle] infoDictionary] objectForKey:@"EASEMOB_USERSERVICE_FACTORY_CLASS"]
+#define kEaseMobOrgName [[[NSBundle mainBundle] infoDictionary] objectForKey:@"EASEMOB_ORGNAME"]
 
 #define kSDKPassword   @"password"
 #define kSDKUsername   @"username"

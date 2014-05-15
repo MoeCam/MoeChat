@@ -24,8 +24,8 @@
 	<string>1.0</string>
 	<key>EASEMOB_APPKEY</key>
 	<string>chatdemoui</string>
-	<key>EASEMOB_USERSERVICE_FACTORY_CLASS</key>
-	<string>UGUserServiceFactory</string>
+	<key>EASEMOB_ORGNAME</key>
+	<string>easemob-demo</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>

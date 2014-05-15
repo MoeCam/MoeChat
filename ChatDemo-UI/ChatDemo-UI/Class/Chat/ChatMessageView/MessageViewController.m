@@ -559,12 +559,7 @@
     NSMutableArray *needDeleteIndexPaths = [[NSMutableArray alloc] initWithCapacity:0];
     if (item.indexPath.row > 0) {
         EMMessageModel * model = [self.dataSource objectAtIndex:item.indexPath.row];
-        for (EMMessage *message in _conversation.messages) {
-            if ([message.messageId isEqualToString:model.messageId]) {
-                [_conversation removeMessage:message];
-                break;
-            }
-        }
+        [_conversation removeMessage:model.messageId];
         
         [self.dataSource removeObject:model];
         if ([[self.dataSource objectAtIndex:item.indexPath.row - 1] isKindOfClass:[NSString class]]) {
