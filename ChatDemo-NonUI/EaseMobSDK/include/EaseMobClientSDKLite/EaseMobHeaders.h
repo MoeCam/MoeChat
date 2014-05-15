@@ -1,7 +1,7 @@
 /*!
  @header EaseMobHeaders.h
  @abstract 引入SDK的所有需要的头文件
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.0
  */
 #ifndef demoApp_EaseMobHeaders_h

@@ -1,7 +1,7 @@
 /*!
  @header IDeviceManagerDevice.h
  @abstract 设备相关协议
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 #import <Foundation/Foundation.h>

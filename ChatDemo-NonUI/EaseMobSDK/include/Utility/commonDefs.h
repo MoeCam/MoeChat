@@ -1,14 +1,14 @@
 /*!
  @header commonDefs.h
  @abstract 用户在线状态及聊天状态定义
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.0
  */
 #ifndef EaseMobClientSDK_commonDefs_h
 #define EaseMobClientSDK_commonDefs_h
 
 #define kEaseMobAppKey [[[NSBundle mainBundle] infoDictionary] objectForKey:@"EASEMOB_APPKEY"]
-#define kUserServiceFactoryClassName [[[NSBundle mainBundle] infoDictionary] objectForKey:@"EASEMOB_USERSERVICE_FACTORY_CLASS"]
+#define kEaseMobOrgName [[[NSBundle mainBundle] infoDictionary] objectForKey:@"EASEMOB_ORGNAME"]
 
 #define kSDKPassword   @"password"
 #define kSDKUsername   @"username"
