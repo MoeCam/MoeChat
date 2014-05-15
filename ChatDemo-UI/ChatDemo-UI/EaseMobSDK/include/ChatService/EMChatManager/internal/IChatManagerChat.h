@@ -1,7 +1,7 @@
 /*!
  @header IChatManagerChat.h
  @abstract 为ChatManager提供基础消息操作
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
@@ -72,12 +72,12 @@
 
 /*!
  @method
- @abstract 发送一个已收到消息的回执到服务器
+ @abstract 发送一个"已读消息"(在UI上显示了或者阅后即焚的销毁的时候发送)的回执到服务器
  @discussion
  @param message 从服务器收到的消息
  @result
  */
-- (void)sendReceiptForMessage:(EMMessage *)message;
+- (void)sendHasReadResponseForMessage:(EMMessage *)message;
 
 #pragma mark - resend message
 

@@ -11,5 +11,5 @@
 @interface ContactsViewController : UIViewController
 
 - (void)reloadContacts;
-
+- (void)addFriendAction;
 @end

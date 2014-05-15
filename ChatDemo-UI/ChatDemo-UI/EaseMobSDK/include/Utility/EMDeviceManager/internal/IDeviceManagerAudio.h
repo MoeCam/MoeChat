@@ -1,106 +1,209 @@
-//
-//  IDeviceManagerAudio.h
-//  EaseMobClientSDK
-//
-//  Created by Ji Fang on 5/3/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
-
+/*!
+ @header IDeviceManagerAudio.h
+ @abstract 音频处理协议
+ @author
+ @version 1.00 2014/01/01 Creation (1.00)
+ */
 #import <Foundation/Foundation.h>
 #import "IDeviceManagerBase.h"
 
+/*!
+ @protocol
+ @abstract 音频处理协议
+ @discussion
+ */
 @protocol IDeviceManagerAudio <IDeviceManagerBase>
 
 @required
 
 #pragma mark - audio channel
+/*!
+ @method
+ @abstract 切换音频播放模式
+ @param mode 音频播放模式
+ @discussion
+ @result 是否切换成功
+ */
 - (BOOL)chooseAudioPlaybackMode:(EMAudioPlaybackMode)mode;
+
+/*!
+ @method
+ @abstract 在耳机和扩音器之间切换音频播放模式
+ @param outputDevice 音频播放模式
+ @discussion
+ @result 是否切换成功
+ */
 - (BOOL)switchAudioOutputDevice:(EMAudioOutputDevice)outputDevice;
 
+/*!
+ @property
+ @abstract 当前音频的播放模式
+ */
 @property (nonatomic, readonly) EMAudioPlaybackMode currentPlaybackMode;
 
 #pragma mark - play audio functionalities
 #pragma mark - properties
 // flag to indicate if it is playing audio.
+/*!
+ @property
+ @abstract 当前是否正在播放音频
+ */
 @property (nonatomic, readonly) BOOL isPlayingAudio;
 
 #pragma mark - methods
+/*!
+ @method
+ @abstract 收到新消息时, 播放声音
+ @discussion
+ */
 - (void)playNewMessageSound;
-/**
- play sound for new message's arrival
- @returns none
+
+/*!
+ @method
+ @abstract 收到新消息时, 异步播放音频
+ @discussion
+ @result
  */
 - (void)asyncPlayNewMessageSound;
+
+/*!
+ @method
+ @abstract 收到新消息时, 异步播放音频
+ @param completion 播放完成时的回调block
+ @param aQueue 回调block时的线程
+ @discussion
+ @result
+ */
 - (void)asyncPlayNewMessageWithCompletion:(void (^)(SystemSoundID soundId))completion
                                   onQueue:(dispatch_queue_t)aQueue;
 
+/*!
+ @method
+ @abstract 新消息到来时, 震动设备
+ @discussion
+ @result
+ */
 - (void)playVibration;
-/**
- play vibration for new message's arrival
- @returns none
+
+/*!
+ @method
+ @abstract 新消息到来时, 震动设备(异步方法)
+ @discussion
+ @result
  */
 - (void)asyncPlayVibration;
+
+/*!
+ @method
+ @abstract 新消息到来时, 震动设备(异步方法)
+ @param completion 震动完成后的回调block
+ @param aQueue 回调block时的线程
+ @discussion
+ @result
+ */
 - (void)asyncPlayVibrationWithCompletion:(void (^)(SystemSoundID soundId))completion
                                  onQueue:(dispatch_queue_t)aQueue;
 
-/**
- check if it is playing the specified audio chat
- @param filePath, path of the audio file.
- @returns boolean value indicates if it is playing the specific audio chat.
+/*!
+ @method
+ @abstract 检查是否正在播放此语音文件
+ @param aFilePath 语音文件的绝对路径
+ @result 是否正在播放此语音文件
  */
 - (BOOL)isPlayingAudioChat:(NSString *)aFilePath;
 
-/**
- play audio
- @param filePath full filepath of the file.
- @returns none
- @comments file should be of amr encoded, it will be converted to wav to play,
- and the wav file will be deleted after finished playing.
+/*!
+ @method
+ @abstract 播放音频(异步线程)
+ @discussion 文件应为amr编码
+ @param aFilePath 需要播放的音频的完整路径
+ @result
  */
 - (void)asyncPlayAudio:(NSString *)aFilePath;
+
+/*!
+ @method
+ @abstract 播放音频(异步线程)
+ @param aFilePath 需要播放的音频的完整路径.
+ @param completion 震动完成后的回调block
+ @param aQueue 回调block时的线程
+ @result
+ */
 - (void)asyncPlayAudio:(NSString *)aFilePath
             completion:(void (^)(EMError *error))completion
                onQueue:(dispatch_queue_t)aQueue;
 
-/**
- stop playing audio
- @returns boolean value to indicate if we have stopped the audio.
- @comments none.
+/*!
+ @method
+ @abstract 停止当前正在播放的音频
+ @discussion
+ @result 是否成功停止播放
  */
 - (BOOL)stopPlayingAudio;
 
+/*!
+ @method
+ @abstract 开始录制音频
+ @param aFilePath 录制完成后的音频文件保存路径
+ @param pError 录制过程中的错误信息
+ @discussion
+ @result
+ */
 - (void)startRecordingAudio:(NSString *)aFilePath error:(EMError **)pError;
 
-/**
- stop recording audio
- @returns the full filepath of the file recorded.
+/*!
+ @method
+ @abstract 停止录制音频(异步方法),停止后会发送 didRecordAudio 广播,同时会附带录制后保存的文件路径和录制的音频时长
+ @discussion
+ @result
  */
 - (void)asyncStopRecordingAudio;
+
+/*!
+ @method
+ @abstract 停止录制音频(异步方法),停止后会调用completion block
+ @param completion 录制音频完成后的回调block
+ @param aQueue 回调block时的线程
+ @discussion
+ @result
+ */
 - (void)asyncStopRecordingAudioWithCompletion:(void (^)(NSString *aFilePath,
                                                         NSInteger duration,
                                                         EMError *error))completion
                                       onQueue:(dispatch_queue_t)aQueue;
 
-/**
- cancel recording for chatter.
- @returns boolean to indicate if the operation is success.
+/*!
+ @method
+ @abstract 取消录制音频(异步线程), 完成后, 会发送didCancelRecordAudio广播
+ @discussion
+ @result
  */
 - (void)asyncCancelRecordingAudio;
+
+/*!
+ @method
+ @abstract 取消录制音频(异步线程)
+ @param completion 录制音频完成后的回调block
+ @param aQueue 回调block时的线程
+ @discussion
+ @result
+ */
 - (void)asyncCancelRecordingAudioWithCompletion:(void (^)(NSString *filePath, EMError *error))completion
                                         onQueue:(dispatch_queue_t)aQueue;
 
-/**
- get meter of the recorded voice.
- @returns double to indicate the meter.
+/*!
+ @method
+ @abstract 获取最后一次录音的时长
+ @discussion
+ @result 音频时长
  */
 - (double)peekRecorderVoiceMeter;
 
-/**
- check if microphone is available.
- @returns boolean to indicate the result.
- @comments result block let users do the future process.
+/*!
+ @method
+ @abstract 判断麦克风是否可用
+ @return 麦克风是否可用
  */
-- (BOOL)checkMicrophoneAvailability:(void (^)(BOOL available))result
-                            onQueue:(dispatch_queue_t)aQueue;
+- (BOOL)checkMicrophoneAvailability;
 
 @end

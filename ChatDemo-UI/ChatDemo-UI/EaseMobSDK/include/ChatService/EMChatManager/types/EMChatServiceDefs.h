@@ -1,7 +1,7 @@
 /*!
  @header EMChatServiceDefs.h
  @abstract ChatManager相关宏定义
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
@@ -13,23 +13,23 @@
 /*!
  @enum
  @abstract 聊天类型
- @constant eMessageType_Text 文本类型
- @constant eMessageType_Image 图片类型
- @constant eMessageType_Video 视频类型
- @constant eMessageType_Location 位置类型
- @constant eMessageType_Voice 语音类型
- @constant eMessageType_File 文件类型
- @constant eMessageType_Command 命令类型
+ @constant eMessageBodyType_Text 文本类型
+ @constant eMessageBodyType_Image 图片类型
+ @constant eMessageBodyType_Video 视频类型
+ @constant eMessageBodyType_Location 位置类型
+ @constant eMessageBodyType_Voice 语音类型
+ @constant eMessageBodyType_File 文件类型
+ @constant eMessageBodyType_Command 命令类型
  */
-typedef enum _MessageType {
-    eMessageType_Text = 1,
-    eMessageType_Image,
-    eMessageType_Video,
-    eMessageType_Location,
-    eMessageType_Voice,
-    eMessageType_File,
-    eMessageType_Command
-}MessageType;
+typedef enum {
+    eMessageBodyType_Text = 1,
+    eMessageBodyType_Image,
+    eMessageBodyType_Video,
+    eMessageBodyType_Location,
+    eMessageBodyType_Voice,
+    eMessageBodyType_File,
+    eMessageBodyType_Command
+}MessageBodyType;
 
 /*!
  @enum
@@ -39,7 +39,7 @@ typedef enum _MessageType {
  @constant eMessageDeliveryState_Delivered 已发送, 成功
  @constant eMessageDeliveryState_Failure 已发送, 失败
  */
-typedef enum _MessageDeliveryState {
+typedef enum {
     eMessageDeliveryState_Pending = 0, 
     eMessageDeliveryState_Delivering, 
     eMessageDeliveryState_Delivered, 

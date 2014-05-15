@@ -1589,7 +1589,7 @@
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             emailer.modalPresentationStyle = UIModalPresentationPageSheet;
         }
-        [self presentModalViewController:emailer animated:YES];
+        [self presentViewController:emailer animated:YES completion:nil];
         [self hideProgressHUD:NO];
     }
 }

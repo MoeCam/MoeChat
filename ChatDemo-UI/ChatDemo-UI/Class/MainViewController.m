@@ -9,10 +9,11 @@
 #import "MainViewController.h"
 #import "ChatListViewController.h"
 #import "ContactsViewController.h"
-
 #import "UIViewController+HUD.h"
 #import "MBProgressHUD+Add.h"
+#import "DataManager.h"
 #import "AppDelegate.h"
+#import "EaseMob.h"
 
 @interface MainViewController ()<UITabBarDelegate>
 {
@@ -78,7 +79,11 @@
     else{
         self.title = @"好友列表";
         
-        UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithTitle:@"添加好友" style:UIBarButtonItemStyleBordered target:_contactsVC action:@selector(addFriendAction)];
+        UIBarButtonItem *addItem = [[UIBarButtonItem alloc]
+                                    initWithTitle:@"添加好友"
+                                    style:UIBarButtonItemStyleBordered
+                                    target:_contactsVC
+                                    action:@selector(addFriendAction)];
         [self.navigationItem setRightBarButtonItem:addItem];
     }
 }

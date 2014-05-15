@@ -1,11 +1,9 @@
-//
-//  IDeviceManager.h
-//  EaseMobClientSDK
-//
-//  Created by Ji Fang on 5/3/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
-
+/*!
+ @header IDeviceManager.h
+ @abstract DeviceManager各类协议的合集
+ @author EaseMob Inc.
+ @version 1.00 2014/01/01 Creation (1.00)
+ */
 #import <Foundation/Foundation.h>
 #import "internal/IDeviceManagerProximitySensor.h"
 #import "internal/IDeviceManagerLocation.h"
@@ -13,6 +11,11 @@
 #import "internal/IDeviceManagerCamera.h"
 #import "internal/IDeviceManagerAudio.h"
 
+/*!
+ @protocol
+ @abstract DeviceManager各类协议的合集
+ @discussion
+ */
 @protocol IDeviceManager <IDeviceManagerAudio,
                         IDeviceManagerCamera,
                         IDeviceManagerDevice,

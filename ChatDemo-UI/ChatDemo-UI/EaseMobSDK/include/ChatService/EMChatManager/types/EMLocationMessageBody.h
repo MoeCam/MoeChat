@@ -1,7 +1,7 @@
 /*!
  @header EMLocationMessageBody.h
  @abstract 聊天的位置消息体对象类型
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
@@ -34,18 +34,12 @@
 @property (nonatomic, readonly) NSString *address;
 
 /*!
- @property
- @abstract 位置消息体内部的位置对象
- */
-@property (nonatomic, readonly) EMChatLocation *location;
-
-/*!
  @method
  @abstract 以位置对象创建位置消息体实例
  @discussion
- @param message 位置对象
+ @param aChatLocation 位置对象
  @result 位置消息体
  */
-- (id)initWithMessage:(EMChatLocation *)message;
+- (id)initWithChatObject:(EMChatLocation *)aChatLocation;
 
 @end

@@ -17,6 +17,7 @@
 
 @interface ChatListViewController ()
 <
+IChatManagerDelegate,
 SRRefreshDelegate,
 UISearchBarDelegate,
 UISearchDisplayDelegate,

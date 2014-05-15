@@ -1,7 +1,7 @@
 /*!
  @header EMChatManagerDelegate.h
  @abstract 关于ChatManager的异步回调内部协议
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
@@ -60,21 +60,12 @@
 
 /*!
  @method
- @abstract 收到回执请求时的回调方法
- @discussion 接收方收到发送方的回执请求消息, 可以选择发送回执响应给发送方. 如发送方未收到接收方返回的回执响应, 则用户下次登录后, 仍会收到该消息
- @param req 收到的回执请求对象
- @result
- */
-- (void)didReceiveReceiptReq:(EMReceiptReq *)req;
-
-/*!
- @method
- @abstract 收到回执响应时的回调方法
+ @abstract 收到"已读回执"时的回调方法
  @discussion 发送方收到接收方发送的一个收到消息的回执, 意味着接收方已阅读了该消息
- @param resp 收到的回执响应对象
+ @param resp 收到的"已读回执"对象, 包括 from, to, chatId等
  @result
  */
-- (void)didReceiveReceiptResp:(EMReceiptResp *)resp;
+- (void)didReceiveHasReadResponse:(EMReceiptResp *)resp;
 
 /*!
  @method
@@ -199,6 +190,15 @@
 - (void)didUpdateBuddyList:(NSArray *)buddyList
             changedBuddies:(NSArray *)changedBuddies
                      isAdd:(BOOL)isAdd;
+
+/*!
+ @method
+ @abstract 好友分组信息发生变化时的通知
+ @discussion
+ @param buddyGroupList 好友分组信息
+ @since 
+ */
+- (void)didUpdateBuddyGroupList:(NSArray *)buddyGroupList;
 
 /*!
  @method

@@ -12,6 +12,8 @@
 #import "TextFieldViewController.h"
 #import "ApplyViewController.h"
 #import "MessageViewController.h"
+#import "EaseMob.h"
+#import "DataManager.h"
 
 @interface ContactsViewController ()<UITableViewDataSource,UITableViewDelegate, IChatManagerDelegate>
 

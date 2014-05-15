@@ -1,7 +1,7 @@
 /*!
  @header EMChatManagerLoginDelegate.h
  @abstract 关于ChatManager中登陆相关功能的异步回调
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 

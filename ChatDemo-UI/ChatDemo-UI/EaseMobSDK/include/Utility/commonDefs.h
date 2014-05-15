@@ -1,11 +1,9 @@
-//
-//  commonDefs.h
-//  EaseMobClientSDK
-//
-//  Created by Ji Fang on 1/30/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
-
+/*!
+ @header commonDefs.h
+ @abstract 用户在线状态及聊天状态定义
+ @author Ji Fang
+ @version 1.0
+ */
 #ifndef EaseMobClientSDK_commonDefs_h
 #define EaseMobClientSDK_commonDefs_h
 
@@ -16,14 +14,14 @@
 #define kSDKUsername   @"username"
 
 #pragma mark - buddy chatting state
-typedef enum _EMChatState {
+typedef enum {
     eChatState_Stopped = 0,
     eChatState_Composing,
     eChatState_Paused,
 }EMChatState;
 
 #pragma mark - buddy online state
-typedef enum _EMOnlineStatus {
+typedef enum {
     eOnlineStatus_OffLine = 0,
     eOnlineStatus_Online,
     eOnlineStatus_Away,

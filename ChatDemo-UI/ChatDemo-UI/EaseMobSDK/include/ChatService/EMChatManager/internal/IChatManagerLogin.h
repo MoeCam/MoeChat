@@ -1,7 +1,7 @@
 /*!
  @header IChatManagerLogin.h
  @abstract 为ChatManager提供基础登陆操作
- @author Ji Fang
+ @author EaseMob Inc.
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
@@ -24,7 +24,7 @@
  @discussion
  @param username 用户名
  @param password 密码
- @param aError   错误信息
+ @param pError   错误信息
  @result 是否注册成功
  */
 - (BOOL)registerNewAccount:(NSString *)username password:(NSString *)password error:(EMError **)pError;
@@ -63,12 +63,12 @@
  @discussion 如果登陆失败, 返回nil
  @param username 用户名
  @param password 密码
- @param aError   错误信息
+ @param pError   错误信息
  @result 登录后返回的用户信息
  */
 - (NSDictionary *)loginWithUsername:(NSString *)username
                           password:(NSString *)password
-                             error:(EMError **)aError;
+                             error:(EMError **)pError;
 
 /*!
  @method

@@ -155,7 +155,7 @@
         _refleshView.layer.transform = CATransform3DIdentity;
         [UIView transitionWithView:_scrollView
                           duration:0.3f
-                           options:UIViewAnimationCurveEaseOut
+                           options:UIViewAnimationOptionBeginFromCurrentState
                         animations:^{
                             UIEdgeInsets inset = _scrollView.contentInset;
                             inset.top = _upInset;
@@ -261,7 +261,7 @@
         if (self.loading) {
             [UIView transitionWithView:_scrollView
                               duration:0.2
-                               options:UIViewAnimationCurveEaseOut
+                               options:UIViewAnimationOptionBeginFromCurrentState
                             animations:^{
                                 UIEdgeInsets inset = _scrollView.contentInset;
                                 inset.top = _upInset + _dragingHeight;
@@ -296,7 +296,7 @@
     _slime.toPoint = _slime.startPoint;
     [UIView transitionWithView:_activityIndicatorView
                       duration:0.3f
-                       options:UIViewAnimationCurveEaseIn
+                       options:UIViewAnimationOptionAllowUserInteraction
                     animations:^
      {
          _activityIndicatorView.layer.transform = CATransform3DRotate(
