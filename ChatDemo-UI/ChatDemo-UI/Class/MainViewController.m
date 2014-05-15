@@ -53,6 +53,7 @@
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"好友列表" image:[UIImage imageNamed:@"Contacts"] tag:1];
     _contactsVC.tabBarItem.tag = 1;
     self.viewControllers = @[_chatListVC,_contactsVC];
+    [[DataManager defaultManager] setContactsController:_contactsVC];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -92,7 +93,7 @@
             [alertView show];
         }
         else{
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
         }
     } onQueue:nil];
 }

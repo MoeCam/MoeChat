@@ -17,7 +17,6 @@ static DataManager *defaultManager = nil;
     self = [super init];
     if (self) {
         _applyArray = [NSMutableArray array];
-        _buddyArray = [NSMutableArray array];
         
 #warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
         [[EaseMob sharedInstance].chatManager removeDelegate:self];
@@ -65,8 +64,6 @@ static DataManager *defaultManager = nil;
             changedBuddies:(NSArray *)changedBuddies
                      isAdd:(BOOL)isAdd
 {
-    [_buddyArray removeAllObjects];
-    [_buddyArray addObjectsFromArray:buddyList];
     if (_contactsController) {
         [_contactsController reloadContacts];
     }

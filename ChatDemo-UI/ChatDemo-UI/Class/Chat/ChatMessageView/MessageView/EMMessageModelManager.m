@@ -70,7 +70,7 @@
         case eMessageBodyType_Voice:
         {
             model.time = ((EMVoiceMessageBody *)messageBody).duration;
-//            model.chatVoice = ((EMVoiceMessageBody *)messageBody).voice;
+            model.chatVoice = (EMChatVoice *)((EMVoiceMessageBody *)messageBody).chatObject;
             
             // 本地音频路径
             model.localPath = ((EMVoiceMessageBody *)messageBody).localPath;

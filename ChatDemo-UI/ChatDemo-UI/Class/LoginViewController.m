@@ -197,8 +197,8 @@
     [self showHudInView:self.view hint:@"登录中..."];
     [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:_nameField.text password:_passwordField.text completion:^(NSDictionary *loginInfo, EMError *error) {
          [self hideHud];
-         if (!error) {
-             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:nil];
+         if (error != nil && loginInfo != nil && [loginInfo count] > 0) {
+             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
          }
          else {
              [self showHint:@"登录失败"];

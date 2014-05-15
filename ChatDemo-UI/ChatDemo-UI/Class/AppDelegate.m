@@ -15,9 +15,6 @@
 
 @interface AppDelegate ()
 
-@property (strong, nonatomic) MainViewController *mainVC;
-@property (strong, nonatomic) LoginViewController *loginController;
-
 @end
 
 @implementation AppDelegate
@@ -35,10 +32,10 @@
         NSLog(@"manager start failed!");
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange) name:KNOTIFICATION_LOGINCHANGE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
     
     [DataManager defaultManager];
-    [self loginStateChange];
+    [self loginStateChange:nil];
     
     [self.window makeKeyAndVisible];
     return YES;
@@ -71,17 +68,21 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-- (void)loginStateChange
+- (void)loginStateChange:(NSNotification *)notification
 {
+//    BOOL isLogin = NO;
+//    if (notification && [notification.object boolValue]) {
+//        isLogin = YES;
+//    }
+    BOOL isLogin = [[[EaseMob sharedInstance] chatManager] isLoggedIn];
     UINavigationController *nacontroller = nil;
-    NSDictionary *info = [[EaseMob sharedInstance].chatManager loginInfo];
-    if (info && [info count] > 0) {
-        self.mainVC = [[MainViewController alloc] init];
-        nacontroller = [[UINavigationController alloc] initWithRootViewController:self.mainVC];
+    if (isLogin) {
+        MainViewController *mainVC = [[MainViewController alloc] init];
+        nacontroller = [[UINavigationController alloc] initWithRootViewController:mainVC];
     }
     else{
-        self.loginController = [[LoginViewController alloc] init];
-        nacontroller = [[UINavigationController alloc] initWithRootViewController:self.loginController];
+        LoginViewController *loginController = [[LoginViewController alloc] init];
+        nacontroller = [[UINavigationController alloc] initWithRootViewController:loginController];
     }
     
     self.window.rootViewController = nacontroller;

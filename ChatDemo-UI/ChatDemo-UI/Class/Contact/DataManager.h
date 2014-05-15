@@ -13,7 +13,6 @@
 @interface DataManager : NSObject<IChatManagerDelegate>
 
 @property (strong, nonatomic, readonly) NSMutableArray *applyArray;
-@property (strong, nonatomic, readonly) NSMutableArray *buddyArray;
 
 @property (strong, nonatomic) ContactsViewController *contactsController;
 
