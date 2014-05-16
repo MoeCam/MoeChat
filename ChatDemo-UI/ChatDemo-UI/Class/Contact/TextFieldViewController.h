@@ -12,9 +12,9 @@
 
 @property (strong, nonatomic) UITextField *textField;
 @property (copy) void (^saveFinishCompletion)(NSString *string);
-@property (copy) void (^viewDidLoadCompletion)(TextFieldViewController *);
+@property (copy) void (^viewDidLoadCompletion)(TextFieldViewController *viewController);
 
-- (void)setViewDidLoadCompletion:(void (^)(TextFieldViewController *))viewDidLoadCompletion;
+- (void)setViewDidLoadCompletion:(void (^)(TextFieldViewController *viewController))viewDidLoadCompletion;
 - (void)setSaveFinishCompletion:(void (^)(NSString *string))saveFinishCompletion;
 
 @end
