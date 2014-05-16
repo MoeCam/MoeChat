@@ -42,6 +42,8 @@
 
 // chat sessions
 #import "EMConversation.h"
+#import "EMReceiptReq.h"
+#import "EMReceiptResp.h"
 
 // chat progress
 #import "IEMChatProgressDelegate.h"
