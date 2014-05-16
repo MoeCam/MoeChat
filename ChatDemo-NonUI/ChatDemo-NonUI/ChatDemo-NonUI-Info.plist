@@ -23,9 +23,9 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>EASEMOB_APPKEY</key>
-	<string>easemob-demo</string>
-	<key>EASEMOB_ORGNAME</key>
 	<string>chatdemo</string>
+	<key>EASEMOB_ORGNAME</key>
+	<string>easemob-demo</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
