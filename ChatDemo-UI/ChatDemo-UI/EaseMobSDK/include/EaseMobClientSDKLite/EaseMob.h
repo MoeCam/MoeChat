@@ -6,8 +6,9 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIApplication.h>
+
 #import "EaseMobHeaders.h"
-#import <UIKit/UIKit.h>
 
 /*!
  @class
