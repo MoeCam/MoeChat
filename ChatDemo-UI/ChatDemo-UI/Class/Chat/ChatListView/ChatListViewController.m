@@ -183,9 +183,21 @@ canEditRowAtIndexPath:(NSIndexPath *)indexPath{
 }
 
 #pragma mark - actions
--(void)reloadConversationList{
+-(void)reloadConversationList
+{
     NSArray *conversationList = [[EaseMob sharedInstance].chatManager conversations];
-    NSArray*tempAry = [conversationList sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation* obj2){
+    NSMutableArray *tmpArray = [NSMutableArray array];
+    for (EMConversation *con in conversationList) {
+        [con loadNumbersOfMessages:1 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
+        if (!con.messages || [con.messages count] == 0) {
+            [[EaseMob sharedInstance].chatManager removeConversationByChatter:con.chatter deleteMessages:YES];
+        }
+        else{
+            [tmpArray addObject:con];
+        }
+    }
+    
+    NSArray*sortArray = [tmpArray sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation* obj2){
         EMMessage *message1 = obj1.messages.lastObject;
         EMMessage *message2 = obj2.messages.lastObject;
         if(message1.timestamp > message2.timestamp) {
@@ -196,9 +208,9 @@ canEditRowAtIndexPath:(NSIndexPath *)indexPath{
     }];
     if (_conversations) {
         [_conversations removeAllObjects];
-        [_conversations addObjectsFromArray:tempAry];
+        [_conversations addObjectsFromArray:sortArray];
     }else {
-        _conversations = [[NSMutableArray alloc] initWithArray:tempAry];
+        _conversations = [[NSMutableArray alloc] initWithArray:sortArray];
     }
     [self reloadTableView];
 }
