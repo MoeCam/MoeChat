@@ -14,7 +14,6 @@
 
 #import "EaseMob.h"
 
-
 @interface ChatListViewController ()
 <
 IChatManagerDelegate,
@@ -22,20 +21,25 @@ SRRefreshDelegate,
 UISearchBarDelegate,
 UISearchDisplayDelegate,
 UITableViewDelegate,UITableViewDataSource
->{
+>
+{
     NSMutableArray *_conversations;
     SRRefreshView   *_slimeView;
     NSString *_currentUsername;
 }
+
 @property (nonatomic, strong) UISearchDisplayController *searchDisplayController;
 @property (nonatomic, strong) UITableView *tableView;
+
 -(void)registerNotifications;
 -(void)unregisterNotifications;
+
 @end
 
 @implementation ChatListViewController
 
 @synthesize searchDisplayController;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -94,8 +98,7 @@ UITableViewDelegate,UITableViewDataSource
 #pragma mark - UITableViewDelegate & UITableViewDatasource
 -(UITableViewCell *)tableView:(UITableView *)tableView
         cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ChatListCell *cell = [tableView
-                            dequeueReusableCellWithIdentifier:@"chatListCell"];
+    ChatListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"chatListCell"];
     EMConversation *conversation = [_conversations objectAtIndex:indexPath.row];
     
     cell.name = conversation.chatter;

@@ -43,8 +43,7 @@
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    [_tableView registerClass:[UITableViewCell class]
-       forCellReuseIdentifier:@"cell"];
+    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     [self.view addSubview:_tableView];
     
     [self reloadContacts];

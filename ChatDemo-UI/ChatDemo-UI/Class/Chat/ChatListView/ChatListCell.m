@@ -45,11 +45,7 @@
         _detailLabel.textColor = [UIColor lightGrayColor];
         [self.contentView addSubview:_detailLabel];
         
-        _lineView = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                             0,
-                                                             self.contentView.frame.size.width,
-                                                             1)];
-        
+        _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
         _lineView.backgroundColor = RGBACOLOR(207, 210, 213, 0.7);
         [self.contentView addSubview:_lineView];
     }
@@ -108,8 +104,8 @@
     _lineView.frame = frame;
 }
 
-+(CGFloat)tableView:(UITableView *)tableView
-heightForRowAtIndexPath:(NSIndexPath *)indexPath{
++(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return 60;
 }
 @end

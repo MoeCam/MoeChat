@@ -79,11 +79,7 @@
     else{
         self.title = @"好友列表";
         
-        UIBarButtonItem *addItem = [[UIBarButtonItem alloc]
-                                    initWithTitle:@"添加好友"
-                                    style:UIBarButtonItemStyleBordered
-                                    target:_contactsVC
-                                    action:@selector(addFriendAction)];
+        UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithTitle:@"添加好友" style:UIBarButtonItemStyleBordered target:_contactsVC action:@selector(addFriendAction)];
         [self.navigationItem setRightBarButtonItem:addItem];
     }
 }
