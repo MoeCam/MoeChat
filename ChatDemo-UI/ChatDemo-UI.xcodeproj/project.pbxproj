@@ -2066,7 +2066,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: shaocong 周 (TBBR2GCVG6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: EaseMob Inc.";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ChatDemo-UI/ChatDemo-UI-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -2075,7 +2075,7 @@
 					"$(PROJECT_DIR)/ChatDemo-UI/3rdparty",
 				);
 				INFOPLIST_FILE = "ChatDemo-UI/ChatDemo-UI-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ChatDemo-UI/3rdparty",
@@ -2085,7 +2085,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "D37D1582-9A25-4FFD-9E98-B780CC50FCA8";
+				PROVISIONING_PROFILE = "12EABFE7-CB74-4967-BC6F-2D11935B8475";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -2097,7 +2097,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: shaocong 周 (TBBR2GCVG6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: EaseMob Inc.";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ChatDemo-UI/ChatDemo-UI-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -2106,7 +2106,7 @@
 					"$(PROJECT_DIR)/ChatDemo-UI/3rdparty",
 				);
 				INFOPLIST_FILE = "ChatDemo-UI/ChatDemo-UI-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ChatDemo-UI/3rdparty",
@@ -2115,7 +2115,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "D37D1582-9A25-4FFD-9E98-B780CC50FCA8";
+				PROVISIONING_PROFILE = "7D2077B3-9C8F-4B4A-8ADA-3FCF1BA5716B";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
