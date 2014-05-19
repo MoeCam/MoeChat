@@ -28,16 +28,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "90CDBFA9190112F200206567"
-               BuildableName = "ChatDemo-UITests.xctest"
-               BlueprintName = "ChatDemo-UITests"
-               ReferencedContainer = "container:ChatDemo-UI.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

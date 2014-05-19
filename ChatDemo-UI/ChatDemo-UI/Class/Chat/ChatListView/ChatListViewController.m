@@ -19,8 +19,7 @@
 IChatManagerDelegate,
 SRRefreshDelegate,
 UISearchBarDelegate,
-UISearchDisplayDelegate,
-UITableViewDelegate,UITableViewDataSource
+UISearchDisplayDelegate
 >
 {
     NSMutableArray *_conversations;
@@ -29,7 +28,6 @@ UITableViewDelegate,UITableViewDataSource
 }
 
 @property (nonatomic, strong) UISearchDisplayController *searchDisplayController;
-@property (nonatomic, strong) UITableView *tableView;
 
 -(void)registerNotifications;
 -(void)unregisterNotifications;
@@ -40,9 +38,9 @@ UITableViewDelegate,UITableViewDataSource
 
 @synthesize searchDisplayController;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithStyle:style];
     if (self) {
     }
     return self;
@@ -51,44 +49,33 @@ UITableViewDelegate,UITableViewDataSource
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
+    
     [self registerNotifications];
-    [self.view addSubview:self.tableView];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.tableView registerClass:[ChatListCell class] forCellReuseIdentifier:@"chatListCell"];
+    
+    _slimeView = [[SRRefreshView alloc] initWithHeight:30];
+    _slimeView.delegate = self;
+    _slimeView.upInset = 0;
+    _slimeView.slimeMissWhenGoingBack = YES;
+    _slimeView.slime.bodyColor = [UIColor grayColor];
+    _slimeView.slime.skinColor = [UIColor grayColor];
+    _slimeView.slime.lineWith = 1;
+    _slimeView.slime.shadowBlur = 4;
+    _slimeView.slime.shadowColor = [UIColor grayColor];
+    [self.tableView addSubview:_slimeView];
+    
     [self reloadConversationList];
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
+    
     if (_conversations && _conversations.count > 0) {
         [self reloadConversationList];
     }
 }
-
--(UITableView *)tableView{
-    if (!_tableView) {
-        _slimeView = [[SRRefreshView alloc] init];
-        _slimeView.delegate = self;
-        _slimeView.upInset = 0;
-        _slimeView.slimeMissWhenGoingBack = YES;
-        _slimeView.slime.bodyColor = [UIColor grayColor];
-        _slimeView.slime.skinColor = [UIColor grayColor];
-        _slimeView.slime.lineWith = 1;
-        _slimeView.slime.shadowBlur = 4;
-        _slimeView.slime.shadowColor = [UIColor grayColor];
-        
-        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
-        _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        _tableView.delegate = self;
-        _tableView.dataSource = self;
-        [_tableView addSubview:_slimeView];
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        [_tableView registerClass:[ChatListCell class] forCellReuseIdentifier:@"chatListCell"];
-    }
-    return _tableView;
-}
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -96,8 +83,8 @@ UITableViewDelegate,UITableViewDataSource
 }
 
 #pragma mark - UITableViewDelegate & UITableViewDatasource
--(UITableViewCell *)tableView:(UITableView *)tableView
-        cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     ChatListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"chatListCell"];
     EMConversation *conversation = [_conversations objectAtIndex:indexPath.row];
     
@@ -109,26 +96,23 @@ UITableViewDelegate,UITableViewDataSource
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView
-didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     EMConversation *item = [_conversations objectAtIndex:indexPath.row];
     [self pushToChatVC:item];
 }
 
--(NSInteger)tableView:(UITableView *)tableView
-numberOfRowsInSection:(NSInteger)section{
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _conversations.count;
 }
 
--(CGFloat)tableView:(UITableView *)tableView
-heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [ChatListCell tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
--(BOOL)tableView:(UITableView *)tableView
-canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
     return YES;
 }
 

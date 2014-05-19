@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 
 #import "UIViewController+HUD.h"
+#import "EMError.h"
 
 @interface LoginViewController ()
 {
