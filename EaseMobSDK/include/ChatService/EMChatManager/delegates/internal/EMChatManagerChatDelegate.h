@@ -16,7 +16,7 @@
 
 /*!
  @protocol
- @abstract 本协议包括：发送消息时的回调、接收到消息时的回调等其它操作
+ @brief 本协议包括：发送消息时的回调、接收到消息时的回调等其它操作
  @discussion
  */
 @protocol EMChatManagerChatDelegate <EMChatManagerDelegateBase>
@@ -25,7 +25,7 @@
 
 /*!
  @method
- @abstract 将要发送消息时的回调
+ @brief 将要发送消息时的回调
  @discussion
  @param message      将要发送的消息对象
  @param error        错误信息
@@ -36,7 +36,7 @@
 
 /*!
  @method
- @abstract 发送消息后的回调
+ @brief 发送消息后的回调
  @discussion
  @param message      已发送的消息对象
  @param error        错误信息
@@ -47,7 +47,7 @@
 
 /*!
  @method
- @abstract 收到消息时的回调
+ @brief 收到消息时的回调
  @discussion 当EMConversation对象的enableReceiveMessage属性为YES时, 会触发此回调
  @param message      消息对象
  @result
@@ -56,7 +56,7 @@
 
 /*!
  @method
- @abstract 收到"已读回执"时的回调方法
+ @brief 收到"已读回执"时的回调方法
  @discussion 发送方收到接收方发送的一个收到消息的回执, 意味着接收方已阅读了该消息
  @param resp 收到的"已读回执"对象, 包括 from, to, chatId等
  @result
@@ -65,7 +65,7 @@
 
 /*!
  @method
- @abstract 会话列表信息更新时的回调
+ @brief 会话列表信息更新时的回调
  @discussion 1. 当会话列表有更改时(新添加,删除), 2. 登陆成功时, 以上两种情况都会触发此回调
  @param conversationList 会话列表
  @result
@@ -74,7 +74,7 @@
 
 /*!
  @method
- @abstract 未读消息数改变时的回调
+ @brief 未读消息数改变时的回调
  @discussion 当EMConversation对象的enableUnreadMessagesCountEvent为YES时,会触发此回调
  @result
  */

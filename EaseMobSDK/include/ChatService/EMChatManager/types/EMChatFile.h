@@ -10,31 +10,31 @@
 
 /*!
  @class 
- @abstract 聊天的文件对象类型
+ @brief 聊天的文件对象类型
  */
 @interface EMChatFile : EMChatObject 
 
 /*!
  @property
- @abstract 文件对象的显示名
+ @brief 文件对象的显示名
  */
 @property (nonatomic, copy, readonly) NSString *displayName;
 
 /*!
  @property
- @abstract 文件对象本地磁盘位置的全路径
+ @brief 文件对象本地磁盘位置的全路径
  */
 @property (nonatomic, copy) NSString *localPath;
 
 /*!
  @property
- @abstract 文件对象所对应的文件的大小, 以字节为单位
+ @brief 文件对象所对应的文件的大小, 以字节为单位
  */
 @property (nonatomic) long long fileLength;
 
 /*!
  @method
- @abstract 以NSData构造文件对象
+ @brief 以NSData构造文件对象
  @discussion 
  @param aData 文件内容
  @param aDisplayName 文件对象的显示名
@@ -44,7 +44,7 @@
 
 /*!
  @method
- @abstract 以文件路径构造文件对象
+ @brief 以文件路径构造文件对象
  @discussion 
  @param filePath 磁盘文件全路径
  @param aDisplayName 文件对象的显示名

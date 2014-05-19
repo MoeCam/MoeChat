@@ -10,13 +10,13 @@
 
 /*!
  @class
- @abstract 聊天的语音对象类型
+ @brief 聊天的语音对象类型
  */
 @interface EMChatVoice : EMChatFile 
 
 /*!
  @property
- @abstract 语音的时长, 单位是秒
+ @brief 语音的时长, 单位是秒
  */
 @property (nonatomic) NSInteger duration;
 

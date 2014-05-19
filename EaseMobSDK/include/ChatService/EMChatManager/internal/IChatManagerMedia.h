@@ -14,7 +14,7 @@
 
 /*!
  @protocol
- @abstract 本协议主要处理：录音、播放录音、停止录音、震动等操作
+ @brief 本协议主要处理：录音、播放录音、停止录音、震动等操作
  @discussion 所有不带Block回调的异步方法, 需要监听回调时, 需要先将要接受回调的对象注册到delegate中, 示例代码如下:
  [[[EaseMob sharedInstance] chatManager] addDelegate:self delegateQueue:dispatch_get_main_queue()]
  */
@@ -24,13 +24,13 @@
 
 /*!
  @property
- @abstract 是否正在播放音频
+ @brief 是否正在播放音频
  */
 @property (nonatomic, readonly) BOOL isPlayingAudio;
 
 /*!
  @method
- @abstract 收到新消息时, 播放声音提示
+ @brief 收到新消息时, 播放声音提示
  @discussion
  @result
  */
@@ -38,7 +38,7 @@
 
 /*!
  @method
- @abstract 异步方法, 收到新消息时, 播放声音提示
+ @brief 异步方法, 收到新消息时, 播放声音提示
  @discussion 播放完成后, EMChatManagerDelegateMedia中的didPlaySystemSound:回调会被触发
  @result
  */
@@ -46,7 +46,7 @@
 
 /*!
  @method
- @abstract 异步方法, 收到新消息时, 播放声音提示
+ @brief 异步方法, 收到新消息时, 播放声音提示
  @discussion
  @param completion 回调
  @param aQueue     回调时的线程
@@ -57,7 +57,7 @@
 
 /*!
  @method
- @abstract 收到新消息时, 播放震动提示
+ @brief 收到新消息时, 播放震动提示
  @discussion
  @result
  */
@@ -65,7 +65,7 @@
 
 /*!
  @method
- @abstract 异步方法, 收到新消息时, 播放震动提示
+ @brief 异步方法, 收到新消息时, 播放震动提示
  @discussion 播放完成后, EMChatManagerDelegateMedia中的didPlaySystemSound:回调会被触发
  @result
  */
@@ -73,7 +73,7 @@
 
 /*!
  @method
- @abstract 异步方法, 收到新消息时, 播放震动提示
+ @brief 异步方法, 收到新消息时, 播放震动提示
  @discussion
  @param completion 回调
  @param aQueue     回调时的线程
@@ -84,7 +84,7 @@
 
 /*!
  @method
- @abstract 判断是否正在播放该聊天声音
+ @brief 判断是否正在播放该聊天声音
  @discussion
  @param aChatVoice 聊天记录声音对象
  @result 是否正在播放该声音对象
@@ -93,7 +93,7 @@
 
 /*!
  @method
- @abstract 判断是否正在播放音频
+ @brief 判断是否正在播放音频
  @discussion
  @result 是否正在播放声音对象
  */
@@ -101,7 +101,7 @@
 
 /*!
  @method
- @abstract 异步方法, 播放一个聊天记录的声音对象
+ @brief 异步方法, 播放一个聊天记录的声音对象
  @discussion 播放完成后, EMChatManagerDelegateMedia中的didPlayAudio:error:回调会被触发
  @param aChatVoice 需要播放的聊天音频对象
  @result
@@ -110,7 +110,7 @@
 
 /*!
  @method
- @abstract 异步方法, 播放一个聊天记录的声音对象
+ @brief 异步方法, 播放一个聊天记录的声音对象
  @discussion
  @param aChatVoice 需要播放的聊天音频对象
  @param completion 回调
@@ -123,7 +123,7 @@
 
 /*!
  @method
- @abstract 停止当前正在播放的音频
+ @brief 停止当前正在播放的音频
  @discussion
  @result 是否成功停止了语音的播放
  */
@@ -131,7 +131,7 @@
 
 /*!
  @method
- @abstract 开始录制音频
+ @brief 开始录制音频
  @discussion
  @param pError 错误信息
  @result
@@ -140,7 +140,7 @@
 
 /*!
  @method
- @abstract 异步方法, 停止录制音频
+ @brief 异步方法, 停止录制音频
  @discussion 录制完成后, EMChatManagerDelegateMedia中的didRecordAudio:error:回调会被触发
  @result
  */
@@ -148,7 +148,7 @@
 
 /*!
  @method
- @abstract 异步方法, 停止录制音频
+ @brief 异步方法, 停止录制音频
  @discussion
  @param completion 回调
  @param aQueue     回调时的线程
@@ -160,7 +160,7 @@
 
 /*!
  @method
- @abstract 异步方法, 取消录制音频
+ @brief 异步方法, 取消录制音频
  @discussion 取消录制后, EMChatManagerDelegateMedia中的didCancelRecordAudio:error:回调会被触发
  @result
  */
@@ -168,7 +168,7 @@
 
 /*!
  @method
- @abstract 异步方法, 取消录制音频
+ @brief 异步方法, 取消录制音频
  @discussion
  @param completion 回调
  @param aQueue     回调时的线程
@@ -180,7 +180,7 @@
 
 /*!
  @method
- @abstract 获取录制音频时的音量
+ @brief 获取录制音频时的音量
  @discussion 停止录音后, 再去调用该方法, 会返回最后一次录制音频的音量
  @result 音量, 值域为0到1.0的浮点数
  */

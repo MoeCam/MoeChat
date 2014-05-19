@@ -9,7 +9,7 @@
 
 /*!
  @protocol
- @abstract 本协议主要用于提供对摄像头的判断, 操作等功能
+ @brief 本协议主要用于提供对摄像头的判断, 操作等功能
  @discussion
  */
 @protocol IDeviceManagerCamera <IDeviceManagerBase>
@@ -20,7 +20,7 @@
 
 /*!
  @method
- @abstract 检查摄像头是否可用
+ @brief 检查摄像头是否可用
  @return 摄像头是否可用
  */
 - (BOOL)checkCameraAvailability;

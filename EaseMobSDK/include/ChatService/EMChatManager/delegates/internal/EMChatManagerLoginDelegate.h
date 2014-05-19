@@ -11,7 +11,7 @@
 
 /*!
  @protocol
- @abstract 本协议包括：登录成功的回调、登录失败的回调、修改密码的回调、账号在其它设置上登录时的回调操作
+ @brief 本协议包括：登录成功的回调、登录失败的回调、修改密码的回调、账号在其它设置上登录时的回调操作
  @discussion
  */
 @protocol EMChatManagerLoginDelegate <NSObject>
@@ -20,7 +20,7 @@
 
 /*!
  @method
- @abstract 用户登录后的回调
+ @brief 用户登录后的回调
  @discussion
  @param loginInfo 登录的用户信息
  @param error        错误信息
@@ -30,7 +30,7 @@
 
 /*!
  @method
- @abstract 用户注销后的回调
+ @brief 用户注销后的回调
  @discussion
  @param error        错误信息
  @result
@@ -39,7 +39,7 @@
 
 /*!
  @method
- @abstract 当前登录账号在其它设备登录时的通知回调
+ @brief 当前登录账号在其它设备登录时的通知回调
  @discussion
  @result
  */
@@ -47,7 +47,7 @@
 
 /*!
  @method
- @abstract 当前登陆用户掉线重连后发生的通知回调
+ @brief 当前登陆用户掉线重连后发生的通知回调
  @discussion
  @result
  */
@@ -55,7 +55,7 @@
 
 /*!
  @method
- @abstract 成功注册新用户后的回调
+ @brief 成功注册新用户后的回调
  @discussion
  @result
  */

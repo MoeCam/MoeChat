@@ -9,26 +9,26 @@
 
 /*!
  @protocol
- @abstract 本协议包括：添加好友,删除好友,接受好友请求等方法
+ @brief 本协议包括：添加好友,删除好友,接受好友请求等方法
  @discussion
  */
 @protocol IChatManagerBuddy <IChatManagerBase>
 
 /*!
  @property
- @abstract 获取好友列表(由EMBuddy对象组成)
+ @brief 获取好友列表(由EMBuddy对象组成)
  */
 @property (nonatomic, strong, readonly) NSArray *buddyList;
 
 /*!
  @property
- @abstract 获取好友分组信息(由EMBuddyGroup对象组成)
+ @brief 获取好友分组信息(由EMBuddyGroup对象组成)
  */
 @property (nonatomic, strong, readonly) NSArray *groupList;
 
 /*!
  @method
- @abstract 申请添加某个用户为好友
+ @brief 申请添加某个用户为好友
  @discussion
  @param username 需要添加为好友的username
  @param nickname 添加好友后的昵称
@@ -43,7 +43,7 @@
 
 /*!
  @method
- @abstract 申请添加某个用户为好友,同时将该好友添加到分组中,好友与分组可以多对多
+ @brief 申请添加某个用户为好友,同时将该好友添加到分组中,好友与分组可以多对多
  @discussion
  @param username 需要添加为好友的username
  @param nickname 添加好友后的昵称
@@ -60,7 +60,7 @@
 
 /*!
  @method
- @abstract 将某个用户从好友列表中移除
+ @brief 将某个用户从好友列表中移除
  @discussion
  @param username 需要移除的好友username
  @param removeFromRemote 是否将自己从对方好友列表中移除
@@ -73,7 +73,7 @@
 
 /*!
  @method
- @abstract 接受某个好友发送的好友请求
+ @brief 接受某个好友发送的好友请求
  @discussion
  @param username 需要接受的好友username
  @param pError   错误信息
@@ -84,7 +84,7 @@
 
 /*!
  @method
- @abstract 拒绝某个好友发送的好友请求
+ @brief 拒绝某个好友发送的好友请求
  @discussion
  @param username 需要拒绝的好友username
  @param pError   错误信息

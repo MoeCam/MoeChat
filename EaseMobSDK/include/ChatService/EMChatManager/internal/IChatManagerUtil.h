@@ -11,7 +11,7 @@
 
 /*!
  @protocol
- @abstract 本协议主要用于为ChatManager提供一些实用工具
+ @brief 本协议主要用于为ChatManager提供一些实用工具
  @discussion
  */
 @protocol IChatManagerUtil <IChatManagerBase>

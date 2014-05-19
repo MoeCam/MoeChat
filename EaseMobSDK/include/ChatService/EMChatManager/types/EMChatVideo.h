@@ -10,19 +10,19 @@
 
 /*!
  @class 
- @abstract 聊天的视频对象类型
+ @brief 聊天的视频对象类型
  */
 @interface EMChatVideo : EMChatFile
 
 /*!
  @property
- @abstract 视频对象的时长, 秒为单位
+ @brief 视频对象的时长, 秒为单位
  */
 @property (nonatomic) NSInteger duration;
 
 /*!
  @property
- @abstract 视频对象的大小
+ @brief 视频对象的大小
  */
 @property (nonatomic) CGSize size;
 

@@ -13,7 +13,7 @@
 
 /*!
  @protocol
- @abstract 本协议包括：播放声音时的回调、录制时的回调、取消录制时的回调等
+ @brief 本协议包括：播放声音时的回调、录制时的回调、取消录制时的回调等
  @discussion
  */
 @protocol EMChatManagerMediaDelegate <EMChatManagerDelegateBase>
@@ -22,7 +22,7 @@
 
 /*!
  @method
- @abstract 播放完系统声音时的回调
+ @brief 播放完系统声音时的回调
  @discussion
  @param soundId      iOS内部声音文件ID
  @result
@@ -31,7 +31,7 @@
 
 /*!
  @method
- @abstract 播放完声音对象时的回调
+ @brief 播放完声音对象时的回调
  @discussion
  @param aChatVoice 声音对象
  @param error 错误信息
@@ -41,7 +41,7 @@
 
 /*!
  @method
- @abstract 录制声音完成后的回调
+ @brief 录制声音完成后的回调
  @discussion
  @param aChatVoice 录制完的音频对象
  @param error 错误信息
@@ -51,7 +51,7 @@
 
 /*!
  @method
- @abstract 取消录音后的回调
+ @brief 取消录音后的回调
  @discussion
  @param aChatVoice 录制完的音频对象
  @param error 错误信息

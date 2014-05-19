@@ -11,13 +11,13 @@
 
 /*!
  @class
- @abstract 聊天回执响应
+ @brief 聊天回执响应
  */
 @interface EMReceiptResp : EMReceiptBase
 
 /*!
  @method
- @abstract 由消息创建回执响应
+ @brief 由消息创建回执响应
  @discussion
  @param message 消息对象
  @result 聊天回执响应实例

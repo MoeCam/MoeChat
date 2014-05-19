@@ -13,7 +13,7 @@
 
 /*!
  @protocol
- @abstract DeviceManager各类协议的合集
+ @brief DeviceManager各类协议的合集
  @discussion
  */
 @protocol IDeviceManager <IDeviceManagerAudio,
@@ -28,7 +28,7 @@
 
 /*!
  @method
- @abstract 注册一个监听对象到监听列表中
+ @brief 注册一个监听对象到监听列表中
  @discussion 把监听对象添加到监听列表中准备接收相应的事件
  @param delegate 需要注册的监听对象
  @param aQueue 通知监听对象时的线程
@@ -38,7 +38,7 @@
 
 /*!
  @method
- @abstract 从监听列表中移除一个监听对象
+ @brief 从监听列表中移除一个监听对象
  @discussion 把监听对象从监听列表中移除,取消接收相应的事件
  @param delegate 需要移除的监听对象
  @result
@@ -49,7 +49,7 @@
 
 /*!
  @method
- @abstract 切换音频播放模式
+ @brief 切换音频播放模式
  @param mode 音频播放模式
  @discussion
  @result 是否切换成功
@@ -58,7 +58,7 @@
 
 /*!
  @method
- @abstract 在耳机和扩音器之间切换音频播放模式
+ @brief 在耳机和扩音器之间切换音频播放模式
  @param outputDevice 音频播放模式
  @discussion
  @result 是否切换成功
@@ -67,27 +67,27 @@
 
 /*!
  @property
- @abstract 当前音频的播放模式
+ @brief 当前音频的播放模式
  */
 @property (nonatomic, readonly) EMAudioPlaybackMode currentPlaybackMode;
 
 // flag to indicate if it is playing audio.
 /*!
  @property
- @abstract 当前是否正在播放音频
+ @brief 当前是否正在播放音频
  */
 @property (nonatomic, readonly) BOOL isPlayingAudio;
 
 /*!
  @method
- @abstract 收到新消息时, 播放声音
+ @brief 收到新消息时, 播放声音
  @discussion
  */
 - (void)playNewMessageSound;
 
 /*!
  @method
- @abstract 收到新消息时, 异步播放音频
+ @brief 收到新消息时, 异步播放音频
  @discussion
  @result
  */
@@ -95,7 +95,7 @@
 
 /*!
  @method
- @abstract 收到新消息时, 异步播放音频
+ @brief 收到新消息时, 异步播放音频
  @param completion 播放完成时的回调block
  @param aQueue 回调block时的线程
  @discussion
@@ -106,7 +106,7 @@
 
 /*!
  @method
- @abstract 新消息到来时, 震动设备
+ @brief 新消息到来时, 震动设备
  @discussion
  @result
  */
@@ -114,7 +114,7 @@
 
 /*!
  @method
- @abstract 新消息到来时, 震动设备(异步方法)
+ @brief 新消息到来时, 震动设备(异步方法)
  @discussion
  @result
  */
@@ -122,7 +122,7 @@
 
 /*!
  @method
- @abstract 新消息到来时, 震动设备(异步方法)
+ @brief 新消息到来时, 震动设备(异步方法)
  @param completion 震动完成后的回调block
  @param aQueue 回调block时的线程
  @discussion
@@ -133,7 +133,7 @@
 
 /*!
  @method
- @abstract 检查是否正在播放此语音文件
+ @brief 检查是否正在播放此语音文件
  @param aFilePath 语音文件的绝对路径
  @result 是否正在播放此语音文件
  */
@@ -141,7 +141,7 @@
 
 /*!
  @method
- @abstract 播放音频(异步线程)
+ @brief 播放音频(异步线程)
  @discussion 文件应为amr编码
  @param aFilePath 需要播放的音频的完整路径
  @result
@@ -150,7 +150,7 @@
 
 /*!
  @method
- @abstract 播放音频(异步线程)
+ @brief 播放音频(异步线程)
  @param aFilePath 需要播放的音频的完整路径.
  @param completion 震动完成后的回调block
  @param aQueue 回调block时的线程
@@ -162,7 +162,7 @@
 
 /*!
  @method
- @abstract 停止当前正在播放的音频
+ @brief 停止当前正在播放的音频
  @discussion
  @result 是否成功停止播放
  */
@@ -170,7 +170,7 @@
 
 /*!
  @method
- @abstract 开始录制音频
+ @brief 开始录制音频
  @param aFilePath 录制完成后的音频文件保存路径
  @param pError 录制过程中的错误信息
  @discussion
@@ -180,7 +180,7 @@
 
 /*!
  @method
- @abstract 停止录制音频(异步方法),停止后会发送 didRecordAudio 广播,同时会附带录制后保存的文件路径和录制的音频时长
+ @brief 停止录制音频(异步方法),停止后会发送 didRecordAudio 广播,同时会附带录制后保存的文件路径和录制的音频时长
  @discussion
  @result
  */
@@ -188,7 +188,7 @@
 
 /*!
  @method
- @abstract 停止录制音频(异步方法),停止后会调用completion block
+ @brief 停止录制音频(异步方法),停止后会调用completion block
  @param completion 录制音频完成后的回调block
  @param aQueue 回调block时的线程
  @discussion
@@ -201,7 +201,7 @@
 
 /*!
  @method
- @abstract 取消录制音频(异步线程), 完成后, 会发送didCancelRecordAudio广播
+ @brief 取消录制音频(异步线程), 完成后, 会发送didCancelRecordAudio广播
  @discussion
  @result
  */
@@ -209,7 +209,7 @@
 
 /*!
  @method
- @abstract 取消录制音频(异步线程)
+ @brief 取消录制音频(异步线程)
  @param completion 录制音频完成后的回调block
  @param aQueue 回调block时的线程
  @discussion
@@ -220,7 +220,7 @@
 
 /*!
  @method
- @abstract 获取最后一次录音的时长
+ @brief 获取最后一次录音的时长
  @discussion
  @result 音频时长
  */
@@ -228,7 +228,7 @@
 
 /*!
  @method
- @abstract 判断麦克风是否可用
+ @brief 判断麦克风是否可用
  @return 麦克风是否可用
  */
 - (BOOL)checkMicrophoneAvailability;
@@ -237,25 +237,25 @@
 
 /*!
  @property
- @abstract 当前设备是否支持距离传感器功能
+ @brief 当前设备是否支持距离传感器功能
  */
 @property (nonatomic, readonly) BOOL isSupportProximitySensor;
 
 /*!
  @property
- @abstract 设备是否正接近用户
+ @brief 设备是否正接近用户
  */
 @property (nonatomic, readonly) BOOL isCloseToUser;
 
 /*!
  @property
- @abstract 当前设备距离传感器功能是否处于打开状态
+ @brief 当前设备距离传感器功能是否处于打开状态
  */
 @property (nonatomic, readonly) BOOL isProximitySensorEnabled;
 
 /*!
  @method
- @abstract 打开
+ @brief 打开
  @discussion 若设备不支持, 返回NO
  @result 是否成功打开
  */
@@ -263,7 +263,7 @@
 
 /*!
  @method
- @abstract 关闭
+ @brief 关闭
  @discussion 若设备不支持, 返回NO
  @result 是否成功关闭
  */
@@ -273,19 +273,19 @@
 
 /*!
  @property
- @abstract GPS服务是否可用
+ @brief GPS服务是否可用
  */
 @property (nonatomic, readonly) BOOL isLocationServicesEnabled;
 
 /*!
  @property
- @abstract GPS返回的最后一次位置信息
+ @brief GPS返回的最后一次位置信息
  */
 @property (nonatomic, readonly) CLLocation *lastLocation;
 
 /*!
  @method
- @abstract 开始GPS定位
+ @brief 开始GPS定位
  @discussion
  @result
  */
@@ -293,7 +293,7 @@
 
 /*!
  @method
- @abstract 停止GPS定位
+ @brief 停止GPS定位
  @discussion
  @result
  */
@@ -301,7 +301,7 @@
 
 /*!
  @method
- @abstract 刷新用户的当前位置信息(重新通过GPS去获取)
+ @brief 刷新用户的当前位置信息(重新通过GPS去获取)
  @discussion
  @result
  */
@@ -309,7 +309,7 @@
 
 /*!
  @method
- @abstract 将经纬度信息解码为城市街道信息(同步方法, 如果在主线程中使用, 会阻塞主线程)暂时只支持中国的火星坐标, 你懂的
+ @brief 将经纬度信息解码为城市街道信息(同步方法, 如果在主线程中使用, 会阻塞主线程)暂时只支持中国的火星坐标, 你懂的
  @param latitude 经度
  @param longitude 纬度
  @param pError 错误信息
@@ -322,7 +322,7 @@
 
 /*!
  @method
- @abstract 将经纬度信息解码为城市街道信息(异步方法, 解码完成后, 会调用didDecodeAddress 回调方法)暂时只支持中国的火星坐标, 你懂的
+ @brief 将经纬度信息解码为城市街道信息(异步方法, 解码完成后, 会调用didDecodeAddress 回调方法)暂时只支持中国的火星坐标, 你懂的
  @param latitude 经度
  @param longitude 纬度
  @discussion
@@ -333,7 +333,7 @@
 
 /*!
  @method
- @abstract 将经纬度信息解码为城市街道信息(异步方法)暂时只支持中国的火星坐标, 你懂的
+ @brief 将经纬度信息解码为城市街道信息(异步方法)暂时只支持中国的火星坐标, 你懂的
  @param latitude 经度
  @param longitude 纬度
  @param completion 解码完成后的回调block
@@ -410,19 +410,19 @@
 
 /*!
  @property
- @abstract 当前系统的版本号(eg: 7.0)
+ @brief 当前系统的版本号(eg: 7.0)
  */
 @property (nonatomic, readonly) float deviceVersion;
 
 /*!
  @property
- @abstract 当前设备的唯一标识
+ @brief 当前设备的唯一标识
  */
 @property (nonatomic, readonly) NSString *uniqueId;
 
 /*!
  @property
- @abstract
+ @brief
  */
 @property (nonatomic, readonly) NSString *compactUniqueId;
 
@@ -430,7 +430,7 @@
 
 /*!
  @method
- @abstract 检查摄像头是否可用
+ @brief 检查摄像头是否可用
  @return 摄像头是否可用
  */
 - (BOOL)checkCameraAvailability;

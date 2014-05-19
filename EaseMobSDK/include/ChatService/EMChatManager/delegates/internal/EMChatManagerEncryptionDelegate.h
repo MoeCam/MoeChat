@@ -9,7 +9,7 @@
 
 /*!
  @protocol
- @abstract 关于ChatManager中加密解密相关功能的异步回调协议接口
+ @brief 关于ChatManager中加密解密相关功能的异步回调协议接口
  @discussion
  */
 @protocol EMChatManagerEncryptionDelegate <NSObject>

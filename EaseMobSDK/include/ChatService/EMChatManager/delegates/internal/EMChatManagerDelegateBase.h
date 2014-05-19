@@ -9,7 +9,7 @@
 
 /*!
  @protocol
- @abstract 聊天回调基类
+ @brief 聊天回调基类
  @discussion 所有聊天回调接口皆派生于此基类
  */
 @protocol EMChatManagerDelegateBase <NSObject>

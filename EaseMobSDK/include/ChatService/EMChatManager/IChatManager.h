@@ -16,7 +16,7 @@
 
 /*!
  @protocol
- @abstract 登录、聊天、保存会话、加解密、多媒体支持等协议的集合
+ @brief 登录、聊天、保存会话、加解密、多媒体支持等协议的集合
  @discussion 可以通过EaseMob类获得此接口的实例, 示例代码如下:
                 [[EaseMob sharedInstance] chatManager]
  */
@@ -33,7 +33,7 @@
 
 /*!
  @method
- @abstract 发送一条消息
+ @brief 发送一条消息
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改
  @param message  消息对象(包括from, to, body列表等信息)
  @param progress 发送多媒体信息时的progress回调对象
@@ -46,7 +46,7 @@
 
 /*!
  @method
- @abstract 异步方法, 发送一条消息
+ @brief 异步方法, 发送一条消息
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改. 在发送过程中, willSendMessage:error:和didSendMessage:error:这两个回调会被触发
  @param message  消息对象(包括from, to, body列表等信息)
  @param progress 发送多媒体信息时的progress回调对象
@@ -57,7 +57,7 @@
 
 /*!
  @method
- @abstract 异步方法, 发送一条消息
+ @brief 异步方法, 发送一条消息
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改
  @param message  消息对象(包括from, to, body列表等信息)
  @param progress 发送多媒体信息时的progress回调对象
@@ -78,7 +78,7 @@
 
 /*!
  @method
- @abstract 发送一个"已读消息"(在UI上显示了或者阅后即焚的销毁的时候发送)的回执到服务器
+ @brief 发送一个"已读消息"(在UI上显示了或者阅后即焚的销毁的时候发送)的回执到服务器
  @discussion
  @param message 从服务器收到的消息
  @result
@@ -87,7 +87,7 @@
 
 /*!
  @method
- @abstract 重新发送某一条消息
+ @brief 重新发送某一条消息
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改
  @param message  消息对象(包括from, to, body列表等信息)
  @param progress 发送多媒体信息时的progress回调对象
@@ -100,7 +100,7 @@
 
 /*!
  @method
- @abstract 异步方法, 重新发送某一条消息
+ @brief 异步方法, 重新发送某一条消息
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改. 在发送过程中, EMChatManagerChatDelegate中的willSendMessage:error:和didSendMessage:error:这两个回调会被触发
  @param message  消息对象(包括from, to, body列表等信息)
  @param progress 发送多媒体信息时的progress回调对象
@@ -111,7 +111,7 @@
 
 /*!
  @method
- @abstract 异步方法, 重新发送某一条消息
+ @brief 异步方法, 重新发送某一条消息
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改
  @param message  消息对象(包括from, to, body列表等信息)
  @param progress 发送多媒体信息时的progress回调对象
@@ -132,7 +132,7 @@
 
 /*!
  @method
- @abstract 将某一条消息转发给另一个聊天用户
+ @brief 将某一条消息转发给另一个聊天用户
  @discussion
  @param message     需要转发的消息对象
  @param username    需要转发给聊天对象的username
@@ -149,7 +149,7 @@
 
 /*!
  @method
- @abstract 异步方法, 将某一条消息转发给另一个聊天用户
+ @brief 异步方法, 将某一条消息转发给另一个聊天用户
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改. 在发送过程中, EMChatManagerChatDelegate中的willSendMessage:error:和didSendMessage:error:这两个回调会被触发
  @param message     需要转发的消息对象
  @param username    需要转发给聊天对象的username
@@ -164,7 +164,7 @@
 
 /*!
  @method
- @abstract 异步方法, 将某一条消息转发给另一个聊天用户
+ @brief 异步方法, 将某一条消息转发给另一个聊天用户
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改.
  @param message     需要转发的消息对象
  @param username    需要转发给聊天对象的username
@@ -191,7 +191,7 @@
 
 /*!
  @method
- @abstract 在聊天服务器上创建账号
+ @brief 在聊天服务器上创建账号
  @discussion
  @param username 用户名
  @param password 密码
@@ -202,7 +202,7 @@
 
 /*!
  @method
- @abstract 异步方法, 在聊天服务器上创建账号
+ @brief 异步方法, 在聊天服务器上创建账号
  @discussion 在注册过程中, EMChatManagerLoginDelegate中的didRegisterNewAccount:password:error:回调会被触发
  @param username 用户名
  @param password 密码
@@ -213,7 +213,7 @@
 
 /*!
  @method
- @abstract 异步方法, 使用用户名密码登录聊天服务器
+ @brief 异步方法, 使用用户名密码登录聊天服务器
  @discussion
  @param username 用户名
  @param password 密码
@@ -230,7 +230,7 @@
 
 /*!
  @method
- @abstract 使用用户名密码登录聊天服务器
+ @brief 使用用户名密码登录聊天服务器
  @discussion 如果登陆失败, 返回nil
  @param username 用户名
  @param password 密码
@@ -243,7 +243,7 @@
 
 /*!
  @method
- @abstract 异步方法, 使用用户名密码登录聊天服务器
+ @brief 异步方法, 使用用户名密码登录聊天服务器
  @discussion 在登陆过程中, EMChatManagerLoginDelegate中的didLoginWithInfo:error:回调会被触发
  @param username 用户名
  @param password 密码
@@ -254,7 +254,7 @@
 
 /*!
  @method
- @abstract 异步方法, 使用用户名密码登录聊天服务器
+ @brief 异步方法, 使用用户名密码登录聊天服务器
  @discussion 在登陆过程中, EMChatManagerLoginDelegate中的didLoginWithInfo:error:回调会被触发
  @param username 用户名
  @param password 密码
@@ -269,7 +269,7 @@
 
 /*!
  @method
- @abstract 注销当前登录用户
+ @brief 注销当前登录用户
  @discussion 目前注销信息不可用
  @param pError 错误信息
  @result 返回注销信息
@@ -278,7 +278,7 @@
 
 /*!
  @method
- @abstract 异步方法, 注销当前登录用户
+ @brief 异步方法, 注销当前登录用户
  @discussion 在注销过程中, EMChatManagerLoginDelegate中的didLogoffWithError:回调会被触发. 目前注销信息不可用
  @result
  */
@@ -286,7 +286,7 @@
 
 /*!
  @method
- @abstract 异步方法, 注销当前登录用户
+ @brief 异步方法, 注销当前登录用户
  @discussion 目前注销信息不可用
  @param completion 回调
  @param aQueue     回调时的线程
@@ -297,19 +297,19 @@
 
 /*!
  @property
- @abstract 当前登录的用户信息
+ @brief 当前登录的用户信息
  */
 @property (nonatomic, strong, readonly) NSDictionary *loginInfo;
 
 /*!
  @property
- @abstract 当前是否已有登录的用户
+ @brief 当前是否已有登录的用户
  */
 @property (nonatomic, readonly) BOOL isLoggedIn;
 
 /*!
  @property
- @abstract 当前登陆用户的昵称, 默认为用户名
+ @brief 当前登陆用户的昵称, 默认为用户名
  */
 @property (nonatomic, copy) NSString *nickname;
 
@@ -317,7 +317,7 @@
 
 /*!
  @method
- @abstract 从数据库中获取某个用户的会话
+ @brief 从数据库中获取某个用户的会话
  @discussion
  @param username 需要获取会话对象的用户名
  @result 会话对象
@@ -326,7 +326,7 @@
 
 /*!
  @method
- @abstract 从数据库中根据用户名列表获取会话对象列表
+ @brief 从数据库中根据用户名列表获取会话对象列表
  @discussion
  @param usernames 用户名列表
  @result 会话对象列表
@@ -335,7 +335,7 @@
 
 /*!
  @method
- @abstract 获取当前登录用户的会话列表
+ @brief 获取当前登录用户的会话列表
  @discussion
  @result 会话对象列表
  */
@@ -343,7 +343,7 @@
 
 /*!
  @method
- @abstract 保存当前登录用户的会话列表到数据库
+ @brief 保存当前登录用户的会话列表到数据库
  @discussion
  @result 成功保存的会话对象列表的项数
  */
@@ -351,7 +351,7 @@
 
 /*!
  @method
- @abstract 保存单个会话对象到数据库
+ @brief 保存单个会话对象到数据库
  @discussion 对数据库中取出的数据修改后, 需要调用该方法
  @param conversation 需要保存的会话对象
  @result 保存成功或失败
@@ -360,7 +360,7 @@
 
 /*!
  @method
- @abstract 保存多个会话对象到数据库
+ @brief 保存多个会话对象到数据库
  @discussion
  @param conversations 需要保存的会话对象列表
  @result 保存成功的会话对象个数
@@ -369,7 +369,7 @@
 
 /*!
  @method
- @abstract 删除某个会话对象
+ @brief 删除某个会话对象
  @discussion
  @param chatter 这个会话对象所对应的用户名
  @param aDeleteMessages 是否删除这个会话对象所关联的聊天记录
@@ -379,7 +379,7 @@
 
 /*!
  @method
- @abstract 删除某几个会话对象
+ @brief 删除某几个会话对象
  @discussion
  @param chatters 这几个要被删除的会话对象所对应的用户名列表
  @param aDeleteMessages 是否删除这个会话对象所关联的聊天记录
@@ -389,7 +389,7 @@
 
 /*!
  @method
- @abstract 获取总的未读消息数量
+ @brief 获取总的未读消息数量
  @discussion
  @result 未读消息数量
  */
@@ -397,7 +397,7 @@
 
 /*!
  @method
- @abstract 获取单个会话对象的未读消息数量
+ @brief 获取单个会话对象的未读消息数量
  @discussion
  @param chatter 此会话对象所对应的用户名
  @result 此绘画对象的未读消息数量
@@ -406,7 +406,7 @@
 
 /*!
  @method
- @abstract 获取当前登录用户所有包含未读消息的会话对象的个数
+ @brief 获取当前登录用户所有包含未读消息的会话对象的个数
  @discussion
  @result 当前登录用户所有包含未读消息的会话对象的个数
  */
@@ -414,7 +414,7 @@
 
 /*!
  @property
- @abstract 当前登陆用户的会话对象列表
+ @brief 当前登陆用户的会话对象列表
  */
 @property (nonatomic, readonly) NSArray *conversations;
 
@@ -422,7 +422,7 @@
 
 /*!
  @property
- @abstract 加解密器
+ @brief 加解密器
  */
 @property (nonatomic, strong) id<IEMChatCryptor> chatCryptor;
 
@@ -430,13 +430,13 @@
 
 /*!
  @property
- @abstract 是否正在播放音频
+ @brief 是否正在播放音频
  */
 @property (nonatomic, readonly) BOOL isPlayingAudio;
 
 /*!
  @method
- @abstract 收到新消息时, 播放声音提示
+ @brief 收到新消息时, 播放声音提示
  @discussion
  @result
  */
@@ -444,7 +444,7 @@
 
 /*!
  @method
- @abstract 异步方法, 收到新消息时, 播放声音提示
+ @brief 异步方法, 收到新消息时, 播放声音提示
  @discussion 播放完成后, EMChatManagerDelegateMedia中的didPlaySystemSound:回调会被触发
  @result
  */
@@ -452,7 +452,7 @@
 
 /*!
  @method
- @abstract 异步方法, 收到新消息时, 播放声音提示
+ @brief 异步方法, 收到新消息时, 播放声音提示
  @discussion
  @param completion 回调
  @param aQueue     回调时的线程
@@ -463,7 +463,7 @@
 
 /*!
  @method
- @abstract 收到新消息时, 播放震动提示
+ @brief 收到新消息时, 播放震动提示
  @discussion
  @result
  */
@@ -471,7 +471,7 @@
 
 /*!
  @method
- @abstract 异步方法, 收到新消息时, 播放震动提示
+ @brief 异步方法, 收到新消息时, 播放震动提示
  @discussion 播放完成后, EMChatManagerDelegateMedia中的didPlaySystemSound:回调会被触发
  @result
  */
@@ -479,7 +479,7 @@
 
 /*!
  @method
- @abstract 异步方法, 收到新消息时, 播放震动提示
+ @brief 异步方法, 收到新消息时, 播放震动提示
  @discussion
  @param completion 回调
  @param aQueue     回调时的线程
@@ -490,7 +490,7 @@
 
 /*!
  @method
- @abstract 判断是否正在播放该聊天声音
+ @brief 判断是否正在播放该聊天声音
  @discussion
  @param aChatVoice 聊天记录声音对象
  @result 是否正在播放该声音对象
@@ -499,7 +499,7 @@
 
 /*!
  @method
- @abstract 判断是否正在播放音频
+ @brief 判断是否正在播放音频
  @discussion
  @result 是否正在播放声音对象
  */
@@ -507,7 +507,7 @@
 
 /*!
  @method
- @abstract 异步方法, 播放一个聊天记录的声音对象
+ @brief 异步方法, 播放一个聊天记录的声音对象
  @discussion 播放完成后, EMChatManagerDelegateMedia中的didPlayAudio:error:回调会被触发
  @param aChatVoice 需要播放的聊天音频对象
  @result
@@ -516,7 +516,7 @@
 
 /*!
  @method
- @abstract 异步方法, 播放一个聊天记录的声音对象
+ @brief 异步方法, 播放一个聊天记录的声音对象
  @discussion
  @param aChatVoice 需要播放的聊天音频对象
  @param completion 回调
@@ -529,7 +529,7 @@
 
 /*!
  @method
- @abstract 停止当前正在播放的音频
+ @brief 停止当前正在播放的音频
  @discussion
  @result 是否成功停止了语音的播放
  */
@@ -537,7 +537,7 @@
 
 /*!
  @method
- @abstract 开始录制音频
+ @brief 开始录制音频
  @discussion
  @param pError 错误信息
  @result
@@ -546,7 +546,7 @@
 
 /*!
  @method
- @abstract 异步方法, 停止录制音频
+ @brief 异步方法, 停止录制音频
  @discussion 录制完成后, EMChatManagerDelegateMedia中的didRecordAudio:error:回调会被触发
  @result
  */
@@ -554,7 +554,7 @@
 
 /*!
  @method
- @abstract 异步方法, 停止录制音频
+ @brief 异步方法, 停止录制音频
  @discussion
  @param completion 回调
  @param aQueue     回调时的线程
@@ -566,7 +566,7 @@
 
 /*!
  @method
- @abstract 异步方法, 取消录制音频
+ @brief 异步方法, 取消录制音频
  @discussion 取消录制后, EMChatManagerDelegateMedia中的didCancelRecordAudio:error:回调会被触发
  @result
  */
@@ -574,7 +574,7 @@
 
 /*!
  @method
- @abstract 异步方法, 取消录制音频
+ @brief 异步方法, 取消录制音频
  @discussion
  @param completion 回调
  @param aQueue     回调时的线程
@@ -586,7 +586,7 @@
 
 /*!
  @method
- @abstract 获取录制音频时的音量
+ @brief 获取录制音频时的音量
  @discussion 停止录音后, 再去调用该方法, 会返回最后一次录制音频的音量
  @result 音量, 值域为0到1.0的浮点数
  */
@@ -595,7 +595,7 @@
 #pragma mark - IChatManagerBuddy
 /*!
  @method
- @abstract 获取好友列表(由EMBuddy对象组成)
+ @brief 获取好友列表(由EMBuddy对象组成)
  @discussion
  @result 好友列表(由EMBuddy对象组成)
  */
@@ -603,7 +603,7 @@
 
 /*!
  @method
- @abstract 获取好友分组信息(由EMBuddyGroup对象组成)
+ @brief 获取好友分组信息(由EMBuddyGroup对象组成)
  @discussion
  @result 好友分组信息(由EMBuddyGroup对象组成)
  */
@@ -611,7 +611,7 @@
 
 /*!
  @method
- @abstract 申请添加某个用户为好友
+ @brief 申请添加某个用户为好友
  @discussion
  @param username 需要添加为好友的username
  @param nickname 添加好友后的昵称
@@ -626,7 +626,7 @@
 
 /*!
  @method
- @abstract 申请添加某个用户为好友,同时将该好友添加到分组中,好友与分组可以多对多
+ @brief 申请添加某个用户为好友,同时将该好友添加到分组中,好友与分组可以多对多
  @discussion
  @param username 需要添加为好友的username
  @param nickname 添加好友后的昵称
@@ -643,7 +643,7 @@
 
 /*!
  @method
- @abstract 将某个用户从好友列表中移除
+ @brief 将某个用户从好友列表中移除
  @discussion
  @param username 需要移除的好友username
  @param removeFromRemote 是否将自己从对方好友列表中移除
@@ -656,7 +656,7 @@
 
 /*!
  @method
- @abstract 接受某个好友发送的好友请求
+ @brief 接受某个好友发送的好友请求
  @discussion
  @param username 需要接受的好友username
  @param pError   错误信息
@@ -667,7 +667,7 @@
 
 /*!
  @method
- @abstract 拒绝某个好友发送的好友请求
+ @brief 拒绝某个好友发送的好友请求
  @discussion
  @param username 需要拒绝的好友username
  @param pError   错误信息

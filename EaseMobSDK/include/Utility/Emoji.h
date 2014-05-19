@@ -21,13 +21,13 @@
 
 /*!
  @class
- @abstract iOS内置表情编码处理类
+ @brief iOS内置表情编码处理类
  */
 @interface Emoji : NSObject
 
 /*!
  @method
- @abstract unicode编码转换为iOS内置表情字符串
+ @brief unicode编码转换为iOS内置表情字符串
  @discussion
  @param code iOS内置表情对应的unicode编码值
  @result iOS内置表情字符串
@@ -36,7 +36,7 @@
 
 /*!
  @method
- @abstract 获取所有iOS内置表情
+ @brief 获取所有iOS内置表情
  @discussion
  @result iOS表情字符串数组
  */

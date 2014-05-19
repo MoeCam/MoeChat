@@ -13,7 +13,7 @@
 
 /*!
  @protocol
- @abstract 本协议主要处理聊天数据的加密和解密操作
+ @brief 本协议主要处理聊天数据的加密和解密操作
  @discussion
  */
 @protocol IChatManagerEncryption <IChatManagerBase>
@@ -22,7 +22,7 @@
 
 /*!
  @property
- @abstract 加解密器
+ @brief 加解密器
  */
 @property (nonatomic, strong) id<IEMChatCryptor> chatCryptor;
 

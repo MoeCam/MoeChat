@@ -10,7 +10,7 @@
 
 /*!
  @protocol
- @abstract 为DeviceManager提供距离传感器功能
+ @brief 为DeviceManager提供距离传感器功能
  @discussion
  */
 @protocol IDeviceManagerProximitySensor <IDeviceManagerBase>
@@ -21,25 +21,25 @@
 
 /*!
  @property
- @abstract 当前设备是否支持距离传感器功能
+ @brief 当前设备是否支持距离传感器功能
  */
 @property (nonatomic, readonly) BOOL isSupportProximitySensor;
 
 /*!
  @property
- @abstract 设备是否正接近用户
+ @brief 设备是否正接近用户
  */
 @property (nonatomic, readonly) BOOL isCloseToUser;
 
 /*!
  @property
- @abstract 当前设备距离传感器功能是否处于打开状态
+ @brief 当前设备距离传感器功能是否处于打开状态
  */
 @property (nonatomic, readonly) BOOL isProximitySensorEnabled;
 
 /*!
  @method
- @abstract 打开
+ @brief 打开
  @discussion 若设备不支持, 返回NO
  @result 是否成功打开
  */
@@ -47,7 +47,7 @@
 
 /*!
  @method
- @abstract 关闭
+ @brief 关闭
  @discussion 若设备不支持, 返回NO
  @result 是否成功关闭
  */

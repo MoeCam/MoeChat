@@ -9,7 +9,7 @@
 
 /*!
  @protocol
- @abstract 本协议主要用于对聊天提供基础的加密, 解密服务
+ @brief 本协议主要用于对聊天提供基础的加密, 解密服务
  @discussion
  */
 @protocol IEMChatCryptor <NSObject>
@@ -18,38 +18,42 @@
 
 /*!
  @method
- @abstract 对NSData进行加密
+ @brief 对NSData进行加密
  @discussion
  @param data 要加密的数据
+ @param aArgs 附加参数
  @result 加密后的数据
  */
-- (NSData *)encryptData:(NSData *)data;
+- (NSData *)encryptData:(NSData *)data args:(id)aArgs;
 
 /*!
  @method
- @abstract 对NSData进行解密
+ @brief 对NSData进行解密
  @discussion
  @param data 要解密的数据
+ @param aArgs 附加参数
  @result 解密后的数据
  */
-- (NSData *)decryptData:(NSData *)data;
+- (NSData *)decryptData:(NSData *)data args:(id)aArgs;
 
 /*!
  @method
- @abstract 对文本进行加密
+ @brief 对文本进行加密
  @discussion
  @param string 要加密的文本
+ @param aArgs 附加参数
  @result 加密后的文本
  */
-- (NSString *)encryptString:(NSString *)string;
+- (NSString *)encryptString:(NSString *)string args:(id)aArgs;
 
 /*!
  @method
- @abstract 对文本进行解密
+ @brief 对文本进行解密
  @discussion
  @param string 要解密的文本
+ @param aArgs 附加参数
  @result 解密后的文本
  */
-- (NSString *)decryptString:(NSString *)string;
+- (NSString *)decryptString:(NSString *)string args:(id)aArgs;
 
 @end

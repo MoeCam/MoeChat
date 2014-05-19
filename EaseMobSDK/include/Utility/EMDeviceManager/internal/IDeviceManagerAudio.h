@@ -9,7 +9,7 @@
 
 /*!
  @protocol
- @abstract 音频处理协议
+ @brief 音频处理协议
  @discussion
  */
 @protocol IDeviceManagerAudio <IDeviceManagerBase>
@@ -19,7 +19,7 @@
 #pragma mark - audio channel
 /*!
  @method
- @abstract 切换音频播放模式
+ @brief 切换音频播放模式
  @param mode 音频播放模式
  @discussion
  @result 是否切换成功
@@ -28,7 +28,7 @@
 
 /*!
  @method
- @abstract 在耳机和扩音器之间切换音频播放模式
+ @brief 在耳机和扩音器之间切换音频播放模式
  @param outputDevice 音频播放模式
  @discussion
  @result 是否切换成功
@@ -37,26 +37,26 @@
 
 /*!
  @property
- @abstract 当前音频的播放模式
+ @brief 当前音频的播放模式
  */
 @property (nonatomic, readonly) EMAudioPlaybackMode currentPlaybackMode;
 
 /*!
  @property
- @abstract 当前是否正在播放音频
+ @brief 当前是否正在播放音频
  */
 @property (nonatomic, readonly) BOOL isPlayingAudio;
 
 /*!
  @method
- @abstract 收到新消息时, 播放声音
+ @brief 收到新消息时, 播放声音
  @discussion
  */
 - (void)playNewMessageSound;
 
 /*!
  @method
- @abstract 收到新消息时, 异步播放音频
+ @brief 收到新消息时, 异步播放音频
  @discussion
  @result
  */
@@ -64,7 +64,7 @@
 
 /*!
  @method
- @abstract 收到新消息时, 异步播放音频
+ @brief 收到新消息时, 异步播放音频
  @param completion 播放完成时的回调block
  @param aQueue 回调block时的线程
  @discussion
@@ -75,7 +75,7 @@
 
 /*!
  @method
- @abstract 新消息到来时, 震动设备
+ @brief 新消息到来时, 震动设备
  @discussion
  @result
  */
@@ -83,7 +83,7 @@
 
 /*!
  @method
- @abstract 新消息到来时, 震动设备(异步方法)
+ @brief 新消息到来时, 震动设备(异步方法)
  @discussion
  @result
  */
@@ -91,7 +91,7 @@
 
 /*!
  @method
- @abstract 新消息到来时, 震动设备(异步方法)
+ @brief 新消息到来时, 震动设备(异步方法)
  @param completion 震动完成后的回调block
  @param aQueue 回调block时的线程
  @discussion
@@ -102,7 +102,7 @@
 
 /*!
  @method
- @abstract 检查是否正在播放此语音文件
+ @brief 检查是否正在播放此语音文件
  @param aFilePath 语音文件的绝对路径
  @result 是否正在播放此语音文件
  */
@@ -110,7 +110,7 @@
 
 /*!
  @method
- @abstract 播放音频(异步线程)
+ @brief 播放音频(异步线程)
  @discussion 文件应为amr编码
  @param aFilePath 需要播放的音频的完整路径
  @result
@@ -119,7 +119,7 @@
 
 /*!
  @method
- @abstract 播放音频(异步线程)
+ @brief 播放音频(异步线程)
  @param aFilePath 需要播放的音频的完整路径.
  @param completion 震动完成后的回调block
  @param aQueue 回调block时的线程
@@ -131,7 +131,7 @@
 
 /*!
  @method
- @abstract 停止当前正在播放的音频
+ @brief 停止当前正在播放的音频
  @discussion
  @result 是否成功停止播放
  */
@@ -139,7 +139,7 @@
 
 /*!
  @method
- @abstract 开始录制音频
+ @brief 开始录制音频
  @param aFilePath 录制完成后的音频文件保存路径
  @param pError 录制过程中的错误信息
  @discussion
@@ -149,7 +149,7 @@
 
 /*!
  @method
- @abstract 停止录制音频(异步方法),停止后会发送 didRecordAudio 广播,同时会附带录制后保存的文件路径和录制的音频时长
+ @brief 停止录制音频(异步方法),停止后会发送 didRecordAudio 广播,同时会附带录制后保存的文件路径和录制的音频时长
  @discussion
  @result
  */
@@ -157,7 +157,7 @@
 
 /*!
  @method
- @abstract 停止录制音频(异步方法),停止后会调用completion block
+ @brief 停止录制音频(异步方法),停止后会调用completion block
  @param completion 录制音频完成后的回调block
  @param aQueue 回调block时的线程
  @discussion
@@ -170,7 +170,7 @@
 
 /*!
  @method
- @abstract 取消录制音频(异步线程), 完成后, 会发送didCancelRecordAudio广播
+ @brief 取消录制音频(异步线程), 完成后, 会发送didCancelRecordAudio广播
  @discussion
  @result
  */
@@ -178,7 +178,7 @@
 
 /*!
  @method
- @abstract 取消录制音频(异步线程)
+ @brief 取消录制音频(异步线程)
  @param completion 录制音频完成后的回调block
  @param aQueue 回调block时的线程
  @discussion
@@ -189,7 +189,7 @@
 
 /*!
  @method
- @abstract 获取最后一次录音的时长
+ @brief 获取最后一次录音的时长
  @discussion
  @result 音频时长
  */
@@ -197,7 +197,7 @@
 
 /*!
  @method
- @abstract 判断麦克风是否可用
+ @brief 判断麦克风是否可用
  @return 麦克风是否可用
  */
 - (BOOL)checkMicrophoneAvailability;

@@ -14,7 +14,7 @@
 
 /*!
  @protocol
- @abstract 用户聊天协议, 用于发送, 转发信息
+ @brief 用户聊天协议, 用于发送, 转发信息
  @discussion 所有不带Block回调的异步方法, 需要监听回调时, 需要先将要接受回调的对象注册到delegate中, 示例代码如下:
     [[[EaseMob sharedInstance] chatManager] addDelegate:self delegateQueue:dispatch_get_main_queue()]
  */
@@ -25,7 +25,7 @@
 
 /*!
  @method
- @abstract 发送一条消息
+ @brief 发送一条消息
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改
  @param message  消息对象(包括from, to, body列表等信息)
  @param progress 发送多媒体信息时的progress回调对象
@@ -38,7 +38,7 @@
 
 /*!
  @method
- @abstract 异步方法, 发送一条消息
+ @brief 异步方法, 发送一条消息
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改. 在发送过程中, willSendMessage:error:和didSendMessage:error:这两个回调会被触发
  @param message  消息对象(包括from, to, body列表等信息)
  @param progress 发送多媒体信息时的progress回调对象
@@ -49,7 +49,7 @@
 
 /*!
  @method
- @abstract 异步方法, 发送一条消息
+ @brief 异步方法, 发送一条消息
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改
  @param message  消息对象(包括from, to, body列表等信息)
  @param progress 发送多媒体信息时的progress回调对象
@@ -72,7 +72,7 @@
 
 /*!
  @method
- @abstract 发送一个"已读消息"(在UI上显示了或者阅后即焚的销毁的时候发送)的回执到服务器
+ @brief 发送一个"已读消息"(在UI上显示了或者阅后即焚的销毁的时候发送)的回执到服务器
  @discussion
  @param message 从服务器收到的消息
  @result
@@ -83,7 +83,7 @@
 
 /*!
  @method
- @abstract 重新发送某一条消息
+ @brief 重新发送某一条消息
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改
  @param message  消息对象(包括from, to, body列表等信息)
  @param progress 发送多媒体信息时的progress回调对象
@@ -96,7 +96,7 @@
 
 /*!
  @method
- @abstract 异步方法, 重新发送某一条消息
+ @brief 异步方法, 重新发送某一条消息
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改. 在发送过程中, EMChatManagerChatDelegate中的willSendMessage:error:和didSendMessage:error:这两个回调会被触发
  @param message  消息对象(包括from, to, body列表等信息)
  @param progress 发送多媒体信息时的progress回调对象
@@ -107,7 +107,7 @@
 
 /*!
  @method
- @abstract 异步方法, 重新发送某一条消息
+ @brief 异步方法, 重新发送某一条消息
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改
  @param message  消息对象(包括from, to, body列表等信息)
  @param progress 发送多媒体信息时的progress回调对象
@@ -130,7 +130,7 @@
 
 /*!
  @method
- @abstract 将某一条消息转发给另一个聊天用户
+ @brief 将某一条消息转发给另一个聊天用户
  @discussion
  @param message     需要转发的消息对象
  @param username    需要转发给聊天对象的username
@@ -147,7 +147,7 @@
 
 /*!
  @method
- @abstract 异步方法, 将某一条消息转发给另一个聊天用户
+ @brief 异步方法, 将某一条消息转发给另一个聊天用户
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改. 在发送过程中, EMChatManagerChatDelegate中的willSendMessage:error:和didSendMessage:error:这两个回调会被触发
  @param message     需要转发的消息对象
  @param username    需要转发给聊天对象的username
@@ -162,7 +162,7 @@
 
 /*!
  @method
- @abstract 异步方法, 将某一条消息转发给另一个聊天用户
+ @brief 异步方法, 将某一条消息转发给另一个聊天用户
  @discussion 待发送的消息对象和发送后的消息对象是同一个对象, 在发送过程中对象属性可能会被更改. 
  @param message     需要转发的消息对象
  @param username    需要转发给聊天对象的username

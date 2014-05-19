@@ -12,37 +12,37 @@
 
 /*!
  @class 
- @abstract 聊天的位置对象类型
+ @brief 聊天的位置对象类型
  */
 @interface EMChatLocation : EMChatObject
 
 /*!
  @property
- @abstract 纬度
+ @brief 纬度
  */
 @property (nonatomic) double latitude;
 
 /*!
  @property
- @abstract 经度
+ @brief 经度
  */
 @property (nonatomic) double longitude;
 
 /*!
  @property
- @abstract 地址信息
+ @brief 地址信息
  */
 @property (nonatomic, copy) NSString *address;
 
 /*!
  @property
- @abstract CLLocation位置信息
+ @brief CLLocation位置信息
  */
 @property (nonatomic, strong) CLLocation *location;
 
 /*!
  @method
- @abstract 以位置信息构造位置对象
+ @brief 以位置信息构造位置对象
  @discussion 
  @param latitude 纬度
  @param longitude 经度
@@ -55,7 +55,7 @@
 
 /*!
  @method
- @abstract 以CLLocation构造位置对象
+ @brief 以CLLocation构造位置对象
  @discussion 
  @param location CLLocation实例
  @result 位置对象

@@ -11,7 +11,7 @@
 
 /*!
  @protocol
- @abstract DeviceManager异步方法操作完成后的回调协议
+ @brief DeviceManager异步方法操作完成后的回调协议
  @discussion
  */
 @protocol EMDeviceManagerDelegate <EMDeviceManagerProximitySensorDelegate,

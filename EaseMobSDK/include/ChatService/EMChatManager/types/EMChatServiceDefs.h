@@ -12,7 +12,7 @@
 
 /*!
  @enum
- @abstract 聊天类型
+ @brief 聊天类型
  @constant eMessageBodyType_Text 文本类型
  @constant eMessageBodyType_Image 图片类型
  @constant eMessageBodyType_Video 视频类型
@@ -33,7 +33,7 @@ typedef enum {
 
 /*!
  @enum
- @abstract 聊天消息发送状态
+ @brief 聊天消息发送状态
  @constant eMessageDeliveryState_Pending 待发送
  @constant eMessageDeliveryState_Delivering 正在发送
  @constant eMessageDeliveryState_Delivered 已发送, 成功

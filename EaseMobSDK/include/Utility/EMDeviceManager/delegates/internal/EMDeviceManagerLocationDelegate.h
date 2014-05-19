@@ -12,7 +12,7 @@
 
 /*!
  @protocol
- @abstract GPS相关方法调用完成时的回调
+ @brief GPS相关方法调用完成时的回调
  @discussion
  */
 @protocol EMDeviceManagerLocationDelegate <EMDeviceManagerDelegateBase>
@@ -21,7 +21,7 @@
 
 /*!
  @method
- @abstract 使用asyncDecodeAddressFromLatitude方法进行经纬度解码完成后的回调
+ @brief 使用asyncDecodeAddressFromLatitude方法进行经纬度解码完成后的回调
  @param address 解码后的城市街道信息(eg: 中国北京市海淀区中关村彩和坊路)
  @param latitude 经度
  @param longitude 纬度
@@ -36,7 +36,7 @@
 
 /*!
  @method
- @abstract 使用 startUpdatingLocation | refreshLocation 方法定位完成后的回调(GPS位置信息变化时, 会调用该方法)
+ @brief 使用 startUpdatingLocation | refreshLocation 方法定位完成后的回调(GPS位置信息变化时, 会调用该方法)
  @param updatedLocation 当前的位置信息
  @discussion
  @result 
@@ -45,7 +45,7 @@
 
 /*!
  @method
- @abstract 调用 stopUpdatingLocation 方法完成后的回调
+ @brief 调用 stopUpdatingLocation 方法完成后的回调
  @discussion
  @result
  */
@@ -53,7 +53,7 @@
 
 /*!
  @method
- @abstract 使用 startUpdatingLocation | refreshLocation 方法定位失败时的回调
+ @brief 使用 startUpdatingLocation | refreshLocation 方法定位失败时的回调
  @param error 错误信息
  @discussion
  @result

@@ -12,7 +12,7 @@
 
 /*!
  @protocol
- @abstract DeviceManager音频相关的异步方法, 操作完成后的回调
+ @brief DeviceManager音频相关的异步方法, 操作完成后的回调
  @discussion
  */
 @protocol EMDeviceManagerAudioDelegate <EMDeviceManagerDelegateBase>
@@ -20,7 +20,7 @@
 @optional
 /*!
  @method
- @abstract 使用 asyncPlayVibration | asyncPlayNewMessageSound 方法完成时的回调
+ @brief 使用 asyncPlayVibration | asyncPlayNewMessageSound 方法完成时的回调
  @param soundId 正在播放的音频ID
  @discussion
  @result
@@ -29,7 +29,7 @@
 
 /*!
  @method
- @abstract 使用 asyncPlayAudio 方法播放音频时的回调
+ @brief 使用 asyncPlayAudio 方法播放音频时的回调
  @param aFilePath 正在播放的音频完整文件路径
  @param error 错误信息
  @discussion
@@ -39,7 +39,7 @@
 
 /*!
  @method
- @abstract 使用 asyncStopRecordingAudio 方法停止录音时的回调
+ @brief 使用 asyncStopRecordingAudio 方法停止录音时的回调
  @param aFilePath 录制完成后的音频完整文件路径
  @param error 错误信息
  @discussion
@@ -50,7 +50,7 @@
 
 /*!
  @method
- @abstract 使用 asyncCancelRecordingAudio 方法取消录音时的回调
+ @brief 使用 asyncCancelRecordingAudio 方法取消录音时的回调
  @param aFilePath
  @param error 错误信息
  @discussion

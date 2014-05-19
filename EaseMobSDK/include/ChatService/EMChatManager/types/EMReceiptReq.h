@@ -11,13 +11,13 @@
 
 /*!
  @class
- @abstract 聊天回执请求
+ @brief 聊天回执请求
  */
 @interface EMReceiptReq : EMReceiptBase
 
 /*!
  @method
- @abstract 由消息创建回执请求
+ @brief 由消息创建回执请求
  @discussion
  @param message 消息对象
  @result 聊天回执请求实例
