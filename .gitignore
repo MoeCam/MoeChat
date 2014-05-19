@@ -4,3 +4,8 @@ ChatDemo-NonUI.xcscheme
 xcschememanagement.plist
 
 ChatDemo-UI/ChatDemo-UI/EaseMobSDK/*
+ChatDemo-UI/ChatDemo-UI.xcodeproj/xcuserdata/dhcdht.xcuserdatad/xcschemes/ChatDemo-UI.xcscheme
+
+ChatDemo-UI/ChatDemo-UI.xcodeproj/xcuserdata/dhcdht.xcuserdatad/xcschemes/xcschememanagement.plist
+
+EaseMobSDK/lib/libEaseMobClientSDKLite.a
