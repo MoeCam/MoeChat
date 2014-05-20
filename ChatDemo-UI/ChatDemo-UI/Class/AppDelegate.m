@@ -27,11 +27,7 @@
 #warning Baidu地图SDK测试Key值
     // 如果要关注网络及授权验证事件，请设定generalDelegate参数
     BMKMapManager *mapManager = [[BMKMapManager alloc]init];
-<<<<<<< HEAD
     BOOL ret = [mapManager start:@"6QN0dGpbbrcFXqCpW4F86DeQ" generalDelegate:nil];
-=======
-    BOOL ret = [mapManager start:@"6QN0dGpbbrcFXqCpW4F86DeQ"  generalDelegate:nil];
->>>>>>> FETCH_HEAD
     if (!ret) {
         NSLog(@"manager start failed!");
     }
