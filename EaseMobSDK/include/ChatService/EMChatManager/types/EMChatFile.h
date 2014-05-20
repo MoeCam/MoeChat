@@ -6,13 +6,15 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "EMChatObject.h"
+#import "IEMChatObject.h"
+
+@class EMMessageBody;
 
 /*!
  @class 
  @brief 聊天的文件对象类型
  */
-@interface EMChatFile : EMChatObject 
+@interface EMChatFile : NSObject<IEMChatObject>
 
 /*!
  @property
@@ -31,6 +33,15 @@
  @brief 文件对象所对应的文件的大小, 以字节为单位
  */
 @property (nonatomic) long long fileLength;
+
+/*!
+ @property
+ @brief
+ 聊天对象所在的消息体对象
+ @discussion
+ 当消息体通过聊天对象创建完成后, messageBody为非nil, 当聊天对象并不属于任何消息体对象的时候, messageBody为nil
+ */
+@property (nonatomic, weak) EMMessageBody *messageBody;
 
 /*!
  @method

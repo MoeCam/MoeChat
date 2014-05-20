@@ -6,15 +6,16 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "EMChatObject.h"
+#import "IEMChatObject.h"
 
 @class CLLocation;
+@class EMMessageBody;
 
 /*!
  @class 
  @brief 聊天的位置对象类型
  */
-@interface EMChatLocation : EMChatObject
+@interface EMChatLocation : NSObject<IEMChatObject>
 
 /*!
  @property
@@ -39,6 +40,15 @@
  @brief CLLocation位置信息
  */
 @property (nonatomic, strong) CLLocation *location;
+
+/*!
+ @property
+ @brief
+ 聊天对象所在的消息体对象
+ @discussion
+ 当消息体通过聊天对象创建完成后, messageBody为非nil, 当聊天对象并不属于任何消息体对象的时候, messageBody为nil
+ */
+@property (nonatomic, weak) EMMessageBody *messageBody;
 
 /*!
  @method

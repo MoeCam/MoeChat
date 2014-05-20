@@ -8,15 +8,15 @@
 #import <Foundation/Foundation.h>
 #import "EMChatServiceDefs.h"
 
+@protocol IEMChatObject;
 @class EMMessage;
-@class EMChatObject;
 
 /*!
  @class
  @brief 聊天的消息体基类对象
  */
 @interface EMMessageBody : NSObject {
-    EMChatObject *_chatObject;
+    id<IEMChatObject> _chatObject;
 }
 
 /*!
@@ -29,7 +29,7 @@
  @property
  @brief 消息体的底层聊天对象
  */
-@property (nonatomic, strong, readonly) EMChatObject *chatObject;
+@property (nonatomic, strong, readonly) id<IEMChatObject> chatObject;
 
 /*!
  @property
@@ -44,7 +44,7 @@
  @param aChatObject 聊天对象
  @result 消息体对象
  */
-- (id)initWithChatObject:(EMChatObject *)aChatObject;
+- (id)initWithChatObject:(id<IEMChatObject>)aChatObject;
 
 /*!
  @method
