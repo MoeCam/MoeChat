@@ -268,36 +268,14 @@ UISearchDisplayDelegate
 #pragma mark - IChatManagerDelegate
 
 // conversation 数量变化
--(void)didUpdateConversationList:(NSArray *)conversationList{
+-(void)didUpdateConversationList:(NSArray *)conversationList
+{
     [self reloadConversationList];
-}
-
-// 消息开始发送
--(void)willSendMessage:(EMMessage *)message
-        inConversation:(EMConversation *)conversation
-                 error:(EMError *)error{
-    [self updateConversation:conversation];
-}
-
-// 消息发送结束
--(void)didSendMessage:(EMMessage *)message
-       inConversation:(EMConversation *)conversation
-                error:(EMError *)error{
-    
 }
 
 // 接收到消息
--(void)didReceiveMessage:(EMConversation *)conversation{
-    [self updateConversation:conversation];
-}
-
-// 刷新cell显示
--(void)updateConversation:(EMConversation *)conversation{
-    [self reloadConversationList];
-}
-
-// 未读消息变化
--(void)didUnreadMessagesCountChanged{
+-(void)didReceiveMessage:(EMMessage *)message
+{
     [self reloadConversationList];
 }
 
