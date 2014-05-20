@@ -83,6 +83,7 @@ static EMMessageManager *detailInstance = nil;
         _photoNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     }
     
+    [self.photoBrowser reloadData];
     return _photoNavigationController;
 }
 

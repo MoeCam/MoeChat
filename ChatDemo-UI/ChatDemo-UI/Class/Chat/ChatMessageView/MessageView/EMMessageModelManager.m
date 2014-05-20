@@ -29,13 +29,11 @@
     model.isPlaying = NO;
     
     if (isSender) {
-        //            model.headImageURL = [NSURL URLWithString:[XDContactManager currentContact].avatar];
         model.headImageURL = nil;
         model.status = message.deliveryState;
     }
     else{
         model.headImageURL = nil;
-        //            model.headImageURL = [NSURL URLWithString:[XDContactManager contactFromDBByUsername:message.from].avatar];
         model.status = eMessageDeliveryState_Delivered;
     }
 
@@ -49,7 +47,7 @@
         {
             EMImageMessageBody *imgMessageBody = (EMImageMessageBody*)messageBody;
             model.thumbnailSize = imgMessageBody.thumbnailSize;
-            model.size = imgMessageBody.size;
+            model.size = imgMessageBody.image.size;
             if (isSender)
             {
                 model.thumbnailImage = [UIImage imageWithContentsOfFile:imgMessageBody.thumbnailLocalPath];
