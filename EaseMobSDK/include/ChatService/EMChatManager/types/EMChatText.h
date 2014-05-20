@@ -18,7 +18,7 @@
  @property
  @brief 文本对象的文本内容
  */
-@property (nonatomic, copy) NSString *text;
+@property (nonatomic, strong) NSString *text;
 
 /*!
  @method

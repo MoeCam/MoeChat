@@ -32,6 +32,10 @@
     return ret;
 }
 
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+    [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // 让SDK得到App目前的各种状态，以便让SDK做出对应当前场景的操作

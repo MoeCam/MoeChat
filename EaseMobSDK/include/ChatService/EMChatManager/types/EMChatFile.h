@@ -18,13 +18,13 @@
  @property
  @brief 文件对象的显示名
  */
-@property (nonatomic, copy, readonly) NSString *displayName;
+@property (nonatomic, strong, readonly) NSString *displayName;
 
 /*!
  @property
  @brief 文件对象本地磁盘位置的全路径
  */
-@property (nonatomic, copy) NSString *localPath;
+@property (nonatomic, strong) NSString *localPath;
 
 /*!
  @property

@@ -32,7 +32,7 @@
  @property
  @brief 地址信息
  */
-@property (nonatomic, copy) NSString *address;
+@property (nonatomic, strong) NSString *address;
 
 /*!
  @property
@@ -50,8 +50,8 @@
  @result 位置对象
  */
 - (id)initWithLatitude:(double)latitude 
-            longitude:(double)longitude 
-              address:(NSString *)address;
+             longitude:(double)longitude 
+               address:(NSString *)address;
 
 /*!
  @method
