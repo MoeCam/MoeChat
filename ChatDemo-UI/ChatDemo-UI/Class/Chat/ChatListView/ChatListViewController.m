@@ -11,11 +11,12 @@
 #import "ChatListCell.h"
 #import "NSDate+Category.h"
 #import "SRRefreshView.h"
-#import "AYZChatBroadcastManager.h"
+
+#import "EaseMob.h"
 
 @interface ChatListViewController ()
 <
-AYZConversationProtocol,
+IChatManagerDelegate,
 SRRefreshDelegate,
 UISearchBarDelegate,
 UISearchDisplayDelegate
@@ -27,6 +28,9 @@ UISearchDisplayDelegate
 }
 
 @property (nonatomic, strong) UISearchDisplayController *searchDisplayController;
+
+-(void)registerNotifications;
+-(void)unregisterNotifications;
 
 @end
 
@@ -46,11 +50,9 @@ UISearchDisplayDelegate
 {
     [super viewDidLoad];
     
-#warning 以下一行代码是将self注册为AYZChatBroadcastManager的会话管理代理，AYZChatBroadcastManager接收由XMPP发出的所有广播，然后进行相应判断，通知给会话管理代理。代理必须符合AYZConversationProtocol协议
-    [[AYZChatBroadcastManager defaultManager] setConversationDelegate:self];
-    
+    [self registerNotifications];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    [self.tableView registerClass:[ChatListCell class] forCellReuseIdentifier:@"chatListCell"];
+    [self.tableView registerClass:[ChatListCell class] forCellReuseIdentifier:@"chatListCell"];
     
     _slimeView = [[SRRefreshView alloc] initWithHeight:30];
     _slimeView.delegate = self;
@@ -70,9 +72,9 @@ UISearchDisplayDelegate
 {
     [super viewWillAppear:animated];
     
-    if (_conversations && _conversations.count > 0) {
+//    if (_conversations && _conversations.count > 0) {
         [self reloadConversationList];
-    }
+//    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -80,31 +82,17 @@ UISearchDisplayDelegate
     [super didReceiveMemoryWarning];
 }
 
-- (void)dealloc
-{
-    [[AYZChatBroadcastManager defaultManager] setConversationDelegate:nil];
-}
-
 #pragma mark - UITableViewDelegate & UITableViewDatasource
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"chatListCell";
-    ChatListCell *cell = (ChatListCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[ChatListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
+    ChatListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"chatListCell"];
+    EMConversation *conversation = [_conversations objectAtIndex:indexPath.row];
     
-    if (indexPath.row < [_conversations count]) {
-        EMConversation *conversation = [_conversations objectAtIndex:indexPath.row];
-        if (conversation) {
-            cell.name = conversation.chatter;
-            cell.detailMsg = [self subTitleMessageByConversation:conversation];
-            cell.time = [self lastMessageTimeByConversation:conversation];
-            // cell.imageURL = [NSURL URLWithString:contact.avatar];
-            cell.placeholderImage = [UIImage imageNamed:@"account_defaultHead.png"];
-        }
-    }
-
+    cell.name = conversation.chatter;
+    cell.detailMsg = [self subTitleMessageByConversation:conversation];
+    cell.time = [self lastMessageTimeByConversation:conversation];
+    // cell.imageURL = [NSURL URLWithString:contact.avatar];
+    cell.placeholderImage = [UIImage imageNamed:@"account_defaultHead.png"];
     return cell;
 }
 
@@ -165,49 +153,58 @@ UISearchDisplayDelegate
     [self.navigationController pushViewController:chatVC animated:YES];
 }
 
+-(void)registerNotifications{
+    [self unregisterNotifications];
+    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(gotoSendMessage:)
+                                                 name:NTF_WILLSENDMESSAGETOUSERNAME
+                                               object:nil];
+}
+
+-(void)unregisterNotifications{
+    [[[EaseMob sharedInstance] chatManager] removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NTF_WILLSENDMESSAGETOUSERNAME
+                                                  object:nil];
+}
+
 #pragma mark - actions
 -(void)reloadConversationList
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSArray *conversationList = [[EaseMob sharedInstance].chatManager conversations];
-        NSMutableArray *tmpArray = [NSMutableArray array];
-        for (EMConversation *con in conversationList) {
-            [con loadNumbersOfMessages:1 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
-            if (!con.messages || [con.messages count] == 0) {
-                [[EaseMob sharedInstance].chatManager removeConversationByChatter:con.chatter deleteMessages:YES];
-            }
-            else{
-                [tmpArray addObject:con];
-            }
+    NSArray *conversationList = [[EaseMob sharedInstance].chatManager conversations];
+    NSMutableArray *tmpArray = [NSMutableArray array];
+    for (EMConversation *con in conversationList) {
+        [con loadNumbersOfMessages:1 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
+        if (!con.messages || [con.messages count] == 0) {
+            [[EaseMob sharedInstance].chatManager removeConversationByChatter:con.chatter deleteMessages:YES];
         }
-        
-        NSArray*sortArray = [tmpArray sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation* obj2){
-            EMMessage *message1 = obj1.messages.lastObject;
-            EMMessage *message2 = obj2.messages.lastObject;
-            if(message1.timestamp > message2.timestamp) {
-                return(NSComparisonResult)NSOrderedAscending;
-            }else {
-                return(NSComparisonResult)NSOrderedDescending;
-            }
-        }];
-        if (_conversations) {
-            [_conversations removeAllObjects];
-            [_conversations addObjectsFromArray:sortArray];
+        else{
+            [tmpArray addObject:con];
+        }
+    }
+    
+    NSArray*sortArray = [tmpArray sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation* obj2){
+        EMMessage *message1 = obj1.messages.lastObject;
+        EMMessage *message2 = obj2.messages.lastObject;
+        if(message1.timestamp > message2.timestamp) {
+            return(NSComparisonResult)NSOrderedAscending;
         }else {
-            _conversations = [[NSMutableArray alloc] initWithArray:sortArray];
+            return(NSComparisonResult)NSOrderedDescending;
         }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
-    });
+    }];
+    if (_conversations) {
+        [_conversations removeAllObjects];
+        [_conversations addObjectsFromArray:sortArray];
+    }else {
+        _conversations = [[NSMutableArray alloc] initWithArray:sortArray];
+    }
+    [self reloadTableView];
 }
 
 // 刷新table
 -(void)reloadTableView{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-    });
+    [self.tableView reloadData];
 }
 
 // 得到最后消息时间
@@ -264,13 +261,17 @@ UISearchDisplayDelegate
     [self.navigationController pushViewController:messageController animated:YES];
 }
 
-#pragma mark - AYZConversationProtocol
-
-// conversation 数量变化
--(void)didUpdateConversationList:(NSArray *)conversationList
-{
-    [self reloadConversationList];
+-(void)dealloc{
+    [self unregisterNotifications];
 }
+
+#pragma mark - IChatManagerDelegate
+
+//// conversation 数量变化
+//-(void)didUpdateConversationList:(NSArray *)conversationList
+//{
+//    [self reloadConversationList];
+//}
 
 // 接收到消息
 -(void)didReceiveMessage:(EMMessage *)message

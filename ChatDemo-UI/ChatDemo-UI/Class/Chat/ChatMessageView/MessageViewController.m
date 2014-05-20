@@ -8,6 +8,7 @@
 
 #import "MessageViewController.h"
 
+#import "EaseMob.h"
 #import "EMChatToolBar.h"
 #import "EMChatBarMoreView.h"
 #import "EMRecordView.h"
@@ -19,10 +20,10 @@
 #import "EMMessageManager.h"
 #import "EMMessageModelManager.h"
 #import "SendLocationViewController.h"
-#import "AYZChatBroadcastManager.h"
+
 #import "NSDate+Category.h"
 
-@interface MessageViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMChatToolBarDelegate, EMChatBarMoreViewDelegate, EMRecordDelegate, EMFaceDelegate, LocationDelegate, AYZMessageProtocol>
+@interface MessageViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, EMChatToolBarDelegate, EMChatBarMoreViewDelegate, EMRecordDelegate, EMFaceDelegate, LocationDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;//tableView数据源
 @property (strong, nonatomic) UITableView *tableView;
@@ -65,11 +66,14 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
-#warning 以下一行代码是将self注册为AYZChatBroadcastManager的代理之一，AYZChatBroadcastManager接收由XMPP发出的所有广播，然后进行相应判断，通知给代理群组中相同会话的代理。代理必须符合AYZChatProtocol协议
-    [[AYZChatBroadcastManager defaultManager] addDelegate:self chatConversation:_conversation];
     
     // 设置当前conversation 接收到message不再回调didUnreadMessagesCountChanged;
     _conversation.enableUnreadMessagesCountEvent = NO;
+    
+#warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    //注册为SDK的ChatManager的delegate
+    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
     [self.view addGestureRecognizer:tap];
@@ -95,8 +99,8 @@
 
 - (void)dealloc
 {
-#warning 以下一行，与[[AYZChatBroadcastManager defaultManager] addDelegate:chatConversation:]配套使用
-    [[AYZChatBroadcastManager defaultManager] removeDelegate:self];
+#warning 以下第一行代码必须写，将self从ChatManager的代理中移除
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
     
     // 该conversation dealloc后，继续相应unreadCount 变化回调
     _conversation.enableUnreadMessagesCountEvent = YES;
@@ -324,43 +328,39 @@
     
 }
 
-#pragma mark - AYZChatProtocol
+#pragma mark - IChatManagerDelegate
 
 -(void)didSendMessage:(EMMessage *)message error:(EMError *)error;
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if ([_conversation.chatter isEqualToString:message.conversation.chatter])
-        {
-            NSIndexPath *indexPath = nil;
-            for (int i = 0; i < self.dataSource.count; i ++) {
-                id object = [self.dataSource objectAtIndex:i];
-                if ([object isKindOfClass:[EMMessageModel class]]) {
-                    EMMessage *currMsg = [self.dataSource objectAtIndex:i];
-                    if ([message.messageId isEqualToString:currMsg.messageId]) {
-                        EMMessageModel *cellModel = [EMMessageModelManager modelWithMessage:message];
-                        
-                        [self.dataSource replaceObjectAtIndex:i withObject:cellModel];
-                        indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-                        break;
-                    }
+    if ([_conversation.chatter isEqualToString:message.conversation.chatter])
+    {
+        NSIndexPath *indexPath = nil;
+        for (int i = 0; i < self.dataSource.count; i ++) {
+            id object = [self.dataSource objectAtIndex:i];
+            if ([object isKindOfClass:[EMMessageModel class]]) {
+                EMMessage *currMsg = [self.dataSource objectAtIndex:i];
+                if ([message.messageId isEqualToString:currMsg.messageId]) {
+                    EMMessageModel *cellModel = [EMMessageModelManager modelWithMessage:message];
+                    
+                    [self.dataSource replaceObjectAtIndex:i withObject:cellModel];
+                    indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                    break;
                 }
             }
-            
-            if (indexPath) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView beginUpdates];
-                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                    [self.tableView endUpdates];
-                });
-            }
         }
-    });
+        
+        if (indexPath) {
+            [self.tableView beginUpdates];
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView endUpdates];
+        }
+    }
 }
 
 -(void)didReceiveMessage:(EMMessage *)message
 {
-    if ([_conversation.chatter isEqualToString:message.conversation.chatter]) {
-        [self addChatDataToMessage:message];
+    if ([_conversation loadMessage:message.messageId]) {
+          [self addChatDataToMessage:message];
     }
 }
 
@@ -611,24 +611,19 @@
 
 -(void)addChatDataToMessage:(EMMessage *)message
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSArray *messages = [self addChatToMessage:message];
-        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-        
-        for (int i = 0; i < messages.count; i++) {
-            [self.dataSource addObject:[messages objectAtIndex:i]];
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(self.dataSource.count - 1) inSection:0];
-            [indexPaths addObject:indexPath];
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView beginUpdates];
-            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView endUpdates];
-            
-            [self performSelector:@selector(scrollViewToBottom:) withObject:nil afterDelay:0.1];
-        });
-    });
+    NSArray *messages = [self addChatToMessage:message];
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < messages.count; i++) {
+        [self.dataSource addObject:[messages objectAtIndex:i]];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(self.dataSource.count - 1) inSection:0];
+        [indexPaths addObject:indexPath];
+    }
+    [self.tableView beginUpdates];
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+    
+    [self performSelector:@selector(scrollViewToBottom:) withObject:nil afterDelay:0.1];
 }
 
 - (void)scrollViewToBottom:(BOOL)animated
