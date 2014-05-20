@@ -32,8 +32,8 @@
     return ret;
 }
 
--(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
-    [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+    [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
