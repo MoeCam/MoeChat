@@ -61,19 +61,4 @@
     return message;
 }
 
-// 跳转发送消息页面
-+(void)sendMessageWithUsername:(NSString *)username
-                 andIsChatroom:(BOOL)isChatroom
-{
-    NSString *toUsername = username;
-    NSNumber *isChatroomMessage = [NSNumber numberWithBool:isChatroom];
-    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys: toUsername,WILLSENDMESSAGETOUSERNAME, isChatroomMessage, WILLSENDMESSAGETOUSERNAME_CHATROOMMESSAGE, nil];
-    [self performSelector:@selector(sendWithUserInfo:) withObject:userInfo afterDelay:0.05];
-}
-
-+(void)sendWithUserInfo:(NSDictionary *)userInfo
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:NTF_WILLSENDMESSAGETOUSERNAME object:nil userInfo:userInfo];
-}
-
 @end

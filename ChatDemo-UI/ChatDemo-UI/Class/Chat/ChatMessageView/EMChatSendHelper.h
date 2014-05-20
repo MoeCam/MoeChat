@@ -27,8 +27,4 @@
                            address:(NSString *)address
                         toUsername:(NSString *)username;
 
-
-+(void)sendMessageWithUsername:(NSString *)username
-                 andIsChatroom:(BOOL)isChatroom;
-
 @end
