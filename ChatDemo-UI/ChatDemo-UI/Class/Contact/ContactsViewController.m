@@ -16,6 +16,9 @@
 #import "DataManager.h"
 
 @interface ContactsViewController ()<UITableViewDataSource,UITableViewDelegate, IChatManagerDelegate>
+{
+    ApplyViewController *_applyController;
+}
 
 @property (strong, nonatomic) NSString *currentUsername;
 @property (strong, nonatomic) NSMutableArray *dataSource;
@@ -116,9 +119,12 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == 0) {
-        ApplyViewController *applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
-        applyController.dataSource = [[DataManager defaultManager] applyArray];
-        [self.navigationController pushViewController:applyController animated:YES];
+        if (_applyController == nil) {
+            _applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
+        }
+        
+        _applyController.dataSource = [[DataManager defaultManager] applyArray];
+        [self.navigationController pushViewController:_applyController animated:YES];
     }
     else{
         NSString *toUsername = [[self.dataSource objectAtIndex:indexPath.row] username];
@@ -202,8 +208,17 @@
 {
     [self.dataSource removeAllObjects];
     NSArray *array = [[EaseMob sharedInstance].chatManager buddyList];
-    [self.dataSource addObjectsFromArray:array];
-    [_tableView reloadData];
+    
+    for (EMBuddy *buudy in array) {
+        if (buudy.isPendingApproval) {
+            [self.dataSource addObject:buudy];
+        }
+    }
+    [self.tableView reloadData];
+    
+    if (_applyController != nil) {
+        [_applyController reloadDataSource];
+    }
 }
 
 @end

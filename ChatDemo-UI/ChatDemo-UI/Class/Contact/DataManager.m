@@ -43,7 +43,10 @@ static DataManager *defaultManager = nil;
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
 
-#pragma mark - getter
+- (void)clear
+{
+    [_applyArray removeAllObjects];
+}
 
 #pragma mark - EMChatManagerBuddyDelegate
 
@@ -58,12 +61,23 @@ static DataManager *defaultManager = nil;
     }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"username":username, @"applyMessage":message, @"acceptState":@NO}];
     [_applyArray addObject:dic];
+    
+    if (_contactsController) {
+        [_contactsController reloadContacts];
+    }
 }
 
 - (void)didUpdateBuddyList:(NSArray *)buddyList
             changedBuddies:(NSArray *)changedBuddies
                      isAdd:(BOOL)isAdd
 {
+    for (EMBuddy *tmpBuudy in changedBuddies) {
+        for (EMBuddy *buudy in buddyList) {
+            if ([tmpBuudy.username isEqualToString:buudy.username]) {
+                buudy.isPendingApproval = isAdd;
+            }
+        }
+    }
     if (_contactsController) {
         [_contactsController reloadContacts];
     }

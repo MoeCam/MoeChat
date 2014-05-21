@@ -18,4 +18,6 @@
 
 + (instancetype)defaultManager;
 
+- (void)clear;
+
 @end

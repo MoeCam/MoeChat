@@ -8,6 +8,8 @@
 
 #import "ApplyViewController.h"
 
+#import "DataManager.h"
+
 @interface ApplyViewController ()
 
 @end
@@ -124,9 +126,10 @@
 
 #pragma mark - data
 
-- (void)loadDataSource
+- (void)reloadDataSource
 {
     self.dataSource = [[DataManager defaultManager] applyArray];
+    [self.tableView reloadData];
 }
 
 @end

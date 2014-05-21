@@ -94,6 +94,7 @@
             [alertView show];
         }
         else{
+            [[DataManager defaultManager] clear];
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
         }
     } onQueue:nil];

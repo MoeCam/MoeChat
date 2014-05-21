@@ -72,9 +72,7 @@ UISearchDisplayDelegate
 {
     [super viewWillAppear:animated];
     
-//    if (_conversations && _conversations.count > 0) {
-        [self reloadConversationList];
-//    }
+    [self reloadConversationList];
 }
 
 - (void)didReceiveMemoryWarning
