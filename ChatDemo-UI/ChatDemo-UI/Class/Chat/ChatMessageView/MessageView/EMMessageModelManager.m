@@ -48,12 +48,11 @@
             EMImageMessageBody *imgMessageBody = (EMImageMessageBody*)messageBody;
             model.thumbnailSize = imgMessageBody.thumbnailSize;
             model.size = imgMessageBody.image.size;
+            model.thumbnailImage = [UIImage imageWithContentsOfFile:imgMessageBody.thumbnailLocalPath];
             if (isSender)
             {
-                model.thumbnailImage = [UIImage imageWithContentsOfFile:imgMessageBody.thumbnailLocalPath];
                 model.image = [UIImage imageWithContentsOfFile:imgMessageBody.localPath];
             }else {
-                model.thumbnailRemoteURL = [NSURL URLWithString:imgMessageBody.thumbnailRemotePath];
                 model.imageRemoteURL = [NSURL URLWithString:imgMessageBody.remotePath];
             }
         }
