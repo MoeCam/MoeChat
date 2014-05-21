@@ -111,6 +111,7 @@
         _retryButton = [UIButton buttonWithType:UIButtonTypeSystem];
         _retryButton.frame = CGRectMake(0, 0, SEND_STATUS_SIZE, SEND_STATUS_SIZE);
         [_retryButton addTarget:self action:@selector(retryButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [_retryButton setImage:[UIImage imageNamed:@"messageSendFail"] forState:UIControlStateNormal];
         [_activityView addSubview:_retryButton];
         
         // 菊花
