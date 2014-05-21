@@ -93,7 +93,7 @@ NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleT
 
 +(CGFloat)heightForBubbleWithObject:(EMMessageModel *)object
 {
-    CGSize retSize = object.thumbnailSize;
+    CGSize retSize = object.size;
     if (retSize.width == 0 || retSize.height == 0) {
         retSize.width = MAX_SIZE;
         retSize.height = MAX_SIZE;
