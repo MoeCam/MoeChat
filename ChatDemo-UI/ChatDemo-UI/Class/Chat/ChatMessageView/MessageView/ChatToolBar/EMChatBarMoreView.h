@@ -13,9 +13,10 @@
 
 @property (nonatomic,assign) id<EMChatBarMoreViewDelegate> delegate;
 
-@property (nonatomic,retain) UIButton *faceButton;
-@property (nonatomic,retain) UIButton *photoButton;
-@property (nonatomic,retain) UIButton *locationButton;
+@property (nonatomic, strong) UIButton *faceButton;
+@property (nonatomic, strong) UIButton *photoButton;
+@property (nonatomic, strong) UIButton *takePicButton;
+@property (nonatomic, strong) UIButton *locationButton;
 
 - (void)setupSubviews;
 
@@ -24,7 +25,7 @@
 @protocol EMChatBarMoreViewDelegate <NSObject>
 
 @required
-
+- (void)moreViewTakePicAction:(EMChatBarMoreView *)moreView;
 - (void)moreViewPhotoAction:(EMChatBarMoreView *)moreView;
 - (void)moreViewFaceAction:(EMChatBarMoreView *)moreView;
 - (void)moreViewLocationAction:(EMChatBarMoreView *)moreView;

@@ -375,6 +375,14 @@
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
 }
 
+- (void)moreViewTakePicAction:(EMChatBarMoreView *)moreView{
+    [self keyBoardHidden];
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:picker animated:YES completion:NULL];
+}
+
 - (void)moreViewFaceAction:(EMChatBarMoreView *)moreView
 {
     // 隐藏键盘
@@ -397,9 +405,14 @@
 
 #pragma mark - LocationDelegate
 
--(void)sendLocationLatitude:(double)latitude longitude:(double)longitude andAddress:(NSString *)address{
+-(void)sendLocationLatitude:(double)latitude
+                  longitude:(double)longitude
+                 andAddress:(NSString *)address{
     
-    EMMessage *tempMessage = [EMChatSendHelper sendLocationLatitude:latitude longitude:longitude address:address toUsername:_conversation.chatter];
+    EMMessage *tempMessage = [EMChatSendHelper sendLocationLatitude:latitude
+                                                          longitude:longitude
+                                                            address:address
+                                                          toUsername:_conversation.chatter];
     [self addChatDataToMessage:tempMessage];
 }
 

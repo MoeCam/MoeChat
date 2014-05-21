@@ -15,6 +15,8 @@
 {
     UITextField *_nameField;
     UITextField *_passwordField;
+    
+    UIBarButtonItem *_autoItem;
 }
 
 @end
@@ -39,8 +41,8 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    UIBarButtonItem *autoItem = [[UIBarButtonItem alloc] initWithTitle:@"自动登录" style:UIBarButtonItemStyleBordered target:self action:@selector(autoResigerAction)];
-    [self.navigationItem setRightBarButtonItem:autoItem];
+    _autoItem = [[UIBarButtonItem alloc] initWithTitle:@"自动登录" style:UIBarButtonItemStyleBordered target:self action:@selector(autoResigerAction)];
+    [self.navigationItem setRightBarButtonItem:_autoItem];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
     tap.cancelsTouchesInView = YES;
@@ -106,6 +108,7 @@
 - (void)autoResigerAction
 {
     [self.view endEditing:YES];
+    _autoItem.enabled = NO;
     NSString *randString = @"";
     int i,j,k,b;
     char a[10][10],tmp[10];
@@ -147,6 +150,7 @@
             [self loginAction];
         }
         else {
+            _autoItem.enabled = YES;
             _passwordField.text = @"";
             _nameField.text = @"";
             [self showHint:@"注册失败,请重新生成账号"];
@@ -156,6 +160,7 @@
 
 - (void)resigerAction
 {
+    _autoItem.enabled = NO;
     if (_nameField.text.length == 0 || _passwordField.text.length == 0) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:@"用户名和密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
@@ -167,6 +172,7 @@
     [self showHudInView:self.view hint:@"注册中..."];
     [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:_nameField.text password:_passwordField.text withCompletion:^(NSString *username, NSString *password, EMError *error) {
         [self hideHud];
+        _autoItem.enabled = YES;
         if (!error) {
             [self loginAction];
         }
@@ -178,6 +184,7 @@
 
 - (void)loginAction
 {
+    _autoItem.enabled = NO;
     if (_nameField.text.length == 0 || _passwordField.text.length == 0) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:@"用户名和密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
@@ -185,21 +192,12 @@
         return;
     }
     
-//    //检测XXInfo.plist中得AppKey是否填写
-//    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-//    NSString *appKey = [infoDict objectForKey:@"EASEMOB_APPKEY"];
-//    if (appKey == nil || appKey.length == 0) {
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告" message:@"请在工程XXInfo.plist文件中添加AppKey。如果您还没有AppKey，请前往。。。注册" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        [alertView show];
-//        
-//        return;
-//    }
-    
     [self.view endEditing:YES];
     [self showHudInView:self.view hint:@"登录中..."];
     [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:_nameField.text password:_passwordField.text completion:
      ^(NSDictionary *loginInfo, EMError *error) {
          [self hideHud];
+         _autoItem.enabled = YES;
          if (error == nil && loginInfo != nil && [loginInfo count] > 0) {
              [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
          }

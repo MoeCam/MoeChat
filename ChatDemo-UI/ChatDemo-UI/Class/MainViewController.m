@@ -45,8 +45,6 @@
 
 //    self.view.backgroundColor = [UIColor redColor];
     self.title = @"消息列表";
-    _logoutItem = [[UIBarButtonItem alloc] initWithTitle:@"退出" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
-    [self.navigationItem setLeftBarButtonItem:_logoutItem];
     
     _chatListVC = [[ChatListViewController alloc] initWithStyle:UITableViewStylePlain];
     _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"消息列表" image:[UIImage imageNamed:@"Messages"] tag:0];
@@ -74,11 +72,14 @@
 {
     if (item.tag == 0) {
         self.title = @"消息列表";
+        [self.navigationItem setLeftBarButtonItem:nil];
         [self.navigationItem setRightBarButtonItem:nil];
     }
     else{
         self.title = @"好友列表";
         
+        _logoutItem = [[UIBarButtonItem alloc] initWithTitle:@"退出" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
+        [self.navigationItem setLeftBarButtonItem:_logoutItem];
         UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithTitle:@"添加好友" style:UIBarButtonItemStyleBordered target:_contactsVC action:@selector(addFriendAction)];
         [self.navigationItem setRightBarButtonItem:addItem];
     }

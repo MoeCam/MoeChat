@@ -48,9 +48,22 @@
     [_locationButton setImage:[UIImage imageNamed:@"chatBar_more_locationSelected"] forState:UIControlStateHighlighted];
     [_locationButton addTarget:self action:@selector(locationAction) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_locationButton];
+    
+    _takePicButton =[UIButton buttonWithType:UIButtonTypeCustom];
+    [_takePicButton setFrame:CGRectMake(insets * 4 + CHAT_BUTTON_SIZE * 3, 10, CHAT_BUTTON_SIZE , CHAT_BUTTON_SIZE)];
+    [_takePicButton setImage:[UIImage imageNamed:@"chatBar_more_photo"] forState:UIControlStateNormal];
+    [_takePicButton setImage:[UIImage imageNamed:@"chatBar_more_photoSelected"] forState:UIControlStateHighlighted];
+    [_takePicButton addTarget:self action:@selector(takePicAction) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_takePicButton];
 }
 
 #pragma mark - action
+
+- (void)takePicAction{
+    if(_delegate && [_delegate respondsToSelector:@selector(moreViewTakePicAction:)]){
+        [_delegate moreViewTakePicAction:self];
+    }
+}
 
 - (void)photoAction
 {
