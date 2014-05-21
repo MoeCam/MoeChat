@@ -491,9 +491,14 @@
     [[EaseMob sharedInstance].chatManager
      asyncStopRecordingAudioWithCompletion:^(EMChatVoice *voice, EMError *error){
          if (!error) {
-             [self sendAudioMessage:voice];
+             if (voice.duration <= 0) {
+                 [self showHint:@"录音时间过短"];
+             }
+             else{
+                 [self sendAudioMessage:voice];
+             }
          }else{
-             NSLog(@"结束录音失败");
+             [self showHint:@"录音失败，请重新操作"];
          }
          
      } onQueue:nil];
