@@ -12,7 +12,7 @@
     UIView *_moreView;
     UIView *_recordView;
     UITableView *_showTableView;
-    
+    UIButton *_showTextViewButton;
     NSString *_saveMessage;
 }
 
@@ -50,7 +50,6 @@
         _moreView = [_dependController chatBarMoreView];
         _showTableView = [_dependController chatBarTableView];
         _recordView = [_dependController chatBarRecordView];
-        
         // 调整位置到最下
         CGRect frame = self.frame;
         self.frame = CGRectMake(self.frame.origin.x, _dependController.view.frame.size.height - self.frame.size.height, self.frame.size.width, self.frame.size.height);
@@ -69,7 +68,12 @@
         _textView.backgroundColor = [UIColor whiteColor];
         [_textView.layer setCornerRadius:3.0];
         [_textView.layer setMasksToBounds:YES];
-        
+        _showTextViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _showTextViewButton.frame = _textView.bounds;
+        [_textView addSubview:_showTextViewButton];
+        [_showTextViewButton setHidden:YES];
+        [_showTextViewButton addTarget:self action:@selector(showKeyBoard)
+                      forControlEvents:UIControlEventTouchDown];
         [_moreButton setImage:[UIImage imageNamed:@"chatBar_more"] forState:UIControlStateNormal];
         [_moreButton setImage:[UIImage imageNamed:@"chatBar_moreSelected"] forState:UIControlStateHighlighted];
         
@@ -115,16 +119,22 @@
     self.recordButton.hidden = !isRecord;
 }
 
+- (void)showKeyBoard{
+    [self decideInputView:nil];
+    [_showTextViewButton setHidden:YES];
+}
+
 #pragma mark - action
 
 - (IBAction)moreButtonPressed:(UIButton *)sender
 {
     self.moreButton.selected = !self.moreButton.selected;
     
-    if (_dependController && [_dependController respondsToSelector:@selector(chatBarMoreButtonPressed)]) {
+    if (_dependController && [_dependController
+                              respondsToSelector:@selector(chatBarMoreButtonPressed)]) {
         [_dependController chatBarMoreButtonPressed];
     }
-
+    
     [self decideInputView:_moreView];
 }
 
@@ -132,7 +142,8 @@
 {
     self.switchButton.selected = !self.switchButton.selected;
     [self setupSubviewsForRecord:self.switchButton.selected];
-    if (_dependController && [_dependController respondsToSelector:@selector(chatBarSwitchButtonPressed)]) {
+    if (_dependController && [_dependController
+                              respondsToSelector:@selector(chatBarSwitchButtonPressed)]) {
         [_dependController chatBarSwitchButtonPressed];
     }
 }
@@ -405,8 +416,10 @@
     
     if (self.textView.internalTextView.inputView == usedView) {
         self.textView.internalTextView.inputView = nil;
+        [_showTextViewButton setHidden:YES];
     }else {
         self.textView.internalTextView.inputView = usedView;
+        [_showTextViewButton setHidden:NO];
     }
     
     [self.textView.internalTextView reloadInputViews];
