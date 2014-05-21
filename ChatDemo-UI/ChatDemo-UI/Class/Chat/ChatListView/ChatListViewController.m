@@ -71,8 +71,13 @@ UISearchDisplayDelegate
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    [self registerNotifications];
     [self reloadConversationList];
+}
+
+- (void) viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self unregisterNotifications];
 }
 
 - (void)didReceiveMemoryWarning
