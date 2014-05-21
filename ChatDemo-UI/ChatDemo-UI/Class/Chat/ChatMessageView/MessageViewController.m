@@ -319,7 +319,7 @@
 // 图片的bubble被点击
 -(void)chatImageCellBubblePressed:(EMMessageModel *)message
 {
-    id object = message.isSender ? message.image : message.imageRemoteURL;
+    id object = message.isSender ? message.image : (message.imageRemoteURL ? message.imageRemoteURL : [UIImage imageNamed:@"imageDownloadFail.png"]);
     [self.messageReadManager showBrowserWithImages:@[object]];
 }
 

@@ -48,8 +48,6 @@
     _tableView.dataSource = self;
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     [self.view addSubview:_tableView];
-    
-    [self reloadContacts];
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,8 +56,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc
+- (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
+    [self reloadContacts];
 }
 
 - (NSString *)currentUsername

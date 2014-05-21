@@ -71,11 +71,14 @@ NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleT
 {
     [super setModel:model];
     
+    UIImage *image = _model.thumbnailImage;
+    if (!image) {
+        image = [UIImage imageNamed:@"imageDownloadFail.png"];
+    }
     if (_model.isSender) {
-        self.imageView.image = _model.thumbnailImage;
+        self.imageView.image = image;
     }else{
-        [self.imageView setImageWithURL:_model.thumbnailRemoteURL placeholderImage:_model.thumbnailImage];// todo by du. 需要一张还没有下载好时，默认的图片
-//        self.imageView.image = [UIImage imageNamed:@"chat_location_preview"];
+        [self.imageView setImage:image];
     }
 }
 
