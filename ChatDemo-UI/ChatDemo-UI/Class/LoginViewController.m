@@ -105,6 +105,7 @@
 
 - (void)autoResigerAction
 {
+    [self.view endEditing:YES];
     NSString *randString = @"";
     int i,j,k,b;
     char a[10][10],tmp[10];
