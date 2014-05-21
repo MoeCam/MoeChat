@@ -22,7 +22,7 @@ NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleT
 {
     if (self = [super initWithFrame:frame]) {
         _imageView = [[UIImageView alloc] init];
-       [self addSubview:_imageView];
+        [self addSubview:_imageView];
     }
     
     return self;
@@ -32,8 +32,8 @@ NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleT
 {
     CGSize retSize = self.model.size;
     if (retSize.width == 0 || retSize.height == 0) {
-        retSize.width = 100;
-        retSize.height = 100;
+        retSize.width = MAX_SIZE;
+        retSize.height = MAX_SIZE;
     }
     if (retSize.width > retSize.height) {
         CGFloat height =  MAX_SIZE / retSize.width  *  retSize.height;
@@ -51,7 +51,7 @@ NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleT
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-   
+    
     CGRect frame = self.bounds;
     frame.size.width -= BUBBLE_ARROW_WIDTH;
     frame = CGRectInset(frame, BUBBLE_VIEW_PADDING, BUBBLE_VIEW_PADDING);
@@ -86,14 +86,18 @@ NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleT
 
 -(void)bubbleViewPressed:(id)sender
 {
-    [self routerEventWithName:kRouterEventImageBubbleTapEventName userInfo:@{KMESSAGEKEY:self.model}];
+    [self routerEventWithName:kRouterEventImageBubbleTapEventName
+                     userInfo:@{KMESSAGEKEY:self.model}];
 }
 
 
 +(CGFloat)heightForBubbleWithObject:(EMMessageModel *)object
 {
     CGSize retSize = object.thumbnailSize;
-    if (retSize.width > retSize.height) {
+    if (retSize.width == 0 || retSize.height == 0) {
+        retSize.width = MAX_SIZE;
+        retSize.height = MAX_SIZE;
+    }else if (retSize.width > retSize.height) {
         CGFloat height =  MAX_SIZE / retSize.width  *  retSize.height;
         retSize.height = height;
         retSize.width = MAX_SIZE;
