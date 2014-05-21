@@ -3,10 +3,18 @@ Breakpoints_v2.xcbkptlist
 ChatDemo-NonUI.xcscheme
 xcschememanagement.plist
 
-ChatDemo-UI/ChatDemo-UI.xcodeproj/xcuserdata/dhcdht.xcuserdatad/xcschemes/ChatDemo-UI.xcscheme
+EaseMobSDK/*
 
-ChatDemo-UI/ChatDemo-UI.xcodeproj/xcuserdata/dhcdht.xcuserdatad/xcschemes/xcschememanagement.plist
+EaseMobSDK/include/ChatService/EMChatManager/types/EMChatImage.h
 
-EaseMobSDK/lib/libEaseMobClientSDKLite.a
+EaseMobSDK/include/ChatService/EMChatManager/types/EMChatText.h
 
-ChatDemo-UI/EaseMobSDK/*
+EaseMobSDK/include/ChatService/EMChatManager/types/EMChatVideo.h
+
+EaseMobSDK/include/ChatService/EMChatManager/types/EMChatVoice.h
+
+EaseMobSDK/include/ChatService/EMChatManager/types/EMMessageBody.h
+
+EaseMobSDK/resources/bundle/EaseMob.bundle/XMPPCapabilities.momd/XMPPCapabilities 2.omo
+
+*.omo
