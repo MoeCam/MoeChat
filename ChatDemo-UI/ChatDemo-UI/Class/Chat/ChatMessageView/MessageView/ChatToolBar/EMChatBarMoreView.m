@@ -51,8 +51,8 @@
     
     _takePicButton =[UIButton buttonWithType:UIButtonTypeCustom];
     [_takePicButton setFrame:CGRectMake(insets * 4 + CHAT_BUTTON_SIZE * 3, 10, CHAT_BUTTON_SIZE , CHAT_BUTTON_SIZE)];
-    [_takePicButton setImage:[UIImage imageNamed:@"chatBar_more_photo"] forState:UIControlStateNormal];
-    [_takePicButton setImage:[UIImage imageNamed:@"chatBar_more_photoSelected"] forState:UIControlStateHighlighted];
+    [_takePicButton setImage:[UIImage imageNamed:@"chatBar_more_camera"] forState:UIControlStateNormal];
+    [_takePicButton setImage:[UIImage imageNamed:@"chatBar_more_cameraSelected"] forState:UIControlStateHighlighted];
     [_takePicButton addTarget:self action:@selector(takePicAction) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_takePicButton];
 }

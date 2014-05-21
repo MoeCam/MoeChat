@@ -162,7 +162,6 @@
     if (_imagePicker == nil) {
         _imagePicker = [[UIImagePickerController alloc] init];
         _imagePicker.delegate = self;
-        _imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     }
     
     return _imagePicker;
@@ -372,15 +371,18 @@
     [self keyBoardHidden];
     
     // 弹出照片选择
+    self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
 }
 
 - (void)moreViewTakePicAction:(EMChatBarMoreView *)moreView{
     [self keyBoardHidden];
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    [self presentViewController:picker animated:YES completion:NULL];
+//    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+//    picker.delegate = self;
+//    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//    [self presentViewController:picker animated:YES completion:NULL];
+    self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:self.imagePicker animated:YES completion:NULL];
 }
 
 - (void)moreViewFaceAction:(EMChatBarMoreView *)moreView
