@@ -177,15 +177,6 @@ UISearchDisplayDelegate
 {
         NSArray *conversationList = [[EaseMob sharedInstance].chatManager conversations];
         NSMutableArray *tmpArray = [NSMutableArray array];
-        for (EMConversation *con in conversationList) {
-            [con loadNumbersOfMessages:1 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
-            if (!con.messages || [con.messages count] == 0) {
-                [[EaseMob sharedInstance].chatManager removeConversationByChatter:con.chatter deleteMessages:YES];
-            }
-            else{
-                [tmpArray addObject:con];
-            }
-        }
         
         NSArray*sortArray = [tmpArray sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation* obj2){
             EMMessage *message1 = obj1.messages.lastObject;

@@ -95,6 +95,12 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [[EaseMob sharedInstance].chatManager stopPlayingAudio];
+    
+    //判断当前会话是否为空，若为空则删除该会话
+    NSArray *messages = [_conversation loadNumbersOfMessages:1 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
+    if (messages == nil || [messages count] == 0) {
+        [[EaseMob sharedInstance].chatManager removeConversationByChatter:_conversation.chatter deleteMessages:YES];
+    }
 }
 
 - (void)dealloc
