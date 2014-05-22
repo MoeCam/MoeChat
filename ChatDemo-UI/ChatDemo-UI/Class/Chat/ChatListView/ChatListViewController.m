@@ -316,8 +316,4 @@ UISearchDisplayDelegate
     }
 }
 
-- (void)didUnreadMessagesCountChanged{
-    
-}
-
 @end

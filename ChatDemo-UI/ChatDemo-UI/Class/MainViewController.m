@@ -15,7 +15,7 @@
 #import "AppDelegate.h"
 #import "EaseMob.h"
 
-@interface MainViewController ()<UITabBarDelegate>
+@interface MainViewController ()<UITabBarDelegate,IChatManagerDelegate>
 {
     UIBarButtonItem *_logoutItem;
     
@@ -53,6 +53,7 @@
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"好友列表" image:[UIImage imageNamed:@"Contacts"] tag:1];
     self.viewControllers = @[_chatListVC,_contactsVC];
     [[DataManager defaultManager] setContactsController:_contactsVC];
+    [self registerNotifications];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -64,6 +65,15 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)registerNotifications{
+    [self unregisterNotifications];
+    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+}
+
+-(void)unregisterNotifications{
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
 
 #pragma mark - 
@@ -85,6 +95,10 @@
     }
 }
 
+-(void)dealloc{
+    [self unregisterNotifications];
+}
+
 #pragma mark - action
 
 - (void)logout
@@ -99,6 +113,20 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
         }
     } onQueue:nil];
+}
+
+-(void)didUnreadMessagesCountChanged{
+    NSArray *conversations = [[[EaseMob sharedInstance] chatManager] conversations];
+    NSInteger unreadCount = 0;
+    for (EMConversation *conversation in conversations) {
+        unreadCount += conversation.unreadMessagesCount;
+    }
+    UIViewController *vc = [self.viewControllers objectAtIndex:0];
+    if (unreadCount > 0) {
+        vc.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",unreadCount];
+    }else{
+        vc.tabBarItem.badgeValue = nil;
+    }
 }
 
 @end

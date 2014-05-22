@@ -10,7 +10,6 @@
 
 #import "UIViewController+HUD.h"
 #import "EMError.h"
-
 @interface LoginViewController ()
 {
     UITextField *_nameField;
@@ -35,7 +34,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     self.title = @"登录";
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;

@@ -388,6 +388,9 @@
     }
 }
 
+
+
+
 #pragma mark - EMChatBarMoreViewDelegate
 
 - (void)moreViewPhotoAction:(EMChatBarMoreView *)moreView
