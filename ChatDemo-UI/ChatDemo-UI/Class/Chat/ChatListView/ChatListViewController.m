@@ -102,6 +102,7 @@ UISearchDisplayDelegate
     cell.detailMsg = [self subTitleMessageByConversation:conversation];
     cell.time = [self lastMessageTimeByConversation:conversation];
     // cell.imageURL = [NSURL URLWithString:contact.avatar];
+    cell.unreadCount = [self unreadMessageCountByConversation:conversation];
     cell.placeholderImage = [UIImage imageNamed:@"account_defaultHead.png"];
     return cell;
 }
@@ -229,6 +230,13 @@ UISearchDisplayDelegate
     return ret;
 }
 
+- (NSInteger)unreadMessageCountByConversation:(EMConversation *)conversation{
+    NSInteger ret = 0;
+    ret = conversation.unreadMessagesCount;
+    
+    return  ret;
+}
+
 // 得到最后消息文字或者类型
 -(NSString *)subTitleMessageByConversation:(EMConversation *)conversation{
     NSString *ret = @"";
@@ -306,6 +314,10 @@ UISearchDisplayDelegate
     else{
         return;
     }
+}
+
+- (void)didUnreadMessagesCountChanged{
+    
 }
 
 @end

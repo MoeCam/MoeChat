@@ -72,8 +72,8 @@
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
     
-    // 设置当前conversation 接收到message不再回调didUnreadMessagesCountChanged;
-    _conversation.enableUnreadMessagesCountEvent = NO;
+    // 设置当前conversation的所有message为已读
+    [_conversation markMessagesAsRead:YES];
     
 #warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
@@ -89,6 +89,7 @@
     rect.size.height = height;
     self.tableView.frame = rect;
     [self.view addSubview:self.chatBar];
+    [self setupBarButtonItem];
 }
 
 - (void)setupBarButtonItem{
@@ -96,7 +97,7 @@
                                               initWithBarButtonSystemItem:
                                               UIBarButtonSystemItemTrash
                                               target:self
-                                              action:@selector(removeAllMessages)];
+                                              action:@selector(removeAllMessages:)];
 }
 
 
@@ -128,11 +129,6 @@
 {
 #warning 以下第一行代码必须写，将self从ChatManager的代理中移除
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
-    
-    // 该conversation dealloc后，继续相应unreadCount 变化回调
-    _conversation.enableUnreadMessagesCountEvent = YES;
-    // 设置当前conversation的所有message为已读
-    [_conversation markMessagesAsRead:YES];
 }
 
 #pragma mark - getter
@@ -388,7 +384,7 @@
 -(void)didReceiveMessage:(EMMessage *)message
 {
     if ([_conversation loadMessage:message.messageId]) {
-          [self addChatDataToMessage:message];
+        [self addChatDataToMessage:message];
     }
 }
 
@@ -406,10 +402,10 @@
 
 - (void)moreViewTakePicAction:(EMChatBarMoreView *)moreView{
     [self keyBoardHidden];
-//    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-//    picker.delegate = self;
-//    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//    [self presentViewController:picker animated:YES completion:NULL];
+    //    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    //    picker.delegate = self;
+    //    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    //    [self presentViewController:picker animated:YES completion:NULL];
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
 }
@@ -443,7 +439,7 @@
     EMMessage *tempMessage = [EMChatSendHelper sendLocationLatitude:latitude
                                                           longitude:longitude
                                                             address:address
-                                                          toUsername:_conversation.chatter];
+                                                         toUsername:_conversation.chatter];
     [self addChatDataToMessage:tempMessage];
 }
 
@@ -699,7 +695,12 @@
 }
 
 - (void)removeAllMessages:(id)sender{
-    [_conversation removeAllMessages];
+    if (_conversation.messages.count > 0) {
+        [_conversation loadAllMessages];
+        [_conversation removeAllMessages];
+        [_dataSource removeAllObjects];
+        [self.tableView reloadData];
+    }
 }
 
 - (void)showMenuViewController:(UIView *)showInView andIndexPath:(NSIndexPath *)indexPath messageType:(MessageBodyType)messageType
