@@ -185,32 +185,44 @@ UISearchDisplayDelegate
 {
     _isReloadData = YES;
     NSArray *conversationList = [[EaseMob sharedInstance].chatManager conversations];
-    
-    NSArray*sortArray = [conversationList sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation* obj2){
-        if (obj1.messages.count == 0) {
-            [obj1 loadNumbersOfMessages:1 before:[[NSDate date]
-                                                  timeIntervalSince1970] * 1000 + 100000];
-        }
+    NSArray*sortArray = nil;
+    if (conversationList.count > 1) {
+        sortArray = [conversationList sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation* obj2){
+            if (obj1.messages.count == 0) {
+                [obj1 loadNumbersOfMessages:1 before:[[NSDate date]
+                                                      timeIntervalSince1970] * 1000 + 100000];
+            }
+            
+            if (obj2.messages.count == 0) {
+                [obj2 loadNumbersOfMessages:1 before:[[NSDate date]
+                                                      timeIntervalSince1970] * 1000 + 100000];
+            }
+            EMMessage *message1 = obj1.messages.lastObject;
+            EMMessage *message2 = obj2.messages.lastObject;
+            if(message1.timestamp > message2.timestamp) {
+                return(NSComparisonResult)NSOrderedAscending;
+            }else {
+                return(NSComparisonResult)NSOrderedDescending;
+            }
+        }];
         
-        if (obj2.messages.count == 0) {
-            [obj2 loadNumbersOfMessages:1 before:[[NSDate date]
-                                                  timeIntervalSince1970] * 1000 + 100000];
+    }else {
+        sortArray = conversationList;
+        EMConversation *tempConversation = sortArray.lastObject;
+        if (tempConversation.messages.count == 0) {
+            [tempConversation loadNumbersOfMessages:1
+                                                 before:[[NSDate date]
+                                                         timeIntervalSince1970] * 1000 + 100000];
+            
         }
-        EMMessage *message1 = obj1.messages.lastObject;
-        EMMessage *message2 = obj2.messages.lastObject;
-        if(message1.timestamp > message2.timestamp) {
-            return(NSComparisonResult)NSOrderedAscending;
-        }else {
-            return(NSComparisonResult)NSOrderedDescending;
-        }
-    }];
+    }
     if (_conversations) {
         [_conversations removeAllObjects];
         [_conversations addObjectsFromArray:sortArray];
     }else {
         _conversations = [[NSMutableArray alloc] initWithArray:sortArray];
     }
-
+    
     [self reloadTableView];
     _isReloadData = NO;
 }
