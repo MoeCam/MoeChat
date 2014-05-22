@@ -204,43 +204,54 @@ UISearchDisplayDelegate
 // 得到最后消息时间
 -(NSString *)lastMessageTimeByConversation:(EMConversation *)conversation{
     NSString *ret = @"";
-    EMMessage *lastMessage =[conversation
-                             loadNumbersOfMessages:3
-                             before:[[NSDate date]
-                                     timeIntervalSince1970InMilliSecond] + 100000].lastObject;
+    EMMessage *lastMessage = nil;
+    if (conversation.messages) {
+        lastMessage = conversation.messages.lastObject;
+    }else {
+        lastMessage  =[conversation
+                       loadNumbersOfMessages:3
+                       before:[[NSDate date]
+                               timeIntervalSince1970InMilliSecond] + 100000].lastObject;
+    }
     if (lastMessage) {
         ret = [NSDate formattedTimeFromTimeInterval:lastMessage.timestamp];
     }
-    else{
-        ret = [[NSDate dateWithTimeIntervalInMilliSecondSince1970:[[NSDate date] timeIntervalSince1970]] formattedTime];
-    }
+    
     return ret;
 }
 
 // 得到最后消息文字或者类型
 -(NSString *)subTitleMessageByConversation:(EMConversation *)conversation{
     NSString *ret = @"";
-    EMMessage *lastMessage =[conversation
-                             loadNumbersOfMessages:3
-                             before:[[NSDate date]
-                                     timeIntervalSince1970InMilliSecond] + 1000000].lastObject;
-    EMMessageBody *messageBody = lastMessage.messageBodies.lastObject;
-    switch (messageBody.messageBodyType) {
-        case eMessageBodyType_Image:{
-            ret = @"[图片]";
-        }
-            break;
-        case eMessageBodyType_Text:{
-            ret = ((EMTextMessageBody *)messageBody).text;
-        }
-            break;
-        case eMessageBodyType_Voice:{
-            ret = @"[声音]";
-        }
-            break;
-        default:
-            break;
+    EMMessage *lastMessage = nil;
+    if (conversation.messages) {
+        lastMessage = conversation.messages.lastObject;
+    }else {
+        lastMessage  =[conversation
+                       loadNumbersOfMessages:3
+                       before:[[NSDate date]
+                               timeIntervalSince1970InMilliSecond] + 100000].lastObject;
     }
+    if (lastMessage) {
+        EMMessageBody *messageBody = lastMessage.messageBodies.lastObject;
+        switch (messageBody.messageBodyType) {
+            case eMessageBodyType_Image:{
+                ret = @"[图片]";
+            }
+                break;
+            case eMessageBodyType_Text:{
+                ret = ((EMTextMessageBody *)messageBody).text;
+            }
+                break;
+            case eMessageBodyType_Voice:{
+                ret = @"[声音]";
+            }
+                break;
+            default:
+                break;
+        }
+    }
+    
     return ret;
 }
 
