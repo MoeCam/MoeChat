@@ -42,7 +42,7 @@
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-
+//    [self didUnreadMessagesCountChanged];
 //    self.view.backgroundColor = [UIColor redColor];
     self.title = @"消息列表";
     
