@@ -10,7 +10,7 @@
 
 #import "UIViewController+HUD.h"
 #import "EMError.h"
-@interface LoginViewController ()
+@interface LoginViewController ()<UITextFieldDelegate>
 {
     UITextField *_nameField;
     UITextField *_passwordField;
@@ -50,6 +50,7 @@
     _nameField.borderStyle = UITextBorderStyleRoundedRect;
     _nameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _nameField.placeholder = @"用户名";
+    _nameField.delegate = self;
     UIImageView *nameLeftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 16)];
     nameLeftView.image = [UIImage imageNamed:@"user"];
     nameLeftView.contentMode = UIViewContentModeScaleAspectFit;
@@ -203,6 +204,10 @@
              [self showHint:@"登录失败"];
          }
      } onQueue:nil];
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    _passwordField.text = @"";
 }
 
 @end
