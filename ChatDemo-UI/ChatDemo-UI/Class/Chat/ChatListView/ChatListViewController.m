@@ -293,8 +293,13 @@ UISearchDisplayDelegate
     _isNeedRefresh = YES;
     if (_reloadtimer == nil && !_isReloadData && _isNeedRefresh) {
         _isNeedRefresh = NO;
-        _reloadtimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerStop:) userInfo:nil repeats:NO];
-        NSRunLoop *main=[NSRunLoop currentRunLoop];
+        _reloadtimer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                        target:self
+                                                      selector:@selector(timerStop:)
+                                                      userInfo:nil
+                                                       repeats:NO];
+        
+        NSRunLoop *main = [NSRunLoop currentRunLoop];
         [main addTimer:_reloadtimer forMode:NSRunLoopCommonModes];
         [self reloadConversationList];
     }

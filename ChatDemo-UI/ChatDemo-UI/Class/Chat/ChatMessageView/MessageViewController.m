@@ -56,7 +56,7 @@
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:talker];
         
         //通过会话管理者获取已收发消息
-        NSArray *chats = [_conversation loadNumbersOfMessages:10 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
+        NSArray *chats = [_conversation loadNumbersOfMessages:5 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
         [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
     }
     return self;
@@ -91,14 +91,30 @@
     [self.view addSubview:self.chatBar];
 }
 
+- (void)setupBarButtonItem{
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+                                              initWithBarButtonSystemItem:
+                                              UIBarButtonSystemItemTrash
+                                              target:self
+                                              action:@selector(removeAllMessages)];
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self scrollViewToBottom:YES];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
+    
     [[EaseMob sharedInstance].chatManager stopPlayingAudio];
     
     //判断当前会话是否为空，若为空则删除该会话
@@ -673,9 +689,17 @@
 
 - (void)scrollViewToBottom:(BOOL)animated
 {
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(self.dataSource.count - 1) inSection:0];
-    
-    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    if (self.dataSource.count > 0) {
+        NSIndexPath *indexPath = [NSIndexPath
+                                  indexPathForRow:(self.dataSource.count - 1)
+                                  inSection:0];
+        
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    }
+}
+
+- (void)removeAllMessages:(id)sender{
+    [_conversation removeAllMessages];
 }
 
 - (void)showMenuViewController:(UIView *)showInView andIndexPath:(NSIndexPath *)indexPath messageType:(MessageBodyType)messageType
