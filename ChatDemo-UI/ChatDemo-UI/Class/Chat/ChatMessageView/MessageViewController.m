@@ -71,7 +71,7 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
- 
+    
     
 #warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
@@ -697,12 +697,22 @@
 }
 
 - (void)removeAllMessages:(id)sender{
-    if (_conversation.messages.count > 0) {
-        [_conversation loadAllMessages];
-        [_conversation removeAllMessages];
-        [_dataSource removeAllObjects];
-        [self.tableView reloadData];
-    }
+    [WCAlertView showAlertWithTitle:@"提示"
+                            message:@"请确认删除"
+                 customizationBlock:^(WCAlertView *alertView) {
+                     
+                 } completionBlock:
+     ^(NSUInteger buttonIndex, WCAlertView *alertView) {
+         if (buttonIndex == 1) {
+             if (_conversation.messages.count > 0) {
+                 [_conversation loadAllMessages];
+                 [_conversation removeAllMessages];
+                 [_dataSource removeAllObjects];
+                 [self.tableView reloadData];
+             }
+         }
+     } cancelButtonTitle:@"取消"
+                  otherButtonTitles:@"确定", nil];
 }
 
 - (void)showMenuViewController:(UIView *)showInView andIndexPath:(NSIndexPath *)indexPath messageType:(MessageBodyType)messageType
