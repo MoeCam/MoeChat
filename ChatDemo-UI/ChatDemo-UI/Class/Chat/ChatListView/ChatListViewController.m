@@ -25,6 +25,10 @@ UISearchDisplayDelegate
     NSMutableArray *_conversations;
     SRRefreshView   *_slimeView;
     NSString *_currentUsername;
+    
+    NSTimer *_reloadtimer;//当==nil时，说明已停止
+    BOOL _isReloadData;//刷新数据完成
+    BOOL _isNeedRefresh;//是否需要刷新
 }
 
 @property (nonatomic, strong) UISearchDisplayController *searchDisplayController;
@@ -42,6 +46,9 @@ UISearchDisplayDelegate
 {
     self = [super initWithStyle:style];
     if (self) {
+        _reloadtimer = nil;
+        _isNeedRefresh = NO;
+        _isReloadData = NO;
     }
     return self;
 }
@@ -175,6 +182,7 @@ UISearchDisplayDelegate
 #pragma mark - actions
 -(void)reloadConversationList
 {
+    _isReloadData = YES;
     NSArray *conversationList = [[EaseMob sharedInstance].chatManager conversations];
     
     NSArray*sortArray = [conversationList sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation* obj2){
@@ -194,6 +202,7 @@ UISearchDisplayDelegate
     }
 
     [self reloadTableView];
+    _isReloadData = NO;
 }
 
 // 刷新table
@@ -272,10 +281,26 @@ UISearchDisplayDelegate
 
 #pragma mark - IChatManagerDelegate
 
+- (void)timerStop:(id)sender
+{
+    [_reloadtimer invalidate];
+    _reloadtimer = nil;
+}
+
 // 接收到消息
 -(void)didReceiveMessage:(EMMessage *)message
 {
-    [self reloadConversationList];
+    _isNeedRefresh = YES;
+    if (_reloadtimer == nil && !_isReloadData && _isNeedRefresh) {
+        _isNeedRefresh = NO;
+        _reloadtimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerStop:) userInfo:nil repeats:NO];
+        NSRunLoop *main=[NSRunLoop currentRunLoop];
+        [main addTimer:_reloadtimer forMode:NSRunLoopCommonModes];
+        [self reloadConversationList];
+    }
+    else{
+        return;
+    }
 }
 
 @end
