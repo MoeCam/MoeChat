@@ -74,7 +74,6 @@
 		908689E6192B42290059FC48 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 90868916192B42290059FC48 /* AppDelegate.m */; };
 		908689E7192B42290059FC48 /* ChatListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9086891A192B42290059FC48 /* ChatListCell.m */; };
 		908689E8192B42290059FC48 /* ChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9086891C192B42290059FC48 /* ChatListViewController.m */; };
-		908689E9192B42290059FC48 /* EMMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9086891E192B42290059FC48 /* EMMenuItem.m */; };
 		908689EA192B42290059FC48 /* sr_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 90868920192B42290059FC48 /* sr_refresh.png */; };
 		908689EB192B42290059FC48 /* sr_refresh@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 90868921192B42290059FC48 /* sr_refresh@2X.png */; };
 		908689EC192B42290059FC48 /* SRRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90868924192B42290059FC48 /* SRRefreshView.m */; };
@@ -423,8 +422,6 @@
 		9086891A192B42290059FC48 /* ChatListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListCell.m; sourceTree = "<group>"; };
 		9086891B192B42290059FC48 /* ChatListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatListViewController.h; sourceTree = "<group>"; };
 		9086891C192B42290059FC48 /* ChatListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListViewController.m; sourceTree = "<group>"; };
-		9086891D192B42290059FC48 /* EMMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMenuItem.h; sourceTree = "<group>"; };
-		9086891E192B42290059FC48 /* EMMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMenuItem.m; sourceTree = "<group>"; };
 		90868920192B42290059FC48 /* sr_refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sr_refresh.png; sourceTree = "<group>"; };
 		90868921192B42290059FC48 /* sr_refresh@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sr_refresh@2X.png"; sourceTree = "<group>"; };
 		90868922192B42290059FC48 /* SRDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRDefine.h; sourceTree = "<group>"; };
@@ -1020,8 +1017,6 @@
 				9086891A192B42290059FC48 /* ChatListCell.m */,
 				9086891B192B42290059FC48 /* ChatListViewController.h */,
 				9086891C192B42290059FC48 /* ChatListViewController.m */,
-				9086891D192B42290059FC48 /* EMMenuItem.h */,
-				9086891E192B42290059FC48 /* EMMenuItem.m */,
 				9086891F192B42290059FC48 /* SlimeRefresh */,
 			);
 			path = ChatListView;
@@ -1909,7 +1904,6 @@
 				3C233EF119138B5A009A65EF /* SDImageCache.m in Sources */,
 				3C233F3E19138C25009A65EF /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
 				3C233F4919138C25009A65EF /* PSTGridLayoutRow.m in Sources */,
-				908689E9192B42290059FC48 /* EMMenuItem.m in Sources */,
 				3C233F4819138C25009A65EF /* PSTGridLayoutItem.m in Sources */,
 				3C233EF319138B5A009A65EF /* SDWebImageDecoder.m in Sources */,
 				908689EE192B42290059FC48 /* EMChatSendHelper.m in Sources */,
@@ -2077,7 +2071,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: EaseMob Inc.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shaocong 周 (TBBR2GCVG6)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ChatDemo-UI/ChatDemo-UI-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -2097,7 +2091,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4134972A-ED18-42C5-A28B-F80860CA8BEF";
+				PROVISIONING_PROFILE = "D37D1582-9A25-4FFD-9E98-B780CC50FCA8";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -2109,7 +2103,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: EaseMob Inc.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shaocong 周 (TBBR2GCVG6)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ChatDemo-UI/ChatDemo-UI-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -2128,7 +2122,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4134972A-ED18-42C5-A28B-F80860CA8BEF";
+				PROVISIONING_PROFILE = "D37D1582-9A25-4FFD-9E98-B780CC50FCA8";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;

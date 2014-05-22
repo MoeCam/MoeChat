@@ -13,7 +13,6 @@
 #import "EMChatBarMoreView.h"
 #import "EMRecordView.h"
 #import "EMFaceView.h"
-#import "EMMenuItem.h"
 #import "EMChatViewCell.h"
 #import "EMChatTimeCell.h"
 #import "EMChatSendHelper.h"
@@ -28,6 +27,7 @@
     UIMenuController *_menuController;
     UIMenuItem *_copyMenuItem;
     UIMenuItem *_deleteMenuItem;
+    NSIndexPath *_longPressIndexPath;
 }
 
 @property (strong, nonatomic) NSMutableArray *dataSource;//tableView数据源
@@ -273,6 +273,7 @@
         if ([object isKindOfClass:[EMMessageModel class]]) {
             EMChatViewCell *cell = (EMChatViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
             [cell becomeFirstResponder];
+            _longPressIndexPath = indexPath;
             [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:cell.message.type];
         }
     }
@@ -584,32 +585,37 @@
 {
     // todo by du. 复制
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    UIMenuController *menuController = (UIMenuController *)sender;
-    EMMenuItem *item = menuController.menuItems.lastObject;
-    if (item.indexPath.row > 0) {
-        EMMessageModel * model = [self.dataSource objectAtIndex:item.indexPath.row];
+    if (_longPressIndexPath.row > 0) {
+        EMMessageModel *model = [self.dataSource objectAtIndex:_longPressIndexPath.row];
         pasteboard.string = model.content;
     }
+    
+    _longPressIndexPath = nil;
 }
 
-- (void)deleteMenuAction:(id)sender{
-    UIMenuController *menuController = (UIMenuController *)sender;
-    EMMenuItem *item = menuController.menuItems.lastObject;
-    NSMutableArray *needDeleteIndexPaths = [[NSMutableArray alloc] initWithCapacity:0];
-    if (item.indexPath.row > 0) {
-        EMMessageModel * model = [self.dataSource objectAtIndex:item.indexPath.row];
-        [_conversation removeMessage:model.messageId];
-        
-        [self.dataSource removeObject:model];
-        if ([[self.dataSource objectAtIndex:item.indexPath.row - 1] isKindOfClass:[NSString class]]) {
-            [self.dataSource removeObjectAtIndex:item.indexPath.row - 1];
-            NSIndexPath *dateIndexPath = [NSIndexPath indexPathForRow:item.indexPath.row - 1 inSection:item.indexPath.section];
-            [needDeleteIndexPaths addObject:dateIndexPath];
+- (void)deleteMenuAction:(id)sender
+{
+    if (_longPressIndexPath && _longPressIndexPath.row > 0) {
+        EMMessageModel * message = [self.dataSource objectAtIndex:_longPressIndexPath.row];
+        NSMutableArray *messages = [NSMutableArray arrayWithObjects:message, nil];
+        [_conversation removeMessage:message.messageId];
+        NSMutableArray *indexPaths = [NSMutableArray arrayWithObjects:_longPressIndexPath, nil];;
+        if (_longPressIndexPath.row - 1 >= 0) {
+            id nextMessage = nil;
+            id prevMessage = [self.dataSource objectAtIndex:(_longPressIndexPath.row - 1)];
+            if (_longPressIndexPath.row + 1 < [self.dataSource count]) {
+                nextMessage = [self.dataSource objectAtIndex:(_longPressIndexPath.row + 1)];
+            }
+            if ((!nextMessage || [nextMessage isKindOfClass:[NSString class]]) && [prevMessage isKindOfClass:[NSString class]]) {
+                [messages addObject:prevMessage];
+                [indexPaths addObject:[NSIndexPath indexPathForRow:(_longPressIndexPath.row - 1) inSection:0]];
+            }
         }
-        [needDeleteIndexPaths addObject:item.indexPath];
-        
-        [self.tableView deleteRowsAtIndexPaths:needDeleteIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [self.dataSource removeObjectsInArray:messages];
+        [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
     }
+    
+    _longPressIndexPath = nil;
 }
 
 #pragma mark - private
