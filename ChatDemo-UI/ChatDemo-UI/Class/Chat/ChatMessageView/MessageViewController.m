@@ -24,6 +24,11 @@
 #import "NSDate+Category.h"
 
 @interface MessageViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, EMChatToolBarDelegate, EMChatBarMoreViewDelegate, EMRecordDelegate, EMFaceDelegate, LocationDelegate>
+{
+    UIMenuController *_menuController;
+    UIMenuItem *_copyMenuItem;
+    UIMenuItem *_deleteMenuItem;
+}
 
 @property (strong, nonatomic) NSMutableArray *dataSource;//tableView数据源
 @property (strong, nonatomic) UITableView *tableView;
@@ -51,7 +56,7 @@
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:talker];
         
         //通过会话管理者获取已收发消息
-        NSArray *chats = [_conversation loadNumbersOfMessages:5 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
+        NSArray *chats = [_conversation loadNumbersOfMessages:10 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
         [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
     }
     return self;
@@ -267,7 +272,8 @@
         id object = [self.dataSource objectAtIndex:indexPath.row];
         if ([object isKindOfClass:[EMMessageModel class]]) {
             EMChatViewCell *cell = (EMChatViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-            [self showMenuViewController:cell.bubbleView andIndexPath:indexPath];
+            [cell becomeFirstResponder];
+            [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:cell.message.type];
         }
     }
 }
@@ -574,12 +580,19 @@
 
 #pragma mark - MenuItem actions
 
-- (void)handleCopyCell:(id)sender
+- (void)copyMenuAction:(id)sender
 {
     // todo by du. 复制
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    UIMenuController *menuController = (UIMenuController *)sender;
+    EMMenuItem *item = menuController.menuItems.lastObject;
+    if (item.indexPath.row > 0) {
+        EMMessageModel * model = [self.dataSource objectAtIndex:item.indexPath.row];
+        pasteboard.string = model.content;
+    }
 }
 
-- (void)handleDeleteCell:(id)sender{
+- (void)deleteMenuAction:(id)sender{
     UIMenuController *menuController = (UIMenuController *)sender;
     EMMenuItem *item = menuController.menuItems.lastObject;
     NSMutableArray *needDeleteIndexPaths = [[NSMutableArray alloc] initWithCapacity:0];
@@ -659,22 +672,27 @@
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 
-- (void)showMenuViewController:(UIView*)showInView andIndexPath:(NSIndexPath *)indexPath
+- (void)showMenuViewController:(UIView *)showInView andIndexPath:(NSIndexPath *)indexPath messageType:(MessageBodyType)messageType
 {
-    [showInView becomeFirstResponder];
+    if (_menuController == nil) {
+        _menuController = [UIMenuController sharedMenuController];
+    }
+    if (_copyMenuItem == nil) {
+        _copyMenuItem = [[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyMenuAction:)];
+    }
+    if (_deleteMenuItem == nil) {
+        _deleteMenuItem = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMenuAction:)];
+    }
     
-    EMMenuItem *copy = [[EMMenuItem alloc] initWithTitle:@"复制" action:@selector(handleCopyCell:)];
-    copy.indexPath = indexPath;
-    EMMenuItem *delete = [[EMMenuItem alloc] initWithTitle:@"删除" action:@selector(handleDeleteCell:)];
-    delete.indexPath = indexPath;
-    UIMenuController *menu = [UIMenuController sharedMenuController];
-    [menu setMenuItems:[NSArray arrayWithObjects:copy, delete, nil]];
-    CGRect frame = showInView.frame;
-    frame.origin.y = 0;
-    frame.origin.x = 0;
-    frame = [showInView convertRect:frame toView:self.view];
-    [menu setTargetRect:frame inView:self.view];
-    [menu setMenuVisible:YES animated:YES];
+    if (messageType == eMessageBodyType_Text) {
+        [_menuController setMenuItems:@[_copyMenuItem, _deleteMenuItem]];
+    }
+    else{
+        [_menuController setMenuItems:@[_deleteMenuItem]];
+    }
+    
+    [_menuController setTargetRect:showInView.frame inView:showInView.superview];
+    [_menuController setMenuVisible:YES animated:YES];
 }
 
 #pragma mark - send message

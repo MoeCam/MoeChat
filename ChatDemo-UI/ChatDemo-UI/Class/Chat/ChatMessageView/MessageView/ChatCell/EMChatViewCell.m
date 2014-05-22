@@ -21,6 +21,11 @@
     return self;
 }
 
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
 -(void)layoutSubviews
 {
     [super layoutSubviews];

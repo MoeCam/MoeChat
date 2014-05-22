@@ -29,7 +29,7 @@
 @property (nonatomic, strong) NSString *username;
 
 //text
-@property (nonatomic, strong) NSString * content;
+@property (nonatomic, strong) NSString *content;
 
 //image
 @property (nonatomic) CGSize size;

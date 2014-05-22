@@ -175,26 +175,25 @@ UISearchDisplayDelegate
 #pragma mark - actions
 -(void)reloadConversationList
 {
-        NSArray *conversationList = [[EaseMob sharedInstance].chatManager conversations];
-        NSMutableArray *tmpArray = [NSMutableArray array];
-        
-        NSArray*sortArray = [tmpArray sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation* obj2){
-            EMMessage *message1 = obj1.messages.lastObject;
-            EMMessage *message2 = obj2.messages.lastObject;
-            if(message1.timestamp > message2.timestamp) {
-                return(NSComparisonResult)NSOrderedAscending;
-            }else {
-                return(NSComparisonResult)NSOrderedDescending;
-            }
-        }];
-        if (_conversations) {
-            [_conversations removeAllObjects];
-            [_conversations addObjectsFromArray:sortArray];
-        }else {
-            _conversations = [[NSMutableArray alloc] initWithArray:sortArray];
-        }
+    NSArray *conversationList = [[EaseMob sharedInstance].chatManager conversations];
     
-        [self reloadTableView];
+    NSArray*sortArray = [conversationList sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation* obj2){
+        EMMessage *message1 = obj1.messages.lastObject;
+        EMMessage *message2 = obj2.messages.lastObject;
+        if(message1.timestamp > message2.timestamp) {
+            return(NSComparisonResult)NSOrderedAscending;
+        }else {
+            return(NSComparisonResult)NSOrderedDescending;
+        }
+    }];
+    if (_conversations) {
+        [_conversations removeAllObjects];
+        [_conversations addObjectsFromArray:sortArray];
+    }else {
+        _conversations = [[NSMutableArray alloc] initWithArray:sortArray];
+    }
+
+    [self reloadTableView];
 }
 
 // 刷新table
