@@ -98,7 +98,6 @@
 		90EF2CED192F2B4E00BDC549 /* sr_refresh@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */; };
 		90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */; };
 		90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */; };
-		90EF2CFA192F321A00BDC549 /* QXSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CF9192F321A00BDC549 /* QXSearchBar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -311,8 +310,6 @@
 		90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRRefreshView.m; sourceTree = "<group>"; };
 		90EF2CEA192F2B4E00BDC549 /* SRSlimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRSlimeView.h; sourceTree = "<group>"; };
 		90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRSlimeView.m; sourceTree = "<group>"; };
-		90EF2CF8192F321A00BDC549 /* QXSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QXSearchBar.h; sourceTree = "<group>"; };
-		90EF2CF9192F321A00BDC549 /* QXSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QXSearchBar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -765,8 +762,6 @@
 		90EF2CF4192F2F6400BDC549 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
-				90EF2CF8192F321A00BDC549 /* QXSearchBar.h */,
-				90EF2CF9192F321A00BDC549 /* QXSearchBar.m */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -902,7 +897,6 @@
 				90911105192EEAED008A48AA /* PSTGridLayoutItem.m in Sources */,
 				9091110B192EEAED008A48AA /* SDImageCache.m in Sources */,
 				90911110192EEAED008A48AA /* SDWebImageManager.m in Sources */,
-				90EF2CFA192F321A00BDC549 /* QXSearchBar.m in Sources */,
 				909110FD192EEAED008A48AA /* PSTCollectionViewCell.m in Sources */,
 				909110F6192EEAED008A48AA /* MWPhotoBrowser.m in Sources */,
 				909110FF192EEAED008A48AA /* PSTCollectionViewData.m in Sources */,

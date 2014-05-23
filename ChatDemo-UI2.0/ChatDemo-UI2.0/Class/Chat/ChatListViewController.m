@@ -9,7 +9,7 @@
 #import "ChatListViewController.h"
 #import "SRRefreshView.h"
 #import "ChatListCell.h"
-#import "QXSearchBar.h"
+
 
 @interface ChatListViewController ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,UISearchDisplayDelegate,SRRefreshDelegate>{
     NSMutableArray  *_chatList;
@@ -17,8 +17,7 @@
 }
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) QXSearchBar *searchBar;
-@property (nonatomic, strong) UISearchDisplayController *searchController;
+@property (nonatomic, strong) UISearchBar *searchBar;
 
 @end
 
@@ -71,19 +70,30 @@
     return _tableView;
 }
 
-- (QXSearchBar *)searchBar{
+- (UISearchBar *)searchBar{
     if (!_searchBar) {
-        _searchBar = [[QXSearchBar alloc]
+        _searchBar = [[UISearchBar alloc]
                       initWithFrame: CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 44)];
         _searchBar.delegate = self;
         _searchBar.placeholder = @"搜索";
-        self.searchController = [[UISearchDisplayController alloc]
-                                        initWithSearchBar:_searchBar
-                                        contentsController:self];
-
-        self.searchController.delegate = self;
+        for (UIView *subView in _searchBar.subviews) {
+            if ([subView isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
+                [subView removeFromSuperview];
+            }
+            
+            if ([subView isKindOfClass:NSClassFromString(@"UISearchBarTextField")]) {
+                UITextField *textField = (UITextField *)subView;
+                [textField setBorderStyle:UITextBorderStyleNone];
+                textField.background = nil;
+                textField.frame = CGRectMake(8, 8, _searchBar.bounds.size.width - 2* 8,
+                                                    _searchBar.bounds.size.height - 2* 8);
+                textField.layer.cornerRadius = 6;
+                
+                textField.clipsToBounds = YES;
+                textField.backgroundColor = [UIColor whiteColor];
+            }
+        }
     }
-    
     return _searchBar;
 }
 
