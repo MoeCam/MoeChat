@@ -74,9 +74,12 @@
           NSFontAttributeName, nil]];
         
     }else{
-        nav.navigationBar.barStyle = UIBarStyleBlack;
+        nav.navigationBar.barStyle = UIBarStyleDefault;
+        nav.navigationBar.tintColor = [UIColor redColor];
         [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"titleBar"]
                                 forBarMetrics:UIBarMetricsDefault];
+        
+        [nav.navigationBar.layer setMasksToBounds:YES];
     }
     
     self.window.rootViewController = nav;

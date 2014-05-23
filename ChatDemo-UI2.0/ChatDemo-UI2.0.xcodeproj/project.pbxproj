@@ -76,6 +76,29 @@
 		90911145192EEE6E008A48AA /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911143192EEE6E008A48AA /* MainViewController.m */; };
 		909A0E0A192F048F00593635 /* titleBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 909A0E08192F048F00593635 /* titleBar.png */; };
 		909A0E0B192F048F00593635 /* titleBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 909A0E09192F048F00593635 /* titleBar@2x.png */; };
+		90AA8CA2192F43A900965183 /* ChatListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AA8CA1192F43A900965183 /* ChatListCell.m */; };
+		90AA8CA5192F43F400965183 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AA8CA4192F43F400965183 /* ChatViewController.m */; };
+		90EF2CCF192F236300BDC549 /* tabbar_chats.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CC3192F236300BDC549 /* tabbar_chats.png */; };
+		90EF2CD0192F236300BDC549 /* tabbar_chats@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CC4192F236300BDC549 /* tabbar_chats@2x.png */; };
+		90EF2CD1192F236300BDC549 /* tabbar_chatsHL.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CC5192F236300BDC549 /* tabbar_chatsHL.png */; };
+		90EF2CD2192F236300BDC549 /* tabbar_chatsHL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CC6192F236300BDC549 /* tabbar_chatsHL@2x.png */; };
+		90EF2CD3192F236300BDC549 /* tabbar_contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CC7192F236300BDC549 /* tabbar_contacts.png */; };
+		90EF2CD4192F236300BDC549 /* tabbar_contacts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CC8192F236300BDC549 /* tabbar_contacts@2x.png */; };
+		90EF2CD5192F236300BDC549 /* tabbar_contactsHL.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CC9192F236300BDC549 /* tabbar_contactsHL.png */; };
+		90EF2CD6192F236300BDC549 /* tabbar_contactsHL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CCA192F236300BDC549 /* tabbar_contactsHL@2x.png */; };
+		90EF2CD7192F236300BDC549 /* tabbar_setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CCB192F236300BDC549 /* tabbar_setting.png */; };
+		90EF2CD8192F236300BDC549 /* tabbar_setting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CCC192F236300BDC549 /* tabbar_setting@2x.png */; };
+		90EF2CD9192F236300BDC549 /* tabbar_settingHL.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CCD192F236300BDC549 /* tabbar_settingHL.png */; };
+		90EF2CDA192F236300BDC549 /* tabbar_settingHL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CCE192F236300BDC549 /* tabbar_settingHL@2x.png */; };
+		90EF2CDF192F242400BDC549 /* tabbarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CDB192F242400BDC549 /* tabbarBackground.png */; };
+		90EF2CE0192F242400BDC549 /* tabbarBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CDC192F242400BDC549 /* tabbarBackground@2x.png */; };
+		90EF2CE1192F242400BDC549 /* tabbarSelectBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CDD192F242400BDC549 /* tabbarSelectBg.png */; };
+		90EF2CE2192F242400BDC549 /* tabbarSelectBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CDE192F242400BDC549 /* tabbarSelectBg@2x.png */; };
+		90EF2CEC192F2B4E00BDC549 /* sr_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */; };
+		90EF2CED192F2B4E00BDC549 /* sr_refresh@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */; };
+		90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */; };
+		90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */; };
+		90EF2CFA192F321A00BDC549 /* QXSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CF9192F321A00BDC549 /* QXSearchBar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,6 +284,35 @@
 		90911143192EEE6E008A48AA /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		909A0E08192F048F00593635 /* titleBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = titleBar.png; sourceTree = "<group>"; };
 		909A0E09192F048F00593635 /* titleBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "titleBar@2x.png"; sourceTree = "<group>"; };
+		90AA8CA0192F43A900965183 /* ChatListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatListCell.h; sourceTree = "<group>"; };
+		90AA8CA1192F43A900965183 /* ChatListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListCell.m; sourceTree = "<group>"; };
+		90AA8CA3192F43F400965183 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		90AA8CA4192F43F400965183 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		90EF2CC3192F236300BDC549 /* tabbar_chats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_chats.png; sourceTree = "<group>"; };
+		90EF2CC4192F236300BDC549 /* tabbar_chats@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_chats@2x.png"; sourceTree = "<group>"; };
+		90EF2CC5192F236300BDC549 /* tabbar_chatsHL.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_chatsHL.png; sourceTree = "<group>"; };
+		90EF2CC6192F236300BDC549 /* tabbar_chatsHL@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_chatsHL@2x.png"; sourceTree = "<group>"; };
+		90EF2CC7192F236300BDC549 /* tabbar_contacts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_contacts.png; sourceTree = "<group>"; };
+		90EF2CC8192F236300BDC549 /* tabbar_contacts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_contacts@2x.png"; sourceTree = "<group>"; };
+		90EF2CC9192F236300BDC549 /* tabbar_contactsHL.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_contactsHL.png; sourceTree = "<group>"; };
+		90EF2CCA192F236300BDC549 /* tabbar_contactsHL@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_contactsHL@2x.png"; sourceTree = "<group>"; };
+		90EF2CCB192F236300BDC549 /* tabbar_setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_setting.png; sourceTree = "<group>"; };
+		90EF2CCC192F236300BDC549 /* tabbar_setting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_setting@2x.png"; sourceTree = "<group>"; };
+		90EF2CCD192F236300BDC549 /* tabbar_settingHL.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_settingHL.png; sourceTree = "<group>"; };
+		90EF2CCE192F236300BDC549 /* tabbar_settingHL@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_settingHL@2x.png"; sourceTree = "<group>"; };
+		90EF2CDB192F242400BDC549 /* tabbarBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbarBackground.png; sourceTree = "<group>"; };
+		90EF2CDC192F242400BDC549 /* tabbarBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbarBackground@2x.png"; sourceTree = "<group>"; };
+		90EF2CDD192F242400BDC549 /* tabbarSelectBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbarSelectBg.png; sourceTree = "<group>"; };
+		90EF2CDE192F242400BDC549 /* tabbarSelectBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbarSelectBg@2x.png"; sourceTree = "<group>"; };
+		90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sr_refresh.png; sourceTree = "<group>"; };
+		90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sr_refresh@2X.png"; sourceTree = "<group>"; };
+		90EF2CE7192F2B4E00BDC549 /* SRDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRDefine.h; sourceTree = "<group>"; };
+		90EF2CE8192F2B4E00BDC549 /* SRRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRRefreshView.h; sourceTree = "<group>"; };
+		90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRRefreshView.m; sourceTree = "<group>"; };
+		90EF2CEA192F2B4E00BDC549 /* SRSlimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRSlimeView.h; sourceTree = "<group>"; };
+		90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRSlimeView.m; sourceTree = "<group>"; };
+		90EF2CF8192F321A00BDC549 /* QXSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QXSearchBar.h; sourceTree = "<group>"; };
+		90EF2CF9192F321A00BDC549 /* QXSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QXSearchBar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -321,6 +373,7 @@
 		9091102D192EEA70008A48AA /* ChatDemo-UI2.0 */ = {
 			isa = PBXGroup;
 			children = (
+				90EF2CF4192F2F6400BDC549 /* Custom */,
 				90911120192EEBB8008A48AA /* Class */,
 				90911056192EEAED008A48AA /* 3rdparty */,
 				909110E4192EEAED008A48AA /* Category */,
@@ -364,6 +417,7 @@
 		90911056192EEAED008A48AA /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
+				90EF2CE4192F2B4E00BDC549 /* SlimeRefresh */,
 				90911057192EEAED008A48AA /* BaiDuMapSDK */,
 				90911084192EEAED008A48AA /* MBProgressHUD */,
 				90911089192EEAED008A48AA /* MWPhotoBrowser */,
@@ -625,8 +679,12 @@
 		90911123192EEBB8008A48AA /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				90AA8CA0192F43A900965183 /* ChatListCell.h */,
+				90AA8CA1192F43A900965183 /* ChatListCell.m */,
 				9091112A192EEBF7008A48AA /* ChatListViewController.h */,
 				9091112B192EEBF7008A48AA /* ChatListViewController.m */,
+				90AA8CA3192F43F400965183 /* ChatViewController.h */,
+				90AA8CA4192F43F400965183 /* ChatViewController.m */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -652,6 +710,7 @@
 		909A0E02192F043A00593635 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				90EF2CC2192F236300BDC549 /* tabbar */,
 				909A0E07192F048F00593635 /* Nav */,
 			);
 			path = Resources;
@@ -664,6 +723,52 @@
 				909A0E09192F048F00593635 /* titleBar@2x.png */,
 			);
 			path = Nav;
+			sourceTree = "<group>";
+		};
+		90EF2CC2192F236300BDC549 /* tabbar */ = {
+			isa = PBXGroup;
+			children = (
+				90EF2CDB192F242400BDC549 /* tabbarBackground.png */,
+				90EF2CDC192F242400BDC549 /* tabbarBackground@2x.png */,
+				90EF2CDD192F242400BDC549 /* tabbarSelectBg.png */,
+				90EF2CDE192F242400BDC549 /* tabbarSelectBg@2x.png */,
+				90EF2CC3192F236300BDC549 /* tabbar_chats.png */,
+				90EF2CC4192F236300BDC549 /* tabbar_chats@2x.png */,
+				90EF2CC5192F236300BDC549 /* tabbar_chatsHL.png */,
+				90EF2CC6192F236300BDC549 /* tabbar_chatsHL@2x.png */,
+				90EF2CC7192F236300BDC549 /* tabbar_contacts.png */,
+				90EF2CC8192F236300BDC549 /* tabbar_contacts@2x.png */,
+				90EF2CC9192F236300BDC549 /* tabbar_contactsHL.png */,
+				90EF2CCA192F236300BDC549 /* tabbar_contactsHL@2x.png */,
+				90EF2CCB192F236300BDC549 /* tabbar_setting.png */,
+				90EF2CCC192F236300BDC549 /* tabbar_setting@2x.png */,
+				90EF2CCD192F236300BDC549 /* tabbar_settingHL.png */,
+				90EF2CCE192F236300BDC549 /* tabbar_settingHL@2x.png */,
+			);
+			path = tabbar;
+			sourceTree = "<group>";
+		};
+		90EF2CE4192F2B4E00BDC549 /* SlimeRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */,
+				90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */,
+				90EF2CE7192F2B4E00BDC549 /* SRDefine.h */,
+				90EF2CE8192F2B4E00BDC549 /* SRRefreshView.h */,
+				90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */,
+				90EF2CEA192F2B4E00BDC549 /* SRSlimeView.h */,
+				90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */,
+			);
+			path = SlimeRefresh;
+			sourceTree = "<group>";
+		};
+		90EF2CF4192F2F6400BDC549 /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				90EF2CF8192F321A00BDC549 /* QXSearchBar.h */,
+				90EF2CF9192F321A00BDC549 /* QXSearchBar.m */,
+			);
+			path = Custom;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -741,13 +846,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90EF2CD5192F236300BDC549 /* tabbar_contactsHL.png in Resources */,
 				90911138192EEC91008A48AA /* LoginViewController.xib in Resources */,
+				90EF2CD9192F236300BDC549 /* tabbar_settingHL.png in Resources */,
+				90EF2CD8192F236300BDC549 /* tabbar_setting@2x.png in Resources */,
+				90EF2CEC192F2B4E00BDC549 /* sr_refresh.png in Resources */,
+				90EF2CCF192F236300BDC549 /* tabbar_chats.png in Resources */,
+				90EF2CD0192F236300BDC549 /* tabbar_chats@2x.png in Resources */,
 				909110EF192EEAED008A48AA /* mapapi.bundle in Resources */,
 				909A0E0A192F048F00593635 /* titleBar.png in Resources */,
 				90911032192EEA70008A48AA /* InfoPlist.strings in Resources */,
 				9091103A192EEA70008A48AA /* Images.xcassets in Resources */,
+				90EF2CE1192F242400BDC549 /* tabbarSelectBg.png in Resources */,
+				90EF2CD2192F236300BDC549 /* tabbar_chatsHL@2x.png in Resources */,
+				90EF2CE2192F242400BDC549 /* tabbarSelectBg@2x.png in Resources */,
+				90EF2CDA192F236300BDC549 /* tabbar_settingHL@2x.png in Resources */,
+				90EF2CED192F2B4E00BDC549 /* sr_refresh@2X.png in Resources */,
+				90EF2CD3192F236300BDC549 /* tabbar_contacts.png in Resources */,
+				90EF2CD6192F236300BDC549 /* tabbar_contactsHL@2x.png in Resources */,
 				90911108192EEAED008A48AA /* MWPhotoBrowser.bundle in Resources */,
+				90EF2CD4192F236300BDC549 /* tabbar_contacts@2x.png in Resources */,
 				909A0E0B192F048F00593635 /* titleBar@2x.png in Resources */,
+				90EF2CD7192F236300BDC549 /* tabbar_setting.png in Resources */,
+				90EF2CD1192F236300BDC549 /* tabbar_chatsHL.png in Resources */,
+				90EF2CE0192F242400BDC549 /* tabbarBackground@2x.png in Resources */,
+				90EF2CDF192F242400BDC549 /* tabbarBackground.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -766,16 +889,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90AA8CA2192F43A900965183 /* ChatListCell.m in Sources */,
 				90911126192EEBB8008A48AA /* AppDelegate.m in Sources */,
+				90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */,
 				9091113E192EECF1008A48AA /* UIViewController+ExtendedLayout.m in Sources */,
 				9091110F192EEAED008A48AA /* SDWebImageDownloaderOperation.m in Sources */,
 				90911115192EEAED008A48AA /* UIImage+WebP.m in Sources */,
 				90911141192EED99008A48AA /* BaseViewController.m in Sources */,
+				90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */,
 				90911116192EEAED008A48AA /* UIImageView+WebCache.m in Sources */,
 				90911111192EEAED008A48AA /* SDWebImagePrefetcher.m in Sources */,
 				90911105192EEAED008A48AA /* PSTGridLayoutItem.m in Sources */,
 				9091110B192EEAED008A48AA /* SDImageCache.m in Sources */,
 				90911110192EEAED008A48AA /* SDWebImageManager.m in Sources */,
+				90EF2CFA192F321A00BDC549 /* QXSearchBar.m in Sources */,
 				909110FD192EEAED008A48AA /* PSTCollectionViewCell.m in Sources */,
 				909110F6192EEAED008A48AA /* MWPhotoBrowser.m in Sources */,
 				909110FF192EEAED008A48AA /* PSTCollectionViewData.m in Sources */,
@@ -806,6 +933,7 @@
 				909110F1192EEAED008A48AA /* MBProgressHUD.m in Sources */,
 				909110F9192EEAED008A48AA /* MWZoomingScrollView.m in Sources */,
 				90911113192EEAED008A48AA /* UIImage+GIF.m in Sources */,
+				90AA8CA5192F43F400965183 /* ChatViewController.m in Sources */,
 				9091110E192EEAED008A48AA /* SDWebImageDownloader.m in Sources */,
 				90911129192EEBE4008A48AA /* ContactsViewController.m in Sources */,
 				90911137192EEC91008A48AA /* LoginViewController.m in Sources */,
