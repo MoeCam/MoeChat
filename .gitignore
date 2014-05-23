@@ -5,16 +5,8 @@ xcschememanagement.plist
 
 EaseMobSDK/*
 
-EaseMobSDK/include/ChatService/EMChatManager/types/EMChatImage.h
-
-EaseMobSDK/include/ChatService/EMChatManager/types/EMChatText.h
-
-EaseMobSDK/include/ChatService/EMChatManager/types/EMChatVideo.h
-
-EaseMobSDK/include/ChatService/EMChatManager/types/EMChatVoice.h
-
-EaseMobSDK/include/ChatService/EMChatManager/types/EMMessageBody.h
-
-EaseMobSDK/resources/bundle/EaseMob.bundle/XMPPCapabilities.momd/XMPPCapabilities 2.omo
-
-*.omo
+*/.DS_Store
+.DS_Store
+.gitignore
+ChatDemo-UI2.0/ChatDemo-UI2.0.xcodeproj/xcuserdata/
+ChatDemo-UI2.0/ChatDemo-UI2.0.xcodeproj/project.xcworkspace/
