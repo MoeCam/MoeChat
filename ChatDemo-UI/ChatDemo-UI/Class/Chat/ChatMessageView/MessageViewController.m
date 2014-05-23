@@ -10,9 +10,9 @@
 
 #import "EaseMob.h"
 #import "EMChatToolBar.h"
-#import "EMChatBarMoreView.h"
-#import "EMRecordView.h"
-#import "EMFaceView.h"
+#import "DXChatBarMoreView.h"
+#import "DXRecordView.h"
+#import "DXFaceView.h"
 #import "EMChatViewCell.h"
 #import "EMChatTimeCell.h"
 #import "EMChatSendHelper.h"
@@ -22,7 +22,9 @@
 
 #import "NSDate+Category.h"
 
-@interface MessageViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, EMChatToolBarDelegate, EMChatBarMoreViewDelegate, EMRecordDelegate, EMFaceDelegate, LocationDelegate>
+#import "DXMessageToolBar.h"
+
+@interface MessageViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, EMChatToolBarDelegate, DXChatBarMoreViewDelegate, DXFaceDelegate, LocationDelegate>
 {
     UIMenuController *_menuController;
     UIMenuItem *_copyMenuItem;
@@ -34,7 +36,7 @@
 @property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) EMChatToolBar *chatBar;//底部操作栏
-@property (strong, nonatomic) EMFaceView *faceView;//表情页面
+@property (strong, nonatomic) DXFaceView *faceView;//表情页面
 @property (strong, nonatomic) UIImagePickerController *imagePicker;
 
 @property (strong, nonatomic) EMMessageManager *messageReadManager;//message阅读的管理者
@@ -88,6 +90,9 @@
     self.tableView.frame = rect;
     [self.view addSubview:self.chatBar];
     [self setupBarButtonItem];
+    
+//    DXMessageToolBar *toolbar = [[DXMessageToolBar alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height - 44, self.view.frame.size.width, 0) controller:self];
+//    [self.view addSubview:toolbar];
 }
 
 - (void)setupBarButtonItem{
@@ -145,6 +150,7 @@
 {
     if (_tableView == nil) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStylePlain];
+        _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.backgroundColor = [UIColor lightGrayColor];
@@ -169,10 +175,10 @@
     return _chatBar;
 }
 
-- (EMFaceView *)faceView
+- (DXFaceView *)faceView
 {
     if (_faceView == nil) {
-        _faceView = [[EMFaceView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
+        _faceView = [[DXFaceView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
         _faceView.delegate = self;
     }
     
@@ -392,7 +398,7 @@
 
 #pragma mark - EMChatBarMoreViewDelegate
 
-- (void)moreViewPhotoAction:(EMChatBarMoreView *)moreView
+- (void)moreViewPhotoAction:(DXChatBarMoreView *)moreView
 {
     // 隐藏键盘
     [self keyBoardHidden];
@@ -402,7 +408,7 @@
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
 }
 
-- (void)moreViewTakePicAction:(EMChatBarMoreView *)moreView{
+- (void)moreViewTakePicAction:(DXChatBarMoreView *)moreView{
     [self keyBoardHidden];
     //    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     //    picker.delegate = self;
@@ -412,7 +418,7 @@
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
 }
 
-- (void)moreViewFaceAction:(EMChatBarMoreView *)moreView
+- (void)moreViewFaceAction:(DXChatBarMoreView *)moreView
 {
     // 隐藏键盘
     [self keyBoardHidden];
@@ -422,7 +428,7 @@
     [self.chatBar decideInputView:self.faceView];
 }
 
-- (void)moreViewLocationAction:(EMChatBarMoreView *)moreView
+- (void)moreViewLocationAction:(DXChatBarMoreView *)moreView
 {
     // 隐藏键盘
     [self keyBoardHidden];
@@ -483,7 +489,7 @@
 // 传入需要显示的moreView（如果没有，传nil）
 -(UIView *)chatBarMoreView
 {
-    EMChatBarMoreView *moreView = [[EMChatBarMoreView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
+    DXChatBarMoreView *moreView = [[DXChatBarMoreView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
     moreView.backgroundColor = [UIColor lightGrayColor];
     moreView.delegate = self;
     return moreView;
@@ -492,8 +498,7 @@
 // 传入用于显示语音时动画的View（如果没有，传nil）
 -(UIView *)chatBarRecordView
 {
-    EMRecordView *recordView = [[EMRecordView alloc] initWithFrame:CGRectMake(90, 130, 140, 140)];
-    recordView.delegate = self;
+    DXRecordView *recordView = [[DXRecordView alloc] initWithFrame:CGRectMake(90, 130, 140, 140)];
     return recordView;
 }
 
@@ -514,7 +519,7 @@
 -(void)recordButtonTouchDown:(UIView *)recordView
 {
     // todo by du. 录音开始
-    EMRecordView *record = (EMRecordView *)recordView;
+    DXRecordView *record = (DXRecordView *)recordView;
     [record recordButtonTouchDown];
     [self.view bringSubviewToFront:recordView];
     EMError *error = nil;
@@ -527,7 +532,7 @@
 // 手指在录音按钮内部时离开
 -(void)recordButtonTouchUpInside:(UIView *)recordView
 {
-    EMRecordView *record = (EMRecordView *)recordView;
+    DXRecordView *record = (DXRecordView *)recordView;
     [record recordButtonTouchUpInside];
     
     [[EaseMob sharedInstance].chatManager
@@ -550,7 +555,7 @@
 // 手指在录音按钮外部时离开
 -(void)recordButtonTouchUpOutside:(UIView *)recordView
 {
-    EMRecordView *record = (EMRecordView *)recordView;
+    DXRecordView *record = (DXRecordView *)recordView;
     [record recordButtonTouchUpOutside];
     
     [[EaseMob sharedInstance].chatManager
@@ -562,7 +567,7 @@
 // 手指移动到录音按钮内部
 -(void)recordButtonDragInside:(UIView *)recordView{
     // 需要切换recordView显示状态
-    EMRecordView *record = (EMRecordView *)recordView;
+    DXRecordView *record = (DXRecordView *)recordView;
     [record recordButtonDragInside];
 }
 
@@ -570,7 +575,7 @@
 -(void)recordButtonDragOutside:(UIView *)recordView
 {
     // 需要切换recordView显示状态
-    EMRecordView *record = (EMRecordView *)recordView;
+    DXRecordView *record = (DXRecordView *)recordView;
     [record recordButtonDragOutside];
 }
 

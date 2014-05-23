@@ -1,14 +1,15 @@
 //
-//  EMRecordView.m
-//  ChatDemo
+//  DXRecordView.m
+//  Share
 //
 //  Created by dujiepeng on 14-3-4.
-//  Copyright (c) 2014年 easemob. All rights reserved.
+//  Copyright (c) 2014年 Share. All rights reserved.
 //
 
-#import "EMRecordView.h"
+#import "DXRecordView.h"
 
-@interface EMRecordView (){
+@interface DXRecordView ()
+{
     NSTimer *_timer;
     // 显示动画的ImageView
     UIImageView *_recordAnimationView;
@@ -18,7 +19,7 @@
 
 @end
 
-@implementation EMRecordView
+@implementation DXRecordView
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -55,22 +56,22 @@
 }
 
 // 录音按钮按下
--(void)recordButtonTouchDown{
+-(void)recordButtonTouchDown
+{
     // 需要根据声音大小切换recordView动画
     _textLabel.text = @" 手指上滑，取消发送 ";
-    _timer = [NSTimer scheduledTimerWithTimeInterval:0.05
-                                              target:self
-                                            selector:@selector(setVoiceImage)
-                                            userInfo:nil
-                                             repeats:YES];
+    _textLabel.backgroundColor = [UIColor clearColor];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(setVoiceImage) userInfo:nil repeats:YES];
     
 }
 // 手指在录音按钮内部时离开
--(void)recordButtonTouchUpInside{
+-(void)recordButtonTouchUpInside
+{
     [_timer invalidate];
 }
 // 手指在录音按钮外部时离开
--(void)recordButtonTouchUpOutside{
+-(void)recordButtonTouchUpOutside
+{
     [_timer invalidate];
 }
 // 手指移动到录音按钮内部
