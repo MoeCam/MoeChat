@@ -86,18 +86,20 @@
 		9091111C192EEAED008A48AA /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 909110EC192EEAED008A48AA /* UIViewController+HUD.m */; };
 		90911126192EEBB8008A48AA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911122192EEBB8008A48AA /* AppDelegate.m */; };
 		90911129192EEBE4008A48AA /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911128192EEBE4008A48AA /* ContactsViewController.m */; };
-		9091112C192EEBF7008A48AA /* ChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9091112B192EEBF7008A48AA /* ChatListViewController.m */; };
 		9091112F192EEC0F008A48AA /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9091112E192EEC0F008A48AA /* SettingsViewController.m */; };
 		90911137192EEC91008A48AA /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911135192EEC91008A48AA /* LoginViewController.m */; };
 		90911138192EEC91008A48AA /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90911136192EEC91008A48AA /* LoginViewController.xib */; };
 		9091113E192EECF1008A48AA /* UIViewController+ExtendedLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9091113D192EECF1008A48AA /* UIViewController+ExtendedLayout.m */; };
 		90911145192EEE6E008A48AA /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911143192EEE6E008A48AA /* MainViewController.m */; };
-		90AA8CA2192F43A900965183 /* ChatListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AA8CA1192F43A900965183 /* ChatListCell.m */; };
-		90AA8CA5192F43F400965183 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AA8CA4192F43F400965183 /* ChatViewController.m */; };
 		90EF2CEC192F2B4E00BDC549 /* sr_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */; };
 		90EF2CED192F2B4E00BDC549 /* sr_refresh@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */; };
 		90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */; };
 		90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */; };
+		90F1BE6F193046C600121AEC /* ChatListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F1BE67193046C600121AEC /* ChatListCell.m */; };
+		90F1BE70193046C600121AEC /* ChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F1BE69193046C600121AEC /* ChatListViewController.m */; };
+		90F1BE71193046C600121AEC /* ChatListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90F1BE6A193046C600121AEC /* ChatListViewController.xib */; };
+		90F1BE72193046C600121AEC /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F1BE6C193046C600121AEC /* ChatViewController.m */; };
+		90F1BE73193046C600121AEC /* ChatViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F1BE6E193046C600121AEC /* ChatViewModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -287,8 +289,6 @@
 		90911122192EEBB8008A48AA /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		90911127192EEBE4008A48AA /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		90911128192EEBE4008A48AA /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
-		9091112A192EEBF7008A48AA /* ChatListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatListViewController.h; sourceTree = "<group>"; };
-		9091112B192EEBF7008A48AA /* ChatListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListViewController.m; sourceTree = "<group>"; };
 		9091112D192EEC0F008A48AA /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		9091112E192EEC0F008A48AA /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		90911133192EEC59008A48AA /* ChatDemoUIDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatDemoUIDefine.h; sourceTree = "<group>"; };
@@ -299,10 +299,6 @@
 		9091113D192EECF1008A48AA /* UIViewController+ExtendedLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ExtendedLayout.m"; sourceTree = "<group>"; };
 		90911142192EEE6E008A48AA /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		90911143192EEE6E008A48AA /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		90AA8CA0192F43A900965183 /* ChatListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatListCell.h; sourceTree = "<group>"; };
-		90AA8CA1192F43A900965183 /* ChatListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListCell.m; sourceTree = "<group>"; };
-		90AA8CA3192F43F400965183 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
-		90AA8CA4192F43F400965183 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sr_refresh.png; sourceTree = "<group>"; };
 		90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sr_refresh@2X.png"; sourceTree = "<group>"; };
 		90EF2CE7192F2B4E00BDC549 /* SRDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRDefine.h; sourceTree = "<group>"; };
@@ -310,6 +306,15 @@
 		90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRRefreshView.m; sourceTree = "<group>"; };
 		90EF2CEA192F2B4E00BDC549 /* SRSlimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRSlimeView.h; sourceTree = "<group>"; };
 		90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRSlimeView.m; sourceTree = "<group>"; };
+		90F1BE66193046C600121AEC /* ChatListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatListCell.h; sourceTree = "<group>"; };
+		90F1BE67193046C600121AEC /* ChatListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListCell.m; sourceTree = "<group>"; };
+		90F1BE68193046C600121AEC /* ChatListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatListViewController.h; sourceTree = "<group>"; };
+		90F1BE69193046C600121AEC /* ChatListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListViewController.m; sourceTree = "<group>"; };
+		90F1BE6A193046C600121AEC /* ChatListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatListViewController.xib; sourceTree = "<group>"; };
+		90F1BE6B193046C600121AEC /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		90F1BE6C193046C600121AEC /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		90F1BE6D193046C600121AEC /* ChatViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewModel.h; sourceTree = "<group>"; };
+		90F1BE6E193046C600121AEC /* ChatViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -715,9 +720,9 @@
 		90911120192EEBB8008A48AA /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				90F1BE65193046C600121AEC /* Chat */,
 				90911121192EEBB8008A48AA /* AppDelegate.h */,
 				90911122192EEBB8008A48AA /* AppDelegate.m */,
-				90911123192EEBB8008A48AA /* Chat */,
 				90911124192EEBB8008A48AA /* Contacts */,
 				90911125192EEBB8008A48AA /* Settings */,
 				90911134192EEC91008A48AA /* LoginViewController.h */,
@@ -727,19 +732,6 @@
 				90911143192EEE6E008A48AA /* MainViewController.m */,
 			);
 			path = Class;
-			sourceTree = "<group>";
-		};
-		90911123192EEBB8008A48AA /* Chat */ = {
-			isa = PBXGroup;
-			children = (
-				90AA8CA0192F43A900965183 /* ChatListCell.h */,
-				90AA8CA1192F43A900965183 /* ChatListCell.m */,
-				9091112A192EEBF7008A48AA /* ChatListViewController.h */,
-				9091112B192EEBF7008A48AA /* ChatListViewController.m */,
-				90AA8CA3192F43F400965183 /* ChatViewController.h */,
-				90AA8CA4192F43F400965183 /* ChatViewController.m */,
-			);
-			path = Chat;
 			sourceTree = "<group>";
 		};
 		90911124192EEBB8008A48AA /* Contacts */ = {
@@ -772,6 +764,22 @@
 				90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */,
 			);
 			path = SlimeRefresh;
+			sourceTree = "<group>";
+		};
+		90F1BE65193046C600121AEC /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				90F1BE66193046C600121AEC /* ChatListCell.h */,
+				90F1BE67193046C600121AEC /* ChatListCell.m */,
+				90F1BE68193046C600121AEC /* ChatListViewController.h */,
+				90F1BE69193046C600121AEC /* ChatListViewController.m */,
+				90F1BE6A193046C600121AEC /* ChatListViewController.xib */,
+				90F1BE6B193046C600121AEC /* ChatViewController.h */,
+				90F1BE6C193046C600121AEC /* ChatViewController.m */,
+				90F1BE6D193046C600121AEC /* ChatViewModel.h */,
+				90F1BE6E193046C600121AEC /* ChatViewModel.m */,
+			);
+			path = Chat;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -849,6 +857,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90F1BE71193046C600121AEC /* ChatListViewController.xib in Resources */,
 				90911138192EEC91008A48AA /* LoginViewController.xib in Resources */,
 				90EF2CEC192F2B4E00BDC549 /* sr_refresh.png in Resources */,
 				3CBF90DB19302F6000AD68AE /* tabbar_chatsHL@2x.png in Resources */,
@@ -892,7 +901,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90AA8CA2192F43A900965183 /* ChatListCell.m in Sources */,
 				90911126192EEBB8008A48AA /* AppDelegate.m in Sources */,
 				90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */,
 				9091113E192EECF1008A48AA /* UIViewController+ExtendedLayout.m in Sources */,
@@ -908,6 +916,7 @@
 				909110F6192EEAED008A48AA /* MWPhotoBrowser.m in Sources */,
 				909110FF192EEAED008A48AA /* PSTCollectionViewData.m in Sources */,
 				90911117192EEAED008A48AA /* THProgressView.m in Sources */,
+				90F1BE6F193046C600121AEC /* ChatListCell.m in Sources */,
 				909110FC192EEAED008A48AA /* PSTCollectionView.m in Sources */,
 				90911103192EEAED008A48AA /* PSTCollectionViewUpdateItem.m in Sources */,
 				9091110C192EEAED008A48AA /* SDWebImageCompat.m in Sources */,
@@ -924,10 +933,10 @@
 				909110F3192EEAED008A48AA /* MWGridCell.m in Sources */,
 				9091111A192EEAED008A48AA /* NSDateFormatter+Category.m in Sources */,
 				90911102192EEAED008A48AA /* PSTCollectionViewLayout.m in Sources */,
+				90F1BE72193046C600121AEC /* ChatViewController.m in Sources */,
 				90911114192EEAED008A48AA /* UIImage+MultiFormat.m in Sources */,
 				90911100192EEAED008A48AA /* PSTCollectionViewFlowLayout.m in Sources */,
 				909110F8192EEAED008A48AA /* MWTapDetectingView.m in Sources */,
-				9091112C192EEBF7008A48AA /* ChatListViewController.m in Sources */,
 				90911109192EEAED008A48AA /* MKAnnotationView+WebCache.m in Sources */,
 				90911112192EEAED008A48AA /* UIButton+WebCache.m in Sources */,
 				9091111C192EEAED008A48AA /* UIViewController+HUD.m in Sources */,
@@ -935,11 +944,12 @@
 				909110F1192EEAED008A48AA /* MBProgressHUD.m in Sources */,
 				909110F9192EEAED008A48AA /* MWZoomingScrollView.m in Sources */,
 				90911113192EEAED008A48AA /* UIImage+GIF.m in Sources */,
-				90AA8CA5192F43F400965183 /* ChatViewController.m in Sources */,
 				9091110E192EEAED008A48AA /* SDWebImageDownloader.m in Sources */,
+				90F1BE73193046C600121AEC /* ChatViewModel.m in Sources */,
 				90911129192EEBE4008A48AA /* ContactsViewController.m in Sources */,
 				90911137192EEC91008A48AA /* LoginViewController.m in Sources */,
 				90911119192EEAED008A48AA /* NSDate+Category.m in Sources */,
+				90F1BE70193046C600121AEC /* ChatListViewController.m in Sources */,
 				90911101192EEAED008A48AA /* PSTCollectionViewItemKey.m in Sources */,
 				909110F7192EEAED008A48AA /* MWTapDetectingImageView.m in Sources */,
 				909110F2192EEAED008A48AA /* MWCaptionView.m in Sources */,
