@@ -21,6 +21,7 @@
 #import "EMMessage.h"
 
 // message bodies
+#import "IEMMessageBody.h"
 #import "EMVideoMessageBody.h"
 #import "EMVoiceMessageBody.h"
 #import "EMTextMessageBody.h"

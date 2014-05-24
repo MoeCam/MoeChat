@@ -15,7 +15,7 @@
 
 + (id)modelWithMessage:(EMMessage *)message
 {
-    EMMessageBody *messageBody = [message.messageBodies firstObject];
+    id<IEMMessageBody> messageBody = [message.messageBodies firstObject];
     NSDictionary *userInfo = [[EaseMob sharedInstance].chatManager loginInfo];
     NSString *login = [userInfo objectForKey:kSDKUsername];
     BOOL isSender = [login isEqualToString:message.from] ? YES : NO;

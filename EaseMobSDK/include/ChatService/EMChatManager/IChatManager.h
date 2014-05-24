@@ -413,6 +413,42 @@
 - (NSUInteger)unreadConversationsCount;
 
 /*!
+ *  从所有的聊天记录中搜索符合条件的记录
+ *
+ *  @param criteria 搜索条件
+ *
+ *  @return 搜索结果, 由EMMessage对象组成
+ */
+- (NSArray *)searchMessagesWithCriteria:(NSString *)criteria;
+
+/*!
+ *  从单个chatter聊天记录中搜索符合条件的记录
+ *
+ *  @param criteria 搜索条件
+ *  @param chatter  聊天对象的username
+ *
+ *  @return 搜索结果, 由EMMessage对象组成
+ */
+- (NSArray *)searchMessagesWithCriteria:(NSString *)criteria
+                            withChatter:(NSString *)chatter;
+
+/*!
+ @method
+ @brief 保存聊天消息
+ @param message 待保存的聊天消息
+ @return 是否成功保存聊天消息
+ */
+- (BOOL)saveMessage:(EMMessage *)message;
+
+/*!
+ @method
+ @brief 保存一组聊天消息
+ @param messages 待保存的聊天消息列表
+ @return 成功保存的聊天消息条数
+ */
+- (NSInteger)saveMessages:(NSArray *)messages;
+
+/*!
  @property
  @brief 当前登陆用户的会话对象列表
  */
@@ -678,5 +714,18 @@
                      error:(EMError **)pError;
 
 #pragma mark - Util
+
+- (NSString *)remoteUrlForMessageBody:(id<IEMFileMessageBody>)aMessageBody;
+
+- (id<IEMFileMessageBody>)fetchMessage:(id<IEMFileMessageBody>)aMessageBody
+                          progress:(id<IEMChatProgressDelegate>)progress
+                             error:(EMError **)pError;
+- (void)asyncFetchMessage:(id<IEMFileMessageBody>)aMessageBody
+                 progress:(id<IEMChatProgressDelegate>)progress;
+- (void)asyncFetchMessage:(id<IEMFileMessageBody>)aMessageBody
+                 progress:(id<IEMChatProgressDelegate>)progress
+               completion:(void (^)(id<IEMFileMessageBody> aMessageBody, 
+                                    EMError *error))completion
+                  onQueue:(dispatch_queue_t)aQueue;
 
 @end

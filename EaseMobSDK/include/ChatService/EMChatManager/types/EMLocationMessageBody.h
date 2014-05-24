@@ -5,33 +5,55 @@
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
-#import "EMMessageBody.h"
+#import <Foundation/Foundation.h>
+#import "EMChatServiceDefs.h"
+#import "IEMMessageBody.h"
 
 @class EMChatLocation;
+@class EMMessage;
+@protocol IEMChatObject;
 
 /*!
  @class
  @brief 聊天的位置消息体对象
  */
-@interface EMLocationMessageBody : EMMessageBody
+@interface EMLocationMessageBody : NSObject<IEMMessageBody>
+
+/*!
+ @property
+ @brief 消息体的类型
+ */
+@property (nonatomic, readonly) MessageBodyType messageBodyType;
+
+/*!
+ @property
+ @brief 消息体的底层聊天对象
+ */
+@property (nonatomic, strong, readonly) id<IEMChatObject> chatObject;
+
+/*!
+ @property
+ @brief 消息体所在的消息对象
+ */
+@property (nonatomic, weak) EMMessage *message;
 
 /*!
  @property
  @brief 纬度
  */
-@property (nonatomic, readonly) double latitude;
+@property (nonatomic) double latitude;
 
 /*!
  @property
  @brief 经度
  */
-@property (nonatomic, readonly) double longitude;
+@property (nonatomic) double longitude;
 
 /*!
  @property
  @brief 地理位置信息
  */
-@property (nonatomic, readonly) NSString *address;
+@property (nonatomic, strong) NSString *address;
 
 /*!
  @method
@@ -41,31 +63,5 @@
  @result 位置消息体
  */
 - (id)initWithChatObject:(EMChatLocation *)aChatLocation;
-
-/*!
- @method
- @brief
-    由字典创建消息体对象
- @discussion
-    派生类需要改写此方法,此方法用于从远端发来的消息来构建消息体对象
- @param aBodyDict
-    消息体对象字典
- @param aMessageDict
-    消息对象字典
- @result
-    消息体对象
- */
-- (id)initWithBodyDict:(NSDictionary *)aBodyDict messageDict:(NSDictionary *)aMessageDict;
-
-/*!
- @method
- @brief
-    将位置消息体转为字典对象
- @discussion
-    此方法用于发送消息过程中
- @result
-    带有位置消息体信息的字典对象
- */
-- (NSDictionary *)toDictionary;
 
 @end

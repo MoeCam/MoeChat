@@ -64,8 +64,8 @@
      nav = [[UINavigationController alloc] initWithRootViewController:loginController];
      }
      */
-    MainViewController *mainVC = [[MainViewController alloc] init];
-    nav = [[UINavigationController alloc] initWithRootViewController:mainVC];
+    _mainVC = [[MainViewController alloc] init];
+    nav = [[UINavigationController alloc] initWithRootViewController:_mainVC];
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
         [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(78, 188, 211, 1)];
         [[UINavigationBar appearance] setTitleTextAttributes:

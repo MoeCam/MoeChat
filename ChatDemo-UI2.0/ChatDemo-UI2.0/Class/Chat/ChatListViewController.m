@@ -9,16 +9,22 @@
 #import "ChatListViewController.h"
 #import "SRRefreshView.h"
 #import "ChatListCell.h"
+#import "MainViewController.h"
+#import "AppDelegate.h"
 
-
-@interface ChatListViewController ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,UISearchDisplayDelegate,SRRefreshDelegate>{
+@interface ChatListViewController ()
+<UISearchBarDelegate,
+UITableViewDelegate,
+UITableViewDataSource,
+UISearchDisplayDelegate,
+SRRefreshDelegate>{
     NSMutableArray  *_chatList;
     SRRefreshView   *_slimeView;
 }
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UISearchBar *searchBar;
-
+@property (nonatomic, strong) UISearchDisplayController *searchController;
 @end
 
 @implementation ChatListViewController
@@ -76,7 +82,8 @@
                       initWithFrame: CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 44)];
         _searchBar.delegate = self;
         _searchBar.placeholder = @"搜索";
-        for (UIView *subView in _searchBar.subviews) {
+      /*  
+       for (UIView *subView in _searchBar.subviews) {
             if ([subView isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
                 [subView removeFromSuperview];
             }
@@ -93,7 +100,14 @@
                 textField.backgroundColor = [UIColor whiteColor];
             }
         }
+       */
     }
+    MainViewController *mainVC = ((AppDelegate *)[UIApplication sharedApplication].delegate).mainVC;
+    _searchController = [[UISearchDisplayController alloc]
+                        initWithSearchBar:_searchBar
+                         contentsController:mainVC];
+//    _searchController.displaysSearchBarInNavigationBar = YES;
+    _searchController.delegate = self;
     return _searchBar;
 }
 

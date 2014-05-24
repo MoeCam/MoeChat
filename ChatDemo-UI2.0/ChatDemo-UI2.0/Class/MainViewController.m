@@ -77,6 +77,7 @@
     self.title = @"会话";
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
     self.selectedIndex = 0;
+//    [self addChildViewController:_chatListVC];
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item{

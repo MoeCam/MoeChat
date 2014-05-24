@@ -5,21 +5,43 @@
  @version 1.00 2014/01/01 Creation (1.00)
  */
 
-#import "EMMessageBody.h"
+#import <Foundation/Foundation.h>
+#import "IEMMessageBody.h"
+#import "EMChatServiceDefs.h"
 
 @class EMChatText;
+@protocol IEMChatObject;
+@class EMMessage;
 
 /*!
  @class
  @brief 聊天的文本消息体对象
  */
-@interface EMTextMessageBody : EMMessageBody
+@interface EMTextMessageBody : NSObject<IEMMessageBody>
+
+/*!
+ @property
+ @brief 消息体的类型
+ */
+@property (nonatomic, readonly) MessageBodyType messageBodyType;
+
+/*!
+ @property
+ @brief 消息体的底层聊天对象
+ */
+@property (nonatomic, strong, readonly) id<IEMChatObject> chatObject;
+
+/*!
+ @property
+ @brief 消息体所在的消息对象
+ */
+@property (nonatomic, weak) EMMessage *message;
 
 /*!
  @property
  @brief 文本消息体的内部文本对象的文本
  */
-@property (nonatomic, readonly) NSString *text;
+@property (nonatomic, strong) NSString *text;
 
 /*!
  @method
@@ -29,31 +51,5 @@
  @result 文本消息体
  */
 - (id)initWithChatObject:(EMChatText *)aChatText;
-
-/*!
- @method
- @brief
-    由字典创建消息体对象
- @discussion
-    派生类需要改写此方法,此方法用于从远端发来的消息来构建消息体对象
- @param aBodyDict
-    消息体对象字典
- @param aMessageDict
-    消息对象字典
- @result
-    消息体对象
- */
-- (id)initWithBodyDict:(NSDictionary *)aBodyDict messageDict:(NSDictionary *)aMessageDict;
-
-/*!
- @method
- @brief
-    将文本消息体转为字典对象
- @discussion
-    此方法用于发送消息过程中
- @result
-    带有文本消息体信息的字典对象
- */
-- (NSDictionary *)toDictionary;
 
 @end

@@ -6,8 +6,9 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "EMMessageBody.h"
+#import "EMChatServiceDefs.h"
 
+@protocol IEMMessageBody;
 @class EMConversation;
 
 /*!
@@ -114,7 +115,7 @@
  @param body 消息体
  @result 此消息的消息体列表
  */
-- (NSArray *)addMessageBody:(EMMessageBody *)body;
+- (NSArray *)addMessageBody:(id<IEMMessageBody>)body;
 
 /*!
  @method
@@ -123,6 +124,6 @@
  @param body 消息体
  @result 此消息的消息体列表
  */
-- (NSArray *)removeMessageBody:(EMMessageBody *)body;
+- (NSArray *)removeMessageBody:(id<IEMMessageBody>)body;
 
 @end

@@ -271,7 +271,7 @@ UISearchDisplayDelegate
                                timeIntervalSince1970InMilliSecond] + 100000].lastObject;
     }
     if (lastMessage) {
-        EMMessageBody *messageBody = lastMessage.messageBodies.lastObject;
+        id<IEMMessageBody> messageBody = lastMessage.messageBodies.lastObject;
         switch (messageBody.messageBodyType) {
             case eMessageBodyType_Image:{
                 ret = @"[图片]";
