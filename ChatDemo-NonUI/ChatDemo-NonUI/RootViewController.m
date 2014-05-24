@@ -142,7 +142,7 @@
 #pragma mark - EMChatManagerDelegate
 -(void)didReceiveMessage:(EMMessage *)message{
  
-    EMMessageBody *body = message.messageBodies.lastObject;
+    id<IEMMessageBody> body = message.messageBodies.lastObject;
     if (body.messageBodyType == eMessageBodyType_Text) {
         if (!_textView.text || _textView.text.length == 0) {
             _textView.text = ((EMTextMessageBody *)body).text;
