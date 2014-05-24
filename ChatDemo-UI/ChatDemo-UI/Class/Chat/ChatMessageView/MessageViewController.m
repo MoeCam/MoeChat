@@ -82,17 +82,22 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
     [self.view addGestureRecognizer:tap];
-    
-    CGFloat height = [[UIScreen mainScreen] bounds].size.height - 20 - 44 - self.chatBar.frame.size.height;
+    // change by du.
+    //CGFloat height = [[UIScreen mainScreen] bounds].size.height - 20 - 44 self.chatBar.frame.size.height;
+    CGFloat height = [[UIScreen mainScreen] bounds].size.height - self.chatBar.frame.size.height;
     [self.view addSubview:self.tableView];
     CGRect rect = self.tableView.frame;
     rect.size.height = height;
     self.tableView.frame = rect;
-    [self.view addSubview:self.chatBar];
+    [self setupToolBar];
     [self setupBarButtonItem];
     
 //    DXMessageToolBar *toolbar = [[DXMessageToolBar alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height - 44, self.view.frame.size.width, 0) controller:self];
 //    [self.view addSubview:toolbar];
+}
+
+- (void)setupToolBar{
+    [self.view addSubview:self.chatBar];
 }
 
 - (void)setupBarButtonItem{
