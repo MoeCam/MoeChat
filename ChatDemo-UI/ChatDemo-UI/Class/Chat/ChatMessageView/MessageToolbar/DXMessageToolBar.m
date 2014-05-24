@@ -10,8 +10,6 @@
 
 @interface DXMessageToolBar()<UITextViewDelegate, DXFaceDelegate>
 {
-    __weak UIViewController *_viewController;
-    
     CGFloat _baseOY;//一旦设置不可修改
     CGFloat _previousTextViewContentHeight;//上一次inputTextView的contentSize.height
 }
@@ -41,7 +39,7 @@
 
 @implementation DXMessageToolBar
 
-- (instancetype)initWithFrame:(CGRect)frame controller:(UIViewController *)controller
+- (instancetype)initWithFrame:(CGRect)frame
 {
     if (frame.size.height < (kVerticalPadding * 2 + kInputTextViewMinHeight)) {
         frame.size.height = kVerticalPadding * 2 + kInputTextViewMinHeight;
@@ -49,10 +47,17 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        _viewController = controller;
         [self setupConfigure];
     }
     return self;
+}
+
+- (void)setFrame:(CGRect)frame
+{
+    if (frame.size.height < (kVerticalPadding * 2 + kInputTextViewMinHeight)) {
+        frame.size.height = kVerticalPadding * 2 + kInputTextViewMinHeight;
+    }
+    [super setFrame:frame];
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview
@@ -147,6 +152,7 @@
     
     self.faceButton.selected = NO;
     self.styleChangeButton.selected = NO;
+    self.moreButton.selected = NO;
     return YES;
 }
 
@@ -169,6 +175,8 @@
     if ([text isEqualToString:@"\n"]) {
         if ([self.delegate respondsToSelector:@selector(didSendText:)]) {
             [self.delegate didSendText:textView.text];
+            self.inputTextView.text = @"";
+            [self willShowInputTextViewToHeight:[self getTextViewContentH:self.inputTextView]];;
         }
         
         return NO;
@@ -236,7 +244,6 @@
  */
 - (void)setupConfigure
 {
-    self.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
     self.maxTextInputViewHeight = kInputTextViewMaxHeight;
     
     self.activityButtomView = nil;
@@ -323,7 +330,6 @@
     
     if (!self.moreView) {
         self.moreView = [[DXChatBarMoreView alloc] initWithFrame:CGRectMake(0, (kVerticalPadding * 2 + kInputTextViewMinHeight), self.frame.size.width, 80)];
-        [(DXChatBarMoreView *)self.moreView setDelegate:_viewController];
         self.moreView.backgroundColor = [UIColor lightGrayColor];
         self.moreView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     }
@@ -350,27 +356,28 @@
 
 - (void)willShowBottomHeight:(CGFloat)bottomHeight
 {
-    CGFloat baseHeight = kVerticalPadding * 2 + _previousTextViewContentHeight;
-    CGFloat baseOrY = _baseOY - (_previousTextViewContentHeight - kInputTextViewMinHeight);
-    CGFloat toHeight = baseHeight + bottomHeight;
+//    CGFloat baseHeight = kVerticalPadding * 2 + _previousTextViewContentHeight;
+//    CGFloat baseOrY = _baseOY - (_previousTextViewContentHeight - kInputTextViewMinHeight);
+//    CGFloat toHeight = baseHeight + bottomHeight;
+    
+    CGRect fromFrame = self.frame;
+    CGFloat toHeight = self.toolbarView.frame.size.height + bottomHeight;
+    CGRect toFrame = CGRectMake(fromFrame.origin.x, fromFrame.origin.y + (fromFrame.size.height - toHeight), fromFrame.size.width, toHeight);
     
     //如果需要将所有扩展页面都隐藏，而此时已经隐藏了所有扩展页面，则不进行任何操作
-    if(bottomHeight == 0 && self.frame.origin.y == baseOrY)
+    if(bottomHeight == 0 && self.frame.size.height == self.toolbarView.frame.size.height)
     {
         return;
     }
     
-    if (toHeight == 0) {
+    if (bottomHeight == 0) {
         self.isShowButtomView = NO;
     }
     else{
         self.isShowButtomView = YES;
     }
     
-    CGRect rect = self.frame;
-    rect.size.height = toHeight;
-    rect.origin.y = baseOrY - bottomHeight;
-    self.frame = rect;
+    self.frame = toFrame;
     
     if (_delegate && [_delegate respondsToSelector:@selector(didChangeFrameToHeight:)]) {
         [_delegate didChangeFrameToHeight:toHeight];
@@ -401,8 +408,6 @@
 {
     if (beginFrame.origin.y == [[UIScreen mainScreen] bounds].size.height)
     {
-//        [self.inputTextView setContentOffset:CGPointMake(0, 0) animated:YES];
-        
         //一定要把self.activityButtomView置为空
         [self willShowBottomHeight:toFrame.size.height];
         if (self.activityButtomView) {
@@ -509,7 +514,6 @@
                 //如果选择表情并且处于录音状态，切换成文字输入状态，但是不显示键盘
                 if (self.styleChangeButton.selected) {
                     self.styleChangeButton.selected = NO;
-                    self.inputTextView.text = @"";
                 }
                 else{//如果处于文字输入状态，使文字输入框失去焦点
                     [self.inputTextView resignFirstResponder];
@@ -565,8 +569,6 @@
     if ([self.recordView isKindOfClass:[DXRecordView class]]) {
         [(DXRecordView *)self.recordView recordButtonTouchDown];
     }
-    self.recordView.center = _viewController.view.center;
-    [_viewController.view addSubview:self.recordView];
 }
 
 - (void)recordButtonTouchUpOutside
@@ -620,6 +622,20 @@
 }
 
 #pragma mark - public
+
+/**
+ *  停止编辑
+ */
+- (BOOL)endEditing:(BOOL)force
+{
+    BOOL result = [super endEditing:force];
+    
+    self.faceButton.selected = NO;
+    self.moreButton.selected = NO;
+    [self willShowBottomView:nil];
+    
+    return result;
+}
 
 + (CGFloat)defaultHeight
 {

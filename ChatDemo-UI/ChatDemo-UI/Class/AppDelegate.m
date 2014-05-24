@@ -80,11 +80,11 @@
     NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
     UINavigationController *nacontroller = nil;
     if (loginInfo && [loginInfo count] > 0) {
-        MainViewController *mainVC = [[MainViewController alloc] init];
+        MainViewController *mainVC = [[MainViewController alloc] initWithNibName:nil bundle:nil];
         nacontroller = [[UINavigationController alloc] initWithRootViewController:mainVC];
     }
     else{
-        LoginViewController *loginController = [[LoginViewController alloc] init];
+        LoginViewController *loginController = [[LoginViewController alloc] initWithNibName:nil bundle:nil];
         nacontroller = [[UINavigationController alloc] initWithRootViewController:loginController];
     }
     

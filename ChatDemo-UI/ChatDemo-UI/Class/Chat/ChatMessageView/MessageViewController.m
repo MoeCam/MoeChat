@@ -24,7 +24,7 @@
 
 #import "DXMessageToolBar.h"
 
-@interface MessageViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, EMChatToolBarDelegate, DXChatBarMoreViewDelegate, DXFaceDelegate, LocationDelegate>
+@interface MessageViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, EMChatToolBarDelegate, DXChatBarMoreViewDelegate, DXMessageToolBarDelegate, LocationDelegate>
 {
     UIMenuController *_menuController;
     UIMenuItem *_copyMenuItem;
@@ -34,9 +34,8 @@
 
 @property (strong, nonatomic) NSMutableArray *dataSource;//tableView数据源
 @property (strong, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) DXMessageToolBar *chatToolBar;
 
-@property (strong, nonatomic) EMChatToolBar *chatBar;//底部操作栏
-@property (strong, nonatomic) DXFaceView *faceView;//表情页面
 @property (strong, nonatomic) UIImagePickerController *imagePicker;
 
 @property (strong, nonatomic) EMMessageManager *messageReadManager;//message阅读的管理者
@@ -49,7 +48,7 @@
 
 - (id)initWithStyle:(UITableViewStyle)style talkerUserName:(NSString *)talker isChatroom:(BOOL)isChatroom
 {
-    self = [super initWithNibName:nil bundle:nil];
+    self = [self initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization
         talker = talker;
@@ -70,44 +69,28 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = self.conversation.chatter;
+    self.view.backgroundColor = [UIColor lightGrayColor];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
-    
     
 #warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     //注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
-    [self.view addGestureRecognizer:tap];
-    // change by du.
-    //CGFloat height = [[UIScreen mainScreen] bounds].size.height - 20 - 44 self.chatBar.frame.size.height;
-    CGFloat height = [[UIScreen mainScreen] bounds].size.height - self.chatBar.frame.size.height;
     [self.view addSubview:self.tableView];
-    CGRect rect = self.tableView.frame;
-    rect.size.height = height;
-    self.tableView.frame = rect;
-    [self setupToolBar];
+    [self.view addSubview:self.chatToolBar];
     [self setupBarButtonItem];
     
-//    DXMessageToolBar *toolbar = [[DXMessageToolBar alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height - 44, self.view.frame.size.width, 0) controller:self];
-//    [self.view addSubview:toolbar];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
+    [self.view addGestureRecognizer:tap];
 }
 
-- (void)setupToolBar{
-    [self.view addSubview:self.chatBar];
+- (void)setupBarButtonItem
+{
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(removeAllMessages:)];
 }
-
-- (void)setupBarButtonItem{
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-                                              initWithBarButtonSystemItem:
-                                              UIBarButtonSystemItemTrash
-                                              target:self
-                                              action:@selector(removeAllMessages:)];
-}
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -115,7 +98,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     [self scrollViewToBottom:YES];
 }
@@ -125,7 +109,10 @@
     [super viewWillDisappear:animated];
     // 设置当前conversation的所有message为已读
     [_conversation markMessagesAsRead:YES];
+    
+    //停止音频播放及播放动画
     [[EaseMob sharedInstance].chatManager stopPlayingAudio];
+    [self.messageReadManager stopMessageAudio];
     
     //判断当前会话是否为空，若为空则删除该会话
     NSArray *messages = [_conversation loadNumbersOfMessages:1 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
@@ -154,8 +141,8 @@
 - (UITableView *)tableView
 {
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStylePlain];
-        _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.chatToolBar.frame.size.height) style:UITableViewStylePlain];
+        _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.backgroundColor = [UIColor lightGrayColor];
@@ -170,24 +157,15 @@
     return _tableView;
 }
 
-- (EMChatToolBar *)chatBar
+- (DXMessageToolBar *)chatToolBar
 {
-    if (_chatBar == nil) {
-        _chatBar = [[EMChatToolBar alloc] initWithViewController:self];
-        _chatBar.backgroundColor = [UIColor blackColor];
+    if (_chatToolBar == nil) {
+        _chatToolBar = [[DXMessageToolBar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - [DXMessageToolBar defaultHeight], self.view.frame.size.width, [DXMessageToolBar defaultHeight])];
+        _chatToolBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
+        _chatToolBar.delegate = self;
     }
     
-    return _chatBar;
-}
-
-- (DXFaceView *)faceView
-{
-    if (_faceView == nil) {
-        _faceView = [[DXFaceView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
-        _faceView.delegate = self;
-    }
-    
-    return _faceView;
+    return _chatToolBar;
 }
 
 - (UIImagePickerController *)imagePicker
@@ -283,7 +261,7 @@
 // 点击背景隐藏
 -(void)keyBoardHidden
 {
-    [self.view endEditing:YES];
+    [self.chatToolBar endEditing:YES];
 }
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)recognizer
@@ -415,22 +393,8 @@
 
 - (void)moreViewTakePicAction:(DXChatBarMoreView *)moreView{
     [self keyBoardHidden];
-    //    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    //    picker.delegate = self;
-    //    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    //    [self presentViewController:picker animated:YES completion:NULL];
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
-}
-
-- (void)moreViewFaceAction:(DXChatBarMoreView *)moreView
-{
-    // 隐藏键盘
-    [self keyBoardHidden];
-    //切换到文字输入状态
-    [self.chatBar switchToText];
-    
-    [self.chatBar decideInputView:self.faceView];
 }
 
 - (void)moreViewLocationAction:(DXChatBarMoreView *)moreView
@@ -456,77 +420,34 @@
     [self addChatDataToMessage:tempMessage];
 }
 
-#pragma mark - EMFaceDelegate
+#pragma mark - DXMessageToolBarDelegate
 
--(void)selectedFacialView:(NSString *)str isDelete:(BOOL)isDelete
+- (void)didChangeFrameToHeight:(CGFloat)toHeight
 {
-    NSString *chatText = self.chatBar.textView.text;
-    
-    if (!isDelete && str.length > 0) {
-        self.chatBar.textView.text = [NSString stringWithFormat:@"%@%@",chatText,str];
-    }
-    else {
-        if (chatText.length >= 2)
-        {
-            NSString *subStr = [chatText substringFromIndex:chatText.length-2];
-            if ([self.faceView stringIsFace:subStr]) {
-                self.chatBar.textView.text = [chatText substringToIndex:chatText.length-2];
-                
-                return;
-            }
-        }
-        
-        if (chatText.length > 0) {
-            self.chatBar.textView.text = [chatText substringToIndex:chatText.length-1];
-        }
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect rect = self.tableView.frame;
+        rect.size.height = self.view.frame.size.height - toHeight;
+        self.tableView.frame = rect;
+    }];
+}
+
+- (void)didSendText:(NSString *)text
+{
+    if (text && text.length > 0) {
+        [self sendTextMessage:text];
     }
 }
 
-- (void)faceViewSwitchToText
+/**
+ *  按下录音按钮开始录音
+ */
+- (void)didStartRecordingVoiceAction:(UIView *)recordView
 {
-    //切换到文字输入状态
-    [self.chatBar switchToText];
-    [self.chatBar decideInputView:nil];
-}
-
-#pragma mark - ChatToolBarDelegate
-
-// 传入需要显示的moreView（如果没有，传nil）
--(UIView *)chatBarMoreView
-{
-    DXChatBarMoreView *moreView = [[DXChatBarMoreView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
-    moreView.backgroundColor = [UIColor lightGrayColor];
-    moreView.delegate = self;
-    return moreView;
-}
-
-// 传入用于显示语音时动画的View（如果没有，传nil）
--(UIView *)chatBarRecordView
-{
-    DXRecordView *recordView = [[DXRecordView alloc] initWithFrame:CGRectMake(90, 130, 140, 140)];
-    return recordView;
-}
-
-// 传入对应调整的tableView（如果没有，传nil）
--(UITableView *)chatBarTableView
-{
-    return self.tableView;
-}
-
--(void)chatBarTextReturn:(NSString *)string
-{
-    if (string && string.length > 0) {
-        [self sendTextMessage:string];
-    }
-}
-
-// 录音按钮按下
--(void)recordButtonTouchDown:(UIView *)recordView
-{
-    // todo by du. 录音开始
-    DXRecordView *record = (DXRecordView *)recordView;
-    [record recordButtonTouchDown];
+    DXRecordView *tmpView = (DXRecordView *)recordView;
+    tmpView.center = self.view.center;
+    [self.view addSubview:tmpView];
     [self.view bringSubviewToFront:recordView];
+    
     EMError *error = nil;
     [[EaseMob sharedInstance].chatManager startRecordingAudioWithError:&error];
     if (error) {
@@ -534,8 +455,24 @@
     }
 }
 
-// 手指在录音按钮内部时离开
--(void)recordButtonTouchUpInside:(UIView *)recordView
+/**
+ *  手指向上滑动取消录音
+ */
+- (void)didCancelRecordingVoiceAction:(UIView *)recordView
+{
+    DXRecordView *record = (DXRecordView *)recordView;
+    [record recordButtonTouchUpOutside];
+    
+    [[EaseMob sharedInstance].chatManager
+     asyncCancelRecordingAudioWithCompletion:^(EMChatVoice *voice, EMError *error){
+         
+     } onQueue:nil];
+}
+
+/**
+ *  松开手指完成录音
+ */
+- (void)didFinishRecoingVoiceAction:(UIView *)recordView
 {
     DXRecordView *record = (DXRecordView *)recordView;
     [record recordButtonTouchUpInside];
@@ -554,34 +491,23 @@
          }
          
      } onQueue:nil];
-    
 }
 
-// 手指在录音按钮外部时离开
--(void)recordButtonTouchUpOutside:(UIView *)recordView
+/**
+ *  当手指离开按钮的范围内时，主要为了通知外部的HUD
+ */
+- (void)didDragOutsideAction:(UIView *)recordView
 {
-    DXRecordView *record = (DXRecordView *)recordView;
-    [record recordButtonTouchUpOutside];
-    
-    [[EaseMob sharedInstance].chatManager
-     asyncCancelRecordingAudioWithCompletion:^(EMChatVoice *voice, EMError *error){
-         
-     } onQueue:nil];
-}
-
-// 手指移动到录音按钮内部
--(void)recordButtonDragInside:(UIView *)recordView{
-    // 需要切换recordView显示状态
-    DXRecordView *record = (DXRecordView *)recordView;
-    [record recordButtonDragInside];
-}
-
-// 手指移动到录音按钮外部
--(void)recordButtonDragOutside:(UIView *)recordView
-{
-    // 需要切换recordView显示状态
     DXRecordView *record = (DXRecordView *)recordView;
     [record recordButtonDragOutside];
+}
+/**
+ *  当手指再次进入按钮的范围内时，主要也是为了通知外部的HUD
+ */
+- (void)didDragInsideAction:(UIView *)recordView
+{
+    DXRecordView *record = (DXRecordView *)recordView;
+    [record recordButtonDragInside];
 }
 
 #pragma mark - UIImagePickerControllerDelegate

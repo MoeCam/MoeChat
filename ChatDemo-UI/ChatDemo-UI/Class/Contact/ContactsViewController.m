@@ -130,7 +130,7 @@
     else{
         NSString *toUsername = [[self.dataSource objectAtIndex:indexPath.row] username];
         MessageViewController *messageController = [[MessageViewController alloc] initWithStyle:UITableViewStylePlain talkerUserName:toUsername isChatroom:NO];
-        [self.navigationController pushViewController:messageController animated:YES];
+        [self.tabBarController.navigationController pushViewController:messageController animated:YES];
     }
 }
 

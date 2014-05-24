@@ -74,11 +74,10 @@
  *  初始化方法
  *
  *  @param frame      位置及大小
- *  @param controller 加到哪个viewController，主要用于设置为默认的更多的附加页面的代理
  *
  *  @return DXMessageToolBar
  */
-- (instancetype)initWithFrame:(CGRect)frame controller:(UIViewController *)controller;
+- (instancetype)initWithFrame:(CGRect)frame;
 
 /**
  *  默认高度
