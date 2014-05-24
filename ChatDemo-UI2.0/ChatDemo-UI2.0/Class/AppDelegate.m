@@ -21,6 +21,12 @@
                                                  name:KNOTIFICATION_LOGINCHANGE
                                                object:nil];
     
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
+        [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(78, 188, 211, 1)];
+        [[UINavigationBar appearance] setTitleTextAttributes:
+        [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
+    }
+    
     [self loginStateChange:nil];
     [self.window makeKeyAndVisible];
     return YES;
@@ -51,7 +57,8 @@
     
 }
 
--(void)loginStateChange:(NSNotification *)notification{
+-(void)loginStateChange:(NSNotification *)notification
+{
     NSDictionary *loginInfo = nil;//[[[EaseMob sharedInstance] chatManager] loginInfo];
     UINavigationController *nav = nil;
     /*
@@ -66,14 +73,7 @@
      */
     _mainVC = [[MainViewController alloc] init];
     nav = [[UINavigationController alloc] initWithRootViewController:_mainVC];
-    if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
-        [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(78, 188, 211, 1)];
-        [[UINavigationBar appearance] setTitleTextAttributes:
-         [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName,
-          [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0],
-          NSFontAttributeName, nil]];
-        
-    }else{
+    if ([UIDevice currentDevice].systemVersion.floatValue < 7.0){
         nav.navigationBar.barStyle = UIBarStyleDefault;
         nav.navigationBar.tintColor = [UIColor redColor];
         [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"titleBar"]
@@ -83,7 +83,6 @@
     }
     
     self.window.rootViewController = nav;
-    
 }
 
 @end
