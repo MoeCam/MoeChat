@@ -10,4 +10,8 @@
 
 @interface ChatViewController : UIViewController
 
+- (void)refreshData;
+- (void)addChatData:(NSObject *)chatdata;
+- (void)addChatDatas:(NSArray *)chatdatas;
+
 @end

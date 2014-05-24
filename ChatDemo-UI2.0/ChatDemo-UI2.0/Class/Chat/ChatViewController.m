@@ -7,8 +7,10 @@
 //
 
 #import "ChatViewController.h"
-
-@interface ChatViewController ()
+#import "ChatViewModel.h"
+@interface ChatViewController (){
+    ChatViewModel *_chatVCModel;
+}
 
 @end
 
@@ -18,6 +20,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        _chatVCModel = [[ChatViewModel alloc] initWithChatVC:self];
     }
     return self;
 }
@@ -32,5 +35,15 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)refreshData{
 
+}
+
+- (void)addChatData:(NSObject *)chatdata{
+
+}
+
+- (void)addChatDatas:(NSArray *)chatdatas{
+
+}
 @end

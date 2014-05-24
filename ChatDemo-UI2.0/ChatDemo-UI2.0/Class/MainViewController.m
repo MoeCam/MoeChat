@@ -42,7 +42,9 @@
     self.tabBar.backgroundImage = [[UIImage imageNamed:@"tabbarBackground"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
     self.tabBar.selectionIndicatorImage = [[UIImage imageNamed:@"tabbarSelectBg"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
    
-    _chatListVC = [[ChatListViewController alloc] init];
+    _chatListVC = [[ChatListViewController alloc]
+                   initWithNibName:@"ChatListViewController"
+                   bundle:nil];
     _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"会话"
                                                            image:nil
                                                              tag:0];
