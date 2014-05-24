@@ -30,22 +30,11 @@
     return self;
 }
 
--(void)unSelectedTapTabBarItems:(UITabBarItem *)tabBarItem{
-    [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                    [UIFont systemFontOfSize:14], UITextAttributeFont,[UIColor whiteColor],UITextAttributeTextColor,
-                                                    nil] forState:UIControlStateNormal];
-}
-
--(void)selectedTapTabBarItems:(UITabBarItem *)tabBarItem{
-    [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                        [UIFont systemFontOfSize:14],
-                                        UITextAttributeFont,[UIColor colorWithRed:0.393 green:0.553 blue:1.000 alpha:1.000],UITextAttributeTextColor,
-                                        nil] forState:UIControlStateNormal];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //if 使tabBarController中管理的viewControllers都符合 UIRectEdgeNone
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -82,11 +71,19 @@
     self.title = @"会话";
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
     self.selectedIndex = 0;
-    [self addChildViewController:_settingsVC];
 }
 
-- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item{
-    for (UITabBarItem* tempItem in tabBar.items) {
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - UITabBarDelegate
+
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
+{
+    for (UITabBarItem* tempItem in tabBar.items)
+    {
         if (tempItem == item) {
             [self selectedTapTabBarItems:tempItem];
         }else{
@@ -102,9 +99,21 @@
     }
 }
 
-- (void)didReceiveMemoryWarning
+#pragma mark - private
+
+-(void)unSelectedTapTabBarItems:(UITabBarItem *)tabBarItem
 {
-    [super didReceiveMemoryWarning];
+    [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                        [UIFont systemFontOfSize:14], UITextAttributeFont,[UIColor whiteColor],UITextAttributeTextColor,
+                                        nil] forState:UIControlStateNormal];
+}
+
+-(void)selectedTapTabBarItems:(UITabBarItem *)tabBarItem
+{
+    [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                        [UIFont systemFontOfSize:14],
+                                        UITextAttributeFont,[UIColor colorWithRed:0.393 green:0.553 blue:1.000 alpha:1.000],UITextAttributeTextColor,
+                                        nil] forState:UIControlStateNormal];
 }
 
 @end
