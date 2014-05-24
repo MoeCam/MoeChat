@@ -71,8 +71,8 @@
      nav = [[UINavigationController alloc] initWithRootViewController:loginController];
      }
      */
-    _mainVC = [[MainViewController alloc] init];
-    nav = [[UINavigationController alloc] initWithRootViewController:_mainVC];
+    MainViewController *mainVC = [[MainViewController alloc] init];
+    nav = [[UINavigationController alloc] initWithRootViewController:mainVC];
     if ([UIDevice currentDevice].systemVersion.floatValue < 7.0){
         nav.navigationBar.barStyle = UIBarStyleDefault;
         nav.navigationBar.tintColor = [UIColor redColor];
