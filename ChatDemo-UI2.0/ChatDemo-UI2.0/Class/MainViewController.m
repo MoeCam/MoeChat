@@ -11,7 +11,8 @@
 #import "ContactsViewController.h"
 #import "SettingsViewController.h"
 
-@interface MainViewController (){
+@interface MainViewController ()
+{
     ChatListViewController *_chatListVC;
     ContactsViewController *_contactsVC;
     SettingsViewController *_settingsVC;
@@ -45,6 +46,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
  
     self.tabBar.backgroundImage = [[UIImage imageNamed:@"tabbarBackground"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
     self.tabBar.selectionIndicatorImage = [[UIImage imageNamed:@"tabbarSelectBg"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
@@ -71,13 +75,14 @@
                                                              tag:2];
     [_settingsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_settingHL"]
                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_setting"]];
+    _settingsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
     
     self.viewControllers = @[_chatListVC, _contactsVC, _settingsVC];
     self.title = @"会话";
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
     self.selectedIndex = 0;
-//    [self addChildViewController:_chatListVC];
+    [self addChildViewController:_settingsVC];
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item{
