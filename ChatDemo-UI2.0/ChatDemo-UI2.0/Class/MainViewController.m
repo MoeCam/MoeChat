@@ -33,15 +33,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:@"50001"
+                                                         password:@"123456"
+                                                   withCompletion:
+     ^(NSString *username, NSString *password, EMError *error) {
+         [[EaseMob sharedInstance].chatManager
+          asyncLoginWithUsername:username
+          password:password
+          completion:
+          ^(NSDictionary *loginInfo, EMError *error) {
+              NSLog(@"---%@",loginInfo);
+          } onQueue:nil];
+     } onQueue:nil];
     
     //if 使tabBarController中管理的viewControllers都符合 UIRectEdgeNone
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
- 
+    
     self.tabBar.backgroundImage = [[UIImage imageNamed:@"tabbarBackground"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
     self.tabBar.selectionIndicatorImage = [[UIImage imageNamed:@"tabbarSelectBg"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
-   
+    
     _chatListVC = [[ChatListViewController alloc]
                    initWithNibName:@"ChatListViewController"
                    bundle:nil];
@@ -65,7 +77,7 @@
                                                            image:nil
                                                              tag:2];
     [_settingsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_settingHL"]
-                        withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_setting"]];
+                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_setting"]];
     _settingsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
     

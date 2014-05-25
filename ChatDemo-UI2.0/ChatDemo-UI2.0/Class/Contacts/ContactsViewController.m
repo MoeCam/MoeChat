@@ -265,30 +265,30 @@
         [sortedArray addObject:sectionArray];
     }
     
-//    //名字分section
-//    for (EMBuddy *buddy in dataArray) {
-//        //getUserName是实现中文拼音检索的核心，见NameIndex类
-//        NSString *firstLetter = [ChineseToPinyin pinyinFromChineseString:buddy.username];
-//        NSInteger section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
-//        
-//        NSMutableArray *array = [sortedArray objectAtIndex:section];
-//        [array addObject:buddy];
-//    }
-//    
-//    //每个section内的数组排序
-//    for (int i = 0; i < [sortedArray count]; i++) {
-//        NSArray *array = [[sortedArray objectAtIndex:i] sortedArrayUsingComparator:^NSComparisonResult(EMBuddy *obj1, EMBuddy *obj2) {
-//            NSString *firstLetter1 = [ChineseToPinyin pinyinFromChineseString:obj1.username];
-//            firstLetter1 = [[firstLetter1 substringToIndex:1] uppercaseString];
-//            
-//            NSString *firstLetter2 = [ChineseToPinyin pinyinFromChineseString:obj2.username];
-//            firstLetter2 = [[firstLetter2 substringToIndex:1] uppercaseString];
-//            
-//            return [firstLetter1 caseInsensitiveCompare:firstLetter2];
-//        }];
-//        
-//        [sortedArray replaceObjectAtIndex:i withObject:array];
-//    }
+    //名字分section
+    for (EMBuddy *buddy in dataArray) {
+        //getUserName是实现中文拼音检索的核心，见NameIndex类
+        NSString *firstLetter = [ChineseToPinyin pinyinFromChineseString:buddy.username];
+        NSInteger section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
+        
+        NSMutableArray *array = [sortedArray objectAtIndex:section];
+        [array addObject:buddy];
+    }
+    
+    //每个section内的数组排序
+    for (int i = 0; i < [sortedArray count]; i++) {
+        NSArray *array = [[sortedArray objectAtIndex:i] sortedArrayUsingComparator:^NSComparisonResult(EMBuddy *obj1, EMBuddy *obj2) {
+            NSString *firstLetter1 = [ChineseToPinyin pinyinFromChineseString:obj1.username];
+            firstLetter1 = [[firstLetter1 substringToIndex:1] uppercaseString];
+            
+            NSString *firstLetter2 = [ChineseToPinyin pinyinFromChineseString:obj2.username];
+            firstLetter2 = [[firstLetter2 substringToIndex:1] uppercaseString];
+            
+            return [firstLetter1 caseInsensitiveCompare:firstLetter2];
+        }];
+        
+        [sortedArray replaceObjectAtIndex:i withObject:array];
+    }
     
     return sortedArray;
 }
@@ -297,18 +297,18 @@
 
 - (void)reloadDataSource
 {
-//    [self.dataSource removeAllObjects];
-//    NSArray *array = [[EaseMob sharedInstance].chatManager buddyList];
-//    
-//    NSMutableArray *tmpArray = [NSMutableArray array];
-//    for (EMBuddy *buudy in array) {
-//        if (buudy.isPendingApproval) {
-//            [tmpArray addObject:buudy];
-//        }
-//    }
-//    
-//    [self.dataSource addObjectsFromArray:[self sortDataArray:tmpArray]];
-//    [self.tableView reloadData];
+    [self.dataSource removeAllObjects];
+    NSArray *array = [[EaseMob sharedInstance].chatManager buddyList];
+    
+    NSMutableArray *tmpArray = [NSMutableArray array];
+    for (EMBuddy *buudy in array) {
+        if (buudy.isPendingApproval) {
+            [tmpArray addObject:buudy];
+        }
+    }
+    
+    [self.dataSource addObjectsFromArray:[self sortDataArray:tmpArray]];
+    [self.tableView reloadData];
 }
 
 #pragma mark - action
