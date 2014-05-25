@@ -42,8 +42,7 @@
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-//    [self didUnreadMessagesCountChanged];
-//    self.view.backgroundColor = [UIColor redColor];
+
     self.title = @"消息列表";
     
     _chatListVC = [[ChatListViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -105,7 +104,11 @@
 {
     [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
         if (error) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告" message:@"退出当前账号失败，请重新操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告"
+                                                                message:@"退出当前账号失败，请重新操作"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil];
             [alertView show];
         }
         else{
