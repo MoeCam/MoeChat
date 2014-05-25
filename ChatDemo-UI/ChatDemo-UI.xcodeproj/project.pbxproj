@@ -165,6 +165,8 @@
 		9028600E193203230040B9D0 /* chatBar_more_photo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90285FFE193203230040B9D0 /* chatBar_more_photo@2x.png */; };
 		9028600F193203230040B9D0 /* chatBar_more_photoSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 90285FFF193203230040B9D0 /* chatBar_more_photoSelected.png */; };
 		90286010193203230040B9D0 /* chatBar_more_photoSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90286000193203230040B9D0 /* chatBar_more_photoSelected@2x.png */; };
+		902860141932045D0040B9D0 /* faceDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = 902860121932045D0040B9D0 /* faceDelete.png */; };
+		902860151932045D0040B9D0 /* faceDelete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 902860131932045D0040B9D0 /* faceDelete@2x.png */; };
 		902DECA91931DDE5006CA75E /* libEaseMobClientSDKLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 902DECA51931DDE5006CA75E /* libEaseMobClientSDKLite.a */; };
 		902DECAA1931DDE5006CA75E /* EaseMob.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 902DECA81931DDE5006CA75E /* EaseMob.bundle */; };
 		902DECBA1931F851006CA75E /* EMChatBarMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 902DECAD1931F851006CA75E /* EMChatBarMoreView.m */; };
@@ -486,6 +488,8 @@
 		90285FFE193203230040B9D0 /* chatBar_more_photo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatBar_more_photo@2x.png"; sourceTree = "<group>"; };
 		90285FFF193203230040B9D0 /* chatBar_more_photoSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chatBar_more_photoSelected.png; sourceTree = "<group>"; };
 		90286000193203230040B9D0 /* chatBar_more_photoSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatBar_more_photoSelected@2x.png"; sourceTree = "<group>"; };
+		902860121932045D0040B9D0 /* faceDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = faceDelete.png; sourceTree = "<group>"; };
+		902860131932045D0040B9D0 /* faceDelete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "faceDelete@2x.png"; sourceTree = "<group>"; };
 		902DEC5B1931DDE5006CA75E /* IChatManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IChatManagerDelegate.h; sourceTree = "<group>"; };
 		902DEC5D1931DDE5006CA75E /* EMChatManagerBuddyDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatManagerBuddyDelegate.h; sourceTree = "<group>"; };
 		902DEC5E1931DDE5006CA75E /* EMChatManagerChatDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatManagerChatDelegate.h; sourceTree = "<group>"; };
@@ -1061,6 +1065,15 @@
 			path = Gray;
 			sourceTree = "<group>";
 		};
+		902860111932045D0040B9D0 /* Emoji */ = {
+			isa = PBXGroup;
+			children = (
+				902860121932045D0040B9D0 /* faceDelete.png */,
+				902860131932045D0040B9D0 /* faceDelete@2x.png */,
+			);
+			path = Emoji;
+			sourceTree = "<group>";
+		};
 		902DEC561931DDE5006CA75E /* EaseMobSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -1303,6 +1316,7 @@
 		9048CEE719037BB4003A775C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				902860111932045D0040B9D0 /* Emoji */,
 				90285F41193201770040B9D0 /* ChatImages */,
 				90285EF0193201060040B9D0 /* Voice */,
 				90285ECF1931FE0D0040B9D0 /* shareMore */,
@@ -1680,6 +1694,7 @@
 				90285FB6193201770040B9D0 /* chat_receiver_audio_playing002.png in Resources */,
 				90285FC0193201770040B9D0 /* chat_sender_audio_playing_001.png in Resources */,
 				90285F1B193201060040B9D0 /* VoiceSearchFeedback002.png in Resources */,
+				902860141932045D0040B9D0 /* faceDelete.png in Resources */,
 				90285FC8193201770040B9D0 /* chat_sender_bg.png in Resources */,
 				90285F36193201060040B9D0 /* VoiceSearchFeedback015@2x.png in Resources */,
 				90285FC7193201770040B9D0 /* chat_sender_audio_playing_full@2x.png in Resources */,
@@ -1693,6 +1708,7 @@
 				90285F28193201060040B9D0 /* VoiceSearchFeedback008@2x.png in Resources */,
 				908689EA192B42290059FC48 /* sr_refresh.png in Resources */,
 				90285F25193201060040B9D0 /* VoiceSearchFeedback007.png in Resources */,
+				902860151932045D0040B9D0 /* faceDelete@2x.png in Resources */,
 				90285FB7193201770040B9D0 /* chat_receiver_audio_playing002@2x.png in Resources */,
 				90286005193203230040B9D0 /* chatBar_more_face.png in Resources */,
 				90285F39193201060040B9D0 /* VoiceSearchFeedback017.png in Resources */,
