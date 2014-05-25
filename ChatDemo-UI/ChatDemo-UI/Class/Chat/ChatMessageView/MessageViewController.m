@@ -705,7 +705,6 @@
      ^(NSUInteger buttonIndex, WCAlertView *alertView) {
          if (buttonIndex == 1) {
              if (_conversation.messages.count > 0) {
-                 [_conversation loadAllMessages];
                  [_conversation removeAllMessages];
                  [_dataSource removeAllObjects];
                  [self.tableView reloadData];
