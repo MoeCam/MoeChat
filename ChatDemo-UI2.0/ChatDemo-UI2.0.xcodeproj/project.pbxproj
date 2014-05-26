@@ -422,12 +422,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
-				3C3527471931D8D800385240 /* libresolv.dylib in Frameworks */,
-=======
 				902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */,
 				902DEC521931D877006CA75E /* libEaseMobClientSDKLite.a in Frameworks */,
->>>>>>> FETCH_HEAD
 				3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */,
 				3C35273F1931D2DE00385240 /* libbaidumapapi.a in Frameworks */,
 				9091102A192EEA70008A48AA /* CoreGraphics.framework in Frameworks */,
@@ -748,11 +744,7 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-				3C3527461931D8D800385240 /* libresolv.dylib */,
-=======
 				902DEC541931D934006CA75E /* libresolv.dylib */,
->>>>>>> FETCH_HEAD
 				3C3527441931D37900385240 /* SystemConfiguration.framework */,
 				3C3527421931D33A00385240 /* Social.framework */,
 				3C3527401931D32C00385240 /* Security.framework */,
