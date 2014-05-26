@@ -13,7 +13,6 @@
 		3C35273E1931D1DF00385240 /* RealtimeSearchUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C35273B1931D1DF00385240 /* RealtimeSearchUtil.m */; };
 		3C35273F1931D2DE00385240 /* libbaidumapapi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911082192EEAED008A48AA /* libbaidumapapi.a */; };
 		3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527441931D37900385240 /* SystemConfiguration.framework */; };
-		3C3527471931D8D800385240 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527461931D8D800385240 /* libresolv.dylib */; };
 		3CBF90C019302F5000AD68AE /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBF90BF19302F5000AD68AE /* BaseViewController.m */; };
 		3CBF90D619302F6000AD68AE /* titleBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CBF90C319302F6000AD68AE /* titleBar.png */; };
 		3CBF90D719302F6000AD68AE /* titleBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CBF90C419302F6000AD68AE /* titleBar@2x.png */; };
@@ -42,6 +41,8 @@
 		905326AE193321FC00F064D7 /* password.png in Resources */ = {isa = PBXBuildFile; fileRef = 905326AC193321FC00F064D7 /* password.png */; };
 		905326AF193321FC00F064D7 /* password@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905326AD193321FC00F064D7 /* password@2x.png */; };
 		905326B519333E8E00F064D7 /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 905326B419333E8E00F064D7 /* TTGlobalUICommon.m */; };
+		905326BA19334BE800F064D7 /* chatListCellHead.png in Resources */ = {isa = PBXBuildFile; fileRef = 905326B819334BE800F064D7 /* chatListCellHead.png */; };
+		905326BB19334BE800F064D7 /* chatListCellHead@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905326B919334BE800F064D7 /* chatListCellHead@2x.png */; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
 		9091102A192EEA70008A48AA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911029192EEA70008A48AA /* CoreGraphics.framework */; };
 		9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9091102B192EEA70008A48AA /* UIKit.framework */; };
@@ -145,7 +146,6 @@
 		3C3527401931D32C00385240 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		3C3527421931D33A00385240 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		3C3527441931D37900385240 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		3C3527461931D8D800385240 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		3CBF90BE19302F5000AD68AE /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		3CBF90BF19302F5000AD68AE /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		3CBF90C319302F6000AD68AE /* titleBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = titleBar.png; sourceTree = "<group>"; };
@@ -240,6 +240,8 @@
 		905326AD193321FC00F064D7 /* password@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "password@2x.png"; sourceTree = "<group>"; };
 		905326B319333E8E00F064D7 /* TTGlobalUICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGlobalUICommon.h; sourceTree = "<group>"; };
 		905326B419333E8E00F064D7 /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
+		905326B819334BE800F064D7 /* chatListCellHead.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chatListCellHead.png; sourceTree = "<group>"; };
+		905326B919334BE800F064D7 /* chatListCellHead@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatListCellHead@2x.png"; sourceTree = "<group>"; };
 		90911024192EEA70008A48AA /* ChatDemo-UI2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChatDemo-UI2.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90911027192EEA70008A48AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		90911029192EEA70008A48AA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -490,6 +492,7 @@
 		3CBF90C119302F6000AD68AE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				905326B719334BE800F064D7 /* chatListCell */,
 				905326A7193321DE00F064D7 /* Login */,
 				3CBF90C219302F6000AD68AE /* NavigationBar */,
 				3CBF90C519302F6000AD68AE /* tabbar */,
@@ -756,6 +759,15 @@
 				905326B419333E8E00F064D7 /* TTGlobalUICommon.m */,
 			);
 			path = TTGlobalUICommon;
+			sourceTree = "<group>";
+		};
+		905326B719334BE800F064D7 /* chatListCell */ = {
+			isa = PBXGroup;
+			children = (
+				905326B819334BE800F064D7 /* chatListCellHead.png */,
+				905326B919334BE800F064D7 /* chatListCellHead@2x.png */,
+			);
+			path = chatListCell;
 			sourceTree = "<group>";
 		};
 		9091101B192EEA70008A48AA = {
@@ -1258,8 +1270,10 @@
 				3C35273D1931D1DF00385240 /* newFriends@2x.png in Resources */,
 				905326AB193321DE00F064D7 /* account@2x.png in Resources */,
 				90EF2CED192F2B4E00BDC549 /* sr_refresh@2X.png in Resources */,
+				905326BA19334BE800F064D7 /* chatListCellHead.png in Resources */,
 				3CBF90E619302F6000AD68AE /* tabbarSelectBg.png in Resources */,
 				3CBF90E419302F6000AD68AE /* tabbarBackground.png in Resources */,
+				905326BB19334BE800F064D7 /* chatListCellHead@2x.png in Resources */,
 				3CBF90D819302F6000AD68AE /* tabbar_chats.png in Resources */,
 				3CBF90E119302F6000AD68AE /* tabbar_setting@2x.png in Resources */,
 				3CBF90D619302F6000AD68AE /* titleBar.png in Resources */,

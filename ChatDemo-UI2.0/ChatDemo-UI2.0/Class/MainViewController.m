@@ -33,18 +33,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:@"50001"
-                                                         password:@"123456"
-                                                   withCompletion:
-     ^(NSString *username, NSString *password, EMError *error) {
-         [[EaseMob sharedInstance].chatManager
-          asyncLoginWithUsername:username
-          password:password
-          completion:
-          ^(NSDictionary *loginInfo, EMError *error) {
-              NSLog(@"---%@",loginInfo);
-          } onQueue:nil];
-     } onQueue:nil];
     
     //if 使tabBarController中管理的viewControllers都符合 UIRectEdgeNone
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {

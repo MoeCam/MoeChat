@@ -27,6 +27,7 @@
         // Initialization code
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(240, 7, 80, 16)];
         _timeLabel.font = [UIFont systemFontOfSize:13];
+        _timeLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_timeLabel];
         
         _unreadLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 0, 20, 20)];
@@ -40,9 +41,12 @@
         [self.contentView addSubview:_unreadLabel];
         
         _detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(65, 30, 175, 20)];
+        _detailLabel.backgroundColor = [UIColor clearColor];
         _detailLabel.font = [UIFont systemFontOfSize:15];
         _detailLabel.textColor = [UIColor lightGrayColor];
         [self.contentView addSubview:_detailLabel];
+        
+        self.textLabel.backgroundColor = [UIColor clearColor];
         
         _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
         _lineView.backgroundColor = RGBACOLOR(207, 210, 213, 0.7);

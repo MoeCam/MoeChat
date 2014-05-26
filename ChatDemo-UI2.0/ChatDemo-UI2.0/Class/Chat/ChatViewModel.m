@@ -8,21 +8,30 @@
 
 #import "ChatViewModel.h"
 
+@interface ChatViewModel ()<IChatManagerDelegate>{
+    NSString *_chatter;
+}
+@end
+
 @implementation ChatViewModel
 
--(id)initWithChatVC:(ChatViewController *)chatVC{
+- (id)initWithChatVC:(ChatViewController *)chatVC
+         andChatter:(NSString *)chatter
+       andIsChatroom:(BOOL)isChatroom{
     if (self = [super init]) {
-        __chatVC = chatVC;
+        _chatVC = chatVC;
+        _chatter = chatter;
     }
     
     return self;
 }
 
--(void)registerNotification{
+- (void)registerNotification{
     [self unRegisterNotification];
+    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
 }
 
--(void)unRegisterNotification{
-
+- (void)unRegisterNotification{
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
 @end

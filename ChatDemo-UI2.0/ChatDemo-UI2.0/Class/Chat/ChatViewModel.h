@@ -11,7 +11,10 @@
 
 @interface ChatViewModel : NSObject
 
-@property (nonatomic, weak) ChatViewController *_chatVC;
+@property (nonatomic, weak) ChatViewController *chatVC;
 
--(id)initWithChatVC:(ChatViewController *)chatVC;
+- (id)initWithChatVC:(ChatViewController *)chatVC
+          andChatter:(NSString *)chatter
+       andIsChatroom:(BOOL)isChatroom;
+
 @end

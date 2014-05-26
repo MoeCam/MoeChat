@@ -10,6 +10,9 @@
 
 @interface ChatViewController : UIViewController
 
+- (id)initWithChatter:(NSString *)chatter
+        andIsChatRoom:(BOOL)isChatroom;
+
 - (void)refreshData;
 - (void)addChatData:(NSObject *)chatdata;
 - (void)addChatDatas:(NSArray *)chatdatas;
