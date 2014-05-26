@@ -101,15 +101,15 @@
 
 - (void)logoutAction
 {
-//    [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
-//        if (error) {
-//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告" message:@"退出当前账号失败，请重新操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//            [alertView show];
-//        }
-//        else{
-//            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
-//        }
-//    } onQueue:nil];
+    [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
+        if (error) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告" message:@"退出当前账号失败，请重新操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alertView show];
+        }
+        else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+        }
+    } onQueue:nil];
 }
  
 @end

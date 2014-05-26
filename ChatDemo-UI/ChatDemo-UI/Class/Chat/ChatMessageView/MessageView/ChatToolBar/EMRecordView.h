@@ -1,14 +1,23 @@
 //
-//  DXRecordView.h
-//  Share
+//  EMRecordView.h
+//  ChatDemo
 //
 //  Created by dujiepeng on 14-3-4.
-//  Copyright (c) 2014年 Share. All rights reserved.
+//  Copyright (c) 2014年 easemob. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+@protocol EMRecordDelegate <NSObject>
 
-@interface DXRecordView : UIView
+@optional
+-(void)audioPlay;
+-(void)audioCancel;
+-(void)sendAudio;
+@end
+
+@interface EMRecordView : UIView
+@property (nonatomic, assign) id<EMRecordDelegate> delegate;
+
 
 // 录音按钮按下
 -(void)recordButtonTouchDown;
@@ -20,5 +29,4 @@
 -(void)recordButtonDragInside;
 // 手指移动到录音按钮外部
 -(void)recordButtonDragOutside;
-
 @end
