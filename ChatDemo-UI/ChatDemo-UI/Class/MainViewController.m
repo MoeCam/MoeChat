@@ -132,4 +132,11 @@
     }
 }
 
+-(void)didReceiveMessage:(EMMessage *)message{
+    // 收到消息时，播放音频
+    [[EaseMob sharedInstance].deviceManager asyncPlayNewMessageSound];
+    // 收到消息时，震动
+    [[EaseMob sharedInstance].deviceManager asyncPlayVibration];
+}
+
 @end
