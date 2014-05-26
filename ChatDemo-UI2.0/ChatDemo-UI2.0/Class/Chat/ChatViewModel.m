@@ -7,6 +7,7 @@
 //
 
 #import "ChatViewModel.h"
+#import "ChatViewController.h"
 
 @interface ChatViewModel ()<IChatManagerDelegate>{
     NSString *_chatter;
@@ -34,4 +35,12 @@
 - (void)unRegisterNotification{
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
+
+// 收到新消息
+-(void)didReceiveMessage:(EMMessage *)message{
+    if ([message.conversation.chatter isEqualToString:_chatter]) {
+        _chatVC
+    }
+}
+
 @end

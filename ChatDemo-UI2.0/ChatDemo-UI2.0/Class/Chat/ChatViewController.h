@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class EMMessage;
 @interface ChatViewController : UIViewController
 
 - (id)initWithChatter:(NSString *)chatter
         andIsChatRoom:(BOOL)isChatroom;
 
 - (void)refreshData;
-- (void)addChatData:(NSObject *)chatdata;
+- (void)addChatData:(EMMessage *)chatdata;
 - (void)addChatDatas:(NSArray *)chatdatas;
 
 @end

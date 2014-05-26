@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ChatViewController.h"
 
+@class ChatViewController;
 @interface ChatViewModel : NSObject
 
 @property (nonatomic, weak) ChatViewController *chatVC;
