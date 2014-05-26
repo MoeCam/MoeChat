@@ -36,6 +36,12 @@
 		902DEC521931D877006CA75E /* libEaseMobClientSDKLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 902DEC4E1931D877006CA75E /* libEaseMobClientSDKLite.a */; };
 		902DEC531931D877006CA75E /* EaseMob.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 902DEC511931D877006CA75E /* EaseMob.bundle */; };
 		902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902DEC541931D934006CA75E /* libresolv.dylib */; };
+		905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 905325CE1932ED8B00F064D7 /* EMSearchBar.m */; };
+		905326AA193321DE00F064D7 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 905326A8193321DE00F064D7 /* account.png */; };
+		905326AB193321DE00F064D7 /* account@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905326A9193321DE00F064D7 /* account@2x.png */; };
+		905326AE193321FC00F064D7 /* password.png in Resources */ = {isa = PBXBuildFile; fileRef = 905326AC193321FC00F064D7 /* password.png */; };
+		905326AF193321FC00F064D7 /* password@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905326AD193321FC00F064D7 /* password@2x.png */; };
+		905326B519333E8E00F064D7 /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 905326B419333E8E00F064D7 /* TTGlobalUICommon.m */; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
 		9091102A192EEA70008A48AA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911029192EEA70008A48AA /* CoreGraphics.framework */; };
 		9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9091102B192EEA70008A48AA /* UIKit.framework */; };
@@ -226,6 +232,14 @@
 		902DEC4E1931D877006CA75E /* libEaseMobClientSDKLite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libEaseMobClientSDKLite.a; sourceTree = "<group>"; };
 		902DEC511931D877006CA75E /* EaseMob.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = EaseMob.bundle; sourceTree = "<group>"; };
 		902DEC541931D934006CA75E /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
+		905325CD1932ED8B00F064D7 /* EMSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchBar.h; sourceTree = "<group>"; };
+		905325CE1932ED8B00F064D7 /* EMSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchBar.m; sourceTree = "<group>"; };
+		905326A8193321DE00F064D7 /* account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account.png; sourceTree = "<group>"; };
+		905326A9193321DE00F064D7 /* account@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account@2x.png"; sourceTree = "<group>"; };
+		905326AC193321FC00F064D7 /* password.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = password.png; sourceTree = "<group>"; };
+		905326AD193321FC00F064D7 /* password@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "password@2x.png"; sourceTree = "<group>"; };
+		905326B319333E8E00F064D7 /* TTGlobalUICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGlobalUICommon.h; sourceTree = "<group>"; };
+		905326B419333E8E00F064D7 /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
 		90911024192EEA70008A48AA /* ChatDemo-UI2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChatDemo-UI2.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90911027192EEA70008A48AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		90911029192EEA70008A48AA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -458,6 +472,8 @@
 				3C3527341931D1BE00385240 /* BaseTableViewCell.h */,
 				3C3527351931D1BE00385240 /* BaseTableViewCell.m */,
 				3CBF90BD19302F5000AD68AE /* ViewController */,
+				905325CD1932ED8B00F064D7 /* EMSearchBar.h */,
+				905325CE1932ED8B00F064D7 /* EMSearchBar.m */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -474,6 +490,7 @@
 		3CBF90C119302F6000AD68AE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				905326A7193321DE00F064D7 /* Login */,
 				3CBF90C219302F6000AD68AE /* NavigationBar */,
 				3CBF90C519302F6000AD68AE /* tabbar */,
 			);
@@ -721,6 +738,26 @@
 			path = bundle;
 			sourceTree = "<group>";
 		};
+		905326A7193321DE00F064D7 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				905326AC193321FC00F064D7 /* password.png */,
+				905326AD193321FC00F064D7 /* password@2x.png */,
+				905326A8193321DE00F064D7 /* account.png */,
+				905326A9193321DE00F064D7 /* account@2x.png */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		905326B219333E8E00F064D7 /* TTGlobalUICommon */ = {
+			isa = PBXGroup;
+			children = (
+				905326B319333E8E00F064D7 /* TTGlobalUICommon.h */,
+				905326B419333E8E00F064D7 /* TTGlobalUICommon.m */,
+			);
+			path = TTGlobalUICommon;
+			sourceTree = "<group>";
+		};
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
@@ -810,6 +847,7 @@
 		90911056192EEAED008A48AA /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
+				905326B219333E8E00F064D7 /* TTGlobalUICommon */,
 				90EF2CE4192F2B4E00BDC549 /* SlimeRefresh */,
 				90911057192EEAED008A48AA /* BaiDuMapSDK */,
 				90911084192EEAED008A48AA /* MBProgressHUD */,
@@ -1198,9 +1236,11 @@
 				90F1BE71193046C600121AEC /* ChatListViewController.xib in Resources */,
 				90911138192EEC91008A48AA /* LoginViewController.xib in Resources */,
 				90EF2CEC192F2B4E00BDC549 /* sr_refresh.png in Resources */,
+				905326AE193321FC00F064D7 /* password.png in Resources */,
 				3CBF90DB19302F6000AD68AE /* tabbar_chatsHL@2x.png in Resources */,
 				909110EF192EEAED008A48AA /* mapapi.bundle in Resources */,
 				3CBF90E219302F6000AD68AE /* tabbar_settingHL.png in Resources */,
+				905326AA193321DE00F064D7 /* account.png in Resources */,
 				3CBF90E319302F6000AD68AE /* tabbar_settingHL@2x.png in Resources */,
 				3CBF90DC19302F6000AD68AE /* tabbar_contacts.png in Resources */,
 				3CBF90E519302F6000AD68AE /* tabbarBackground@2x.png in Resources */,
@@ -1216,6 +1256,7 @@
 				902DEC531931D877006CA75E /* EaseMob.bundle in Resources */,
 				3CBF90DA19302F6000AD68AE /* tabbar_chatsHL.png in Resources */,
 				3C35273D1931D1DF00385240 /* newFriends@2x.png in Resources */,
+				905326AB193321DE00F064D7 /* account@2x.png in Resources */,
 				90EF2CED192F2B4E00BDC549 /* sr_refresh@2X.png in Resources */,
 				3CBF90E619302F6000AD68AE /* tabbarSelectBg.png in Resources */,
 				3CBF90E419302F6000AD68AE /* tabbarBackground.png in Resources */,
@@ -1223,6 +1264,7 @@
 				3CBF90E119302F6000AD68AE /* tabbar_setting@2x.png in Resources */,
 				3CBF90D619302F6000AD68AE /* titleBar.png in Resources */,
 				90911108192EEAED008A48AA /* MWPhotoBrowser.bundle in Resources */,
+				905326AF193321FC00F064D7 /* password@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1250,6 +1292,7 @@
 				90911116192EEAED008A48AA /* UIImageView+WebCache.m in Sources */,
 				90911111192EEAED008A48AA /* SDWebImagePrefetcher.m in Sources */,
 				90911105192EEAED008A48AA /* PSTGridLayoutItem.m in Sources */,
+				905326B519333E8E00F064D7 /* TTGlobalUICommon.m in Sources */,
 				9091110B192EEAED008A48AA /* SDImageCache.m in Sources */,
 				90911110192EEAED008A48AA /* SDWebImageManager.m in Sources */,
 				909110FD192EEAED008A48AA /* PSTCollectionViewCell.m in Sources */,
@@ -1292,6 +1335,7 @@
 				90911129192EEBE4008A48AA /* ContactsViewController.m in Sources */,
 				90911137192EEC91008A48AA /* LoginViewController.m in Sources */,
 				90911119192EEAED008A48AA /* NSDate+Category.m in Sources */,
+				905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */,
 				90F1BE70193046C600121AEC /* ChatListViewController.m in Sources */,
 				90911101192EEAED008A48AA /* PSTCollectionViewItemKey.m in Sources */,
 				909110F7192EEAED008A48AA /* MWTapDetectingImageView.m in Sources */,

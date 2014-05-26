@@ -11,8 +11,7 @@
 #import "BaseTableViewCell.h"
 #import "RealtimeSearchUtil.h"
 #import "ChineseToPinyin.h"
-
-//#import "EaseMob.h"
+#import "EMSearchBar.h"
 
 @interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
@@ -21,7 +20,7 @@
 
 @property (strong, nonatomic) UIView *headerView;
 @property (strong, nonatomic) UITableView *tableView;
-@property (strong, nonatomic) UISearchBar *searchBar;
+@property (strong, nonatomic) EMSearchBar *searchBar;
 
 @end
 
@@ -60,9 +59,11 @@
 - (UISearchBar *)searchBar
 {
     if (_searchBar == nil) {
-        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+        _searchBar = [[EMSearchBar alloc] initWithFrame:
+                      CGRectMake(0, 0, self.view.frame.size.width, 44)];
         _searchBar.delegate = self;
         _searchBar.placeholder = @"搜索";
+        _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
     }
     
     return _searchBar;

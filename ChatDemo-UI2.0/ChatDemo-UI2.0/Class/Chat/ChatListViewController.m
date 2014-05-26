@@ -9,12 +9,13 @@
 #import "ChatListViewController.h"
 #import "SRRefreshView.h"
 #import "ChatListCell.h"
+#import "EMSearchBar.h"
 
 @interface ChatListViewController ()<UITableViewDelegate,UITableViewDataSource,SRRefreshDelegate,UISearchBarDelegate>{
     NSMutableArray *_chatList;
 }
 @property (weak, nonatomic) IBOutlet UITableView    *tableView;
-@property (nonatomic, strong) UISearchBar           *searchBar;
+@property (nonatomic, strong) EMSearchBar           *searchBar;
 @property (nonatomic, strong) SRRefreshView         *slimeView;
 @end
 
@@ -34,6 +35,20 @@
     [self.tableView addSubview:self.slimeView];
     self.tableView.tableHeaderView = self.searchBar;
 }
+
+//-(void)viewWillAppear:(BOOL)animated{
+//    [super viewWillAppear:animated];
+//    CGRect frame = [self.tableView convertRect:self.tableView.frame toView: self.view];
+//    if (self.view.frame.origin.y != 0) {
+//        CGRect frame = self.view.frame;
+//        frame.origin.y = 0;
+//        self.view.frame = frame;
+//    }
+//}
+//
+//-(void)viewDidAppear:(BOOL)animated{
+//     CGRect frame = [self.tableView convertRect:self.tableView.frame toView: self.view];
+//}
 
 - (void)didReceiveMemoryWarning
 {
@@ -59,29 +74,11 @@
 
 - (UISearchBar *)searchBar{
     if (!_searchBar) {
-        _searchBar = [[UISearchBar alloc]
+        _searchBar = [[EMSearchBar alloc]
                       initWithFrame: CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 44)];
         _searchBar.delegate = self;
         _searchBar.placeholder = @"搜索";
         _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
-        
-        for (UIView *subView in _searchBar.subviews) {
-            if ([subView isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
-                [subView removeFromSuperview];
-            }
-            
-            if ([subView isKindOfClass:NSClassFromString(@"UISearchBarTextField")]) {
-                UITextField *textField = (UITextField *)subView;
-                [textField setBorderStyle:UITextBorderStyleNone];
-                textField.background = nil;
-                textField.frame = CGRectMake(8, 8, _searchBar.bounds.size.width - 2* 8,
-                                             _searchBar.bounds.size.height - 2* 8);
-                textField.layer.cornerRadius = 6;
-                
-                textField.clipsToBounds = YES;
-                textField.backgroundColor = [UIColor whiteColor];
-            }
-        }
     }
     
     return _searchBar;

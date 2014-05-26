@@ -24,9 +24,10 @@
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
         [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(78, 188, 211, 1)];
         [[UINavigationBar appearance] setTitleTextAttributes:
-        [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
+         [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
     }
-    
+
+
     [self loginStateChange:nil];
     [self.window makeKeyAndVisible];
     return YES;
@@ -59,23 +60,21 @@
 
 -(void)loginStateChange:(NSNotification *)notification
 {
-    NSDictionary *loginInfo = nil;//[[[EaseMob sharedInstance] chatManager] loginInfo];
+    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
     UINavigationController *nav = nil;
-    /*
-     if (loginInfo && [loginInfo count] > 0) {
-     MainViewController *mainVC = [[MainViewController alloc] init];
-     nav = [[UINavigationController alloc] initWithRootViewController:mainVC];
-     }
-     else{
-     LoginViewController *loginController = [[LoginViewController alloc] init];
-     nav = [[UINavigationController alloc] initWithRootViewController:loginController];
-     }
-     */
-    MainViewController *mainVC = [[MainViewController alloc] init];
-    nav = [[UINavigationController alloc] initWithRootViewController:mainVC];
+    
+    if (loginInfo && [loginInfo count] > 0) {
+        MainViewController *mainVC = [[MainViewController alloc] init];
+        nav = [[UINavigationController alloc] initWithRootViewController:mainVC];
+    }
+    else{
+        LoginViewController *loginController = [[LoginViewController alloc] init];
+        nav = [[UINavigationController alloc] initWithRootViewController:loginController];
+        loginController.title = @"环信Demo";
+    }
+
     if ([UIDevice currentDevice].systemVersion.floatValue < 7.0){
         nav.navigationBar.barStyle = UIBarStyleDefault;
-        nav.navigationBar.tintColor = [UIColor redColor];
         [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"titleBar"]
                                 forBarMetrics:UIBarMetricsDefault];
         
