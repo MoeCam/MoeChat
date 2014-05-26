@@ -39,7 +39,7 @@
 // 收到新消息
 -(void)didReceiveMessage:(EMMessage *)message{
     if ([message.conversation.chatter isEqualToString:_chatter]) {
-        _chatVC
+        [_chatVC addMessage:message];
     }
 }
 

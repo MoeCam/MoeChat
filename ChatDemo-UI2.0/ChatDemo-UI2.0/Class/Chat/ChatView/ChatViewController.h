@@ -15,7 +15,7 @@
         andIsChatRoom:(BOOL)isChatroom;
 
 - (void)refreshData;
-- (void)addChatData:(EMMessage *)chatdata;
-- (void)addChatDatas:(NSArray *)chatdatas;
+- (void)addMessage:(EMMessage *)message;
+- (void)addMessages:(NSArray *)messages;
 
 @end

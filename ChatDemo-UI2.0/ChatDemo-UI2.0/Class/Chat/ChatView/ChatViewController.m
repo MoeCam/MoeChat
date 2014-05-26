@@ -56,12 +56,12 @@
     
 }
 
-- (void)addChatData:(EMMessage *)message{
-    
+- (void)addMessage:(EMMessage *)message{
+
 }
 
-- (void)addChatDatas:(NSArray *)messages{
-    
+- (void)addMessages:(NSArray *)messages{
+
 }
 
 #pragma mark - TableViewDelegate & TableViewDatasource
