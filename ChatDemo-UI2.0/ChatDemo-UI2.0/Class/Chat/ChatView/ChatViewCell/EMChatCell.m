@@ -77,7 +77,7 @@
         _retryBtn = [UIButton buttonWithType:UIButtonTypeSystem];
         _retryBtn.frame = _activityIndicatorView.frame;
         [_avtivityView addSubview:_retryBtn];
-        [_retryBtn addTarget:self action:@selector(retryButtonPressed:)
+        [_retryBtn addTarget:self action:@selector(retryButtonPressed)
             forControlEvents:UIControlEventTouchUpInside];
         
         [self.contentView addSubview:_avtivityView];
