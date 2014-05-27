@@ -14,6 +14,15 @@
 +(instancetype)modelWithMessage:(EMMessage *)message{
     EMChatCellBubbleModel *bubbleModel = [[EMChatCellBubbleModel alloc] init];
     id<IEMMessageBody> body = message.messageBodies.lastObject;
+    bubbleModel.isChatroom = message.isChatroom;
+    NSString *usename = [[[EaseMob sharedInstance].chatManager loginInfo]
+                         objectForKey:kSDKUsername];
+    
+    if ([usename isEqualToString:message.to]) {
+        bubbleModel.isLeft = YES;
+    }else{
+        bubbleModel.isLeft = NO;
+    }
     
     switch (body.messageBodyType) {
         case eMessageBodyType_Text:

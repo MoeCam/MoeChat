@@ -21,7 +21,6 @@
     UILabel *_nameLabel;
     UIActivityIndicatorView *_activityIndicatorView;
     UIButton *_retryBtn;
-    BOOL _isLeft;
 }
 
 @end
@@ -59,7 +58,7 @@
         _bubbleView.model = model;
         [self.contentView addSubview:_bubbleView];
         
-        _headView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _headView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, CHATCELL_HEAD_SIZE, CHATCELL_HEAD_SIZE)];
         [self.contentView addSubview:_headView];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.contentView.frame), CHATCELL_CHATNAMAE_HEIGHT)];
@@ -79,8 +78,8 @@
         [_avtivityView addSubview:_retryBtn];
         [_retryBtn addTarget:self action:@selector(retryButtonPressed)
             forControlEvents:UIControlEventTouchUpInside];
-        
         [self.contentView addSubview:_avtivityView];
+        self.backgroundColor = CHATVIEWBACKGROUNDCOLOR;
     }
     return self;
 }
@@ -98,8 +97,7 @@
     [_bubbleView setNeedsLayout];
     
     CGRect headFrame = CGRectMake(0, 0, CHATCELL_HEAD_SIZE, CHATCELL_HEAD_SIZE);
-//    EMContact *contact = nil;
-    
+ 
     if (self.model.isLeft) {
         headFrame.origin.x = CHATCELL_HEAD_X_SPACING;
     }else {
@@ -107,16 +105,22 @@
     }
     if (self.model.isChatroom) {
         [_nameLabel setHidden:NO];
-//        [_nameLabel setText:contact.nickname?contact.nickname:contact.username];
+        //[_nameLabel setText:contact.nickname?contact.nickname:contact.username];
         headFrame.origin.y = CHATCELL_CHATNAMAE_HEIGHT + CHATCELL_CHATNAME_HEAD_HEIGHT+ CHATCELL_HEAD_Y_SPACING;
     }else {
+        [_nameLabel setHidden:YES];
         headFrame.origin.y = CHATCELL_HEAD_Y_SPACING;
     }
     _headView.frame = headFrame;
-//    if (contact) {
-//        [_headView setImageWithURL:self.model.avatarURL
-//                  placeholderImage:[UIImage imageNamed:CHATCELL_HEAD_DEFAULT_IMAGE]];
-//    }
+    [_headView setImageWithURL:self.model.avatarURL
+              placeholderImage:[UIImage imageNamed:CHATCELL_HEAD_DEFAULT_IMAGE]];
+    
+    CGRect frame = _bubbleView.frame;
+    frame.origin.x = headFrame.size.width + headFrame.origin.x + CHATCELL_HEAD_X_SPACING;
+    if (self.model.isChatroom) {
+        frame.origin.y = CHATCELL_CHATNAMAE_HEIGHT;
+    }
+    _bubbleView.frame = frame;
 }
 
 -(void)setModel:(EMChatCellBubbleModel *)model{
