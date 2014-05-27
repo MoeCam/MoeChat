@@ -14,8 +14,10 @@
 - (id)initWithChatter:(NSString *)chatter
         andIsChatRoom:(BOOL)isChatroom;
 
-- (void)refreshData;
 - (void)addMessage:(EMMessage *)message;
 - (void)addMessages:(NSArray *)messages;
+
+- (void)didRemoveAllMessages;
+- (void)didRemoveMessage:(NSString *)messageId success:(BOOL)isSuccess;
 
 @end

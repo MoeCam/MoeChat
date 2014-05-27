@@ -11,7 +11,7 @@
 #import "ContactsViewController.h"
 #import "SettingsViewController.h"
 
-@interface MainViewController ()
+@interface MainViewController () <IChatManagerDelegate>
 {
     ChatListViewController *_chatListVC;
     ContactsViewController *_contactsVC;
@@ -118,4 +118,33 @@
                                         nil] forState:UIControlStateNormal];
 }
 
+// 统计未读消息数
+-(void)setupUnreadMessageCount{
+    NSArray *conversations = [[[EaseMob sharedInstance] chatManager] conversations];
+    NSInteger unreadCount = 0;
+    for (EMConversation *conversation in conversations) {
+        unreadCount += conversation.unreadMessagesCount;
+    }
+    UIViewController *vc = [self.viewControllers objectAtIndex:0];
+    if (unreadCount > 0) {
+        vc.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",unreadCount];
+    }else{
+        vc.tabBarItem.badgeValue = nil;
+    }
+}
+
+#pragma mark - IChatManagerDelegate
+
+// 未读消息数量变化回调
+-(void)didUnreadMessagesCountChanged{
+    [self setupUnreadMessageCount];
+}
+
+// 收到消息回调
+-(void)didReceiveMessage:(EMMessage *)message{
+    // 收到消息时，播放音频
+    [[EaseMob sharedInstance].deviceManager asyncPlayNewMessageSound];
+    // 收到消息时，震动
+    [[EaseMob sharedInstance].deviceManager asyncPlayVibration];
+}
 @end

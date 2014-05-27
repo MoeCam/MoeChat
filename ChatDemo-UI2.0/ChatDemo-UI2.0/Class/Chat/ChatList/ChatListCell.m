@@ -107,6 +107,11 @@
     _lineView.frame = frame;
 }
 
+-(void)setName:(NSString *)name{
+    _name = name;
+    self.textLabel.text = name;
+}
+
 +(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60;
