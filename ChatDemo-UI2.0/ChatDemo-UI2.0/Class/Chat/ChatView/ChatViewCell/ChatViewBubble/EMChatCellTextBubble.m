@@ -100,7 +100,7 @@
                 constrainedToSize:textBlockMinSize
                 lineBreakMode:[self textLabelLineBreakModel]];
     }
-    return 2 * CHATCELL_BUBBLE_PADDING + size.height;
+    return 2 * CHATCELL_BUBBLE_WITHIN_PADDING + size.height;
 }
 
 

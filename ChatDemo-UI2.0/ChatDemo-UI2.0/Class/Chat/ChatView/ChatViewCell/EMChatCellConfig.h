@@ -23,7 +23,7 @@
 #define CHATCELL_BUBBLE_LEFT_HIGHLIGHT_IMAGE @"chat_receiver_bg"        // 左bubbleView 高亮图片
 #define CHATCELL_BUBBLE_RIGHT_IMAGE @"chat_sender_bg"                   // 右bubbleView 默认图片
 #define CHATCELL_BUBBLE_RIGHT_HIGHLIGHT_IMAGE @"chat_sender_bg"         // 右bubbleView 高亮图片
-#define CHATCELL_BUBBLE_ARROW_WIDTH 5                                   // bubble箭头宽度
+#define CHATCELL_BUBBLE_ARROW_WIDTH 4                                   // bubble箭头宽度
 #define CHATCELL_BUBBLE_PADDING 5                                       // bubble距离头像的距离(实际距离是bubblePadding + ArrowWidth)
 #define CHATCELL_BUBBLE_WITHIN_PADDING 10                                // bubble与内部控件的内边距
 #define CHATCELL_BUBBLE_WIDTH 200                                       // chatBubble最大宽度(不算箭头宽度)
@@ -46,20 +46,23 @@
 #define LOCATION_DEFAULT_IMAGE @""
 ////////////////////////////////////////////////////
 // voicebubble
-#define VOICE_SPEAKER_IMAGE_SIZE 40
-#define VOICE_LEFT_DEFAULT_IMAGE @""
-#define VOICE_LEFT_SPEAKER_IMAGE1 @""
-#define VOICE_LEFT_SPEAKER_IMAGE2 @""
-#define VOICE_LEFT_SPEAKER_IMAGE3 @""
-#define VOICE_LEFT_SPEAKER_IMAGE4 @""
+#define VOICE_SPEAKER_IMAGE_WIDTH 30
+#define VOICE_SPEAKER_IMAGE_HEIGHT 30
 
-#define VOICE_RIGHT_DEFAULT_IMAGE @""
-#define VOICE_RIGHT_SPEAKER_IMAGE1 @""
-#define VOICE_RIGHT_SPEAKER_IMAGE2 @""
-#define VOICE_RIGHT_SPEAKER_IMAGE3 @""
-#define VOICE_RIGHT_SPEAKER_IMAGE4 @""
+#define VOICE_LEFT_DEFAULT_IMAGE @"chat_receiver_audio_playing_full"
+#define VOICE_LEFT_SPEAKER_IMAGE1 @"chat_receiver_audio_playing000"
+#define VOICE_LEFT_SPEAKER_IMAGE2 @"chat_receiver_audio_playing001"
+#define VOICE_LEFT_SPEAKER_IMAGE3 @"chat_receiver_audio_playing002"
+#define VOICE_LEFT_SPEAKER_IMAGE4 @"chat_receiver_audio_playing003"
 
-#define VOICE_TIMELABEL_WIDTH 60
+#define VOICE_RIGHT_DEFAULT_IMAGE @"chat_sender_audio_playing_full"
+#define VOICE_RIGHT_SPEAKER_IMAGE1 @"chat_sender_audio_playing_000"
+#define VOICE_RIGHT_SPEAKER_IMAGE2 @"chat_sender_audio_playing_001"
+#define VOICE_RIGHT_SPEAKER_IMAGE3 @"chat_sender_audio_playing_002"
+#define VOICE_RIGHT_SPEAKER_IMAGE4 @"chat_sender_audio_playing_003"
+
+
+#define VOICE_TIMELABEL_WIDTH 30
 #define VOICE_TIMELABEL_HEIGHT 30
 #define VOICE_TIMELABEL_SPEAKER_SPACING 5
 
