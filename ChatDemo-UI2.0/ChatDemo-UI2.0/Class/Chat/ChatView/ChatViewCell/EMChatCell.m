@@ -43,11 +43,11 @@
             }
                 break;
             case BubbleViewType_Location:{
-                 _bubbleView = [[EMChatCellLocationBubble alloc] initWithFrame:CGRectZero];
+                _bubbleView = [[EMChatCellLocationBubble alloc] initWithFrame:CGRectZero];
             }
                 break;
             case BubbleViewType_Voice:{
-                 _bubbleView = [[EMChatCellVoiceBubble alloc] initWithFrame:CGRectZero];
+                _bubbleView = [[EMChatCellVoiceBubble alloc] initWithFrame:CGRectZero];
             }
                 
                 break;
@@ -97,7 +97,7 @@
     [_bubbleView setNeedsLayout];
     
     CGRect headFrame = CGRectMake(0, 0, CHATCELL_HEAD_SIZE, CHATCELL_HEAD_SIZE);
- 
+    
     if (self.model.isLeft) {
         headFrame.origin.x = CHATCELL_HEAD_X_SPACING;
     }else {
@@ -148,7 +148,25 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     }else{
         ret = CHATCELL_HEAD_Y_SPACING;
     }
-    ret += [EMChatCellBubble heightForChatModel:model];
+    CGFloat height = 0;
+    switch (model.bubbleType) {
+        case BubbleViewType_Text:
+            height = [EMChatCellTextBubble heightForChatModel:model];
+            break;
+        case BubbleViewType_Image:
+            height = [EMChatCellImageBubble heightForChatModel:model];
+            break;
+        case BubbleViewType_Location:
+            height = [EMChatCellLocationBubble heightForChatModel:model];
+            break;
+        case BubbleViewType_Voice:
+            height = [EMChatCellVoiceBubble heightForChatModel:model];
+            break;
+        default:
+            break;
+    }
+    ret += height;
+    
     return ret;
 }
 

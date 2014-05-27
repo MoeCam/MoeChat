@@ -11,21 +11,21 @@
 
 #define CHATCELL_SPACING                                                // chatCell之间的间距
 
-#define CHATCELL_HEAD_X_SPACING 5                                       // 头像距离cell边的距离
+#define CHATCELL_HEAD_X_SPACING 8                                       // 头像距离cell边的距离
 #define CHATCELL_HEAD_Y_SPACING 0                                       // 头像距离cell顶部的距离
-#define CHATCELL_HEAD_SIZE 34                                           // chatCell中，头像的大小
+#define CHATCELL_HEAD_SIZE 40                                           // chatCell中，头像的大小
 #define CHATCELL_HEAD_DEFAULT_IMAGE @"chatListCellHead"                                 // 默认显示头像
 
 #define CHATCELL_CHATNAME_HEAD_HEIGHT 4                                 // 头像距离名字的距离（群聊中，显示人名用）
 #define CHATCELL_CHATNAMAE_HEIGHT 10                                    // nameLabel 高度
 
 #define CHATCELL_BUBBLE_LEFT_IMAGE @"chat_receiver_bg"                  // 左bubbleView 默认图片
-#define CHATCELL_BUBBLE_LEFT_HIGHLIGHT_IMAGE @""                        // 左bubbleView 高亮图片
+#define CHATCELL_BUBBLE_LEFT_HIGHLIGHT_IMAGE @"chat_receiver_bg"        // 左bubbleView 高亮图片
 #define CHATCELL_BUBBLE_RIGHT_IMAGE @"chat_sender_bg"                   // 右bubbleView 默认图片
-#define CHATCELL_BUBBLE_RIGHT_HIGHLIGHT_IMAGE @""                       // 右bubbleView 高亮图片
-#define CHATCELL_BUBBLE_ARROW_WIDTH 3                                   // bubble箭头宽度
-#define CHATCELL_BUBBLE_PADDING 3                                       // bubble距离头像的距离(实际距离是bubblePadding + ArrowWidth)
-#define CHATCELL_BUBBLE_WITHIN_PADDING 3                                // bubble与内部控件的内边距
+#define CHATCELL_BUBBLE_RIGHT_HIGHLIGHT_IMAGE @"chat_sender_bg"         // 右bubbleView 高亮图片
+#define CHATCELL_BUBBLE_ARROW_WIDTH 5                                   // bubble箭头宽度
+#define CHATCELL_BUBBLE_PADDING 5                                       // bubble距离头像的距离(实际距离是bubblePadding + ArrowWidth)
+#define CHATCELL_BUBBLE_WITHIN_PADDING 10                                // bubble与内部控件的内边距
 #define CHATCELL_BUBBLE_WIDTH 200                                       // chatBubble最大宽度(不算箭头宽度)
 #define CHATCELL_BUBBLE_RIGHT_LEFT_CAP_WIDTH 5                          //  右侧时,bubble用于拉伸点的X坐标
 #define CHATCELL_BUBBLE_RIGHT_TOP_CAP_HEIGHT 35                         //  右侧时,bubble用于拉伸点的Y坐标

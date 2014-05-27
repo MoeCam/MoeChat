@@ -32,23 +32,19 @@
 -(void)layoutSubviews{
     [super layoutSubviews];
 
-    if (self.model.isLeft) {
-        [_chatImage setImageWithURL:self.model.imageRemoteURL
-                       placeholderImage:nil];// todo by du. 需要一张还没有下载好时，默认的图片
-    }else{
-        _chatImage.image = self.model.thumbnailImage;
-    }
+ 
+    _chatImage.image = self.model.thumbnailImage;
     
     CGRect frame = self.bounds;
     frame.size.width -= CHATCELL_BUBBLE_ARROW_WIDTH;
-    frame = CGRectInset(frame, CHATCELL_BUBBLE_PADDING, CHATCELL_BUBBLE_PADDING);
+    frame = CGRectInset(frame, CHATCELL_BUBBLE_WITHIN_PADDING, CHATCELL_BUBBLE_WITHIN_PADDING);
     if (self.model.isLeft) {
-        frame.origin.x = CHATCELL_BUBBLE_PADDING + CHATCELL_BUBBLE_ARROW_WIDTH;
+        frame.origin.x = CHATCELL_BUBBLE_WITHIN_PADDING + CHATCELL_BUBBLE_ARROW_WIDTH;
     }else{
         frame.origin.x = CHATCELL_BUBBLE_ARROW_WIDTH;
     }
     
-    frame.origin.y = CHATCELL_BUBBLE_PADDING;
+    frame.origin.y = CHATCELL_BUBBLE_WITHIN_PADDING;
     [_chatImage setFrame:frame];
 }
 
@@ -66,8 +62,13 @@
         retSize.height = IMAGE_MAX_SIZE;
     }
     
-    return CGSizeMake(retSize.width + CHATCELL_BUBBLE_PADDING*2 + CHATCELL_BUBBLE_PADDING,
-                      2*CHATCELL_BUBBLE_PADDING + retSize.height);
+    CGFloat height = CHATCELL_HEAD_SIZE;
+    if (2*CHATCELL_BUBBLE_WITHIN_PADDING + retSize.height > height) {
+        height = 2*CHATCELL_BUBBLE_WITHIN_PADDING + retSize.height;
+    }
+
+    return CGSizeMake(retSize.width + CHATCELL_BUBBLE_WITHIN_PADDING*2 + CHATCELL_BUBBLE_ARROW_WIDTH,
+                      height);
 }
 
 +(CGFloat)heightForChatModel:(EMChatCellBubbleModel *)model{

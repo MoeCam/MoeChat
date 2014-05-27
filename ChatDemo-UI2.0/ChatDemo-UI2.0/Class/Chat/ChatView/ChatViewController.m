@@ -177,7 +177,7 @@
         if ([obj isKindOfClass:[NSString class]]) {
             EMChatTimeCell *timeCell = (EMChatTimeCell *)[tableView dequeueReusableCellWithIdentifier:@"EMChatTimeCell"];
             timeCell.textLabel.text = (NSString *)obj;
-            
+            timeCell.selectionStyle = UITableViewCellSelectionStyleNone;
             return timeCell;
         }
         else{
@@ -186,6 +186,7 @@
                 cell = [[EMChatCell alloc] initWithStyle:UITableViewCellStyleDefault
                                          reuseIdentifier:@"EMChatCell"
                                          withBubbleModel:obj];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
             cell.model = obj;
             return cell;

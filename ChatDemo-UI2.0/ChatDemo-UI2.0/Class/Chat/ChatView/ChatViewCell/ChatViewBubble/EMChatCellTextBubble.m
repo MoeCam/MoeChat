@@ -39,19 +39,19 @@
     CGRect frame = self.bounds;
     // 减去箭头宽度
     frame.size.width -= CHATCELL_BUBBLE_ARROW_WIDTH;
-    frame = CGRectInset(frame, CHATCELL_BUBBLE_PADDING, CHATCELL_BUBBLE_PADDING);
+    frame = CGRectInset(frame, CHATCELL_BUBBLE_WITHIN_PADDING, CHATCELL_BUBBLE_WITHIN_PADDING);
     if (self.model.isLeft) {
-        frame.origin.x = CHATCELL_BUBBLE_PADDING + CHATCELL_BUBBLE_ARROW_WIDTH;
+        frame.origin.x = CHATCELL_BUBBLE_WITHIN_PADDING + CHATCELL_BUBBLE_ARROW_WIDTH;
     }else{
-        frame.origin.x = CHATCELL_BUBBLE_PADDING;
+        frame.origin.x = CHATCELL_BUBBLE_WITHIN_PADDING;
     }
-    frame.origin.y = CHATCELL_BUBBLE_PADDING;
+    frame.origin.y = CHATCELL_BUBBLE_WITHIN_PADDING;
     [_textLabel setFrame:frame];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size{
     [super sizeThatFits:size];
-    CGSize textBlockMinSize = {CHATCELL_BUBBLE_WIDTH, CGFLOAT_MAX};
+    CGSize textBlockMinSize = {CHATCELL_BUBBLE_WIDTH - CHATCELL_BUBBLE_ARROW_WIDTH - CHATCELL_BUBBLE_WITHIN_PADDING * 2, CGFLOAT_MAX};
     CGSize retSize;
     NSString *text = self.model.content;
     
@@ -67,7 +67,13 @@
                    constrainedToSize:textBlockMinSize
                    lineBreakMode:[[self class] textLabelLineBreakModel]];
     }
-    return CGSizeMake(retSize.width + CHATCELL_BUBBLE_PADDING*2 + CHATCELL_BUBBLE_ARROW_WIDTH, 2*CHATCELL_BUBBLE_PADDING + retSize.height);
+    
+    CGFloat height = CHATCELL_HEAD_SIZE;
+    if (2*CHATCELL_BUBBLE_WITHIN_PADDING + retSize.height > height) {
+        height = 2*CHATCELL_BUBBLE_WITHIN_PADDING + retSize.height;
+    }
+
+    return CGSizeMake(retSize.width + CHATCELL_BUBBLE_WITHIN_PADDING*2 + CHATCELL_BUBBLE_ARROW_WIDTH, height);
 }
 
 +(UIFont *)textLabelFont{
