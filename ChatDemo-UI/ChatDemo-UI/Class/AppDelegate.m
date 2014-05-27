@@ -93,6 +93,8 @@
     }
     
     self.window.rootViewController = nacontroller;
+    [nacontroller setNavigationBarHidden:YES];
+    [nacontroller setNavigationBarHidden:NO];
 }
 
 @end
