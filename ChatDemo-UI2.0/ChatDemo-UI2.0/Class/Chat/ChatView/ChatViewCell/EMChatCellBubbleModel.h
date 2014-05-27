@@ -37,8 +37,8 @@ typedef enum {
 @property (nonatomic, strong) NSString * content;
 
 // image
-@property (nonatomic, strong) NSURL *imageRemoteURL;
-@property (nonatomic, strong) UIImage *thumbnailImage;
+@property (nonatomic, strong) NSURL *imageRemoteURL; // 大图路径
+@property (nonatomic, strong) UIImage *thumbnailImage; // 小图
 
 //audio
 @property (nonatomic, strong) NSString *localPath;

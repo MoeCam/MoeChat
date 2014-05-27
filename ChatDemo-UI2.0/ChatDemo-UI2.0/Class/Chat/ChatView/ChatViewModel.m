@@ -57,7 +57,7 @@
     if (_firstMessage) {
         beforeTime = _firstMessage.timestamp;
     }else{
-        beforeTime = [_conversation latestMessage].timestamp;
+        beforeTime = [_conversation latestMessage].timestamp + 1;
     }
 
     NSArray *messages = [_conversation loadNumbersOfMessages:count before:beforeTime];

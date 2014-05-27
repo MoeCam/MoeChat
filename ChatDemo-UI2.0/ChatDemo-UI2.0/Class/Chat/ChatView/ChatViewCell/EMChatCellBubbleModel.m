@@ -14,20 +14,31 @@
 +(instancetype)modelWithMessage:(EMMessage *)message{
     EMChatCellBubbleModel *bubbleModel = [[EMChatCellBubbleModel alloc] init];
     id<IEMMessageBody> body = message.messageBodies.lastObject;
+    bubbleModel.isChatroom = message.isChatroom;
+    NSString *usename = [[[EaseMob sharedInstance].chatManager loginInfo]
+                         objectForKey:kSDKUsername];
+    
+    if ([usename isEqualToString:message.to]) {
+        bubbleModel.isLeft = YES;
+    }else{
+        bubbleModel.isLeft = NO;
+    }
     
     switch (body.messageBodyType) {
         case eMessageBodyType_Text:
         {
             bubbleModel.content = ((EMTextMessageBody *)body.chatObject).text;
+            bubbleModel.bubbleType = BubbleViewType_Text;
         }
             break;
             
         case eMessageBodyType_Image:
         {
             bubbleModel.imageRemoteURL = [NSURL URLWithString:
-                                          ((EMImageMessageBody *)body.chatObject).remotePath];
+                                          ((EMImageMessageBody *)body).remotePath];
             bubbleModel.thumbnailImage = [UIImage imageWithContentsOfFile:
-                                          ((EMImageMessageBody *)body.chatObject).thumbnailLocalPath];
+                                          ((EMImageMessageBody *)body).thumbnailLocalPath];
+            bubbleModel.bubbleType = BubbleViewType_Image;
         }
             break;
             
@@ -36,6 +47,7 @@
             bubbleModel.latitude = ((EMLocationMessageBody *)body.chatObject).latitude;
             bubbleModel.longitude = ((EMLocationMessageBody *)body.chatObject).longitude;
             bubbleModel.address = ((EMLocationMessageBody *)body.chatObject).address;
+            bubbleModel.bubbleType = BubbleViewType_Location;
         }
             break;
             
@@ -43,6 +55,7 @@
         {
             bubbleModel.localPath = ((EMVoiceMessageBody *)body.chatObject).localPath;
             bubbleModel.time = ((EMVoiceMessageBody *)body.chatObject).duration;
+            bubbleModel.bubbleType = BubbleViewType_Voice;
         }
             break;
             

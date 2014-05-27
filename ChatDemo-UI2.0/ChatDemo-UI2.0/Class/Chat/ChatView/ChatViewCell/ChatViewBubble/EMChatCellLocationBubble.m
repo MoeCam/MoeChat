@@ -37,8 +37,8 @@
 
 - (CGSize)sizeThatFits:(CGSize)size{
     [super sizeThatFits:size];
-    return CGSizeMake(IMAGE_MAX_SIZE + CHATCELL_BUBBLE_PADDING*2 + CHATCELL_BUBBLE_PADDING,
-                      2*CHATCELL_BUBBLE_PADDING + IMAGE_MAX_SIZE);
+    return CGSizeMake(IMAGE_MAX_SIZE + CHATCELL_BUBBLE_WITHIN_PADDING*2 + CHATCELL_BUBBLE_ARROW_WIDTH,
+                      2*CHATCELL_BUBBLE_WITHIN_PADDING + IMAGE_MAX_SIZE);
 }
 
 +(CGFloat)heightForChatModel:(EMChatCellBubbleModel *)model;{
