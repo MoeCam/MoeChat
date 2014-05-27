@@ -117,7 +117,6 @@
 		9091112F192EEC0F008A48AA /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9091112E192EEC0F008A48AA /* SettingsViewController.m */; };
 		90911137192EEC91008A48AA /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911135192EEC91008A48AA /* LoginViewController.m */; };
 		90911138192EEC91008A48AA /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90911136192EEC91008A48AA /* LoginViewController.xib */; };
-		9091113E192EECF1008A48AA /* UIViewController+ExtendedLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9091113D192EECF1008A48AA /* UIViewController+ExtendedLayout.m */; };
 		90911145192EEE6E008A48AA /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911143192EEE6E008A48AA /* MainViewController.m */; };
 		90EF2CEC192F2B4E00BDC549 /* sr_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */; };
 		90EF2CED192F2B4E00BDC549 /* sr_refresh@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */; };
@@ -435,8 +434,6 @@
 		90911134192EEC91008A48AA /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		90911135192EEC91008A48AA /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		90911136192EEC91008A48AA /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
-		9091113C192EECF1008A48AA /* UIViewController+ExtendedLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ExtendedLayout.h"; sourceTree = "<group>"; };
-		9091113D192EECF1008A48AA /* UIViewController+ExtendedLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ExtendedLayout.m"; sourceTree = "<group>"; };
 		90911142192EEE6E008A48AA /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		90911143192EEE6E008A48AA /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sr_refresh.png; sourceTree = "<group>"; };
@@ -1170,8 +1167,6 @@
 				909110EA192EEAED008A48AA /* UIResponder+Router.m */,
 				909110EB192EEAED008A48AA /* UIViewController+HUD.h */,
 				909110EC192EEAED008A48AA /* UIViewController+HUD.m */,
-				9091113C192EECF1008A48AA /* UIViewController+ExtendedLayout.h */,
-				9091113D192EECF1008A48AA /* UIViewController+ExtendedLayout.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1368,7 +1363,6 @@
 			files = (
 				90911126192EEBB8008A48AA /* AppDelegate.m in Sources */,
 				90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */,
-				9091113E192EECF1008A48AA /* UIViewController+ExtendedLayout.m in Sources */,
 				9091110F192EEAED008A48AA /* SDWebImageDownloaderOperation.m in Sources */,
 				90911115192EEAED008A48AA /* UIImage+WebP.m in Sources */,
 				90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */,

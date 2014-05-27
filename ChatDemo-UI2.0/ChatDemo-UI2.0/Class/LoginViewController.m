@@ -7,7 +7,6 @@
 //
 
 #import "LoginViewController.h"
-#import "UIViewController+ExtendedLayout.h"
 
 
 
@@ -36,7 +35,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self versionAdapter];
     [self setUpForDismissKeyboard];
     _usernameTextField.delegate = self;
 }

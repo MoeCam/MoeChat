@@ -39,11 +39,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
-    {
-        [self setEdgesForExtendedLayout:UIRectEdgeNone];
-    }
+
     
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];

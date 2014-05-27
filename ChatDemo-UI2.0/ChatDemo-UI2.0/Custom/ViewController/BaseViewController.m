@@ -7,7 +7,6 @@
 //
 
 #import "BaseViewController.h"
-#import "UIViewController+ExtendedLayout.h"
 
 @interface BaseViewController ()
 
@@ -27,7 +26,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self versionAdapter];
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
+    {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    }
 }
 
 - (void)didReceiveMemoryWarning
