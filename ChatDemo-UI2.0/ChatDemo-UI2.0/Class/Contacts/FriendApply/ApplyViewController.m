@@ -133,12 +133,4 @@
     }
 }
 
-#pragma mark - data
-
-- (void)reloadDataSource
-{
-//    self.dataSource = [[DataManager defaultManager] applyArray];
-    [self.tableView reloadData];
-}
-
 @end

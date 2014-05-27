@@ -21,6 +21,7 @@
 @property (strong, nonatomic) NSMutableArray *sectionTitles;
 
 @property (strong, nonatomic) UIView *headerView;
+@property (strong, nonatomic) UILabel *unapplyCountLabel;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) EMSearchBar *searchBar;
 
@@ -32,6 +33,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        _applysArray = [NSMutableArray array];
         _dataSource = [NSMutableArray array];
         _sectionTitles = [NSMutableArray array];
     }
@@ -44,6 +46,7 @@
 
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
+    [self reloadDataSource];
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,6 +89,14 @@
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, _headerView.frame.size.height - 0.5, _headerView.frame.size.width, 0.5)];
         lineView.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
         [_headerView addSubview:lineView];
+        
+        _unapplyCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame) - 10, CGRectGetMinY(imageView.frame) - 10, 20, 20)];
+        _unapplyCountLabel.textAlignment = NSTextAlignmentCenter;
+        _unapplyCountLabel.font = [UIFont systemFontOfSize:11];
+        _unapplyCountLabel.backgroundColor = [UIColor redColor];
+        _unapplyCountLabel.layer.cornerRadius = _unapplyCountLabel.frame.size.height / 2;
+        _unapplyCountLabel.hidden = YES;
+        [_headerView addSubview:_unapplyCountLabel];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showNewFriends)];
         [_headerView addGestureRecognizer:tap];
@@ -208,7 +219,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    //
+    
 }
 
 #pragma mark - UISearchBarDelegate
@@ -311,9 +322,34 @@
 
 #pragma mark - action
 
+- (void)reloadApplyView
+{
+    NSInteger count = 0;
+    for (NSDictionary *dic in self.applysArray) {
+        if (![[dic objectForKey:@"acceptState"] boolValue]) {
+            count += 1;
+        }
+    }
+    
+    if (count == 0) {
+        self.unapplyCountLabel.hidden = YES;
+    }
+    else
+    {
+        NSString *tmpStr = [NSString stringWithFormat:@"%i", count];
+        CGSize size = [tmpStr sizeWithFont:self.unapplyCountLabel.font constrainedToSize:CGSizeMake(50, 20) lineBreakMode:NSLineBreakByWordWrapping];
+        CGRect rect = self.unapplyCountLabel.frame;
+        rect.size.width = size.width > 20 ? size.width : 20;
+        self.unapplyCountLabel.text = tmpStr;
+        self.unapplyCountLabel.frame = rect;
+        self.unapplyCountLabel.hidden = NO;
+    }
+}
+
 - (void)showNewFriends
 {
     ApplyViewController *applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
+    applyController.dataSource = self.applysArray;
     [self.navigationController pushViewController:applyController animated:YES];
 }
 

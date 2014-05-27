@@ -10,6 +10,10 @@
 #import "BaseViewController.h"
 @interface ContactsViewController : BaseViewController
 
+@property (strong, nonatomic) NSMutableArray *applysArray;
+
+- (void)reloadApplyView;
+
 - (void)addFriendAction;
 
 @end

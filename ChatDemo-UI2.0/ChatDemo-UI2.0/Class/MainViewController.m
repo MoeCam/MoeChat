@@ -149,4 +149,18 @@
     // 收到消息时，震动
     [[EaseMob sharedInstance].deviceManager asyncPlayVibration];
 }
+
+- (void)didReceiveBuddyRequest:(NSString *)username
+                       message:(NSString *)message
+{
+    if (!username) {
+        return;
+    }
+    if (!message) {
+        message = [NSString stringWithFormat:@"%@ 添加你为好友", username];
+    }
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"username":username, @"applyMessage":message, @"acceptState":@NO}];
+    [_contactsVC.applysArray addObject:dic];
+}
+
 @end
