@@ -25,7 +25,7 @@
 #define CHATCELL_BUBBLE_RIGHT_HIGHLIGHT_IMAGE @"chat_sender_bg"         // 右bubbleView 高亮图片
 #define CHATCELL_BUBBLE_ARROW_WIDTH 4                                   // bubble箭头宽度
 #define CHATCELL_BUBBLE_PADDING 5                                       // bubble距离头像的距离(实际距离是bubblePadding + ArrowWidth)
-#define CHATCELL_BUBBLE_WITHIN_PADDING 10                                // bubble与内部控件的内边距
+#define CHATCELL_BUBBLE_WITHIN_PADDING 8                                // bubble与内部控件的内边距
 #define CHATCELL_BUBBLE_WIDTH 200                                       // chatBubble最大宽度(不算箭头宽度)
 #define CHATCELL_BUBBLE_RIGHT_LEFT_CAP_WIDTH 5                          //  右侧时,bubble用于拉伸点的X坐标
 #define CHATCELL_BUBBLE_RIGHT_TOP_CAP_HEIGHT 35                         //  右侧时,bubble用于拉伸点的Y坐标
@@ -39,11 +39,15 @@
 #define LABEL_FONT_SIZE 14
 ////////////////////////////////////////////////////
 // imagebubble
-#define IMAGE_MAX_SIZE 150
+#define IMAGE_MAX_SIZE 110
 
 ////////////////////////////////////////////////////
 // locationbubble
-#define LOCATION_DEFAULT_IMAGE @""
+#define LOCATION_DEFAULT_IMAGE @"chat_location_preview"
+#define LOCATION_ADDRESS_SPACING 3                                      // 文字距离边框左右间距
+#define LOCATION_ADDRESS_WIDTH 100                                      // 文字的最大宽度
+#define LOCATION_ADDRESS_HEIGHT 30                                      // 文字的最大高度
+#define LOCATION_ADDRESS_FONTSIZE 12
 ////////////////////////////////////////////////////
 // voicebubble
 #define VOICE_SPEAKER_IMAGE_WIDTH 30
