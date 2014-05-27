@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface BaseTableViewCell : UITableViewCell
-{
-    UIView *_bottomLineView;
-}
+
+
+@property (strong, nonatomic) NSIndexPath *indexPath;
+@property (strong, nonatomic) UIView *bottomLineView;
 
 @end

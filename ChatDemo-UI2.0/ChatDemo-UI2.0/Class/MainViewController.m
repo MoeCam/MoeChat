@@ -16,6 +16,8 @@
     ChatListViewController *_chatListVC;
     ContactsViewController *_contactsVC;
     SettingsViewController *_settingsVC;
+    
+    UIBarButtonItem *_addFriendItem;
 }
 
 @end
@@ -51,6 +53,7 @@
     [_chatListVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_chatsHL"]
                          withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_chats"]];
     [self unSelectedTapTabBarItems:_chatListVC.tabBarItem];
+    [self selectedTapTabBarItems:_chatListVC.tabBarItem];
     
     _contactsVC = [[ContactsViewController alloc] init];
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"通讯录"
@@ -59,6 +62,7 @@
     [_contactsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_contactsHL"]
                          withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_contacts"]];
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
+    [self selectedTapTabBarItems:_contactsVC.tabBarItem];
     
     _settingsVC = [[SettingsViewController alloc] init];
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"设置"
@@ -68,11 +72,14 @@
                          withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_setting"]];
     _settingsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
+    [self selectedTapTabBarItems:_settingsVC.tabBarItem];
     
     self.viewControllers = @[_chatListVC, _contactsVC, _settingsVC];
     self.title = @"会话";
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
     self.selectedIndex = 0;
+    
+    _addFriendItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:_contactsVC action:@selector(addFriendAction)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,20 +91,15 @@
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    for (UITabBarItem* tempItem in tabBar.items)
-    {
-        if (tempItem == item) {
-            [self selectedTapTabBarItems:tempItem];
-        }else{
-            [self unSelectedTapTabBarItems:tempItem];
-        }
-    }
     if (item.tag == 0) {
         self.title = @"会话";
+        self.navigationItem.rightBarButtonItem = nil;
     }else if (item.tag == 1){
         self.title = @"通讯录";
+        self.navigationItem.rightBarButtonItem = _addFriendItem;
     }else if (item.tag == 2){
         self.title = @"设置";
+        self.navigationItem.rightBarButtonItem = nil;
     }
 }
 
@@ -115,7 +117,7 @@
     [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                         [UIFont systemFontOfSize:14],
                                         UITextAttributeFont,[UIColor colorWithRed:0.393 green:0.553 blue:1.000 alpha:1.000],UITextAttributeTextColor,
-                                        nil] forState:UIControlStateNormal];
+                                        nil] forState:UIControlStateSelected];
 }
 
 // 统计未读消息数

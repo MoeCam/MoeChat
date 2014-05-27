@@ -10,4 +10,6 @@
 #import "BaseViewController.h"
 @interface ContactsViewController : BaseViewController
 
+- (void)addFriendAction;
+
 @end

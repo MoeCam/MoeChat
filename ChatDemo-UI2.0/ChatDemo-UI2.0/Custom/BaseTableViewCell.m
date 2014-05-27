@@ -15,7 +15,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        _bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
+        _bottomLineView = [[UIView alloc] init];
         _bottomLineView.backgroundColor = RGBACOLOR(207, 210, 213, 0.7);
         [self.contentView addSubview:_bottomLineView];
     }
@@ -36,6 +36,8 @@
     CGRect rect = self.textLabel.frame;
     rect.origin.x = CGRectGetMaxX(self.imageView.frame) + 10;
     self.textLabel.frame = rect;
+    
+    _bottomLineView.frame = CGRectMake(0, self.contentView.frame.size.height - 1, self.contentView.frame.size.width, 1);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

@@ -8,7 +8,7 @@
 
 #import "ApplyViewController.h"
 
-#import "DataManager.h"
+#import "AddFriendCell.h"
 
 @interface ApplyViewController ()
 
@@ -32,6 +32,8 @@
     
     // Uncomment the following line to preserve selection between presentations.
     self.title = @"好友申请";
+    self.tableView.tableFooterView = [[UIView alloc] init];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,23 +58,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    static NSString *CellIdentifier = @"AddFriendCell";
+    AddFriendCell *cell = (AddFriendCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     // Configure the cell...
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
-        UILabel *addLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
-        addLabel.clipsToBounds = YES;
-        addLabel.backgroundColor = [UIColor colorWithRed:14 / 255.0 green:115 / 255.0 blue:213 / 255.0 alpha:1.0];
-        addLabel.textAlignment = NSTextAlignmentCenter;
-        addLabel.text = @"添加";
-        addLabel.textColor = [UIColor blackColor];
-        addLabel.font = [UIFont systemFontOfSize:13.0];
-        addLabel.layer.cornerRadius = 3.0;
-        cell.accessoryView = addLabel;
+        cell = [[AddFriendCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    
+    cell.addLabel.text = @"接受";
     
     NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
     if (dic) {
@@ -103,6 +97,13 @@
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }  
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -136,7 +137,7 @@
 
 - (void)reloadDataSource
 {
-    self.dataSource = [[DataManager defaultManager] applyArray];
+//    self.dataSource = [[DataManager defaultManager] applyArray];
     [self.tableView reloadData];
 }
 

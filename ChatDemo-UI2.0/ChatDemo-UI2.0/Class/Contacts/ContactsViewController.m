@@ -12,6 +12,8 @@
 #import "RealtimeSearchUtil.h"
 #import "ChineseToPinyin.h"
 #import "EMSearchBar.h"
+#import "AddFriendViewController.h"
+#import "ApplyViewController.h"
 
 @interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
@@ -40,7 +42,6 @@
 {
     [super viewDidLoad];
 
-    
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
 }
@@ -312,7 +313,14 @@
 
 - (void)showNewFriends
 {
-    
+    ApplyViewController *applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
+    [self.navigationController pushViewController:applyController animated:YES];
+}
+
+- (void)addFriendAction
+{
+    AddFriendViewController *addController = [[AddFriendViewController alloc] initWithStyle:UITableViewStylePlain];
+    [self.navigationController pushViewController:addController animated:YES];
 }
 
 
