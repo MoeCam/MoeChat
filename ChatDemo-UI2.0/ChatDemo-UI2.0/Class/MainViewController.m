@@ -41,6 +41,8 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
+    [self registerNotifications];
+    
     self.tabBar.backgroundImage = [[UIImage imageNamed:@"tabbarBackground"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
     self.tabBar.selectionIndicatorImage = [[UIImage imageNamed:@"tabbarSelectBg"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
     
@@ -85,6 +87,20 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void)dealloc
+{
+    [self unregisterNotifications];
+}
+
+-(void)registerNotifications{
+    [self unregisterNotifications];
+    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+}
+
+-(void)unregisterNotifications{
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
 
 #pragma mark - UITabBarDelegate
@@ -161,6 +177,7 @@
     }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"username":username, @"applyMessage":message, @"acceptState":@NO}];
     [_contactsVC.applysArray addObject:dic];
+    [_contactsVC reloadApplyView];
 }
 
 @end

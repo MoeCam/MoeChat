@@ -69,6 +69,21 @@
     return _searchBar;
 }
 
+- (UILabel *)unapplyCountLabel
+{
+    if (_unapplyCountLabel == nil) {
+        _unapplyCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(36, 5, 20, 20)];
+        _unapplyCountLabel.textAlignment = NSTextAlignmentCenter;
+        _unapplyCountLabel.font = [UIFont systemFontOfSize:11];
+        _unapplyCountLabel.backgroundColor = [UIColor redColor];
+        _unapplyCountLabel.textColor = [UIColor whiteColor];
+        _unapplyCountLabel.layer.cornerRadius = _unapplyCountLabel.frame.size.height / 2;
+        _unapplyCountLabel.hidden = YES;
+    }
+    
+    return _unapplyCountLabel;
+}
+
 - (UIView *)headerView
 {
     if (_headerView == nil) {
@@ -90,13 +105,7 @@
         lineView.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
         [_headerView addSubview:lineView];
         
-        _unapplyCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame) - 10, CGRectGetMinY(imageView.frame) - 10, 20, 20)];
-        _unapplyCountLabel.textAlignment = NSTextAlignmentCenter;
-        _unapplyCountLabel.font = [UIFont systemFontOfSize:11];
-        _unapplyCountLabel.backgroundColor = [UIColor redColor];
-        _unapplyCountLabel.layer.cornerRadius = _unapplyCountLabel.frame.size.height / 2;
-        _unapplyCountLabel.hidden = YES;
-        [_headerView addSubview:_unapplyCountLabel];
+        [_headerView addSubview:self.unapplyCountLabel];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showNewFriends)];
         [_headerView addGestureRecognizer:tap];

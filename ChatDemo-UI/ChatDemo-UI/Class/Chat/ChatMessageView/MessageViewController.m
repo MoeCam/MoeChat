@@ -56,7 +56,7 @@
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:talker];
         
         //通过会话管理者获取已收发消息
-        NSArray *chats = [_conversation loadNumbersOfMessages:5 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
+        NSArray *chats = [_conversation loadNumbersOfMessages:10 before:[_conversation latestMessage].timestamp + 1];;
         [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
     }
     return self;

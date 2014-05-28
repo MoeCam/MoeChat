@@ -102,7 +102,9 @@
 
 - (void)logout
 {
+    [self showHudInView:self.view hint:@"正在退出..."];
     [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
+        [self hideHud];
         if (error) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告"
                                                                 message:@"退出当前账号失败，请重新操作"
