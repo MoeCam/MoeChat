@@ -211,8 +211,7 @@ UISearchDisplayDelegate
         EMConversation *tempConversation = sortArray.lastObject;
         if (tempConversation.messages.count == 0) {
             [tempConversation loadNumbersOfMessages:1
-                                                 before:[[NSDate date]
-                                                         timeIntervalSince1970] * 1000 + 100000];
+                                                 before:[tempConversation latestMessage].timestamp + 1];
             
         }
     }

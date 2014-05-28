@@ -56,7 +56,7 @@
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:talker];
         
         //通过会话管理者获取已收发消息
-        NSArray *chats = [_conversation loadNumbersOfMessages:10 before:[_conversation latestMessage].timestamp + 1];;
+        NSArray *chats = [_conversation loadNumbersOfMessages:10 before:[_conversation latestMessage].timestamp + 1];
         [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
     }
     return self;
@@ -118,7 +118,7 @@
     [[EaseMob sharedInstance].chatManager stopPlayingAudio];
     
     //判断当前会话是否为空，若为空则删除该会话
-    NSArray *messages = [_conversation loadNumbersOfMessages:1 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
+    NSArray *messages = [_conversation loadNumbersOfMessages:10 before:[_conversation latestMessage].timestamp + 1];
     if (messages == nil || [messages count] == 0) {
         [[EaseMob sharedInstance].chatManager removeConversationByChatter:_conversation.chatter deleteMessages:YES];
     }
