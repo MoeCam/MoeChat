@@ -382,12 +382,10 @@
 
 -(void)didReceiveMessage:(EMMessage *)message
 {
-    if ([_conversation loadMessage:message.messageId]) {
+    if ([_conversation.chatter isEqualToString:message.conversation.chatter]) {
         [self addChatDataToMessage:message];
     }
 }
-
-
 
 
 #pragma mark - EMChatBarMoreViewDelegate
