@@ -72,7 +72,6 @@
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
     
-    
 #warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     //注册为SDK的ChatManager的delegate
@@ -107,14 +106,17 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    // 设置当前conversation的所有message为已读
+    [_conversation markMessagesAsRead:YES];
+    
     [self scrollViewToBottom:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    // 设置当前conversation的所有message为已读
-    [_conversation markMessagesAsRead:YES];
+    
     [[EaseMob sharedInstance].chatManager stopPlayingAudio];
     
     //判断当前会话是否为空，若为空则删除该会话
