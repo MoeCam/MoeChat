@@ -10,7 +10,6 @@
 #import "EaseMob.h"
 #import "MainViewController.h"
 #import "LoginViewController.h"
-#import "DataManager.h"
 #import "BMKMapManager.h"
 #import "MobClick.h"
 
@@ -43,7 +42,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
     
-    [DataManager defaultManager];
     [self loginStateChange:nil];
     
     [self.window makeKeyAndVisible];

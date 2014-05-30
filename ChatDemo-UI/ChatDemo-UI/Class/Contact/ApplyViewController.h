@@ -12,6 +12,4 @@
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
-- (void)reloadDataSource;
-
 @end

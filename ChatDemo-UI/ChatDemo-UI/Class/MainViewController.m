@@ -11,7 +11,6 @@
 #import "ContactsViewController.h"
 #import "UIViewController+HUD.h"
 #import "MBProgressHUD+Add.h"
-#import "DataManager.h"
 #import "AppDelegate.h"
 #import "EaseMob.h"
 
@@ -39,10 +38,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-
     self.title = @"消息列表";
     
     _chatListVC = [[ChatListViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -50,8 +49,13 @@
     
     _contactsVC = [[ContactsViewController alloc] initWithNibName:nil bundle:nil];
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"好友列表" image:[UIImage imageNamed:@"Contacts"] tag:1];
+    _contactsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     self.viewControllers = @[_chatListVC,_contactsVC];
-    [[DataManager defaultManager] setContactsController:_contactsVC];
+    
+    //获取未读消息数，此时并没有把self注册为SDK的delegate，读取出的未读数是上次退出程序时的
+    [self didUnreadMessagesCountChanged];
+    
+    //把self注册为SDK的delegate
     [self registerNotifications];
 }
 
@@ -114,13 +118,15 @@
             [alertView show];
         }
         else{
-            [[DataManager defaultManager] clear];
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
         }
     } onQueue:nil];
 }
 
--(void)didUnreadMessagesCountChanged{
+#pragma mark - IChatManagerDelegate 监听消息改变
+
+-(void)didUnreadMessagesCountChanged
+{
     NSArray *conversations = [[[EaseMob sharedInstance] chatManager] conversations];
     NSInteger unreadCount = 0;
     for (EMConversation *conversation in conversations) {
@@ -134,11 +140,36 @@
     }
 }
 
--(void)didReceiveMessage:(EMMessage *)message{
+-(void)didReceiveMessage:(EMMessage *)message
+{
     // 收到消息时，播放音频
     [[EaseMob sharedInstance].deviceManager asyncPlayNewMessageSound];
     // 收到消息时，震动
     [[EaseMob sharedInstance].deviceManager asyncPlayVibration];
+}
+
+#pragma mark - IChatManagerDelegate 监听好友改变
+
+//接收到好友请求
+- (void)didReceiveBuddyRequest:(NSString *)username
+                       message:(NSString *)message
+{
+    if (!username) {
+        return;
+    }
+    if (!message) {
+        message = [NSString stringWithFormat:@"%@ 添加你为好友", username];
+    }
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"username":username, @"applyMessage":message, @"acceptState":@NO}];
+    [_contactsVC.applysArray addObject:dic];
+    [_contactsVC reloadApplyView];
+}
+
+- (void)didUpdateBuddyList:(NSArray *)buddyList
+            changedBuddies:(NSArray *)changedBuddies
+                     isAdd:(BOOL)isAdd
+{
+    [_contactsVC reloadDataSource];
 }
 
 @end

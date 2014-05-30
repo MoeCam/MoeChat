@@ -53,9 +53,10 @@
             {
                 model.image = [UIImage imageWithContentsOfFile:imgMessageBody.localPath];
             }else {
-//                NSString *path = [imgMessageBody.remotePath stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//                path = [path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                model.imageRemoteURL = [NSURL URLWithString:imgMessageBody.remotePath];
+                NSString *path = [imgMessageBody.remotePath stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                path = [path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                model.imageRemoteURL = [NSURL URLWithString:path];
+//                model.imageRemoteURL = [NSURL URLWithString:imgMessageBody.remotePath];
             }
         }
             break;

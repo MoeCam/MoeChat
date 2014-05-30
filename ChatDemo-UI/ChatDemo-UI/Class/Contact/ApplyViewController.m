@@ -8,8 +8,6 @@
 
 #import "ApplyViewController.h"
 
-#import "DataManager.h"
-
 @interface ApplyViewController ()
 
 @end
@@ -67,8 +65,8 @@
         addLabel.clipsToBounds = YES;
         addLabel.backgroundColor = [UIColor colorWithRed:14 / 255.0 green:115 / 255.0 blue:213 / 255.0 alpha:1.0];
         addLabel.textAlignment = NSTextAlignmentCenter;
-        addLabel.text = @"添加";
-        addLabel.textColor = [UIColor blackColor];
+        addLabel.text = @"接受";
+        addLabel.textColor = [UIColor whiteColor];
         addLabel.font = [UIFont systemFontOfSize:13.0];
         addLabel.layer.cornerRadius = 3.0;
         cell.accessoryView = addLabel;
@@ -133,11 +131,5 @@
 }
 
 #pragma mark - data
-
-- (void)reloadDataSource
-{
-    self.dataSource = [[DataManager defaultManager] applyArray];
-    [self.tableView reloadData];
-}
 
 @end

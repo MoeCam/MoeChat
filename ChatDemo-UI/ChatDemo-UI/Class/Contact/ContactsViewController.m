@@ -13,14 +13,12 @@
 #import "ApplyViewController.h"
 #import "MessageViewController.h"
 #import "EaseMob.h"
-#import "DataManager.h"
 
-@interface ContactsViewController ()<UITableViewDataSource,UITableViewDelegate, IChatManagerDelegate>
+@interface ContactsViewController ()<IChatManagerDelegate>
 {
     ApplyViewController *_applyController;
 }
 
-@property (strong, nonatomic) NSString *currentUsername;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
 @property (strong, nonatomic) UITableView *tableView;
@@ -34,6 +32,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _dataSource = [NSMutableArray array];
+        _applysArray = [NSMutableArray array];
     }
     return self;
 }
@@ -41,13 +40,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
-    _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
-    [self.view addSubview:_tableView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,18 +51,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self reloadContacts];
-}
-
-- (NSString *)currentUsername
-{
-    if (_currentUsername == nil || _currentUsername.length == 0) {
-        NSDictionary *loginInfo = [[EaseMob sharedInstance].chatManager loginInfo];
-        _currentUsername = [loginInfo objectForKey:@"kUserLoginInfoUsername"];
-    }
-    
-    return _currentUsername;
 }
 
 #pragma tableViewDelegate & tableViewDatasource
@@ -100,6 +80,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    
     if (indexPath.section == 0) {
         cell.textLabel.text = @"新的好友";
     }
@@ -124,7 +105,8 @@
             _applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
         }
         
-        _applyController.dataSource = [[DataManager defaultManager] applyArray];
+        _applyController.dataSource = self.applysArray;
+        [_applyController.tableView reloadData];
         [self.navigationController pushViewController:_applyController animated:YES];
     }
     else{
@@ -205,7 +187,15 @@
 
 #pragma mark - data
 
-- (void)reloadContacts
+- (void)reloadApplyView
+{
+    if (_applyController != nil) {
+        _applyController.dataSource = self.applysArray;
+        [_applyController.tableView reloadData];
+    }
+}
+
+- (void)reloadDataSource
 {
     [self.dataSource removeAllObjects];
     NSArray *array = [[EaseMob sharedInstance].chatManager buddyList];
@@ -216,10 +206,6 @@
         }
     }
     [self.tableView reloadData];
-    
-    if (_applyController != nil) {
-        [_applyController reloadDataSource];
-    }
 }
 
 @end

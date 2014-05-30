@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ContactsViewController : UIViewController
+@interface ContactsViewController : UITableViewController
 
-- (void)reloadContacts;
+@property (strong, nonatomic) NSMutableArray *applysArray;
+
+- (void)reloadApplyView;
+- (void)reloadDataSource;
+
 - (void)addFriendAction;
+
 @end
