@@ -31,6 +31,7 @@
                                                                   LOCATION_ADDRESS_HEIGHT)];
         _addressLabel.font = [UIFont systemFontOfSize:LOCATION_ADDRESS_FONTSIZE];
         _addressLabel.textColor = [UIColor whiteColor];
+        _addressLabel.backgroundColor = [UIColor clearColor];
         [_addressLabel setNumberOfLines:0];
         [self addSubview:_addressLabel];
     }
