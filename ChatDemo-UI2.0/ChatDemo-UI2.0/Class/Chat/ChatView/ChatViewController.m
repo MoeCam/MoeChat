@@ -18,9 +18,9 @@
 #import "EMMessageManager.h"
 #import "EMMessageModelManager.h"
 #import "SendLocationViewController.h"
+#import "ChatRoomDetailViewController.h"
 
 #import "NSDate+Category.h"
-
 #import "DXMessageToolBar.h"
 
 @interface ChatViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, DXChatBarMoreViewDelegate, DXMessageToolBarDelegate, LocationDelegate>
