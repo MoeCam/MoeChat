@@ -12,6 +12,7 @@
 
 @interface CreateChatRoomViewController ()<UITextFieldDelegate, EMChooseViewDelegate>
 
+@property (strong, nonatomic) UIBarButtonItem *rightItem;
 @property (strong, nonatomic) UITextField *textField;
 
 @end
@@ -36,8 +37,10 @@
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
     self.title = @"创建群组";
+    self.view.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
     
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"添加成员" style:UIBarButtonItemStylePlain target:self action:@selector(addContacts:)]];
+    _rightItem = [[UIBarButtonItem alloc] initWithTitle:@"添加成员" style:UIBarButtonItemStylePlain target:self action:@selector(addContacts:)];
+    [self.navigationItem setRightBarButtonItem:_rightItem];
     
     [self.view addSubview:self.textField];
 }
@@ -83,13 +86,36 @@
 
 - (void)viewController:(EMChooseViewController *)viewController didFinishSelectedSources:(NSArray *)selectedSources
 {
-    
+    if([selectedSources count] == 0)
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"群组成员不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+        return;
+    }
+    else{
+        [viewController.navigationController popViewControllerAnimated:YES];
+        
+        _rightItem.enabled = NO;
+        [self showHudInView:self.view hint:@"创建群组..."];
+        
+        //to do 创建群组
+        
+        [self hideHud];
+        _rightItem.enabled = YES;
+    }
 }
 
 #pragma mark - action
 
 - (void)addContacts:(id)sender
 {
+    if (self.textField.text.length == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请输入群组名称" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+        return;
+    }
+    
+    [self.view endEditing:YES];
     ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] init];
     selectionController.delegate = self;
     [self.navigationController pushViewController:selectionController animated:YES];

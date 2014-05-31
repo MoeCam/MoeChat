@@ -40,46 +40,14 @@
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
+    self.title = @"会话";
     
     //获取未读消息数，此时并没有把self注册为SDK的delegate，读取出的未读数是上次退出程序时的
     [self didUnreadMessagesCountChanged];
 #warning 把self注册为SDK的delegate
     [self registerNotifications];
     
-    self.tabBar.backgroundImage = [[UIImage imageNamed:@"tabbarBackground"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
-    self.tabBar.selectionIndicatorImage = [[UIImage imageNamed:@"tabbarSelectBg"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
-    
-    _chatListVC = [[ChatListViewController alloc] init];
-    _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"会话"
-                                                           image:nil
-                                                             tag:0];
-    [_chatListVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_chatsHL"]
-                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_chats"]];
-    [self unSelectedTapTabBarItems:_chatListVC.tabBarItem];
-    [self selectedTapTabBarItems:_chatListVC.tabBarItem];
-    
-    _contactsVC = [[ContactsViewController alloc] init];
-    _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"通讯录"
-                                                           image:nil
-                                                             tag:1];
-    [_contactsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_contactsHL"]
-                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_contacts"]];
-    [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
-    [self selectedTapTabBarItems:_contactsVC.tabBarItem];
-    
-    _settingsVC = [[SettingsViewController alloc] init];
-    _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"设置"
-                                                           image:nil
-                                                             tag:2];
-    [_settingsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_settingHL"]
-                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_setting"]];
-    _settingsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
-    [self selectedTapTabBarItems:_settingsVC.tabBarItem];
-    
-    self.viewControllers = @[_chatListVC, _contactsVC, _settingsVC];
-    self.title = @"会话";
-    [self selectedTapTabBarItems:_chatListVC.tabBarItem];
+    [self setupSubviews];
     self.selectedIndex = 0;
     
     _addFriendItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:_contactsVC action:@selector(addFriendAction)];
@@ -93,17 +61,6 @@
 - (void)dealloc
 {
     [self unregisterNotifications];
-}
-
--(void)registerNotifications
-{
-    [self unregisterNotifications];
-    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
-}
-
--(void)unregisterNotifications
-{
-    [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
 
 #pragma mark - UITabBarDelegate
@@ -123,6 +80,57 @@
 }
 
 #pragma mark - private
+
+-(void)registerNotifications
+{
+    [self unregisterNotifications];
+    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+}
+
+-(void)unregisterNotifications
+{
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
+}
+
+- (void)setupSubviews
+{
+    self.tabBar.backgroundImage = [[UIImage imageNamed:@"tabbarBackground"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
+    self.tabBar.selectionIndicatorImage = [[UIImage imageNamed:@"tabbarSelectBg"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
+    
+    _chatListVC = [[ChatListViewController alloc] init];
+    _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"会话"
+                                                           image:nil
+                                                             tag:0];
+    [_chatListVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_chatsHL"]
+                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_chats"]];
+    [self unSelectedTapTabBarItems:_chatListVC.tabBarItem];
+    [self selectedTapTabBarItems:_chatListVC.tabBarItem];
+//    UINavigationController *chatNav = [[UINavigationController alloc] initWithRootViewController:_chatListVC];
+    
+    _contactsVC = [[ContactsViewController alloc] init];
+    _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"通讯录"
+                                                           image:nil
+                                                             tag:1];
+    [_contactsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_contactsHL"]
+                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_contacts"]];
+    [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
+    [self selectedTapTabBarItems:_contactsVC.tabBarItem];
+//    UINavigationController *contactNav = [[UINavigationController alloc] initWithRootViewController:_contactsVC];
+    
+    _settingsVC = [[SettingsViewController alloc] init];
+    _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"设置"
+                                                           image:nil
+                                                             tag:2];
+    [_settingsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_settingHL"]
+                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_setting"]];
+    _settingsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
+    [self selectedTapTabBarItems:_settingsVC.tabBarItem];
+//    UINavigationController *settingNav = [[UINavigationController alloc] initWithRootViewController:_settingsVC];
+    
+    self.viewControllers = @[_chatListVC, _contactsVC, _settingsVC];
+    [self selectedTapTabBarItems:_chatListVC.tabBarItem];
+}
 
 -(void)unSelectedTapTabBarItems:(UITabBarItem *)tabBarItem
 {

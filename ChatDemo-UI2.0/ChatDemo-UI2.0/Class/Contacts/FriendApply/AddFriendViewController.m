@@ -149,23 +149,19 @@
     [_textField resignFirstResponder];
     if(_textField.text.length > 0)
     {
-        [self.dataSource addObject:@"123"];
+        [self.dataSource removeAllObjects];
+        [self.dataSource addObject:_textField.text];
         [self.tableView reloadData];
     }
 }
 
-- (void)addAction:(UIButton *)button
-{
-    
-}
-
 - (void)sendFriendApplyAtIndexPath:(NSIndexPath *)indexPath
 {
-    EMBuddy *buddy = [self.dataSource objectAtIndex:indexPath.row];
-    if (buddy && [buddy isKindOfClass:[EMBuddy class]]) {
+    NSString *buddyName = [self.dataSource objectAtIndex:indexPath.row];
+    if (buddyName && buddyName.length > 0) {
         [self showHudInView:self.view hint:@"正在发送申请..."];
         EMError *error;
-        [[EaseMob sharedInstance].chatManager addBuddy:buddy.username withNickname:buddy.username message:[NSString stringWithFormat:@"%@ 添加您为好友", buddy.username] error:&error];
+        [[EaseMob sharedInstance].chatManager addBuddy:buddyName withNickname:buddyName message:[NSString stringWithFormat:@"%@ 添加您为好友", buddyName] error:&error];
         [self hideHud];
         if (error) {
             [self showHint:@"添加失败，请重新操作"];

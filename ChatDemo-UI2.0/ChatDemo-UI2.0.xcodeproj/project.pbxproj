@@ -175,6 +175,7 @@
 		3C9DDC181938805D007C765A /* EMMessageModelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9DDB791938805D007C765A /* EMMessageModelManager.m */; };
 		3C9DDC191938805D007C765A /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9DDB7B1938805D007C765A /* ChatViewController.m */; };
 		3C9DDC1A1938805D007C765A /* SendLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9DDB7D1938805D007C765A /* SendLocationViewController.m */; };
+		3CADBF651939AF2600599CB9 /* chatroomDetail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CADBF641939AF2600599CB9 /* chatroomDetail@2x.png */; };
 		3CBB37B4193493EC00A72634 /* AddFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBB37AF193493EC00A72634 /* AddFriendCell.m */; };
 		3CBB37B5193493EC00A72634 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBB37B1193493EC00A72634 /* AddFriendViewController.m */; };
 		3CBB37B6193493EC00A72634 /* ApplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBB37B3193493EC00A72634 /* ApplyViewController.m */; };
@@ -556,6 +557,7 @@
 		3C9DDB7B1938805D007C765A /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		3C9DDB7C1938805D007C765A /* SendLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendLocationViewController.h; sourceTree = "<group>"; };
 		3C9DDB7D1938805D007C765A /* SendLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendLocationViewController.m; sourceTree = "<group>"; };
+		3CADBF641939AF2600599CB9 /* chatroomDetail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatroomDetail@2x.png"; sourceTree = "<group>"; };
 		3CBB37AE193493EC00A72634 /* AddFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendCell.h; sourceTree = "<group>"; };
 		3CBB37AF193493EC00A72634 /* AddFriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendCell.m; sourceTree = "<group>"; };
 		3CBB37B0193493EC00A72634 /* AddFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendViewController.h; sourceTree = "<group>"; };
@@ -841,6 +843,7 @@
 		3C0CE5231938939700219149 /* ChatRoom */ = {
 			isa = PBXGroup;
 			children = (
+				3CADBF641939AF2600599CB9 /* chatroomDetail@2x.png */,
 				3C0CE5241938939700219149 /* ChatRoomViewController.h */,
 				3C0CE5251938939700219149 /* ChatRoomViewController.m */,
 				3C0CE5261938939700219149 /* CreateChatRoomViewController.h */,
@@ -1384,6 +1387,13 @@
 				3C9DDB6A1938805D007C765A /* chat_sender_bg@2x.png */,
 			);
 			path = sender_bubble;
+			sourceTree = "<group>";
+		};
+		3CADBF661939AFB500599CB9 /* ChatRoom */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ChatRoom;
 			sourceTree = "<group>";
 		};
 		3CBB37AD193493EC00A72634 /* FriendApply */ = {
@@ -1969,6 +1979,7 @@
 		90F1BE65193046C600121AEC /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				3CADBF661939AFB500599CB9 /* ChatRoom */,
 				3C9DDAB51938805D007C765A /* ChatView */,
 				907989C719339266006618A1 /* ChatList */,
 			);
@@ -2143,6 +2154,7 @@
 				3CBF90DD19302F6000AD68AE /* tabbar_contacts@2x.png in Resources */,
 				3C9DDB8D1938805D007C765A /* chatBar_keyboardSelected@2x.png in Resources */,
 				3C9DDB8A1938805D007C765A /* chatBar_keyboard.png in Resources */,
+				3CADBF651939AF2600599CB9 /* chatroomDetail@2x.png in Resources */,
 				3CBF90DF19302F6000AD68AE /* tabbar_contactsHL@2x.png in Resources */,
 				9091103A192EEA70008A48AA /* Images.xcassets in Resources */,
 				3C9DDBD91938805D007C765A /* VoiceSearchFeedback013@2x.png in Resources */,

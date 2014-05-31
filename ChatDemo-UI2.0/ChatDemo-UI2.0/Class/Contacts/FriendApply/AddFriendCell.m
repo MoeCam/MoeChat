@@ -21,7 +21,7 @@
         _addLabel.text = @"添加";
         _addLabel.textColor = [UIColor blackColor];
         _addLabel.font = [UIFont systemFontOfSize:14.0];
-        _addLabel.layer.cornerRadius = 3.0;
+        _addLabel.layer.cornerRadius = 5.0;
         _addLabel.layer.borderWidth = 1;
         _addLabel.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         [self.contentView addSubview:_addLabel];

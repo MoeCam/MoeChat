@@ -31,6 +31,8 @@
     NSIndexPath *_longPressIndexPath;
 }
 
+@property (nonatomic) BOOL isChatRoom;
+
 @property (strong, nonatomic) NSMutableArray *dataSource;//tableView数据源
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) DXMessageToolBar *chatToolBar;
@@ -50,6 +52,7 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization
+        _isChatRoom = isChatroom;
         
         //根据接收者的username获取当前会话的管理者
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:chatter];
@@ -72,6 +75,8 @@
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
     
+    [self setupBarButtonItem];
+    
 #warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     //注册为SDK的ChatManager的delegate
@@ -79,7 +84,6 @@
     
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.chatToolBar];
-    [self setupBarButtonItem];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
     [self.view addGestureRecognizer:tap];
@@ -87,7 +91,12 @@
 
 - (void)setupBarButtonItem
 {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(removeAllMessages:)];
+    if (_isChatRoom) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"chatroomDetail"] style:UIBarButtonItemStylePlain target:self action:@selector(showRoomContact:)];
+    }
+    else{
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(removeAllMessages:)];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -630,7 +639,13 @@
     }
 }
 
-- (void)removeAllMessages:(id)sender{
+- (void)showRoomContact:(id)sender
+{
+    
+}
+
+- (void)removeAllMessages:(id)sender
+{
     [WCAlertView showAlertWithTitle:@"提示"
                             message:@"请确认删除"
                  customizationBlock:^(WCAlertView *alertView) {

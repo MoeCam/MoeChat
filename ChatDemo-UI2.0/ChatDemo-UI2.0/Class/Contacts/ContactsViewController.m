@@ -156,6 +156,8 @@
         }];
         
         [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            
             EMBuddy *buddy = [[weakSelf.searchController.resultsSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
             ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username isChatroom:NO];
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
@@ -208,8 +210,8 @@
         if (indexPath.section == 0 && indexPath.row == 1) {
             if (indexPath.row == 1)
             {
-                cell.imageView.image = [UIImage imageNamed:@"newFriends"];
-                cell.textLabel.text = @"群聊";
+                cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
+                cell.textLabel.text = @"群组";
             }
         }
         else{

@@ -45,8 +45,10 @@
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.tableHeaderView = self.searchBar;
+    [self searchController];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_createGroup"] style:UIBarButtonItemStylePlain target:self action:@selector(createChatRoom)];
+    [self reloadDataSource];
 }
 
 - (void)didReceiveMemoryWarning
@@ -77,27 +79,30 @@
         _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         __weak ChatRoomViewController *weakSelf = self;
-//        [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
-//            static NSString *CellIdentifier = @"ContactListCell";
-//            BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//            
-//            // Configure the cell...
-//            if (cell == nil) {
-//                cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-//            }
-//            
+        [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
+            static NSString *CellIdentifier = @"ContactListCell";
+            BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            // Configure the cell...
+            if (cell == nil) {
+                cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            }
+            
 //            EMBuddy *buudy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-//            cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
+            cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
 //            cell.textLabel.text = buudy.username;
-//            
-//            return cell;
-//        }];
+            cell.textLabel.text = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            
+            return cell;
+        }];
         
         [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
-            return 60;
+            return 50;
         }];
         
         [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            
 //            EMBuddy *buddy = [[weakSelf.searchController.resultsSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
 //            ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username isChatroom:NO];
 //            [weakSelf.navigationController pushViewController:chatVC animated:YES];
@@ -123,13 +128,18 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-     static NSString *CellIdentifier = @"RoomListCell";
+    static NSString *CellIdentifier = @"RoomCell";
     BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     // Configure the cell...
     if (cell == nil) {
         cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    
+//    EMBuddy *buudy = [self.dataSource objectAtIndex:indexPath.row];
+    cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
+//    cell.textLabel.text = buudy.username;
+    cell.textLabel.text = [self.dataSource objectAtIndex:indexPath.row];
     
     return cell;
 }
@@ -146,6 +156,10 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        
+        //to do 删除群组
+        
+        [self.dataSource removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
@@ -154,7 +168,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    return 50;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -178,7 +192,17 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(username) resultBlock:^(NSArray *results) {
+//    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(username) resultBlock:^(NSArray *results) {
+//        if (results) {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self.searchController.resultsSource removeAllObjects];
+//                [self.searchController.resultsSource addObjectsFromArray:results];
+//                [self.searchController.searchResultsTableView reloadData];
+//            });
+//        }
+//    }];
+    
+    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(stringValue) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.searchController.resultsSource removeAllObjects];
@@ -205,6 +229,20 @@
     [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
     [searchBar resignFirstResponder];
     [searchBar setShowsCancelButton:NO animated:YES];
+}
+
+#pragma mark - data
+
+- (void)reloadDataSource
+{
+    [self.dataSource removeAllObjects];
+    [self.dataSource addObject:@"群组1"];
+    [self.dataSource addObject:@"群组2"];
+    [self.dataSource addObject:@"群组3"];
+    [self.dataSource addObject:@"群组4"];
+    [self.dataSource addObject:@"群组5"];
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - action

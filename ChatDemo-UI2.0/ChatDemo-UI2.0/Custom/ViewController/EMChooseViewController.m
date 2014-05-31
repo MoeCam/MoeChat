@@ -59,8 +59,6 @@
     }
     
     [self.view addSubview:self.tableView];
-    
-    [self.selectedIndexPaths removeAllObjects];
     self.tableView.editing = self.defaultEditing;
     
     if (_viewDidLoadBlock) {

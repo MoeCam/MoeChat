@@ -14,8 +14,15 @@
 
 @property (strong, nonatomic) NSMutableArray *resultsSource;
 
+//是否可以编辑cell，默认为NO；会将值付给[tableView:canEditRowAtIndexPath:]
+@property (nonatomic) BOOL canEditCell;
+
+//编辑cell时显示的风格，默认为UITableViewCellEditingStyleDelete；会将值付给[tableView:editingStyleForRowAtIndexPath:]
+@property (nonatomic) UITableViewCellEditingStyle editingStyle;
+
 @property (copy) UITableViewCell * (^cellForRowAtIndexPathCompletion)(UITableView *tableView, NSIndexPath *indexPath);
 @property (copy) CGFloat (^heightForRowAtIndexPathCompletion)(UITableView *tableView, NSIndexPath *indexPath);
 @property (copy) void (^didSelectRowAtIndexPathCompletion)(UITableView *tableView, NSIndexPath *indexPath);
+@property (copy) void (^didDeselectRowAtIndexPathCompletion)(UITableView *tableView, NSIndexPath *indexPath);
 
 @end

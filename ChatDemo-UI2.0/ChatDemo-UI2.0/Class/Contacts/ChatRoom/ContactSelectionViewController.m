@@ -33,9 +33,19 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.defaultEditing = YES;
-        
         _selectedContacts = [NSMutableArray array];
+        
+        [self setObjectComparisonStringBlock:^NSString *(id object) {
+            EMBuddy *buddy = (EMBuddy *)object;
+            return buddy.username;
+        }];
+        
+        [self setComparisonObjectSelector:^NSComparisonResult(id object1, id object2) {
+            EMBuddy *buddy1 = (EMBuddy *)object1;
+            EMBuddy *buddy2 = (EMBuddy *)object2;
+            
+            return [buddy1.username caseInsensitiveCompare: buddy2.username];
+        }];
     }
     return self;
 }
@@ -47,21 +57,11 @@
     self.title = @"选择联系人";
     self.navigationItem.rightBarButtonItem = nil;
     
-    [self setObjectComparisonStringBlock:^NSString *(id object) {
-        EMBuddy *buddy = (EMBuddy *)object;
-        return buddy.username;
-    }];
-    
-    [self setComparisonObjectSelector:^NSComparisonResult(id object1, id object2) {
-        EMBuddy *buddy1 = (EMBuddy *)object1;
-        EMBuddy *buddy2 = (EMBuddy *)object2;
-        
-        return [buddy1.username caseInsensitiveCompare: buddy2.username];
-    }];
-    
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.footerView];
+    self.tableView.editing = YES;
     self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height - self.footerView.frame.size.height);
+    [self searchController];
 }
 
 - (void)didReceiveMemoryWarning
@@ -88,6 +88,9 @@
 {
     if (_searchController == nil) {
         _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+        _searchController.canEditCell = YES;
+        _searchController.editingStyle = UITableViewCellEditingStyleInsert | UITableViewCellEditingStyleDelete;
+        _searchController.searchResultsTableView.editing = YES;
         _searchController.delegate = self;
         _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
@@ -113,7 +116,23 @@
         }];
         
         [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
+            id object = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            if (![weakSelf.selectedContacts containsObject:object])
+            {
+                [weakSelf.selectedContacts addObject:object];
+                [weakSelf reloadFooterView];
+            }
+        }];
+        
+        [_searchController setDidDeselectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
+            id object = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            if ([weakSelf.selectedContacts containsObject:object]) {
+                [weakSelf.selectedContacts removeObject:object];
+                
+                [weakSelf reloadFooterView];
+            }
         }];
     }
     
@@ -125,7 +144,7 @@
     if (_footerView == nil) {
         _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
         _footerView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
-        _footerView.backgroundColor = [UIColor whiteColor];
+        _footerView.backgroundColor = [UIColor colorWithRed:207 / 255.0 green:210 /255.0 blue:213 / 255.0 alpha:0.7];
         
         _footerScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 5, _footerView.frame.size.width - 30 - 70, _footerView.frame.size.height - 10)];
         _footerScrollView.backgroundColor = [UIColor clearColor];
@@ -164,7 +183,23 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    id object = [[_dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if (![self.selectedContacts containsObject:object])
+    {
+        [self.selectedContacts addObject:object];
+        
+        [self reloadFooterView];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id object = [[_dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if ([self.selectedContacts containsObject:object]) {
+        [self.selectedContacts removeObject:object];
+        
+        [self reloadFooterView];
+    }
 }
 
 #pragma mark - UISearchBarDelegate
@@ -207,6 +242,31 @@
     [searchBar setShowsCancelButton:NO animated:YES];
 }
 
+#pragma mark - private
+
+- (void)reloadFooterView
+{
+    [self.footerScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+    CGFloat imageSize = self.footerScrollView.frame.size.height;
+    NSInteger count = [self.selectedContacts count];
+    NSInteger marginCount = count == 0 ? 0 : (count - 1);
+    self.footerScrollView.contentSize = CGSizeMake(imageSize * count + 5 * marginCount, imageSize);
+    for (int i = 0; i < count; i++) {
+        NSInteger tmpMc = i == 0 ? 0 : i;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * imageSize + 5 * tmpMc, 0, imageSize, imageSize)];
+        imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
+        [self.footerScrollView addSubview:imageView];
+    }
+    
+    if ([self.selectedContacts count] == 0) {
+        [_doneButton setTitle:@"确定" forState:UIControlStateNormal];
+    }
+    else{
+        [_doneButton setTitle:[NSString stringWithFormat:@"确定(%i)", [self.selectedContacts count]] forState:UIControlStateNormal];
+    }
+}
+
 #pragma mark - public
 
 - (void)loadDataSource
@@ -230,7 +290,9 @@
 
 - (void)doneAction:(id)sender
 {
-    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(viewController:didFinishSelectedSources:)]) {
+        [self.delegate viewController:self didFinishSelectedSources:self.selectedContacts];
+    }
 }
 
 @end

@@ -16,6 +16,8 @@
     if (self) {
         // Custom initialization
         _resultsSource = [NSMutableArray array];
+        _canEditCell = NO;
+        _editingStyle = UITableViewCellEditingStyleDelete;
         
         self.searchResultsDataSource = self;
         self.searchResultsDelegate = self;
@@ -56,6 +58,13 @@
     }
 }
 
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    return self.canEditCell;
+}
+
 #pragma mark - Table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -67,14 +76,23 @@
     return 50;
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return self.editingStyle;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     if (_didSelectRowAtIndexPathCompletion) {
         return _didSelectRowAtIndexPathCompletion(tableView, indexPath);
     }
 }
 
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (_didDeselectRowAtIndexPathCompletion) {
+        _didDeselectRowAtIndexPathCompletion(tableView, indexPath);
+    }
+}
 
 @end

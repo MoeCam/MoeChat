@@ -16,7 +16,7 @@
     if (self) {
         // Initialization code
         _bottomLineView = [[UIView alloc] init];
-        _bottomLineView.backgroundColor = RGBACOLOR(207, 210, 213, 0.7);
+        _bottomLineView.backgroundColor = [UIColor colorWithRed:207 / 255.0 green:210 /255.0 blue:213 / 255.0 alpha:0.7];
         [self.contentView addSubview:_bottomLineView];
     }
     return self;
