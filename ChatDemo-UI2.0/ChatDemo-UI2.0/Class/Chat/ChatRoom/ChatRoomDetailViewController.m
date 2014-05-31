@@ -125,7 +125,7 @@
 - (UIScrollView *)scrollView
 {
     if (_scrollView == nil) {
-        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 20, self.view.frame.size.width - 20, kContactSize)];
+        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, kContactSize)];
         _scrollView.tag = 0;
         
         _addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kContactSize - 10, kContactSize - 10)];
@@ -243,9 +243,9 @@
 {
     int row = self.scrollView.tag;
     if (row == 0) {
-        return self.scrollView.frame.size.height + 20;
+        return self.scrollView.frame.size.height + 10;
     }
-    return row * kContactSize + 20;
+    return row * kContactSize + 10;
 }
 
 #pragma mark - data

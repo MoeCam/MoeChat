@@ -52,12 +52,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    [self searchController];
+    self.searchBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
     [self.view addSubview:self.searchBar];
+    
+    self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height);
     [self.view addSubview:self.tableView];
     [self.tableView addSubview:self.slimeView];
     
-    [self searchController];
     [self.slimeView setLoadingWithExpansion];
 }
 
@@ -78,7 +81,7 @@
 - (UISearchBar *)searchBar
 {
     if (_searchBar == nil) {
-        _searchBar = [[EMSearchBar alloc] initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, 44)];
+        _searchBar = [[EMSearchBar alloc] init];
         _searchBar.delegate = self;
         _searchBar.placeholder = @"搜索";
         _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
@@ -122,8 +125,9 @@
 
 - (UITableView *)tableView
 {
-    if (_tableView == nil) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height) style:UITableViewStylePlain];
+    if (_tableView == nil)
+    {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.backgroundColor = [UIColor whiteColor];
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
@@ -251,6 +255,7 @@
     // Return NO if you do not want the specified item to be editable.
     if (indexPath.section == 0) {
         return NO;
+        [self isViewLoaded];
     }
     return YES;
 }
@@ -269,17 +274,21 @@
             return;
         }
         
-        NSInteger section = indexPath.section;
+//        NSInteger section = indexPath.section;
+        
+        [tableView beginUpdates];
         [[self.dataSource objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
         [self.contactsSource removeObject:buddy];
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-//        [self.tableView reloadData];
+        [tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView  endUpdates];
         
-//        EMError *error;
-//        [[EaseMob sharedInstance].chatManager removeBuddy:buddy.username removeFromRemote:YES error:&error];
-//        if (error) {
-//            [self showHint:@"删除好友失败"];
-//        }
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            EMError *error;
+            [[EaseMob sharedInstance].chatManager removeBuddy:buddy.username removeFromRemote:YES error:&error];
+//            if (error) {
+//                [self showHint:@"删除好友失败"];
+//            }
+        });
     }
 }
 
@@ -500,7 +509,8 @@
     }
     
     [self.dataSource addObjectsFromArray:[self sortDataArray:self.contactsSource]];
-    [self.tableView reloadData];
+    
+    [_tableView reloadData];
 }
 
 #pragma mark - action

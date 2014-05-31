@@ -107,7 +107,7 @@
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
 //    UINavigationController *chatNav = [[UINavigationController alloc] initWithRootViewController:_chatListVC];
     
-    _contactsVC = [[ContactsViewController alloc] init];
+    _contactsVC = [[ContactsViewController alloc] initWithNibName:nil bundle:nil];
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"通讯录"
                                                            image:nil
                                                              tag:1];

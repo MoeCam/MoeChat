@@ -18,6 +18,8 @@
         _bottomLineView = [[UIView alloc] init];
         _bottomLineView.backgroundColor = [UIColor colorWithRed:207 / 255.0 green:210 /255.0 blue:213 / 255.0 alpha:0.7];
         [self.contentView addSubview:_bottomLineView];
+        
+        self.textLabel.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
@@ -35,6 +37,7 @@
     
     CGRect rect = self.textLabel.frame;
     rect.origin.x = CGRectGetMaxX(self.imageView.frame) + 10;
+    rect.origin.y = 0;
     self.textLabel.frame = rect;
     
     _bottomLineView.frame = CGRectMake(0, self.contentView.frame.size.height - 1, self.contentView.frame.size.width, 1);
