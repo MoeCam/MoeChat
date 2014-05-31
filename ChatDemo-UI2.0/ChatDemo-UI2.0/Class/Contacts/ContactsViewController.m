@@ -29,6 +29,7 @@
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) EMSearchBar *searchBar;
 @property (strong, nonatomic) SRRefreshView *slimeView;
+@property (strong, nonatomic) ApplyViewController *applyController;
 
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
 
@@ -349,9 +350,12 @@
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            ApplyViewController *applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
-            applyController.dataSource = self.applysArray;
-            [self.navigationController pushViewController:applyController animated:YES];
+            if (_applyController == nil) {
+                _applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
+            }
+            
+            _applyController.dataSource = self.applysArray;
+            [self.navigationController pushViewController:_applyController animated:YES];
         }
         else if (indexPath.row == 1)
         {
@@ -536,6 +540,11 @@
         self.unapplyCountLabel.text = tmpStr;
         self.unapplyCountLabel.frame = rect;
         self.unapplyCountLabel.hidden = NO;
+    }
+    
+    if(_applyController)
+    {
+        [_applyController.tableView reloadData];
     }
 }
 
