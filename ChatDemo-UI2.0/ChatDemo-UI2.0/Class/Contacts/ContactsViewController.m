@@ -21,7 +21,7 @@
 
 @interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, SRRefreshDelegate>
 
-@property (strong, nonatomic) NSArray *contactsSource;
+@property (strong, nonatomic) NSMutableArray *contactsSource;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) NSMutableArray *sectionTitles;
 
@@ -43,6 +43,7 @@
         _applysArray = [NSMutableArray array];
         
         _dataSource = [NSMutableArray array];
+        _contactsSource = [NSMutableArray array];
         _sectionTitles = [NSMutableArray array];
     }
     return self;
@@ -158,7 +159,19 @@
         [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
-            EMBuddy *buddy = [[weakSelf.searchController.resultsSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+            EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+            NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+            if (loginUsername && loginUsername.length > 0) {
+                if ([loginUsername isEqualToString:buddy.username]) {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不能跟自己聊天" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    [alertView show];
+                    
+                    return;
+                }
+            }
+            
+            [weakSelf.searchController.searchBar endEditing:YES];
             ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username isChatroom:NO];
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
         }];
@@ -312,6 +325,17 @@
     }
     else{
         EMBuddy *buddy = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+        if (loginUsername && loginUsername.length > 0) {
+            if ([loginUsername isEqualToString:buddy.username]) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不能跟自己聊天" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [alertView show];
+                
+                return;
+            }
+        }
+        
         ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username isChatroom:NO];
         [self.navigationController pushViewController:chatVC animated:YES];
     }
@@ -431,13 +455,22 @@
 - (void)reloadDataSource
 {
     [self.dataSource removeAllObjects];
-    self.contactsSource = [[EaseMob sharedInstance].chatManager buddyList];
+    [self.contactsSource removeAllObjects];
+    [self.contactsSource addObjectsFromArray:[[EaseMob sharedInstance].chatManager buddyList]];
     
     NSMutableArray *tmpArray = [NSMutableArray array];
     for (EMBuddy *buddy in self.contactsSource) {
         if (buddy.followState != eEMBuddyFollowState_NotFollowed) {
             [tmpArray addObject:buddy];
         }
+    }
+    
+    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+    if (loginUsername && loginUsername.length > 0) {
+        EMBuddy *loginBuddy = [EMBuddy buddyWithUsername:loginUsername];
+        [tmpArray addObject:loginBuddy];
+        [self.contactsSource addObject:loginBuddy];
     }
     
     [self.dataSource addObjectsFromArray:[self sortDataArray:tmpArray]];

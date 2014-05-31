@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface ChatRoomContactView : UIView
+{
+    UIButton *_deleteButton;
+}
 
 @property (nonatomic) NSInteger index;
+@property (nonatomic) BOOL editing;
 @property (strong, nonatomic) UIImageView *imageView;
 @property (copy) void (^deleteContact)(NSInteger index);
 

@@ -45,7 +45,6 @@
     [super layoutSubviews];
     
     CGRect rect = self.textLabel.frame;
-    rect.origin.x = CGRectGetMaxX(self.imageView.frame) + 10;
     rect.size.width -= 120;
     self.textLabel.frame = rect;
     
