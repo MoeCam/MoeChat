@@ -10,6 +10,7 @@
 #import "EaseMob.h"
 #import "MainViewController.h"
 #import "LoginViewController.h"
+#import "BMKMapManager.h"
 
 @implementation AppDelegate
 
@@ -27,6 +28,15 @@
         [[UINavigationBar appearance] setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
     }
+    
+#warning Baidu地图SDK测试Key值
+    // 如果要关注网络及授权验证事件，请设定generalDelegate参数
+    BMKMapManager *mapManager = [[BMKMapManager alloc]init];
+    BOOL ret = [mapManager start:@"6QN0dGpbbrcFXqCpW4F86DeQ" generalDelegate:nil];
+    if (!ret) {
+        NSLog(@"manager start failed!");
+    }
+    
     [[EaseMob sharedInstance] registerSDKWithAppKey:@"easemob-demo#chatdemoui"];
     [[EaseMob sharedInstance] application:application
             didFinishLaunchingWithOptions:launchOptions];

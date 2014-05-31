@@ -102,6 +102,8 @@
     }
 }
 
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -439,6 +441,7 @@
         rect.size.height = self.view.frame.size.height - toHeight;
         self.tableView.frame = rect;
     }];
+    [self scrollViewToBottom:YES];
 }
 
 - (void)didSendText:(NSString *)text
