@@ -444,6 +444,9 @@
 }
 
 #pragma mark - DXMessageToolBarDelegate
+- (void)inputTextViewWillBeginEditing:(XHMessageTextView *)messageInputTextView{
+    [_menuController setMenuItems:nil];
+}
 
 - (void)didChangeFrameToHeight:(CGFloat)toHeight
 {
