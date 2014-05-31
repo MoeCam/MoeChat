@@ -276,9 +276,9 @@
     self.contactsSource = [[EaseMob sharedInstance].chatManager buddyList];
     
     NSMutableArray *tmpArray = [NSMutableArray array];
-    for (EMBuddy *buudy in self.contactsSource) {
-        if (buudy.isPendingApproval) {
-            [tmpArray addObject:buudy];
+    for (EMBuddy *buddy in self.contactsSource) {
+        if (buddy.followState != eEMBuddyFollowState_NotFollowed) {
+            [tmpArray addObject:buddy];
         }
     }
     

@@ -14,7 +14,7 @@
 #import "CreateChatRoomViewController.h"
 #import "RealtimeSearchUtil.h"
 
-@interface ChatRoomViewController ()<UISearchBarDelegate, UISearchDisplayDelegate>
+@interface ChatRoomViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, IChatManagerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
@@ -41,6 +41,10 @@
     
     self.title = @"群组";
     
+#warning 把self注册为SDK的delegate
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = [[UIView alloc] init];
@@ -55,6 +59,11 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
 
 #pragma mark - getter
