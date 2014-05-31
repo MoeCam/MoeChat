@@ -15,7 +15,6 @@
 @interface ContactSelectionViewController ()<UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property (strong, nonatomic) NSArray *contactsSource;
-@property (strong, nonatomic) NSMutableArray *selectedContacts;
 
 @property (strong, nonatomic) EMSearchBar *searchBar;
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
@@ -62,6 +61,10 @@
     self.tableView.editing = YES;
     self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height - self.footerView.frame.size.height);
     [self searchController];
+    
+//    if ([self.selectedContacts count] > 0) {
+//        for
+//    }
 }
 
 - (void)didReceiveMemoryWarning

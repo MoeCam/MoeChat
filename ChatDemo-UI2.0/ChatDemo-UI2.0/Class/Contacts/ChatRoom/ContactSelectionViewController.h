@@ -10,4 +10,6 @@
 
 @interface ContactSelectionViewController : EMChooseViewController
 
+@property (strong, nonatomic) NSMutableArray *selectedContacts;
+
 @end

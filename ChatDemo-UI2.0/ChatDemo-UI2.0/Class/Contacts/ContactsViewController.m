@@ -202,6 +202,7 @@
         return 2;
     }
     
+    NSLog(@"%i------%i", section,[[self.dataSource objectAtIndex:(section - 1)] count]);
     return [[self.dataSource objectAtIndex:(section - 1)] count];
 }
 
@@ -251,7 +252,6 @@
     if (indexPath.section == 0) {
         return NO;
     }
-    
     return YES;
 }
 
@@ -259,7 +259,27 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        //
+        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+        EMBuddy *buddy = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+        if ([buddy.username isEqualToString:loginUsername]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不能删除自己" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alertView show];
+            
+            return;
+        }
+        
+        NSInteger section = indexPath.section;
+        [[self.dataSource objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
+        [self.contactsSource removeObject:buddy];
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//        [self.tableView reloadData];
+        
+//        EMError *error;
+//        [[EaseMob sharedInstance].chatManager removeBuddy:buddy.username removeFromRemote:YES error:&error];
+//        if (error) {
+//            [self showHint:@"删除好友失败"];
+//        }
     }
 }
 
@@ -412,7 +432,7 @@
 
 #pragma mark - private
 
-- (NSArray *)sortDataArray:(NSArray *)dataArray
+- (NSMutableArray *)sortDataArray:(NSArray *)dataArray
 {
     //建立索引的核心
     UILocalizedIndexedCollation *indexCollation = [UILocalizedIndexedCollation currentCollation];
@@ -451,7 +471,8 @@
             return [firstLetter1 caseInsensitiveCompare:firstLetter2];
         }];
         
-        [sortedArray replaceObjectAtIndex:i withObject:array];
+        
+        [sortedArray replaceObjectAtIndex:i withObject:[NSMutableArray arrayWithArray:array]];
     }
     
     return sortedArray;
@@ -463,12 +484,11 @@
 {
     [self.dataSource removeAllObjects];
     [self.contactsSource removeAllObjects];
-    [self.contactsSource addObjectsFromArray:[[EaseMob sharedInstance].chatManager buddyList]];
     
-    NSMutableArray *tmpArray = [NSMutableArray array];
-    for (EMBuddy *buddy in self.contactsSource) {
+    NSArray *buddyList = [[EaseMob sharedInstance].chatManager buddyList];
+    for (EMBuddy *buddy in buddyList) {
         if (buddy.followState != eEMBuddyFollowState_NotFollowed) {
-            [tmpArray addObject:buddy];
+            [self.contactsSource addObject:buddy];
         }
     }
     
@@ -476,11 +496,10 @@
     NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
     if (loginUsername && loginUsername.length > 0) {
         EMBuddy *loginBuddy = [EMBuddy buddyWithUsername:loginUsername];
-        [tmpArray addObject:loginBuddy];
         [self.contactsSource addObject:loginBuddy];
     }
     
-    [self.dataSource addObjectsFromArray:[self sortDataArray:tmpArray]];
+    [self.dataSource addObjectsFromArray:[self sortDataArray:self.contactsSource]];
     [self.tableView reloadData];
 }
 

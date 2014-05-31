@@ -8,6 +8,8 @@
 
 #import "ChatRoomDetailViewController.h"
 
+#import "ContactSelectionViewController.h"
+
 #pragma mark - ChatRoomContactView
 
 @implementation ChatRoomContactView
@@ -266,6 +268,9 @@
     self.scrollView.frame = CGRectMake(10, 20, self.tableView.frame.size.width - 20, row * kContactSize);
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, row * kContactSize);
     
+    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+    
     int i = 0;
     int j = 0;
     BOOL isEditing = self.addButton.hidden ? YES : NO;
@@ -279,7 +284,10 @@
                 contactView.index = i * kColOfRow + j;
                 contactView.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
                 contactView.title = buddy.username;
-                contactView.editing = isEditing;
+                if (![buddy.username isEqualToString:loginUsername]) {
+                    contactView.editing = isEditing;
+                }
+                
                 [contactView setDeleteContact:^(NSInteger index) {
                     //to do 删除群组成员
                     [self.dataSource removeObjectAtIndex:index];
@@ -331,9 +339,16 @@
 
 - (void)setScrollViewEditing:(BOOL)isEditing
 {
+    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+    
     for (ChatRoomContactView *contactView in self.scrollView.subviews)
     {
         if ([contactView isKindOfClass:[ChatRoomContactView class]]) {
+            if (isEditing && [contactView.title isEqualToString:loginUsername]) {
+                break;
+            }
+            
             [contactView setEditing:isEditing];
         }
     }
@@ -343,7 +358,8 @@
 
 - (void)addContact:(id)sender
 {
-    
+    ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] init];
+    [self.navigationController pushViewController:selectionController animated:YES];
 }
 
 - (void)clearAction

@@ -151,6 +151,15 @@
     {
 #warning 由用户体系的用户，需要添加方法在已有的用户体系中查询符合填写内容的用户
 #warning 以下代码为测试代码，默认用户体系中有一个符合要求的同名用户
+        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+        if ([_textField.text isEqualToString:loginUsername]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不能添加自己为好友" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alertView show];
+            
+            return;
+        }
+        
         [self.dataSource removeAllObjects];
         [self.dataSource addObject:_textField.text];
         [self.tableView reloadData];
