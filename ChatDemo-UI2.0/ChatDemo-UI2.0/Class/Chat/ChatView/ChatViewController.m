@@ -343,8 +343,19 @@
 // 图片的bubble被点击
 -(void)chatImageCellBubblePressed:(EMMessageModel *)message
 {
-    id object = message.isSender ? message.image : (message.imageRemoteURL ? message.imageRemoteURL : [UIImage imageNamed:@"imageDownloadFail.png"]);
-    [self.messageReadManager showBrowserWithImages:@[object]];
+    id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
+    id <IEMFileMessageBody> messageBody = (id <IEMFileMessageBody>)message.messageBody;
+    [self showHudInView:self.view hint:@"正在获取大图..."];
+    [chatManager asyncFetchMessageBody:messageBody progress:nil completion:^(id<IEMFileMessageBody> aMessageBody, EMError *error) {
+        [self hideHud];
+        if (!error) {
+            NSURL *url = [NSURL fileURLWithPath:aMessageBody.localPath];
+            [self.messageReadManager showBrowserWithImages:@[url]];
+        }else{
+            [self showHint:@"大图获取失败!"];
+        }
+        
+    } onQueue:nil];
 }
 
 - (void)chatVideoCellBubblePressed:(EMMessageModel *)message

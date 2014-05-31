@@ -22,6 +22,7 @@
     
     EMMessageModel *model = [[EMMessageModel alloc] init];
     model.isRead = message.isRead;
+    model.messageBody = messageBody;
     model.type = messageBody.messageBodyType;
     model.messageId = message.messageId;
     model.isSender = isSender;
