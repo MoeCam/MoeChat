@@ -66,6 +66,13 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self reloadApplyView];
+}
+
 #pragma mark - getter
 
 - (UISearchBar *)searchBar

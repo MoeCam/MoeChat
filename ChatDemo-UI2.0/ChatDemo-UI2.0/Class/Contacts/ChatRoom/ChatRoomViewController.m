@@ -11,6 +11,7 @@
 #import "EMSearchBar.h"
 #import "BaseTableViewCell.h"
 #import "EMSearchDisplayController.h"
+#import "ChatViewController.h"
 #import "CreateChatRoomViewController.h"
 #import "RealtimeSearchUtil.h"
 
@@ -189,6 +190,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    ChatViewController *chatController = [[ChatViewController alloc] initWithChatter:@"测试组" isChatroom:YES];
+    [self.navigationController pushViewController:chatController animated:YES];
 }
 
 #pragma mark - UISearchBarDelegate

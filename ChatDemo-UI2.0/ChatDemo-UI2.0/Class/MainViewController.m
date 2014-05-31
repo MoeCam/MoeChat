@@ -202,4 +202,9 @@
     [_contactsVC reloadDataSource];
 }
 
+- (void)didAcceptedByBuddy:(NSString *)username
+{
+    [_contactsVC reloadDataSource];
+}
+
 @end

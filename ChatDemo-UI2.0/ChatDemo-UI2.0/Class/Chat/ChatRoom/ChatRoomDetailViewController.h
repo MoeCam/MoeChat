@@ -11,10 +11,12 @@
 @interface ChatRoomContactView : UIView
 {
     UIButton *_deleteButton;
+    UILabel *_nameLabel;
 }
 
 @property (nonatomic) NSInteger index;
 @property (nonatomic) BOOL editing;
+@property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) UIImageView *imageView;
 @property (copy) void (^deleteContact)(NSInteger index);
 

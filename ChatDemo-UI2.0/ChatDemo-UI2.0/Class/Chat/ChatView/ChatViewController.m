@@ -658,7 +658,10 @@
 
 - (void)showRoomContact:(id)sender
 {
-    
+    [self.view endEditing:YES];
+    ChatRoomDetailViewController *detailController = [[ChatRoomDetailViewController alloc] initWithAdmin:YES];
+    detailController.title = @"测试";
+    [self.navigationController pushViewController:detailController animated:YES];
 }
 
 - (void)removeAllMessages:(id)sender

@@ -17,12 +17,25 @@
     self = [super initWithFrame:frame];
     if (self) {
         _editing = NO;
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 10, frame.size.width - 10, frame.size.height - 20)];
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 10, frame.size.width - 10, frame.size.height - 10)];
+        _imageView.clipsToBounds = YES;
+        _imageView.layer.cornerRadius = 0.5;
+//        _imageView.userInteractionEnabled = YES;
+        [self addSubview:_imageView];
+        
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(_imageView.frame) - 15, _imageView.frame.size.width, 15)];
+        _nameLabel.clipsToBounds = YES;
+        _nameLabel.textAlignment = NSTextAlignmentCenter;
+        _nameLabel.font = [UIFont systemFontOfSize:10.0];
+        _nameLabel.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.5];
+        _nameLabel.textColor = [UIColor whiteColor];
+        [_imageView addSubview:_nameLabel];
         
         _deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_imageView.frame) - 8, 3, 15, 15)];
         [_deleteButton addTarget:self action:@selector(deleteAction) forControlEvents:UIControlEventTouchUpInside];
         [_deleteButton setImage:[UIImage imageNamed:@"chatroom_invitee_delete"] forState:UIControlStateNormal];
         _deleteButton.hidden = YES;
+        [self addSubview:_deleteButton];
     }
     
     return self;
@@ -36,6 +49,12 @@
     }
 }
 
+- (void)setTitle:(NSString *)title
+{
+    _title = title;
+    _nameLabel.text = title;
+}
+
 - (void)deleteAction
 {
     if (_deleteContact) {
@@ -46,6 +65,9 @@
 @end
 
 #pragma mark - ChatRoomDetailViewController
+
+#define kColOfRow 5
+#define kContactSize 60
 
 @interface ChatRoomDetailViewController ()
 
@@ -84,7 +106,10 @@
     self.tableView.tableFooterView = self.footerView;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapView:)];
+    tap.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tap];
+    
+    [self loadDataSource];
 }
 
 - (void)didReceiveMemoryWarning
@@ -98,19 +123,17 @@
 - (UIScrollView *)scrollView
 {
     if (_scrollView == nil) {
-        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 20, self.view.frame.size.width - 20, 60)];
-        _scrollView.layer.borderWidth = 1.0;
-        _scrollView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-        _scrollView.clipsToBounds = YES;
-        _scrollView.layer.cornerRadius = 5.0;
+        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 20, self.view.frame.size.width - 20, kContactSize)];
+        _scrollView.tag = 0;
         
-        _addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        _addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kContactSize - 10, kContactSize - 10)];
         [_addButton setImage:[UIImage imageNamed:@"chatroom_participant_add"] forState:UIControlStateNormal];
         [_addButton setImage:[UIImage imageNamed:@"chatroom_participant_addHL"] forState:UIControlStateHighlighted];
         [_addButton addTarget:self action:@selector(addContact:) forControlEvents:UIControlEventTouchUpInside];
+        [_scrollView addSubview:_addButton];
         
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deleteContactBegin:)];
-        longPress.minimumPressDuration = 1.0;
+        longPress.minimumPressDuration = 0.5;
         [_scrollView addGestureRecognizer:longPress];
     }
     
@@ -216,10 +239,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int tmp = ([self.dataSource count] + 1) % 6;
-    int row = ([self.dataSource count] + 1) / 6;
-    row += tmp == 0 ? 0 : 1;
-    return row * 60 + 20;
+    int row = self.scrollView.tag;
+    if (row == 0) {
+        return self.scrollView.frame.size.height + 20;
+    }
+    return row * kContactSize + 20;
 }
 
 #pragma mark - data
@@ -228,30 +252,58 @@
 {
     [self.dataSource removeAllObjects];
     [self.dataSource addObjectsFromArray:[[EaseMob sharedInstance].chatManager buddyList]];
-    
+    [self refreshScrollView];
+}
+
+- (void)refreshScrollView
+{
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    int tmp = ([self.dataSource count] + 1) % 6;
-    int row = ([self.dataSource count] + 1) / 6;
+    
+    int tmp = ([self.dataSource count] + 1) % kColOfRow;
+    int row = ([self.dataSource count] + 1) / kColOfRow;
     row += tmp == 0 ? 0 : 1;
-    int col = 6;
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, row * 60);
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++) {
-            EMBuddy *buddy = [self.dataSource objectAtIndex:(i * col + j)];
-            ChatRoomContactView *contactView = [[ChatRoomContactView alloc] initWithFrame:CGRectMake(i * 60, j * 60, 60, 60)];
-            contactView.index = i * col + j;
-            contactView.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-            [contactView setDeleteContact:^(NSInteger index) {
-                //to do 删除群组成员
+    self.scrollView.tag = row;
+    self.scrollView.frame = CGRectMake(10, 20, self.tableView.frame.size.width - 20, row * kContactSize);
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, row * kContactSize);
+    
+    int i = 0;
+    int j = 0;
+    BOOL isEditing = self.addButton.hidden ? YES : NO;
+    BOOL isEnd = NO;
+    for (i = 0; i < row; i++) {
+        for (j = 0; j < kColOfRow; j++) {
+            NSInteger index = i * kColOfRow + j;
+            if (index < [self.dataSource count]) {
+                EMBuddy *buddy = [self.dataSource objectAtIndex:index];
+                ChatRoomContactView *contactView = [[ChatRoomContactView alloc] initWithFrame:CGRectMake(j * kContactSize, i * kContactSize, kContactSize, kContactSize)];
+                contactView.index = i * kColOfRow + j;
+                contactView.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
+                contactView.title = buddy.username;
+                contactView.editing = isEditing;
+                [contactView setDeleteContact:^(NSInteger index) {
+                    //to do 删除群组成员
+                    [self.dataSource removeObjectAtIndex:index];
+                    [self refreshScrollView];
+                }];
                 
-                [self.dataSource removeObjectAtIndex:index];
-            }];
-            
-            [self.scrollView addSubview:contactView];
+                [self.scrollView addSubview:contactView];
+            }
+            else{
+                if(index == self.dataSource.count)
+                {
+                    self.addButton.frame = CGRectMake(j * kContactSize + 5, i * kContactSize + 10, kContactSize - 10, kContactSize - 10);
+                    [self.scrollView addSubview:self.addButton];
+                }
+                
+                isEnd = YES;
+                break;
+            }
+        }
+        
+        if (isEnd) {
+            break;
         }
     }
-    
-    
     
     [self.tableView reloadData];
 }
@@ -260,7 +312,7 @@
 
 - (void)tapView:(UITapGestureRecognizer *)tap
 {
-    if (tap.state == UIGestureRecognizerStateBegan)
+    if (tap.state == UIGestureRecognizerStateEnded)
     {
         if (self.addButton.hidden) {
             [self setScrollViewEditing:NO];
@@ -279,8 +331,11 @@
 
 - (void)setScrollViewEditing:(BOOL)isEditing
 {
-    for (ChatRoomContactView *contactView in self.scrollView.subviews) {
-        [contactView setEditing:isEditing];
+    for (ChatRoomContactView *contactView in self.scrollView.subviews)
+    {
+        if ([contactView isKindOfClass:[ChatRoomContactView class]]) {
+            [contactView setEditing:isEditing];
+        }
     }
     
     self.addButton.hidden = isEditing;
