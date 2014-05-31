@@ -121,18 +121,18 @@
 {
     [super viewWillDisappear:animated];
     
-    // 设置当前conversation的所有message为已读
-    [_conversation markMessagesAsRead:YES];
-    
-    //停止音频播放及播放动画
-    [[EaseMob sharedInstance].chatManager stopPlayingAudio];
-    [self.messageReadManager stopMessageAudio];
-    
-    //判断当前会话是否为空，若为空则删除该会话
-    NSArray *messages = [_conversation loadNumbersOfMessages:1 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
-    if (messages == nil || [messages count] == 0) {
-        [[EaseMob sharedInstance].chatManager removeConversationByChatter:_conversation.chatter deleteMessages:YES];
-    }
+//    // 设置当前conversation的所有message为已读
+//    [_conversation markMessagesAsRead:YES];
+//    
+//    //停止音频播放及播放动画
+//    [[EaseMob sharedInstance].chatManager stopPlayingAudio];
+//    [self.messageReadManager stopMessageAudio];
+//    
+//    //判断当前会话是否为空，若为空则删除该会话
+//    NSArray *messages = [_conversation loadNumbersOfMessages:1 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
+//    if (messages == nil || [messages count] == 0) {
+//        [[EaseMob sharedInstance].chatManager removeConversationByChatter:_conversation.chatter deleteMessages:YES];
+//    }
 }
 
 - (void)dealloc
@@ -715,24 +715,28 @@
 -(void)sendTextMessage:(NSString *)textMessage
 {
     EMMessage *tempMessage = [EMChatSendHelper sendTextMessageWithString:textMessage toUsername:_conversation.chatter];
+    tempMessage.requireEncryption = YES;
     [self addChatDataToMessage:tempMessage];
 }
 
 -(void)sendImageMessage:(UIImage *)imageMessage
 {
     EMMessage *tempMessage = [EMChatSendHelper sendImageMessageWithImage:imageMessage toUsername:_conversation.chatter];
+    tempMessage.requireEncryption = YES;
     [self addChatDataToMessage:tempMessage];
 }
 
 -(void)sendLocationMessage:(CLLocation *)locationMessage
 {
     EMMessage *message = [EMChatSendHelper sendLocationLatitude:13.0 longitude:6.1234 address:@"北京市海淀区" toUsername:_conversation.chatter];
+    message.requireEncryption = YES;
     [self addChatDataToMessage:message];
 }
 
 -(void)sendAudioMessage:(EMChatVoice *)voice
 {
     EMMessage *tempMessage = [EMChatSendHelper sendVoice:voice toUsername:_conversation.chatter];
+    tempMessage.requireEncryption = YES;
     [self addChatDataToMessage:tempMessage];
 }
 
