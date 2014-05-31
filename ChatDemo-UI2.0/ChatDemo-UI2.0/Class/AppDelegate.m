@@ -30,12 +30,15 @@
          [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
     }
     
-    
-    [MobClick startWithAppkey:@"538186af56240ba388140154"
-                 reportPolicy:BATCH
-                    channelId:Nil];
-    
-    [MobClick setLogEnabled:YES];
+    NSString *bundleID = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+    if ([bundleID isEqualToString:@"com.easemob.enterprise.demo.ui"]) {
+        [MobClick startWithAppkey:@"5389bb7f56240ba94208ac97"
+                     reportPolicy:BATCH
+                        channelId:Nil];
+        
+        [MobClick setLogEnabled:YES];
+    }
+
     
     
 #warning Baidu地图SDK测试Key值
@@ -53,6 +56,10 @@
     [self loginStateChange:nil];
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken{
+    [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
