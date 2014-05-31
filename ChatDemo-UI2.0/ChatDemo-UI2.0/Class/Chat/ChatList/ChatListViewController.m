@@ -248,8 +248,12 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView
         cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    ChatListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"chatListCell"];
-
+    static NSString *identify = @"chatListCell";
+    ChatListCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
+    
+    if (!cell) {
+        cell = [[ChatListCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identify];
+    }
     EMConversation *conversation = [self.dataSource objectAtIndex:indexPath.row];
     cell.name = conversation.chatter;
     cell.detailMsg = [self subTitleMessageByConversation:conversation];
