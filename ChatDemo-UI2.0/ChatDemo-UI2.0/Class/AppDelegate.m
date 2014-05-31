@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "EaseMob.h"
 #import "MainViewController.h"
 #import "LoginViewController.h"
 
@@ -26,7 +27,9 @@
         [[UINavigationBar appearance] setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
     }
-
+    [[EaseMob sharedInstance] registerSDKWithAppKey:@"easemob-demo#chatdemoui"];
+    [[EaseMob sharedInstance] application:application
+            didFinishLaunchingWithOptions:launchOptions];
 
     [self loginStateChange:nil];
     [self.window makeKeyAndVisible];
@@ -35,27 +38,27 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    
+    [[EaseMob sharedInstance] applicationWillResignActive:application];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    
+    [[EaseMob sharedInstance] applicationDidEnterBackground:application];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    
+    [[EaseMob sharedInstance] applicationWillEnterForeground:application];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    
+    [[EaseMob sharedInstance] applicationDidBecomeActive:application];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    
+    [[EaseMob sharedInstance] applicationWillTerminate:application];
 }
 
 -(void)loginStateChange:(NSNotification *)notification
