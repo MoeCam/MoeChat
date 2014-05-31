@@ -149,6 +149,8 @@
     [_textField resignFirstResponder];
     if(_textField.text.length > 0)
     {
+#warning 由用户体系的用户，需要添加方法在已有的用户体系中查询符合填写内容的用户
+#warning 以下代码为测试代码，默认用户体系中有一个符合要求的同名用户
         [self.dataSource removeAllObjects];
         [self.dataSource addObject:_textField.text];
         [self.tableView reloadData];
@@ -164,10 +166,10 @@
         [[EaseMob sharedInstance].chatManager addBuddy:buddyName withNickname:buddyName message:[NSString stringWithFormat:@"%@ 添加您为好友", buddyName] error:&error];
         [self hideHud];
         if (error) {
-            [self showHint:@"添加失败，请重新操作"];
+            [self showHint:@"发送申请，请重新操作"];
         }
         else{
-            [self showHint:@"添加成功"];
+            [self showHint:@"发送申请成功"];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }

@@ -8,9 +8,9 @@
 
 #import "ApplyViewController.h"
 
-#import "AddFriendCell.h"
+#import "ApplyFriendCell.h"
 
-@interface ApplyViewController ()
+@interface ApplyViewController ()<ApplyFriendCellDelegate>
 
 @end
 
@@ -58,20 +58,20 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"AddFriendCell";
-    AddFriendCell *cell = (AddFriendCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *CellIdentifier = @"ApplyFriendCell";
+    ApplyFriendCell *cell = (ApplyFriendCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     // Configure the cell...
     if (cell == nil) {
-        cell = [[AddFriendCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[ApplyFriendCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.delegate = self;
     }
     
     NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
     if (dic) {
-        cell.addLabel.text = @"接受";
+        cell.indexPath = indexPath;
         cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
         cell.textLabel.text = [dic objectForKey:@"username"];
-//        cell.addLabel.hidden = [[dic objectForKey:@"acceptState"] boolValue];
     }
     
     return cell;
@@ -109,12 +109,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self acceptAtIndexPath:indexPath];
 }
 
-#pragma mark - action
+#pragma mark - ApplyFriendCellDelegate
 
-- (void)acceptAtIndexPath:(NSIndexPath *)indexPath
+- (void)applyCellAddFriendAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row < [self.dataSource count]) {
         [self showHudInView:self.view hint:@"正在发送申请..."];
@@ -129,6 +128,24 @@
         }
         else{
             [self showHint:@"添加好友失败"];
+        }
+    }
+}
+
+- (void)applyCellRefuseFriendAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row < [self.dataSource count]) {
+        [self showHudInView:self.view hint:@"正在发送申请..."];
+        NSMutableDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
+        EMError *error;
+        [[EaseMob sharedInstance].chatManager rejectBuddyRequest:[dic objectForKey:@"username"] reason:@"" error:&error];
+        [self hideHud];
+        if (!error) {
+            [self.dataSource removeObject:dic];
+            [self.tableView reloadData];
+        }
+        else{
+            [self showHint:@"拒绝申请失败"];
         }
     }
 }

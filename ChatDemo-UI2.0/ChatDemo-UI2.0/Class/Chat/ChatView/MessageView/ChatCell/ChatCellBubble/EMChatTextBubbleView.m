@@ -58,7 +58,13 @@ NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTap
     }else{
         retSize = [self.model.content sizeWithFont:[[self class] textLabelFont] constrainedToSize:textBlockMinSize lineBreakMode:[[self class] textLabelLineBreakModel]];
     }
-    return CGSizeMake(retSize.width + BUBBLE_VIEW_PADDING*2 + BUBBLE_ARROW_WIDTH, 2*BUBBLE_VIEW_PADDING + retSize.height);
+    
+    CGFloat height = 40;
+    if (2*BUBBLE_VIEW_PADDING + retSize.height > height) {
+        height = 2*BUBBLE_VIEW_PADDING + retSize.height;
+    }
+    
+    return CGSizeMake(retSize.width + BUBBLE_VIEW_PADDING*2 + BUBBLE_VIEW_PADDING, height);
 }
 
 #pragma mark - setter

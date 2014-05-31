@@ -18,9 +18,9 @@
 #import "EMMessageManager.h"
 #import "EMMessageModelManager.h"
 #import "SendLocationViewController.h"
+#import "ChatRoomDetailViewController.h"
 
 #import "NSDate+Category.h"
-
 #import "DXMessageToolBar.h"
 
 @interface ChatViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, DXChatBarMoreViewDelegate, DXMessageToolBarDelegate, LocationDelegate>
@@ -101,6 +101,8 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(removeAllMessages:)];
     }
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -450,6 +452,7 @@
         rect.size.height = self.view.frame.size.height - toHeight;
         self.tableView.frame = rect;
     }];
+    [self scrollViewToBottom:YES];
 }
 
 - (void)didSendText:(NSString *)text
