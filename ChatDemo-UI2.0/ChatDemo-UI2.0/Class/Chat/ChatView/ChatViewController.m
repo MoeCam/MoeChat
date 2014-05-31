@@ -74,7 +74,6 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
-    
     [self setupBarButtonItem];
     
 #warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
@@ -84,6 +83,10 @@
     
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.chatToolBar];
+    //将self注册为chatToolBar的moreView的代理
+    if ([self.chatToolBar.moreView isKindOfClass:[DXChatBarMoreView class]]) {
+        [(DXChatBarMoreView *)self.chatToolBar.moreView setDelegate:self];
+    }
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
     [self.view addGestureRecognizer:tap];
