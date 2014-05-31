@@ -1000,7 +1000,6 @@
 		9003D7821939D8D000DC38A4 /* ChatView */ = {
 			isa = PBXGroup;
 			children = (
-				9003D7831939D8D000DC38A4 /* ChatViewCell */,
 				9003D7851939D8D000DC38A4 /* ChatViewController.h */,
 				9003D7861939D8D000DC38A4 /* ChatViewController.m */,
 				9003D7871939D8D000DC38A4 /* EMChatSendHelper.h */,
@@ -1011,21 +1010,6 @@
 				9003D84C1939D8D000DC38A4 /* SendLocationViewController.m */,
 			);
 			path = ChatView;
-			sourceTree = "<group>";
-		};
-		9003D7831939D8D000DC38A4 /* ChatViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				9003D7841939D8D000DC38A4 /* ChatViewBubble */,
-			);
-			path = ChatViewCell;
-			sourceTree = "<group>";
-		};
-		9003D7841939D8D000DC38A4 /* ChatViewBubble */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ChatViewBubble;
 			sourceTree = "<group>";
 		};
 		9003D7891939D8D000DC38A4 /* MessageToolbar */ = {

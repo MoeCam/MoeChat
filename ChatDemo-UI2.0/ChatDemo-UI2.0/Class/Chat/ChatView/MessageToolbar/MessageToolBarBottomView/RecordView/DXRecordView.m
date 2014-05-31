@@ -61,7 +61,11 @@
     // 需要根据声音大小切换recordView动画
     _textLabel.text = @" 手指上滑，取消发送 ";
     _textLabel.backgroundColor = [UIColor clearColor];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(setVoiceImage) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.05
+                                              target:self
+                                            selector:@selector(setVoiceImage)
+                                            userInfo:nil
+                                             repeats:YES];
     
 }
 // 手指在录音按钮内部时离开
@@ -91,7 +95,7 @@
 -(void)setVoiceImage {
     _recordAnimationView.image = [UIImage imageNamed:@"VoiceSearchFeedback001"];
     double voiceSound = 0;
-    
+    voiceSound = [[EaseMob sharedInstance].deviceManager peekRecorderVoiceMeter];
     if (0 < voiceSound <= 0.05) {
         [_recordAnimationView setImage:[UIImage imageNamed:@"VoiceSearchFeedback001"]];
     }else if (0.05<voiceSound<=0.10) {
