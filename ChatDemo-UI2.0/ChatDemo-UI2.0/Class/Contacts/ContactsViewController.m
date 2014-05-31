@@ -16,6 +16,7 @@
 #import "EMSearchDisplayController.h"
 #import "AddFriendViewController.h"
 #import "ApplyViewController.h"
+#import "ChatRoomViewController.h"
 #import "ChatViewController.h"
 
 @interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, SRRefreshDelegate>
@@ -130,8 +131,6 @@
 {
     if (_searchController == nil) {
         _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-        _searchController.searchResultsDataSource = _searchController;
-        _searchController.searchResultsDelegate = _searchController;
         _searchController.delegate = self;
         _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
@@ -305,7 +304,8 @@
         }
         else if (indexPath.row == 1)
         {
-            
+            ChatRoomViewController *roomController = [[ChatRoomViewController alloc] initWithStyle:UITableViewStylePlain];
+            [self.navigationController pushViewController:roomController animated:YES];
         }
     }
     else{

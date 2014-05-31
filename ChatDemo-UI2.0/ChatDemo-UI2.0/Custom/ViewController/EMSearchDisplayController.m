@@ -17,6 +17,8 @@
         // Custom initialization
         _resultsSource = [NSMutableArray array];
         
+        self.searchResultsDataSource = self;
+        self.searchResultsDelegate = self;
         self.searchResultsTitle = @"搜索结果";
     }
     return self;

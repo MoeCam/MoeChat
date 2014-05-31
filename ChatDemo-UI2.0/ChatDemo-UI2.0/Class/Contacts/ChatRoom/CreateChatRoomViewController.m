@@ -8,7 +8,9 @@
 
 #import "CreateChatRoomViewController.h"
 
-@interface CreateChatRoomViewController ()<UITextFieldDelegate>
+#import "ContactSelectionViewController.h"
+
+@interface CreateChatRoomViewController ()<UITextFieldDelegate, EMChooseViewDelegate>
 
 @property (strong, nonatomic) UITextField *textField;
 
@@ -35,7 +37,9 @@
     }
     self.title = @"创建群组";
     
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"添加成员" style:UIBarButtonItemStylePlain target:self action:@selector(addContacts:)]];
     
+    [self.view addSubview:self.textField];
 }
 
 - (void)didReceiveMemoryWarning
@@ -73,6 +77,22 @@
 {
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - EMChooseViewDelegate
+
+- (void)viewController:(EMChooseViewController *)viewController didFinishSelectedSources:(NSArray *)selectedSources
+{
+    
+}
+
+#pragma mark - action
+
+- (void)addContacts:(id)sender
+{
+    ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] init];
+    selectionController.delegate = self;
+    [self.navigationController pushViewController:selectionController animated:YES];
 }
 
 @end

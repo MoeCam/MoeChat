@@ -1,5 +1,5 @@
 //
-//  ChatRoomController.h
+//  ChatRoomViewController.h
 //  ChatDemo-UI2.0
 //
 //  Created by dhcdht on 14-5-30.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ChatRoomController : UITableViewController
+@interface ChatRoomViewController : UITableViewController
 
 @end

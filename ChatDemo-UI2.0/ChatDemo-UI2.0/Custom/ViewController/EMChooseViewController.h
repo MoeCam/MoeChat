@@ -49,7 +49,7 @@
 /**
  *  获取每个元素比较的字符串，必须在[viewDidLoad]或者[viewDidLoadBlock]或者[viewControllerLoadDataSource:]调用之前设置
  */
-@property (nonatomic) NSString *(^objectComparisonStringBlock)(id object);
+@property (copy) NSString *(^objectComparisonStringBlock)(id object);
 
 /**
  *  判读数组中每两个元素大小的方法，必须在[viewDidLoad]或者[viewDidLoadBlock]或者[viewControllerLoadDataSource:]调用之前设置

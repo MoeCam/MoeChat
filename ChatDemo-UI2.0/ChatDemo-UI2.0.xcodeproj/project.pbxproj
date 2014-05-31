@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3C0CE52A1938939700219149 /* ChatRoomController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0CE5251938939700219149 /* ChatRoomController.m */; };
+		3C0CE52A1938939700219149 /* ChatRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0CE5251938939700219149 /* ChatRoomViewController.m */; };
 		3C0CE52B1938939700219149 /* CreateChatRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0CE5271938939700219149 /* CreateChatRoomViewController.m */; };
-		3C0CE52C1938939700219149 /* groupIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0CE5281938939700219149 /* groupIcon@2x.png */; };
+		3C0CE52C1938939700219149 /* groupHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0CE5281938939700219149 /* groupHeader@2x.png */; };
 		3C0CE52D1938939700219149 /* nav_createGroup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0CE5291938939700219149 /* nav_createGroup@2x.png */; };
 		3C3527361931D1BE00385240 /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3527351931D1BE00385240 /* BaseTableViewCell.m */; };
 		3C35273C1931D1DF00385240 /* ChineseToPinyin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3527381931D1DF00385240 /* ChineseToPinyin.m */; };
@@ -295,11 +295,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3C0CE5241938939700219149 /* ChatRoomController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatRoomController.h; sourceTree = "<group>"; };
-		3C0CE5251938939700219149 /* ChatRoomController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatRoomController.m; sourceTree = "<group>"; };
+		3C0CE5241938939700219149 /* ChatRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatRoomViewController.h; sourceTree = "<group>"; };
+		3C0CE5251938939700219149 /* ChatRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatRoomViewController.m; sourceTree = "<group>"; };
 		3C0CE5261938939700219149 /* CreateChatRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateChatRoomViewController.h; sourceTree = "<group>"; };
 		3C0CE5271938939700219149 /* CreateChatRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateChatRoomViewController.m; sourceTree = "<group>"; };
-		3C0CE5281938939700219149 /* groupIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupIcon@2x.png"; sourceTree = "<group>"; };
+		3C0CE5281938939700219149 /* groupHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupHeader@2x.png"; sourceTree = "<group>"; };
 		3C0CE5291938939700219149 /* nav_createGroup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_createGroup@2x.png"; sourceTree = "<group>"; };
 		3C0CE53A193895E200219149 /* macros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = macros.h; sourceTree = "<group>"; };
 		3C3527341931D1BE00385240 /* BaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableViewCell.h; sourceTree = "<group>"; };
@@ -841,11 +841,11 @@
 		3C0CE5231938939700219149 /* ChatRoom */ = {
 			isa = PBXGroup;
 			children = (
-				3C0CE5241938939700219149 /* ChatRoomController.h */,
-				3C0CE5251938939700219149 /* ChatRoomController.m */,
+				3C0CE5241938939700219149 /* ChatRoomViewController.h */,
+				3C0CE5251938939700219149 /* ChatRoomViewController.m */,
 				3C0CE5261938939700219149 /* CreateChatRoomViewController.h */,
 				3C0CE5271938939700219149 /* CreateChatRoomViewController.m */,
-				3C0CE5281938939700219149 /* groupIcon@2x.png */,
+				3C0CE5281938939700219149 /* groupHeader@2x.png */,
 				3C0CE5291938939700219149 /* nav_createGroup@2x.png */,
 				3C5F1C2A193975B70055B137 /* ContactSelectionViewController.h */,
 				3C5F1C2B193975B70055B137 /* ContactSelectionViewController.m */,
@@ -2188,7 +2188,7 @@
 				3C9DDBD31938805D007C765A /* VoiceSearchFeedback010@2x.png in Resources */,
 				3CBF90E419302F6000AD68AE /* tabbarBackground.png in Resources */,
 				3C9DDBC71938805D007C765A /* VoiceSearchFeedback004@2x.png in Resources */,
-				3C0CE52C1938939700219149 /* groupIcon@2x.png in Resources */,
+				3C0CE52C1938939700219149 /* groupHeader@2x.png in Resources */,
 				3C9DDC0D1938805D007C765A /* chat_sender_audio_playing_003@2x.png in Resources */,
 				3C9DDB991938805D007C765A /* chatBar_recordSelectedBg@2x.png in Resources */,
 				3C9DDBC41938805D007C765A /* VoiceSearchFeedback003.png in Resources */,
@@ -2237,7 +2237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				90911126192EEBB8008A48AA /* AppDelegate.m in Sources */,
-				3C0CE52A1938939700219149 /* ChatRoomController.m in Sources */,
+				3C0CE52A1938939700219149 /* ChatRoomViewController.m in Sources */,
 				90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */,
 				3CBB37B6193493EC00A72634 /* ApplyViewController.m in Sources */,
 				3C5F1C2919396B450055B137 /* EMChooseViewController.m in Sources */,

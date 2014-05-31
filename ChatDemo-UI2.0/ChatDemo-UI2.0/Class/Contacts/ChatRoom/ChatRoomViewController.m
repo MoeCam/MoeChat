@@ -1,12 +1,12 @@
 //
-//  ChatRoomController.m
+//  ChatRoomViewController.m
 //  ChatDemo-UI2.0
 //
 //  Created by dhcdht on 14-5-30.
 //  Copyright (c) 2014年 dhcdht. All rights reserved.
 //
 
-#import "ChatRoomController.h"
+#import "ChatRoomViewController.h"
 
 #import "EMSearchBar.h"
 #import "BaseTableViewCell.h"
@@ -14,7 +14,7 @@
 #import "CreateChatRoomViewController.h"
 #import "RealtimeSearchUtil.h"
 
-@interface ChatRoomController ()<UISearchBarDelegate, UISearchDisplayDelegate>
+@interface ChatRoomViewController ()<UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
@@ -23,7 +23,7 @@
 
 @end
 
-@implementation ChatRoomController
+@implementation ChatRoomViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -73,12 +73,10 @@
 {
     if (_searchController == nil) {
         _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-        _searchController.searchResultsDataSource = _searchController;
-        _searchController.searchResultsDelegate = _searchController;
         _searchController.delegate = self;
         _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
-        __weak ChatRoomController *weakSelf = self;
+        __weak ChatRoomViewController *weakSelf = self;
 //        [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
 //            static NSString *CellIdentifier = @"ContactListCell";
 //            BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -96,7 +94,7 @@
 //        }];
         
         [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
-            return 50;
+            return 60;
         }];
         
         [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
@@ -213,8 +211,8 @@
 
 - (void)createChatRoom
 {
-//    CreateChatRoomViewController *createChatroom = [[CreateChatRoomViewController alloc] initWithContactList:self];
-//    [self.navigationController pushViewController:createChatroom animated:YES];
+    CreateChatRoomViewController *createChatroom = [[CreateChatRoomViewController alloc] init];
+    [self.navigationController pushViewController:createChatroom animated:YES];
 }
 
 
