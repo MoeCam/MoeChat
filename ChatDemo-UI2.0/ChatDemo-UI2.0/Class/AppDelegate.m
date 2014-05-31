@@ -11,6 +11,7 @@
 #import "MainViewController.h"
 #import "LoginViewController.h"
 #import "BMKMapManager.h"
+#import "MobClick.h"
 
 @implementation AppDelegate
 
@@ -28,6 +29,14 @@
         [[UINavigationBar appearance] setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
     }
+    
+    
+    [MobClick startWithAppkey:@"538186af56240ba388140154"
+                 reportPolicy:BATCH
+                    channelId:Nil];
+    
+    [MobClick setLogEnabled:YES];
+    
     
 #warning Baidu地图SDK测试Key值
     // 如果要关注网络及授权验证事件，请设定generalDelegate参数
