@@ -41,14 +41,15 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
+    //获取未读消息数，此时并没有把self注册为SDK的delegate，读取出的未读数是上次退出程序时的
+    [self didUnreadMessagesCountChanged];
+#warning 把self注册为SDK的delegate
     [self registerNotifications];
     
     self.tabBar.backgroundImage = [[UIImage imageNamed:@"tabbarBackground"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
     self.tabBar.selectionIndicatorImage = [[UIImage imageNamed:@"tabbarSelectBg"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
     
-    _chatListVC = [[ChatListViewController alloc]
-                   initWithNibName:@"ChatListViewController"
-                   bundle:nil];
+    _chatListVC = [[ChatListViewController alloc] init];
     _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"会话"
                                                            image:nil
                                                              tag:0];
@@ -94,12 +95,14 @@
     [self unregisterNotifications];
 }
 
--(void)registerNotifications{
+-(void)registerNotifications
+{
     [self unregisterNotifications];
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
 }
 
--(void)unregisterNotifications{
+-(void)unregisterNotifications
+{
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
 
@@ -137,7 +140,8 @@
 }
 
 // 统计未读消息数
--(void)setupUnreadMessageCount{
+-(void)setupUnreadMessageCount
+{
     NSArray *conversations = [[[EaseMob sharedInstance] chatManager] conversations];
     NSInteger unreadCount = 0;
     for (EMConversation *conversation in conversations) {
@@ -151,10 +155,11 @@
     }
 }
 
-#pragma mark - IChatManagerDelegate
+#pragma mark - IChatManagerDelegate 消息变化
 
 // 未读消息数量变化回调
--(void)didUnreadMessagesCountChanged{
+-(void)didUnreadMessagesCountChanged
+{
     [self setupUnreadMessageCount];
 }
 
@@ -165,6 +170,8 @@
     // 收到消息时，震动
     [[EaseMob sharedInstance].deviceManager asyncPlayVibration];
 }
+
+#pragma mark - IChatManagerDelegate 好友变化
 
 - (void)didReceiveBuddyRequest:(NSString *)username
                        message:(NSString *)message
@@ -178,6 +185,13 @@
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"username":username, @"applyMessage":message, @"acceptState":@NO}];
     [_contactsVC.applysArray addObject:dic];
     [_contactsVC reloadApplyView];
+}
+
+- (void)didUpdateBuddyList:(NSArray *)buddyList
+            changedBuddies:(NSArray *)changedBuddies
+                     isAdd:(BOOL)isAdd
+{
+    [_contactsVC reloadDataSource];
 }
 
 @end

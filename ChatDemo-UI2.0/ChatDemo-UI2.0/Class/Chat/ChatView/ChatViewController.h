@@ -1,23 +1,15 @@
 //
 //  ChatViewController.h
-//  ChatDemo-UI2.0
+//  ChatDemo
 //
-//  Created by dujiepeng on 14-5-23.
-//  Copyright (c) 2014年 dujiepeng. All rights reserved.
+//  Created by xieyajie on 14-4-29.
+//  Copyright (c) 2014年 easemob. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@class EMMessage;
 @interface ChatViewController : UIViewController
 
-- (id)initWithChatter:(NSString *)chatter
-        andIsChatRoom:(BOOL)isChatroom;
-
-- (void)addMessage:(EMMessage *)message;
-- (void)addMessages:(NSArray *)messages;
-
-- (void)didRemoveAllMessages;
-- (void)didRemoveMessage:(NSString *)messageId success:(BOOL)isSuccess;
+- (instancetype)initWithChatter:(NSString *)chatter isChatroom:(BOOL)isChatroom;
 
 @end

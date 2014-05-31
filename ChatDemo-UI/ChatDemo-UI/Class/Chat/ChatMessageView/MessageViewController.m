@@ -117,6 +117,9 @@
 {
     [super viewWillDisappear:animated];
     
+    // 设置当前conversation的所有message为已读
+    [_conversation markMessagesAsRead:YES];
+    
     [[EaseMob sharedInstance].chatManager stopPlayingAudio];
     
     //判断当前会话是否为空，若为空则删除该会话

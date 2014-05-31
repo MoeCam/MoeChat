@@ -171,12 +171,18 @@
     }
 }
 
-- (void)setLoadingWithexpansion
+- (void)setLoadingWithExpansion
 {
+//    self.loading = YES;
+//    [_scrollView setContentOffset:CGPointMake(_scrollView.contentOffset.x,
+//                                              -_scrollView.contentInset.top)
+//                         animated:YES];
+    
     self.loading = YES;
-    [_scrollView setContentOffset:CGPointMake(_scrollView.contentOffset.x,
-                                              -_scrollView.contentInset.top)
-                         animated:YES];
+    [_scrollView setContentOffset:CGPointMake(_scrollView.contentOffset.x, -_dragingHeight) animated:YES];
+    [self scrollViewDidScroll];
+    [self scrollViewDidEndDraging];
+    [self pullApart:self];
 }
 
 - (void)didMoveToSuperview

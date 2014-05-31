@@ -66,12 +66,12 @@
         cell = [[AddFriendCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    cell.addLabel.text = @"接受";
-    
     NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
     if (dic) {
+        cell.addLabel.text = @"接受";
+        cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
         cell.textLabel.text = [dic objectForKey:@"username"];
-        cell.accessoryView.hidden = [[dic objectForKey:@"acceptState"] boolValue];
+//        cell.addLabel.hidden = [[dic objectForKey:@"acceptState"] boolValue];
     }
     
     return cell;
@@ -123,7 +123,7 @@
         [[EaseMob sharedInstance].chatManager acceptBuddyRequest:[dic objectForKey:@"username"] error:&error];
         [self hideHud];
         if (!error) {
-            [dic setObject:@YES forKey:@"acceptState"];
+            [self.dataSource removeObject:dic];
             [self.tableView reloadData];
             [self showHint:@"添加好友成功"];
         }

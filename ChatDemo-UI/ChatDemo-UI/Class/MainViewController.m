@@ -49,12 +49,11 @@
     
     _contactsVC = [[ContactsViewController alloc] initWithNibName:nil bundle:nil];
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"好友列表" image:[UIImage imageNamed:@"Contacts"] tag:1];
-    _contactsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    _contactsVC.view.frame = self.view.bounds;
     self.viewControllers = @[_chatListVC,_contactsVC];
-    
+
     //获取未读消息数，此时并没有把self注册为SDK的delegate，读取出的未读数是上次退出程序时的
     [self didUnreadMessagesCountChanged];
-    
     //把self注册为SDK的delegate
     [self registerNotifications];
 }
@@ -85,6 +84,7 @@
 {
     if (item.tag == 0) {
         self.title = @"消息列表";
+        
         [self.navigationItem setLeftBarButtonItem:nil];
         [self.navigationItem setRightBarButtonItem:nil];
     }

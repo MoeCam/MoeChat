@@ -12,18 +12,24 @@
 #import "RealtimeSearchUtil.h"
 #import "ChineseToPinyin.h"
 #import "EMSearchBar.h"
+#import "SRRefreshView.h"
+#import "EMSearchDisplayController.h"
 #import "AddFriendViewController.h"
 #import "ApplyViewController.h"
+#import "ChatViewController.h"
 
-@interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
+@interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, SRRefreshDelegate>
 
+@property (strong, nonatomic) NSArray *contactsSource;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) NSMutableArray *sectionTitles;
 
-@property (strong, nonatomic) UIView *headerView;
 @property (strong, nonatomic) UILabel *unapplyCountLabel;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) EMSearchBar *searchBar;
+@property (strong, nonatomic) SRRefreshView *slimeView;
+
+@property (strong, nonatomic) EMSearchDisplayController *searchController;
 
 @end
 
@@ -34,6 +40,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _applysArray = [NSMutableArray array];
+        
         _dataSource = [NSMutableArray array];
         _sectionTitles = [NSMutableArray array];
     }
@@ -46,7 +53,10 @@
 
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
-    [self reloadDataSource];
+    [self.tableView addSubview:self.slimeView];
+    
+    [self searchController];
+    [self.slimeView setLoadingWithExpansion];
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,8 +69,7 @@
 - (UISearchBar *)searchBar
 {
     if (_searchBar == nil) {
-        _searchBar = [[EMSearchBar alloc] initWithFrame:
-                      CGRectMake(0, 0, self.view.frame.size.width, 44)];
+        _searchBar = [[EMSearchBar alloc] initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, 44)];
         _searchBar.delegate = self;
         _searchBar.placeholder = @"搜索";
         _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
@@ -79,54 +88,82 @@
         _unapplyCountLabel.textColor = [UIColor whiteColor];
         _unapplyCountLabel.layer.cornerRadius = _unapplyCountLabel.frame.size.height / 2;
         _unapplyCountLabel.hidden = YES;
+        _unapplyCountLabel.clipsToBounds = YES;
     }
     
     return _unapplyCountLabel;
 }
 
-- (UIView *)headerView
+- (SRRefreshView *)slimeView
 {
-    if (_headerView == nil) {
-        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50)];
-        _headerView.backgroundColor = [UIColor whiteColor];
-        
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 8, 34, 34)];
-        imageView.image = [UIImage imageNamed:@"newFriends"];
-        imageView.backgroundColor = [UIColor clearColor];
-        [_headerView addSubview:imageView];
-        
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame) + 10, CGRectGetMinY(imageView.frame), _headerView.frame.size.width - 10 - CGRectGetMaxX(imageView.frame) - 10, _headerView.frame.size.height - CGRectGetMinY(imageView.frame) * 2)];
-        titleLabel.backgroundColor = [UIColor clearColor];
-        titleLabel.font = [UIFont systemFontOfSize:16];
-        titleLabel.text = @"新的朋友";
-        [_headerView addSubview:titleLabel];
-        
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, _headerView.frame.size.height - 0.5, _headerView.frame.size.width, 0.5)];
-        lineView.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
-        [_headerView addSubview:lineView];
-        
-        [_headerView addSubview:self.unapplyCountLabel];
-        
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showNewFriends)];
-        [_headerView addGestureRecognizer:tap];
+    if (_slimeView == nil) {
+        _slimeView = [[SRRefreshView alloc] init];
+        _slimeView.delegate = self;
+        _slimeView.upInset = 0;
+        _slimeView.slimeMissWhenGoingBack = YES;
+        _slimeView.slime.bodyColor = [UIColor grayColor];
+        _slimeView.slime.skinColor = [UIColor grayColor];
+        _slimeView.slime.lineWith = 1;
+        _slimeView.slime.shadowBlur = 4;
+        _slimeView.slime.shadowColor = [UIColor grayColor];
     }
     
-    return _headerView;
+    return _slimeView;
 }
 
 - (UITableView *)tableView
 {
     if (_tableView == nil) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height) style:UITableViewStylePlain];
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.backgroundColor = [UIColor whiteColor];
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        _tableView.separatorColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
-        _tableView.tableHeaderView = self.headerView;
-        _tableView.tableFooterView = [[UIView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.tableFooterView = [[UIView alloc] init];
     }
     
     return _tableView;
+}
+
+- (EMSearchDisplayController *)searchController
+{
+    if (_searchController == nil) {
+        _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+        _searchController.searchResultsDataSource = _searchController;
+        _searchController.searchResultsDelegate = _searchController;
+        _searchController.delegate = self;
+        _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        
+        __weak ContactsViewController *weakSelf = self;
+        [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
+            static NSString *CellIdentifier = @"ContactListCell";
+            BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            // Configure the cell...
+            if (cell == nil) {
+                cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            }
+            
+            EMBuddy *buudy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
+            cell.textLabel.text = buudy.username;
+            
+            return cell;
+        }];
+        
+        [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
+            return 50;
+        }];
+        
+        [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
+            EMBuddy *buddy = [[weakSelf.searchController.resultsSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+            ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username isChatroom:NO];
+            [weakSelf.navigationController pushViewController:chatVC animated:YES];
+        }];
+    }
+    
+    return _searchController;
 }
 
 #pragma mark - Table view data source
@@ -134,26 +171,54 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return [self.dataSource count];
+    return [self.dataSource count] + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [[self.dataSource objectAtIndex:section] count];
+    if (section == 0) {
+        return 2;
+    }
+    
+    return [[self.dataSource objectAtIndex:(section - 1)] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"ChatListCell";
-    BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    BaseTableViewCell *cell;
     
-    // Configure the cell...
-    if (cell == nil) {
-        cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"FriendCell"];
+        if (cell == nil) {
+            cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FriendCell"];
+        }
+        
+        cell.imageView.image = [UIImage imageNamed:@"newFriends"];
+        cell.textLabel.text = @"新的朋友";
+        [cell addSubview:self.unapplyCountLabel];
     }
-    
-    [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    else{
+        static NSString *CellIdentifier = @"ContactListCell";
+        cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        // Configure the cell...
+        if (cell == nil) {
+            cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        if (indexPath.section == 0 && indexPath.row == 1) {
+            if (indexPath.row == 1)
+            {
+                cell.imageView.image = [UIImage imageNamed:@"newFriends"];
+                cell.textLabel.text = @"群聊";
+            }
+        }
+        else{
+            EMBuddy *buudy = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+            cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
+            cell.textLabel.text = buudy.username;
+        }
+    }
     
     return cell;
 }
@@ -162,6 +227,10 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
+    if (indexPath.section == 0) {
+        return NO;
+    }
+    
     return YES;
 }
 
@@ -182,7 +251,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ([[self.dataSource objectAtIndex:section] count] == 0)
+    if (section == 0 || [[self.dataSource objectAtIndex:(section - 1)] count] == 0)
     {
         return 0;
     }
@@ -193,7 +262,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if ([[self.dataSource objectAtIndex:section] count] == 0)
+    if (section == 0 || [[self.dataSource objectAtIndex:(section - 1)] count] == 0)
     {
         return nil;
     }
@@ -202,7 +271,7 @@
     [contentView setBackgroundColor:[UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0]];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, 22)];
     label.backgroundColor = [UIColor clearColor];
-    [label setText:[self.sectionTitles objectAtIndex:section]];
+    [label setText:[self.sectionTitles objectAtIndex:(section - 1)]];
     [contentView addSubview:label];
     return contentView;
 }
@@ -228,7 +297,22 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            ApplyViewController *applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
+            applyController.dataSource = self.applysArray;
+            [self.navigationController pushViewController:applyController animated:YES];
+        }
+        else if (indexPath.row == 1)
+        {
+            
+        }
+    }
+    else{
+        EMBuddy *buddy = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+        ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username isChatroom:NO];
+        [self.navigationController pushViewController:chatVC animated:YES];
+    }
 }
 
 #pragma mark - UISearchBarDelegate
@@ -242,10 +326,12 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:nil resultBlock:^(NSArray *results) {
+    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.contactsSource searchText:(NSString *)searchText collationStringSelector:@selector(username) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSMutableArray *array = [NSMutableArray array];
+                [self.searchController.resultsSource removeAllObjects];
+                [self.searchController.resultsSource addObjectsFromArray:results];
+                [self.searchController.searchResultsTableView reloadData];
             });
         }
     }];
@@ -256,12 +342,39 @@
     return YES;
 }
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+}
+
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     searchBar.text = @"";
     [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
     [searchBar resignFirstResponder];
     [searchBar setShowsCancelButton:NO animated:YES];
+}
+
+#pragma mark - UISearchDisplayDelegate
+
+#pragma mark - scrollView delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_slimeView scrollViewDidScroll];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [_slimeView scrollViewDidEndDraging];
+}
+
+#pragma mark - slimeRefresh delegate
+//刷新列表
+- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
+{
+    [self reloadDataSource];
+    [_slimeView endRefresh];
 }
 
 #pragma mark - private
@@ -316,10 +429,10 @@
 - (void)reloadDataSource
 {
     [self.dataSource removeAllObjects];
-    NSArray *array = [[EaseMob sharedInstance].chatManager buddyList];
+    self.contactsSource = [[EaseMob sharedInstance].chatManager buddyList];
     
     NSMutableArray *tmpArray = [NSMutableArray array];
-    for (EMBuddy *buudy in array) {
+    for (EMBuddy *buudy in self.contactsSource) {
         if (buudy.isPendingApproval) {
             [tmpArray addObject:buudy];
         }
@@ -353,13 +466,6 @@
         self.unapplyCountLabel.frame = rect;
         self.unapplyCountLabel.hidden = NO;
     }
-}
-
-- (void)showNewFriends
-{
-    ApplyViewController *applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
-    applyController.dataSource = self.applysArray;
-    [self.navigationController pushViewController:applyController animated:YES];
 }
 
 - (void)addFriendAction
