@@ -129,8 +129,8 @@
     [self.messageReadManager stopMessageAudio];
     
     //判断当前会话是否为空，若为空则删除该会话
-    NSArray *messages = [_conversation loadNumbersOfMessages:1 before:[[NSDate date] timeIntervalSince1970] * 1000 + 100000];
-    if (messages == nil || [messages count] == 0) {
+    EMMessage *message = [_conversation latestMessage];
+    if (message == nil) {
         [[EaseMob sharedInstance].chatManager removeConversationByChatter:_conversation.chatter deleteMessages:YES];
     }
 }
