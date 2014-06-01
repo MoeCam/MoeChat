@@ -90,6 +90,8 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
     [self.view addGestureRecognizer:tap];
+    
+    [self scrollViewToBottom:YES];
 }
 
 - (void)setupBarButtonItem
@@ -113,8 +115,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self scrollViewToBottom:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -348,16 +348,29 @@
     id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
     id <IEMFileMessageBody> messageBody = (id <IEMFileMessageBody>)message.messageBody;
     [self showHudInView:self.view hint:@"正在获取大图..."];
-    [chatManager asyncFetchMessageBody:messageBody progress:nil completion:^(id<IEMFileMessageBody> aMessageBody, EMError *error) {
+    [chatManager asyncFetchMessage:message.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
         [self hideHud];
         if (!error) {
-            NSURL *url = [NSURL fileURLWithPath:aMessageBody.localPath];
-            [self.messageReadManager showBrowserWithImages:@[url]];
-        }else{
-            [self showHint:@"大图获取失败!"];
+            NSString *localPath = aMessage == nil ? message.localPath : [[aMessage.messageBodies firstObject] localPath];
+            if (localPath && localPath.length > 0) {
+                NSURL *url = [NSURL fileURLWithPath:localPath];
+                [self.messageReadManager showBrowserWithImages:@[url]];
+                return ;
+            }
         }
-        
+        [self showHint:@"大图获取失败!"];
     } onQueue:nil];
+    
+//    [chatManager asyncFetchMessageBody:messageBody progress:nil completion:^(id<IEMFileMessageBody> aMessageBody, EMError *error) {
+//        [self hideHud];
+//        if (!error) {
+//            NSURL *url = [NSURL fileURLWithPath:aMessageBody.localPath];
+//            [self.messageReadManager showBrowserWithImages:@[url]];
+//        }else{
+//            [self showHint:@"大图获取失败!"];
+//        }
+//        
+//    } onQueue:nil];
 }
 
 - (void)chatVideoCellBubblePressed:(EMMessageModel *)message

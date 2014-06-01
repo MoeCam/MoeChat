@@ -207,7 +207,6 @@
         return 2;
     }
     
-    NSLog(@"%i------%i", section,[[self.dataSource objectAtIndex:(section - 1)] count]);
     return [[self.dataSource objectAtIndex:(section - 1)] count];
 }
 

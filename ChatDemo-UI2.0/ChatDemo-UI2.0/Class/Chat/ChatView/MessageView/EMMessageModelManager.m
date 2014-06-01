@@ -51,12 +51,11 @@
             model.thumbnailSize = imgMessageBody.thumbnailSize;
             model.size = imgMessageBody.size;
             model.thumbnailImage = [UIImage imageWithContentsOfFile:imgMessageBody.thumbnailLocalPath];
+            model.localPath = imgMessageBody.localPath;
             if (isSender)
             {
                 model.image = [UIImage imageWithContentsOfFile:imgMessageBody.localPath];
             }else {
-//                NSString *path = [imgMessageBody.remotePath stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//                path = [path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 model.imageRemoteURL = [NSURL URLWithString:imgMessageBody.remotePath];
             }
         }

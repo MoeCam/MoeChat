@@ -75,11 +75,7 @@ NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleT
     if (!image) {
         image = [UIImage imageNamed:@"imageDownloadFail.png"];
     }
-    if (_model.isSender) {
-        self.imageView.image = image;
-    }else{
-        [self.imageView setImage:image];
-    }
+    self.imageView.image = image;
 }
 
 #pragma mark - public

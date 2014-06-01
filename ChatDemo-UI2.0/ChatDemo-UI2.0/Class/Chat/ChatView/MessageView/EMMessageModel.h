@@ -46,8 +46,6 @@
 @property (nonatomic, strong) EMChatVoice *chatVoice;
 @property (nonatomic) BOOL isPlaying;
 
-//video
-
 //location
 @property (nonatomic, strong) NSString *address;
 @property (nonatomic) double latitude;
