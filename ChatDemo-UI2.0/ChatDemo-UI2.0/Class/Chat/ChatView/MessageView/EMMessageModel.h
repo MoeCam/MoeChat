@@ -54,6 +54,7 @@
 @property (nonatomic) double longitude;
 
 @property (nonatomic, strong)id<IEMMessageBody> messageBody;
+@property (nonatomic, strong)EMMessage *message;
 
 - (BOOL)observeKeyPath:(NSString *)keyPath;
 - (void)addObserver:(NSObject *)object keyPath:(NSString *)keyPath;
