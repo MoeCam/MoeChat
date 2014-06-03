@@ -73,7 +73,10 @@ NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleT
     
     UIImage *image = _model.thumbnailImage;
     if (!image) {
-        image = [UIImage imageNamed:@"imageDownloadFail.png"];
+        image = _model.image;
+        if (!image) {
+            image = [UIImage imageNamed:@"imageDownloadFail.png"];
+        }
     }
     self.imageView.image = image;
 }

@@ -50,8 +50,8 @@
             EMImageMessageBody *imgMessageBody = (EMImageMessageBody*)messageBody;
             model.thumbnailSize = imgMessageBody.thumbnailSize;
             model.size = imgMessageBody.size;
-            model.thumbnailImage = [UIImage imageWithContentsOfFile:imgMessageBody.thumbnailLocalPath];
             model.localPath = imgMessageBody.localPath;
+            model.thumbnailImage = [UIImage imageWithContentsOfFile:imgMessageBody.thumbnailLocalPath];
             if (isSender)
             {
                 model.image = [UIImage imageWithContentsOfFile:imgMessageBody.localPath];
