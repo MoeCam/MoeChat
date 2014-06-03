@@ -8,7 +8,7 @@
 
 #import "ChatViewController.h"
 
-#import "EaseMob.h"
+#import "SRRefreshView.h"
 #import "DXChatBarMoreView.h"
 #import "DXRecordView.h"
 #import "DXFaceView.h"
@@ -23,7 +23,7 @@
 #import "NSDate+Category.h"
 #import "DXMessageToolBar.h"
 
-@interface ChatViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, DXChatBarMoreViewDelegate, DXMessageToolBarDelegate, LocationDelegate>
+@interface ChatViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, SRRefreshDelegate, IChatManagerDelegate, DXChatBarMoreViewDelegate, DXMessageToolBarDelegate, LocationDelegate>
 {
     UIMenuController *_menuController;
     UIMenuItem *_copyMenuItem;
@@ -34,6 +34,7 @@
 @property (nonatomic) BOOL isChatRoom;
 
 @property (strong, nonatomic) NSMutableArray *dataSource;//tableView数据源
+@property (strong, nonatomic) SRRefreshView *slimeView;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) DXMessageToolBar *chatToolBar;
 
@@ -82,6 +83,7 @@
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
     [self.view addSubview:self.tableView];
+    [self.tableView addSubview:self.slimeView];
     [self.view addSubview:self.chatToolBar];
     //将self注册为chatToolBar的moreView的代理
     if ([self.chatToolBar.moreView isKindOfClass:[DXChatBarMoreView class]]) {
@@ -150,6 +152,23 @@
     }
     
     return _dataSource;
+}
+
+- (SRRefreshView *)slimeView
+{
+    if (_slimeView == nil) {
+        _slimeView = [[SRRefreshView alloc] init];
+        _slimeView.delegate = self;
+        _slimeView.upInset = 0;
+        _slimeView.slimeMissWhenGoingBack = YES;
+        _slimeView.slime.bodyColor = [UIColor grayColor];
+        _slimeView.slime.skinColor = [UIColor grayColor];
+        _slimeView.slime.lineWith = 1;
+        _slimeView.slime.shadowBlur = 4;
+        _slimeView.slime.shadowColor = [UIColor grayColor];
+    }
+    
+    return _slimeView;
 }
 
 - (UITableView *)tableView
@@ -270,6 +289,26 @@
     }
 }
 
+#pragma mark - scrollView delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_slimeView scrollViewDidScroll];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [_slimeView scrollViewDidEndDraging];
+}
+
+#pragma mark - slimeRefresh delegate
+//加载更多
+- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
+{
+    [self loadMoreMessages];
+    [_slimeView endRefresh];
+}
+
 #pragma mark - GestureRecognizer
 
 // 点击背景隐藏
@@ -346,7 +385,6 @@
 -(void)chatImageCellBubblePressed:(EMMessageModel *)message
 {
     id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
-    id <IEMFileMessageBody> messageBody = (id <IEMFileMessageBody>)message.messageBody;
     [self showHudInView:self.view hint:@"正在获取大图..."];
     [chatManager asyncFetchMessage:message.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
         [self hideHud];
@@ -360,17 +398,6 @@
         }
         [self showHint:@"大图获取失败!"];
     } onQueue:nil];
-    
-//    [chatManager asyncFetchMessageBody:messageBody progress:nil completion:^(id<IEMFileMessageBody> aMessageBody, EMError *error) {
-//        [self hideHud];
-//        if (!error) {
-//            NSURL *url = [NSURL fileURLWithPath:aMessageBody.localPath];
-//            [self.messageReadManager showBrowserWithImages:@[url]];
-//        }else{
-//            [self showHint:@"大图获取失败!"];
-//        }
-//        
-//    } onQueue:nil];
 }
 
 - (void)chatVideoCellBubblePressed:(EMMessageModel *)message
@@ -609,6 +636,15 @@
 }
 
 #pragma mark - private
+
+- (void)loadMoreMessages
+{
+    NSInteger currentCount = [self.dataSource count];
+    NSArray *chats = [_conversation loadNumbersOfMessages:(currentCount + 10) before:[_conversation latestMessage].timestamp + 1];
+    [self.dataSource removeAllObjects];
+    [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
+    [_tableView reloadData];
+}
 
 - (NSArray *)sortChatSource:(NSArray *)array
 {
