@@ -16,24 +16,20 @@
     if (self) {
         // Initialization code
         _addButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 60, 0, 50, 30)];
+        [_addButton setBackgroundColor:[UIColor colorWithRed:10 / 255.0 green:82 / 255.0 blue:104 / 255.0 alpha:1.0]];
         [_addButton setTitle:@"接受" forState:UIControlStateNormal];
         _addButton.clipsToBounds = YES;
-        [_addButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_addButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _addButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
-        _addButton.layer.cornerRadius = 5.0;
-        _addButton.layer.borderWidth = 1;
-        _addButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         [_addButton addTarget:self action:@selector(addFriend) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_addButton];
         
         _refuseButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 120, 0, 50, 30)];
+        [_refuseButton setBackgroundColor:[UIColor lightGrayColor]];
         [_refuseButton setTitle:@"拒绝" forState:UIControlStateNormal];
         _refuseButton.clipsToBounds = YES;
-        [_refuseButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_refuseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _refuseButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
-        _refuseButton.layer.cornerRadius = 5.0;
-        _refuseButton.layer.borderWidth = 1;
-        _refuseButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         [_refuseButton addTarget:self action:@selector(refuseFriend) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_refuseButton];
     }

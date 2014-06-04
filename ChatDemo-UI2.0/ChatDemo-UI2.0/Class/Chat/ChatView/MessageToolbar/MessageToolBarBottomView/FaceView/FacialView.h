@@ -13,6 +13,7 @@
 @optional
 -(void)selectedFacialView:(NSString*)str;
 -(void)deleteSelected:(NSString *)str;
+-(void)sendFace;
 
 @end
 
@@ -22,7 +23,7 @@
 	NSArray *_faces;
 }
 
-@property(nonatomic, assign) id<FacialViewDelegate>delegate;
+@property(nonatomic) id<FacialViewDelegate> delegate;
 
 @property(strong, nonatomic, readonly) NSArray *faces;
 

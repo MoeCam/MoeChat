@@ -14,6 +14,7 @@
 
 @required
 - (void)selectedFacialView:(NSString *)str isDelete:(BOOL)isDelete;
+- (void)sendFace;
 
 @end
 

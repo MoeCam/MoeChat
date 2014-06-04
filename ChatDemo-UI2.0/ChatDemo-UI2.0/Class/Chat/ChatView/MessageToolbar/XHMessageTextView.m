@@ -62,10 +62,10 @@
     [self setNeedsDisplay];
 }
 
-- (void)setContentInset:(UIEdgeInsets)contentInset {
-    [super setContentInset:contentInset];
-    [self setNeedsDisplay];
-}
+//- (void)setContentInset:(UIEdgeInsets)contentInset {
+//    [super setContentInset:contentInset];
+//    [self setNeedsDisplay];
+//}
 
 - (void)setFont:(UIFont *)font {
     [super setFont:font];

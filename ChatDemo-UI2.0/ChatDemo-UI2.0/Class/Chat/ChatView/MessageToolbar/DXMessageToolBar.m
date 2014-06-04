@@ -10,9 +10,10 @@
 
 @interface DXMessageToolBar()<UITextViewDelegate, DXFaceDelegate>
 {
-    CGFloat _baseOY;//一旦设置不可修改
     CGFloat _previousTextViewContentHeight;//上一次inputTextView的contentSize.height
 }
+
+@property (nonatomic) CGFloat version;
 
 /**
  *  背景
@@ -73,8 +74,6 @@
 - (void)didMoveToSuperview
 {
     [super didMoveToSuperview];
-    
-    _baseOY = self.frame.origin.y;
 }
 
 - (void)dealloc
@@ -217,6 +216,18 @@
     [self textViewDidChange:self.inputTextView];
 }
 
+- (void)sendFace
+{
+    NSString *chatText = self.inputTextView.text;
+    if (chatText.length > 0) {
+        if ([self.delegate respondsToSelector:@selector(didSendText:)]) {
+            [self.delegate didSendText:chatText];
+            self.inputTextView.text = @"";
+            [self willShowInputTextViewToHeight:[self getTextViewContentH:self.inputTextView]];;
+        }
+    }
+}
+
 #pragma mark - UIKeyboardNotification
 
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
@@ -244,6 +255,8 @@
  */
 - (void)setupConfigure
 {
+    self.version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    
     self.maxTextInputViewHeight = kInputTextViewMaxHeight;
     
     self.activityButtomView = nil;
@@ -356,10 +369,6 @@
 
 - (void)willShowBottomHeight:(CGFloat)bottomHeight
 {
-//    CGFloat baseHeight = kVerticalPadding * 2 + _previousTextViewContentHeight;
-//    CGFloat baseOrY = _baseOY - (_previousTextViewContentHeight - kInputTextViewMinHeight);
-//    CGFloat toHeight = baseHeight + bottomHeight;
-    
     CGRect fromFrame = self.frame;
     CGFloat toHeight = self.toolbarView.frame.size.height + bottomHeight;
     CGRect toFrame = CGRectMake(fromFrame.origin.x, fromFrame.origin.y + (fromFrame.size.height - toHeight), fromFrame.size.width, toHeight);
@@ -449,7 +458,9 @@
         rect.size.height += changeHeight;
         self.toolbarView.frame = rect;
         
-        [self.inputTextView setContentOffset:CGPointMake(0.0f, self.inputTextView.contentSize.height - self.inputTextView.bounds.size.height) animated:YES];
+        if (self.version < 7.0) {
+            [self.inputTextView setContentOffset:CGPointMake(0.0f, (self.inputTextView.contentSize.height - self.inputTextView.frame.size.height) / 2) animated:YES];
+        }
         _previousTextViewContentHeight = toHeight;
         
         if (_delegate && [_delegate respondsToSelector:@selector(didChangeFrameToHeight:)]) {
@@ -460,7 +471,7 @@
 
 - (CGFloat)getTextViewContentH:(UITextView *)textView
 {
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+    if (self.version >= 7.0)
     {
         return ceilf([textView sizeThatFits:textView.frame.size].height);
     } else {
@@ -540,12 +551,21 @@
         {
             if (button.selected) {
                 self.faceButton.selected = NO;
-                ////如果处于文字输入状态，使文字输入框失去焦点
-                if (!self.styleChangeButton.selected) {
+                //如果选择表情并且处于录音状态，切换成文字输入状态，但是不显示键盘
+                if (self.styleChangeButton.selected) {
+                    self.styleChangeButton.selected = NO;
+                }
+                else{//如果处于文字输入状态，使文字输入框失去焦点
                     [self.inputTextView resignFirstResponder];
                 }
 
                 [self willShowBottomView:self.moreView];
+                [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    self.recordButton.hidden = button.selected;
+                    self.inputTextView.hidden = !button.selected;
+                } completion:^(BOOL finished) {
+                    
+                }];
             }
             else
             {

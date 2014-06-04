@@ -16,14 +16,11 @@
     if (self) {
         // Initialization code
         _addLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 60, 0, 50, 30)];
-        _addLabel.backgroundColor = [UIColor clearColor];
+        _addLabel.backgroundColor = [UIColor colorWithRed:10 / 255.0 green:82 / 255.0 blue:104 / 255.0 alpha:1.0];
         _addLabel.textAlignment = NSTextAlignmentCenter;
         _addLabel.text = @"添加";
-        _addLabel.textColor = [UIColor blackColor];
+        _addLabel.textColor = [UIColor whiteColor];
         _addLabel.font = [UIFont systemFontOfSize:14.0];
-        _addLabel.layer.cornerRadius = 5.0;
-        _addLabel.layer.borderWidth = 1;
-        _addLabel.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         [self.contentView addSubview:_addLabel];
     }
     return self;

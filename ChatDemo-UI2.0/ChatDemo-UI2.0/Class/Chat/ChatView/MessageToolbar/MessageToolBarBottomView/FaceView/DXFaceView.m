@@ -43,6 +43,13 @@
     }
 }
 
+- (void)sendFace
+{
+    if (_delegate) {
+        [_delegate sendFace];
+    }
+}
+
 #pragma mark - public
 
 - (BOOL)stringIsFace:(NSString *)string
