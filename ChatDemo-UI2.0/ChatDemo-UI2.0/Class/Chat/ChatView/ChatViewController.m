@@ -92,8 +92,6 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
     [self.view addGestureRecognizer:tap];
-    
-    [self scrollViewToBottom:YES];
 }
 
 - (void)setupBarButtonItem
@@ -117,6 +115,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self scrollViewToBottom:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
