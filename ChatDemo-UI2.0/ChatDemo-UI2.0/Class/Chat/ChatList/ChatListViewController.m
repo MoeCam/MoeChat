@@ -47,7 +47,8 @@
     [self.tableView addSubview:self.slimeView];
     
     [self searchController];
-    [self.slimeView setLoadingWithExpansion];
+//    [self showHudInView:self.view hint:@"加载会话..."];
+//    [self.slimeView setLoadingWithExpansion];
 }
 
 - (void)didReceiveMemoryWarning
@@ -190,6 +191,7 @@
 {
     self.dataSource = [self loadDataSource];
     [self.tableView reloadData];
+    [self hideHud];
 }
 
 // 得到最后消息时间
