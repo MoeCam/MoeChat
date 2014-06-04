@@ -10,12 +10,13 @@
 
 #import "AddFriendCell.h"
 
-@interface AddFriendViewController ()<UITextFieldDelegate>
+@interface AddFriendViewController ()<UITextFieldDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
 @property (strong, nonatomic) UIView *headerView;
 @property (strong, nonatomic) UITextField *textField;
+@property (strong, nonatomic) NSIndexPath *selectedIndexPath;
 
 @end
 
@@ -131,7 +132,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self sendFriendApplyAtIndexPath:indexPath];
+    self.selectedIndexPath = indexPath;
+    NSString *buddyName = [self.dataSource objectAtIndex:indexPath.row];
+    if ([self didBuddyExist:buddyName]) {
+        NSString *message = [NSString stringWithFormat:@"'%@'已经是你的好友了!", buddyName];
+        TTAlertNoTitle(message);
+    }else if([self hasSendBuddyRequest:buddyName]){
+        NSString *message = [NSString stringWithFormat:@"您已向'%@'发送好友请求了!", buddyName];
+        TTAlertNoTitle(message);
+    }else{
+        [self showMessageAlertView];
+    }
 }
 
 #pragma mark - UITextFieldDelegate
@@ -166,16 +177,54 @@
     }
 }
 
+- (BOOL)hasSendBuddyRequest:(NSString *)buddyName{
+    NSArray *buddyList = [[[EaseMob sharedInstance] chatManager] buddyList];
+    for (EMBuddy *buddy in buddyList) {
+        if ([buddy.username isEqualToString:buddyName] &&
+            buddy.followState == eEMBuddyFollowState_NotFollowed &&
+            buddy.isPendingApproval) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (BOOL)didBuddyExist:(NSString *)buddyName{
+    NSArray *buddyList = [[[EaseMob sharedInstance] chatManager] buddyList];
+    for (EMBuddy *buddy in buddyList) {
+        if ([buddy.username isEqualToString:buddyName] &&
+            buddy.followState != eEMBuddyFollowState_NotFollowed) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)showMessageAlertView{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"说点啥子吧" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if ([alertView cancelButtonIndex] != buttonIndex) {
+        UITextField *messageTextField = [alertView textFieldAtIndex:0];
+        [self sendFriendApplyAtIndexPath:self.selectedIndexPath
+                                 message:messageTextField.text];
+    }
+}
+
 - (void)sendFriendApplyAtIndexPath:(NSIndexPath *)indexPath
+                           message:(NSString *)message
 {
     NSString *buddyName = [self.dataSource objectAtIndex:indexPath.row];
     if (buddyName && buddyName.length > 0) {
         [self showHudInView:self.view hint:@"正在发送申请..."];
         EMError *error;
-        [[EaseMob sharedInstance].chatManager addBuddy:buddyName withNickname:buddyName message:[NSString stringWithFormat:@"%@ 添加您为好友", buddyName] error:&error];
+        [[EaseMob sharedInstance].chatManager addBuddy:buddyName withNickname:buddyName message:message error:&error];
         [self hideHud];
         if (error) {
-            [self showHint:@"发送申请，请重新操作"];
+            [self showHint:@"发送申请失败，请重新操作"];
         }
         else{
             [self showHint:@"发送申请成功"];
