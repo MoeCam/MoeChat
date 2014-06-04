@@ -29,6 +29,9 @@
     UIMenuItem *_copyMenuItem;
     UIMenuItem *_deleteMenuItem;
     NSIndexPath *_longPressIndexPath;
+    
+    BOOL _isRecording;
+    NSInteger _recordingCount;
 }
 
 @property (nonatomic) BOOL isChatRoom;
@@ -100,7 +103,10 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"chatroomDetail"] style:UIBarButtonItemStylePlain target:self action:@selector(showRoomContact:)];
     }
     else{
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(removeAllMessages:)];
+        UIButton *clearButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+        [clearButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
+        [clearButton addTarget:self action:@selector(removeAllMessages:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:clearButton];
     }
 }
 
@@ -511,6 +517,22 @@
  */
 - (void)didStartRecordingVoiceAction:(UIView *)recordView
 {
+    if (_isRecording) {
+        ++_recordingCount;
+        if (_recordingCount > 10)
+        {
+            _recordingCount = 0;
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"亲，已经戳漏了，随时崩溃给你看" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alertView show];
+        }
+        else if (_recordingCount > 5) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"亲，手别抖了，快被戳漏了" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alertView show];
+        }
+        return;
+    }
+    _isRecording = YES;
+    
     DXRecordView *tmpView = (DXRecordView *)recordView;
     tmpView.center = self.view.center;
     [self.view addSubview:tmpView];
@@ -533,7 +555,7 @@
     
     [[EaseMob sharedInstance].chatManager
      asyncCancelRecordingAudioWithCompletion:^(EMChatVoice *voice, EMError *error){
-         
+         _isRecording = NO;
      } onQueue:nil];
 }
 
@@ -547,6 +569,7 @@
     
     [[EaseMob sharedInstance].chatManager
      asyncStopRecordingAudioWithCompletion:^(EMChatVoice *voice, EMError *error){
+         _isRecording = NO;
          if (!error) {
              if (voice.duration <= 0) {
                  [self showHint:@"录音时间过短"];

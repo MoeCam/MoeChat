@@ -50,7 +50,10 @@
     [self setupSubviews];
     self.selectedIndex = 0;
     
-    _addFriendItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:_contactsVC action:@selector(addFriendAction)];
+    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [addButton setImage:[UIImage imageNamed:@"add.png"] forState:UIControlStateNormal];
+    [addButton addTarget:_contactsVC action:@selector(addFriendAction) forControlEvents:UIControlEventTouchUpInside];
+    _addFriendItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
 }
 
 - (void)didReceiveMemoryWarning
