@@ -177,6 +177,53 @@
     [[EaseMob sharedInstance].deviceManager asyncPlayNewMessageSound];
     // 收到消息时，震动
     [[EaseMob sharedInstance].deviceManager asyncPlayVibration];
+    
+#if !TARGET_IPHONE_SIMULATOR
+    [self showNotificationWithMessage:message];
+#endif
+    
+}
+
+- (void)showNotificationWithMessage:(EMMessage *)message{
+    id<IEMMessageBody> messageBody = [message.messageBodies firstObject];
+    NSString *messageStr = nil;
+    switch (messageBody.messageBodyType) {
+        case eMessageBodyType_Text:
+        {
+            messageStr = ((EMTextMessageBody *)messageBody).text;
+        }
+            break;
+        case eMessageBodyType_Image:
+        {
+            messageStr = @"[图片]";
+        }
+            break;
+        case eMessageBodyType_Location:
+        {
+            messageStr = @"[位置]";
+        }
+            break;
+        case eMessageBodyType_Voice:
+        {
+            messageStr = @"[音频]";
+        }
+            break;
+        case eMessageBodyType_Video:
+            break;
+        default:
+            break;
+    }
+    
+    //发送本地推送
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.fireDate = [NSDate date]; //触发通知的时间
+    notification.alertBody = [NSString stringWithFormat:@"%@:%@", message.from, messageStr];
+    notification.alertAction = @"打开";
+    notification.timeZone = [NSTimeZone defaultTimeZone];
+    //发送通知
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    UIApplication *application = [UIApplication sharedApplication];
+    application.applicationIconBadgeNumber += 1;
 }
 
 #pragma mark - IChatManagerDelegate 好友变化
@@ -202,9 +249,18 @@
     [_contactsVC reloadDataSource];
 }
 
+- (void)didUpdateBuddy:(EMBuddy *)buddy{
+    [_contactsVC reloadDataSource];
+}
+
 - (void)didAcceptedByBuddy:(NSString *)username
 {
     [_contactsVC reloadDataSource];
+}
+
+- (void)didRejectedByBuddy:(NSString *)username{
+    NSString *message = [NSString stringWithFormat:@"你被'%@'无耻的拒绝了", username];
+    TTAlertNoTitle(message);
 }
 
 @end
