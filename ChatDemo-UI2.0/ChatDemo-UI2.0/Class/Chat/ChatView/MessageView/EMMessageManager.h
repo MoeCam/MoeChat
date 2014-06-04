@@ -27,7 +27,9 @@ typedef void (^PlayBlock)(BOOL playing);
 //default
 - (void)showBrowserWithImages:(NSArray *)imageArray;
 
-- (void)startMessageAudio:(EMMessageModel *)message playBlock:(PlayBlock)block;
+- (void)startMessageAudio:(EMMessageModel *)message
+                  chatter:(NSString *)chatter
+                playBlock:(PlayBlock)block;
 - (void)stopMessageAudio;
 
 @end

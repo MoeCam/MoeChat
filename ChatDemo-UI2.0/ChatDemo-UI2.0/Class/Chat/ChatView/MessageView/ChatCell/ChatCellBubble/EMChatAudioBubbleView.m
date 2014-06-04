@@ -14,6 +14,7 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
 {
     NSMutableArray *_senderAnimationImages;
     NSMutableArray *_recevierAnimationImages;
+    UIImageView    *_isReadView;
 }
 
 @end
@@ -33,6 +34,12 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
         _timeLabel.textColor = [UIColor grayColor];
         _timeLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:_timeLabel];
+        
+        _isReadView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+        _isReadView.layer.cornerRadius = 5;
+        [_isReadView setClipsToBounds:YES];
+        [_isReadView setBackgroundColor:[UIColor redColor]];
+        [self addSubview:_isReadView];
         
         _senderAnimationImages = [[NSMutableArray alloc] initWithObjects: [UIImage imageNamed:SENDER_ANIMATION_IMAGEVIEW_IMAGE_01], [UIImage imageNamed:SENDER_ANIMATION_IMAGEVIEW_IMAGE_02], [UIImage imageNamed:SENDER_ANIMATION_IMAGEVIEW_IMAGE_03], [UIImage imageNamed:SENDER_ANIMATION_IMAGEVIEW_IMAGE_04], nil];
         _recevierAnimationImages = [[NSMutableArray alloc] initWithObjects: [UIImage imageNamed:RECEIVER_ANIMATION_IMAGEVIEW_IMAGE_01], [UIImage imageNamed:RECEIVER_ANIMATION_IMAGEVIEW_IMAGE_02], [UIImage imageNamed:RECEIVER_ANIMATION_IMAGEVIEW_IMAGE_03], [UIImage imageNamed:RECEIVER_ANIMATION_IMAGEVIEW_IMAGE_04], nil];
@@ -63,7 +70,7 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
         frame.origin.x = _animationImageView.frame.origin.x - ANIMATION_TIME_IMAGEVIEW_PADDING - ANIMATION_TIME_LABEL_WIDHT;
         frame.origin.y = _animationImageView.center.y - frame.size.height / 2;
         _timeLabel.frame = frame;
-        _timeLabel.backgroundColor = [UIColor clearColor];
+
     }
     else {
         _animationImageView.image = [UIImage imageNamed:RECEIVER_ANIMATION_IMAGEVIEW_IMAGE_DEFAULT];
@@ -76,6 +83,10 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
         frame.origin.x = ANIMATION_TIME_IMAGEVIEW_PADDING + BUBBLE_ARROW_WIDTH + _animationImageView.frame.size.width + _animationImageView.frame.origin.x;
         frame.origin.y = _animationImageView.center.y - frame.size.height / 2;
         _timeLabel.frame = frame;
+        frame.origin.x += frame.size.width - _isReadView.frame.size.width / 2;
+        frame.origin.y = - _isReadView.frame.size.height / 2;
+        frame.size = _isReadView.frame.size;
+        _isReadView.frame = frame;
     }
 }
 
@@ -97,6 +108,12 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
         _animationImageView.animationImages = _senderAnimationImages;
     }
     else{
+        if (model.isPlayed) {
+            [_isReadView setHidden:YES];
+        }else{
+            [_isReadView setHidden:NO];
+        }
+
         _animationImageView.image = [UIImage imageNamed:RECEIVER_ANIMATION_IMAGEVIEW_IMAGE_DEFAULT];
         _animationImageView.animationImages = _recevierAnimationImages;
     }
@@ -130,6 +147,7 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
 -(void)bubbleViewPressed:(id)sender
 {
     [self routerEventWithName:kRouterEventAudioBubbleTapEventName userInfo:@{KMESSAGEKEY:self.model}];
+    [_isReadView setHidden:YES];
 }
 
 

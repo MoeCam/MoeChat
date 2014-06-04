@@ -45,6 +45,7 @@
 @property (nonatomic) NSInteger time;
 @property (nonatomic, strong) EMChatVoice *chatVoice;
 @property (nonatomic) BOOL isPlaying;
+@property (nonatomic) BOOL isPlayed;
 
 //location
 @property (nonatomic, strong) NSString *address;

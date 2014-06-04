@@ -71,7 +71,15 @@
         {
             model.time = ((EMVoiceMessageBody *)messageBody).duration;
             model.chatVoice = (EMChatVoice *)((EMVoiceMessageBody *)messageBody).chatObject;
-            
+            if (message.ext) {
+                NSDictionary *dict = message.ext;
+                BOOL isPlayed = [[dict objectForKey:@"isPlayed"] boolValue];
+                model.isPlayed = isPlayed;
+            }else {
+                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@NO,@"isPlayde", nil];
+                message.ext = dict;
+                [[EaseMob sharedInstance].chatManager saveMessage:message];
+            }
             // 本地音频路径
             model.localPath = ((EMVoiceMessageBody *)messageBody).localPath;
             model.remotePath = ((EMVoiceMessageBody *)messageBody).remotePath;
