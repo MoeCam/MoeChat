@@ -7,7 +7,7 @@
 //
 
 #import "EMMessageManager.h"
-
+#import "EaseMob.h"
 #import "UIImageView+WebCache.h"
 
 static EMMessageManager *detailInstance = nil;
@@ -137,9 +137,23 @@ static EMMessageManager *detailInstance = nil;
     [rootController presentViewController:self.photoNavigationController animated:YES completion:nil];
 }
 
-- (void)startMessageAudio:(EMMessageModel *)message playBlock:(PlayBlock)block
+- (void)startMessageAudio:(EMMessageModel *)message
+                  chatter:(NSString *)chatter
+                playBlock:(PlayBlock)block
 {
     BOOL isPlay = NO;
+    EMConversation *conversation = [[EaseMob sharedInstance].chatManager
+                                    conversationForChatter:chatter];
+    EMMessage *chatMessage = [conversation loadMessage:message.messageId];
+    if (chatMessage.ext) {
+        NSMutableDictionary *dict = [chatMessage.ext mutableCopy];
+        if (![[dict objectForKey:@"isPlayed"] boolValue]) {
+            [dict setObject:@YES forKey:@"isPlayed"];
+            chatMessage.ext = dict;
+            [[EaseMob sharedInstance].chatManager saveMessage:chatMessage];
+        }
+    }
+    
     if(message.type == eMessageBodyType_Voice)
     {
         if (self.audioMessage != message) {

@@ -367,7 +367,9 @@
 -(void)chatAudioCellBubblePressed:(EMMessageModel *)message
 {
     if (message.type == eMessageBodyType_Voice) {
-        [self.messageReadManager startMessageAudio:message playBlock:^(BOOL playing) {
+        [self.messageReadManager startMessageAudio:message
+                                           chatter:_conversation.chatter
+                                         playBlock:^(BOOL playing) {
             if(playing){
                 [[EaseMob sharedInstance].chatManager asyncPlayAudio:message.chatVoice completion:^(EMError *error) {
                     [self.messageReadManager stopMessageAudio];
