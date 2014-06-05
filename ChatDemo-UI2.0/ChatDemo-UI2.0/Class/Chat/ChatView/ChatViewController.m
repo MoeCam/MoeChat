@@ -17,13 +17,13 @@
 #import "EMChatSendHelper.h"
 #import "EMMessageManager.h"
 #import "EMMessageModelManager.h"
-#import "SendLocationViewController.h"
+#import "LocationViewController.h"
 #import "ChatRoomDetailViewController.h"
 
 #import "NSDate+Category.h"
 #import "DXMessageToolBar.h"
 
-@interface ChatViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, SRRefreshDelegate, IChatManagerDelegate, DXChatBarMoreViewDelegate, DXMessageToolBarDelegate, LocationDelegate>
+@interface ChatViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, SRRefreshDelegate, IChatManagerDelegate, DXChatBarMoreViewDelegate, DXMessageToolBarDelegate, LocationViewDelegate>
 {
     UIMenuController *_menuController;
     UIMenuItem *_copyMenuItem;
@@ -391,8 +391,8 @@
 // 位置的bubble被点击
 -(void)chatLocationCellBubblePressed:(EMMessageModel *)message
 {
-    SendLocationViewController *locationVC = [SendLocationViewController readLocationLatitude:message.latitude longitude:message.longitude address:message.address];
-    [self.navigationController pushViewController:locationVC animated:YES];
+    LocationViewController *locationController = [[LocationViewController alloc] initWithLocation:CLLocationCoordinate2DMake(message.latitude, message.longitude)];
+    [self.navigationController pushViewController:locationController animated:YES];
 }
 
 // 图片的bubble被点击
@@ -479,12 +479,12 @@
     // 隐藏键盘
     [self keyBoardHidden];
     
-    SendLocationViewController *sendVC = [SendLocationViewController sendLocation];
-    sendVC.delegate = self;
-    [self.navigationController pushViewController:sendVC animated:YES];
+    LocationViewController *locationController = [[LocationViewController alloc] initWithNibName:nil bundle:nil];
+    locationController.delegate = self;
+    [self.navigationController pushViewController:locationController animated:YES];
 }
 
-#pragma mark - LocationDelegate
+#pragma mark - LocationViewDelegate
 
 -(void)sendLocationLatitude:(double)latitude
                   longitude:(double)longitude

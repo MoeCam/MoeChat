@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		3C06AAA219401A2E0076FF0B /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C06AAA119401A2E0076FF0B /* back@2x.png */; };
 		3C06AAA419401A5D0076FF0B /* add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C06AAA319401A5D0076FF0B /* add@2x.png */; };
+		3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AAFE194050A00076FF0B /* CoreLocation.framework */; };
+		3C06AB011940597D0076FF0B /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C06AB001940597D0076FF0B /* delete@2x.png */; };
+		3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AB0219405D330076FF0B /* MapKit.framework */; };
 		3C3527361931D1BE00385240 /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3527351931D1BE00385240 /* BaseTableViewCell.m */; };
 		3C35273F1931D2DE00385240 /* libbaidumapapi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911082192EEAED008A48AA /* libbaidumapapi.a */; };
 		3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527441931D37900385240 /* SystemConfiguration.framework */; };
@@ -196,7 +199,7 @@
 		9003D9071939D8D000DC38A4 /* EMMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8461939D8D000DC38A4 /* EMMessageManager.m */; };
 		9003D9081939D8D000DC38A4 /* EMMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8481939D8D000DC38A4 /* EMMessageModel.m */; };
 		9003D9091939D8D000DC38A4 /* EMMessageModelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D84A1939D8D000DC38A4 /* EMMessageModelManager.m */; };
-		9003D90A1939D8D000DC38A4 /* SendLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D84C1939D8D000DC38A4 /* SendLocationViewController.m */; };
+		9003D90A1939D8D000DC38A4 /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D84C1939D8D000DC38A4 /* LocationViewController.m */; };
 		9003D90B1939D8D000DC38A4 /* chatroomDetail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9003D84F1939D8D000DC38A4 /* chatroomDetail@2x.png */; };
 		9003D90C1939D8D000DC38A4 /* ChatRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8511939D8D000DC38A4 /* ChatRoomViewController.m */; };
 		9003D90D1939D8D000DC38A4 /* ContactSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8531939D8D000DC38A4 /* ContactSelectionViewController.m */; };
@@ -211,7 +214,6 @@
 		9003D9161939D8D000DC38A4 /* ApplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8641939D8D000DC38A4 /* ApplyViewController.m */; };
 		9003D9171939D8D000DC38A4 /* newFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9003D8651939D8D000DC38A4 /* newFriends@2x.png */; };
 		9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8671939D8D000DC38A4 /* RealtimeSearchUtil.m */; };
-		9003D91C1939D9C300DC38A4 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9003D91A1939D9C300DC38A4 /* libMobClickLibrary.a */; };
 		902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902DEC541931D934006CA75E /* libresolv.dylib */; };
 		905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 905325CE1932ED8B00F064D7 /* EMSearchBar.m */; };
 		905326AA193321DE00F064D7 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 905326A8193321DE00F064D7 /* account.png */; };
@@ -309,6 +311,9 @@
 /* Begin PBXFileReference section */
 		3C06AAA119401A2E0076FF0B /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
 		3C06AAA319401A5D0076FF0B /* add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add@2x.png"; sourceTree = "<group>"; };
+		3C06AAFE194050A00076FF0B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		3C06AB001940597D0076FF0B /* delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete@2x.png"; sourceTree = "<group>"; };
+		3C06AB0219405D330076FF0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3C0CE53A193895E200219149 /* macros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = macros.h; sourceTree = "<group>"; };
 		3C3527341931D1BE00385240 /* BaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableViewCell.h; sourceTree = "<group>"; };
 		3C3527351931D1BE00385240 /* BaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableViewCell.m; sourceTree = "<group>"; };
@@ -527,8 +532,8 @@
 		9003D8481939D8D000DC38A4 /* EMMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMessageModel.m; sourceTree = "<group>"; };
 		9003D8491939D8D000DC38A4 /* EMMessageModelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMessageModelManager.h; sourceTree = "<group>"; };
 		9003D84A1939D8D000DC38A4 /* EMMessageModelManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMessageModelManager.m; sourceTree = "<group>"; };
-		9003D84B1939D8D000DC38A4 /* SendLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendLocationViewController.h; sourceTree = "<group>"; };
-		9003D84C1939D8D000DC38A4 /* SendLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendLocationViewController.m; sourceTree = "<group>"; };
+		9003D84B1939D8D000DC38A4 /* LocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
+		9003D84C1939D8D000DC38A4 /* LocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationViewController.m; sourceTree = "<group>"; };
 		9003D84F1939D8D000DC38A4 /* chatroomDetail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatroomDetail@2x.png"; sourceTree = "<group>"; };
 		9003D8501939D8D000DC38A4 /* ChatRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatRoomViewController.h; sourceTree = "<group>"; };
 		9003D8511939D8D000DC38A4 /* ChatRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatRoomViewController.m; sourceTree = "<group>"; };
@@ -775,6 +780,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */,
+				3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */,
 				902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */,
 				3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */,
 				3C35273F1931D2DE00385240 /* libbaidumapapi.a in Frameworks */,
@@ -784,7 +791,6 @@
 				90F1BED31930493F00121AEC /* libstdc++.dylib in Frameworks */,
 				90F1BED11930493200121AEC /* libiconv.dylib in Frameworks */,
 				90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */,
-				9003D91C1939D9C300DC38A4 /* libMobClickLibrary.a in Frameworks */,
 				90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */,
 				90F1BECB1930491D00121AEC /* libz.dylib in Frameworks */,
 				90F1BEC91930491600121AEC /* libxml2.dylib in Frameworks */,
@@ -911,14 +917,15 @@
 		9003D7821939D8D000DC38A4 /* ChatView */ = {
 			isa = PBXGroup;
 			children = (
+				3C06AB001940597D0076FF0B /* delete@2x.png */,
 				9003D7851939D8D000DC38A4 /* ChatViewController.h */,
 				9003D7861939D8D000DC38A4 /* ChatViewController.m */,
 				9003D7871939D8D000DC38A4 /* EMChatSendHelper.h */,
 				9003D7881939D8D000DC38A4 /* EMChatSendHelper.m */,
 				9003D7891939D8D000DC38A4 /* MessageToolbar */,
 				9003D7C71939D8D000DC38A4 /* MessageView */,
-				9003D84B1939D8D000DC38A4 /* SendLocationViewController.h */,
-				9003D84C1939D8D000DC38A4 /* SendLocationViewController.m */,
+				9003D84B1939D8D000DC38A4 /* LocationViewController.h */,
+				9003D84C1939D8D000DC38A4 /* LocationViewController.m */,
 			);
 			path = ChatView;
 			sourceTree = "<group>";
@@ -1436,6 +1443,8 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3C06AB0219405D330076FF0B /* MapKit.framework */,
+				3C06AAFE194050A00076FF0B /* CoreLocation.framework */,
 				902DEC541931D934006CA75E /* libresolv.dylib */,
 				3C3527441931D37900385240 /* SystemConfiguration.framework */,
 				3C3527421931D33A00385240 /* Social.framework */,
@@ -2016,6 +2025,7 @@
 				9003D8AC1939D8D000DC38A4 /* chatFire_audioPlaying1@2x.png in Resources */,
 				9003D8C91939D8D000DC38A4 /* VoiceSearchFeedback013.png in Resources */,
 				9003D8FD1939D8D000DC38A4 /* chat_sender_audio_playing_003.png in Resources */,
+				3C06AB011940597D0076FF0B /* delete@2x.png in Resources */,
 				9003D88B1939D8D000DC38A4 /* chatBar_colorMore_camera@2x.png in Resources */,
 				9003D8CA1939D8D000DC38A4 /* VoiceSearchFeedback013@2x.png in Resources */,
 				9003D8D31939D8D000DC38A4 /* VoiceSearchFeedback018.png in Resources */,
@@ -2102,7 +2112,7 @@
 				90911034192EEA70008A48AA /* main.m in Sources */,
 				909110F3192EEAED008A48AA /* MWGridCell.m in Sources */,
 				9091111A192EEAED008A48AA /* NSDateFormatter+Category.m in Sources */,
-				9003D90A1939D8D000DC38A4 /* SendLocationViewController.m in Sources */,
+				9003D90A1939D8D000DC38A4 /* LocationViewController.m in Sources */,
 				90911102192EEAED008A48AA /* PSTCollectionViewLayout.m in Sources */,
 				90911114192EEAED008A48AA /* UIImage+MultiFormat.m in Sources */,
 				9003D8701939D8D000DC38A4 /* DXMessageToolBar.m in Sources */,

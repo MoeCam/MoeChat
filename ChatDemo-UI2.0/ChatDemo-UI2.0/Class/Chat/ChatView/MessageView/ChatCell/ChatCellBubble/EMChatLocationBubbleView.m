@@ -38,7 +38,11 @@ NSString *const kRouterEventLocationBubbleTapEventName = @"kRouterEventLocationB
 
 -(CGSize)sizeThatFits:(CGSize)size
 {
-    return CGSizeMake(LOCATION_IMAGEVIEW_SIZE + BUBBLE_VIEW_PADDING * 2 + BUBBLE_ARROW_WIDTH, 2 * BUBBLE_VIEW_PADDING + LOCATION_IMAGEVIEW_SIZE);
+    CGSize textBlockMinSize = {130, 25};
+    CGSize addressSize = [self.model.address sizeWithFont:_addressLabel.font constrainedToSize:textBlockMinSize lineBreakMode:NSLineBreakByCharWrapping];
+    CGFloat width = addressSize.width < LOCATION_IMAGEVIEW_SIZE ? LOCATION_IMAGEVIEW_SIZE : addressSize.width;
+    
+    return CGSizeMake(width + BUBBLE_VIEW_PADDING * 2 + BUBBLE_ARROW_WIDTH, 2 * BUBBLE_VIEW_PADDING + LOCATION_IMAGEVIEW_SIZE);
 }
 
 -(void)layoutSubviews
@@ -65,7 +69,7 @@ NSString *const kRouterEventLocationBubbleTapEventName = @"kRouterEventLocationB
 {
     [super setModel:model];
     
-    _locationImageView.image = [UIImage imageNamed:LOCATION_IMAGE]; // 设置地图图片
+    _locationImageView.image = [[UIImage imageNamed:LOCATION_IMAGE] stretchableImageWithLeftCapWidth:10 topCapHeight:10]; // 设置地图图片
     _addressLabel.text = model.address;
 }
 
