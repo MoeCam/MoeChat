@@ -353,11 +353,6 @@
             }
             
             _applyController.dataSource = self.applysArray;
-            
-            UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-            [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
-            UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-            [self.tabBarController.navigationItem setBackBarButtonItem:backItem];
             [self.navigationController pushViewController:_applyController animated:YES];
         }
         else if (indexPath.row == 1)
