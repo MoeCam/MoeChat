@@ -750,6 +750,12 @@
 
 - (void)removeAllMessages:(id)sender
 {
+    [_conversation loadAllMessages];
+    if (_conversation.messages.count == 0) {
+        [self showHint:@"消息已经清空"];
+        return;
+    }
+    
     [WCAlertView showAlertWithTitle:@"提示"
                             message:@"请确认删除"
                  customizationBlock:^(WCAlertView *alertView) {
@@ -758,7 +764,6 @@
      ^(NSUInteger buttonIndex, WCAlertView *alertView) {
          if (buttonIndex == 1) {
              if (_conversation.messages.count > 0) {
-                 [_conversation loadAllMessages];
                  [_conversation removeAllMessages];
                  [_dataSource removeAllObjects];
                  [self.tableView reloadData];

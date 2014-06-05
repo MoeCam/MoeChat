@@ -78,6 +78,7 @@
         cell.indexPath = indexPath;
         cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
         cell.textLabel.text = [dic objectForKey:@"username"];
+//        cell.detailTextLabel.text = [dic objectForKey:@"applyMessage"];
     }
     
     return cell;

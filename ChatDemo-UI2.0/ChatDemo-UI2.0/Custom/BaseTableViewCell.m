@@ -37,7 +37,6 @@
     
     CGRect rect = self.textLabel.frame;
     rect.origin.x = CGRectGetMaxX(self.imageView.frame) + 10;
-    rect.origin.y = 0;
     self.textLabel.frame = rect;
     
     _bottomLineView.frame = CGRectMake(0, self.contentView.frame.size.height - 1, self.contentView.frame.size.width, 1);

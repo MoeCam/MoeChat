@@ -10,7 +10,6 @@
 
 @interface BaseTableViewCell : UITableViewCell
 
-
 @property (strong, nonatomic) NSIndexPath *indexPath;
 @property (strong, nonatomic) UIView *bottomLineView;
 
