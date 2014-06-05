@@ -79,6 +79,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[EaseMob sharedInstance] applicationDidBecomeActive:application];
 }
 

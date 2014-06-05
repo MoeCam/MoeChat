@@ -275,8 +275,6 @@
             return;
         }
         
-//        NSInteger section = indexPath.section;
-        
         [tableView beginUpdates];
         [[self.dataSource objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
         [self.contactsSource removeObject:buddy];
@@ -286,9 +284,9 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             EMError *error;
             [[EaseMob sharedInstance].chatManager removeBuddy:buddy.username removeFromRemote:YES error:&error];
-//            if (error) {
-//                [self showHint:@"删除好友失败"];
-//            }
+            if (!error) {
+                [[EaseMob sharedInstance].chatManager removeConversationByChatter:buddy.username deleteMessages:YES];
+            }
         });
     }
 }
