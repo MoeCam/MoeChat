@@ -252,7 +252,7 @@
     [_contactsVC reloadDataSource];
 }
 
-- (void)didUpdateBuddy:(EMBuddy *)buddy{
+- (void)didRemovedByBuddy:(NSString *)username{
     [_contactsVC reloadDataSource];
 }
 
