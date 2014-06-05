@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "EMError.h"
 
 @interface LoginViewController ()<IChatManagerDelegate,UITextFieldDelegate>
 
@@ -76,10 +77,23 @@
                                                        withCompletion:
          ^(NSString *username, NSString *password, EMError *error) {
              [self hideHud];
+             
              if (!error) {
                  TTAlertNoTitle(@"注册成功,请登录");
              }else{
-                 TTAlertNoTitle(@"注册失败");
+                 switch (error.errorCode) {
+                     case EMErrorServerNotReached:
+                         TTAlertNoTitle(@"连接服务器失败!");
+                         break;
+                     case EMErrorServerRegisterConflicted:
+                         TTAlertNoTitle(@"您注册的用户已存在!");
+                         break;
+                     case EMErrorServerConnectedTimeOut:
+                         TTAlertNoTitle(@"连接服务器超时!");
+                         break;
+                     default:
+                         break;
+                 }
              }
          } onQueue:nil];
     }
@@ -99,7 +113,19 @@
                                                                     object:nil
                                                                   userInfo:nil];
              }else {
-                 TTAlertNoTitle(@"登录失败");
+                 switch (error.errorCode) {
+                     case EMErrorServerNotReached:
+                         TTAlertNoTitle(@"连接服务器失败!");
+                         break;
+                     case EMErrorServerAuthenticateFailed:
+                         TTAlertNoTitle(@"用户名或密码错误");
+                         break;
+                     case EMErrorServerConnectedTimeOut:
+                         TTAlertNoTitle(@"连接服务器超时!");
+                         break;
+                     default:
+                         break;
+                 }
              }
          } onQueue:nil];
     }
