@@ -266,4 +266,6 @@
     TTAlertNoTitle(message);
 }
 
+#pragma mark - IChatManagerDelegate 群组变化
+
 @end

@@ -39,8 +39,20 @@
     self.title = @"创建群组";
     self.view.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
     
-    _rightItem = [[UIBarButtonItem alloc] initWithTitle:@"添加成员" style:UIBarButtonItemStylePlain target:self action:@selector(addContacts:)];
+    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+    addButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
+    [addButton setTitle:@"添加成员" forState:UIControlStateNormal];
+    [addButton setTitleColor:[UIColor colorWithRed:32 / 255.0 green:134 / 255.0 blue:158 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [addButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [addButton addTarget:self action:@selector(addContacts:) forControlEvents:UIControlEventTouchUpInside];
+    _rightItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
     [self.navigationItem setRightBarButtonItem:_rightItem];
+    
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    [self.navigationItem setLeftBarButtonItem:backItem];
     
     [self.view addSubview:self.textField];
 }
@@ -93,15 +105,26 @@
         return;
     }
     else{
-        [viewController.navigationController popViewControllerAnimated:YES];
-        
+        [self.navigationController popToViewController:self animated:NO];
         _rightItem.enabled = NO;
-        [self showHudInView:self.view hint:@"创建群组..."];
         
-        //to do 创建群组
+        [self showHudInView:self.view hint:@"创建群组..."];
+        EMError *error;
+        NSMutableArray *source = [NSMutableArray array];
+        for (EMBuddy *buddy in selectedSources) {
+            [source addObject:buddy.username];
+        }
+        EMRoom *room = [[EaseMob sharedInstance].chatManager createChatroomWithSubject:self.textField.text description:@"" password:nil invitees:source initialWelcomeMessage:@"" error:&error];
         
         [self hideHud];
         _rightItem.enabled = YES;
+        if (room && !error) {
+            [self showHint:@"创建群组成功"];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else{
+            [self showHint:@"创建群组失败，请重新操作"];
+        }
     }
 }
 

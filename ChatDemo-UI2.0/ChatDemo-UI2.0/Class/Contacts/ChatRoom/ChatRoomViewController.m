@@ -52,7 +52,17 @@
     self.tableView.tableHeaderView = self.searchBar;
     [self searchController];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_createGroup"] style:UIBarButtonItemStylePlain target:self action:@selector(createChatRoom)];
+    UIButton *createButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+    [createButton setImage:[UIImage imageNamed:@"nav_createGroup"] forState:UIControlStateNormal];
+    [createButton addTarget:self action:@selector(createChatRoom) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:createButton]];
+    
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    [self.navigationItem setLeftBarButtonItem:backItem];
+    
     [self reloadDataSource];
 }
 
@@ -98,10 +108,9 @@
                 cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             }
             
-//            EMBuddy *buudy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            EMRoom *room = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
-//            cell.textLabel.text = buudy.username;
-            cell.textLabel.text = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            cell.textLabel.text = room.roomSubject;
             
             return cell;
         }];
@@ -114,9 +123,9 @@
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [weakSelf.searchController.searchBar endEditing:YES];
             
-//            EMBuddy *buddy = [[weakSelf.searchController.resultsSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-//            ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username isChatroom:NO];
-//            [weakSelf.navigationController pushViewController:chatVC animated:YES];
+            EMRoom *room = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:room.roomSubject isChatroom:YES];
+            [weakSelf.navigationController pushViewController:chatVC animated:YES];
         }];
     }
     
@@ -147,10 +156,9 @@
         cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-//    EMBuddy *buudy = [self.dataSource objectAtIndex:indexPath.row];
+    EMRoom *room = [self.dataSource objectAtIndex:indexPath.row];
     cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
-//    cell.textLabel.text = buudy.username;
-    cell.textLabel.text = [self.dataSource objectAtIndex:indexPath.row];
+    cell.textLabel.text = room.roomSubject;
     
     return cell;
 }
@@ -206,17 +214,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-//    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(username) resultBlock:^(NSArray *results) {
-//        if (results) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self.searchController.resultsSource removeAllObjects];
-//                [self.searchController.resultsSource addObjectsFromArray:results];
-//                [self.searchController.searchResultsTableView reloadData];
-//            });
-//        }
-//    }];
-    
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(stringValue) resultBlock:^(NSArray *results) {
+    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(roomSubject) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.searchController.resultsSource removeAllObjects];
@@ -245,16 +243,21 @@
     [searchBar setShowsCancelButton:NO animated:YES];
 }
 
+#pragma mark - IChatManagerDelegate
+
+- (void)room:(EMRoom *)room didJoinWithError:(EMError *)error
+{
+    [self reloadDataSource];
+}
+
 #pragma mark - data
 
 - (void)reloadDataSource
 {
     [self.dataSource removeAllObjects];
-    [self.dataSource addObject:@"群组1"];
-    [self.dataSource addObject:@"群组2"];
-    [self.dataSource addObject:@"群组3"];
-    [self.dataSource addObject:@"群组4"];
-    [self.dataSource addObject:@"群组5"];
+    
+    NSArray *rooms = [[EaseMob sharedInstance].chatManager chatroomList];
+    [self.dataSource addObjectsFromArray:rooms];
     
     [self.tableView reloadData];
 }

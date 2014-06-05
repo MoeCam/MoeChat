@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "EaseMob.h"
 #import "MainViewController.h"
 #import "LoginViewController.h"
 #import "BMKMapManager.h"
