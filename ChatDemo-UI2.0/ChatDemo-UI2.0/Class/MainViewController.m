@@ -11,6 +11,9 @@
 #import "ContactsViewController.h"
 #import "SettingsViewController.h"
 
+//两次提示的默认间隔
+const CGFloat kDefaultPlaySoundInterval = 3.0;
+
 @interface MainViewController () <IChatManagerDelegate>
 {
     ChatListViewController *_chatListVC;
@@ -19,6 +22,8 @@
     
     UIBarButtonItem *_addFriendItem;
 }
+
+@property (strong, nonatomic)NSDate *lastPlaySoundDate;
 
 @end
 
@@ -176,18 +181,35 @@
 
 // 收到消息回调
 -(void)didReceiveMessage:(EMMessage *)message{
-    // 收到消息时，播放音频
-    [[EaseMob sharedInstance].deviceManager asyncPlayNewMessageSound];
-    // 收到消息时，震动
-    [[EaseMob sharedInstance].deviceManager asyncPlayVibration];
     
 #if !TARGET_IPHONE_SIMULATOR
+    [self playSoundAndVibration];
+    
     BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
     if (!isAppActivity) {
         [self showNotificationWithMessage:message];
     }
 #endif
     
+}
+
+
+- (void)playSoundAndVibration{
+    
+    //如果距离上次响铃和震动时间太短, 则跳过响铃
+    NSLog(@"%@, %@", [NSDate date], self.lastPlaySoundDate);
+    NSTimeInterval timeInterval = [[NSDate date]
+                                   timeIntervalSinceDate:self.lastPlaySoundDate];
+    if (timeInterval < kDefaultPlaySoundInterval) {
+        return;
+    }
+    //保存最后一次响铃时间
+    self.lastPlaySoundDate = [NSDate date];
+    
+    // 收到消息时，播放音频
+    [[EaseMob sharedInstance].deviceManager asyncPlayNewMessageSound];
+    // 收到消息时，震动
+    [[EaseMob sharedInstance].deviceManager asyncPlayVibration];
 }
 
 - (void)showNotificationWithMessage:(EMMessage *)message{
