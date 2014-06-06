@@ -12,7 +12,6 @@
 
 @interface EMChooseViewController ()
 
-@property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) NSMutableArray *sectionTitles;
 @property (strong, nonatomic) NSMutableArray *selectedIndexPaths;
 
@@ -42,6 +41,8 @@
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
+    _indexCollation = [UILocalizedIndexedCollation currentCollation];
+    
     if (!self.defaultEditing) {
         UIButton *chooseButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
         [chooseButton setTitle:@"选择" forState:UIControlStateNormal];
@@ -246,13 +247,20 @@
 
 #pragma mark - public
 
+- (NSInteger)sectionForString:(NSString *)string
+{
+    if (string && string.length > 0) {
+        return [_indexCollation sectionForObject:string collationStringSelector:@selector(uppercaseString)];
+    }
+    else{
+        return -1;
+    }
+}
+
 - (NSArray *)sortRecords:(NSArray *)recordArray
 {
-    //建立索引的核心
-    UILocalizedIndexedCollation *indexCollation = [UILocalizedIndexedCollation currentCollation];
-    
     [self.sectionTitles removeAllObjects];
-    [self.sectionTitles addObjectsFromArray:[indexCollation sectionTitles]];
+    [self.sectionTitles addObjectsFromArray:[_indexCollation sectionTitles]];
     
     //返回27，是a－z和＃
     NSInteger highSection = [self.sectionTitles count];
@@ -268,7 +276,7 @@
         for (id object in recordArray) {
             //getUserName是实现中文拼音检索的核心，见NameIndex类
             NSString *objStr = _objectComparisonStringBlock(object);
-            NSInteger section = [indexCollation sectionForObject:objStr collationStringSelector:@selector(uppercaseString)];
+            NSInteger section = [_indexCollation sectionForObject:objStr collationStringSelector:@selector(uppercaseString)];
             
             NSMutableArray *array = [sortedArray objectAtIndex:section];
             [array addObject:object];

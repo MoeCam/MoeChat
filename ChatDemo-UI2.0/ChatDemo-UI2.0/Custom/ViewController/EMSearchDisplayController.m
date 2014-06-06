@@ -26,6 +26,11 @@
     return self;
 }
 
+- (void)setCanEditCell:(BOOL)canEditCell
+{
+    _canEditCell = canEditCell;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -94,5 +99,9 @@
         _didDeselectRowAtIndexPathCompletion(tableView, indexPath);
     }
 }
+
+#pragma mark - UISearchDisplayDelegate
+
+
 
 @end

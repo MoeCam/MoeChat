@@ -10,7 +10,7 @@
 
 #import "BaseTableViewCell.h"
 
-@interface EMSearchDisplayController : UISearchDisplayController<UITableViewDataSource, UITableViewDelegate>
+@interface EMSearchDisplayController : UISearchDisplayController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
 
 @property (strong, nonatomic) NSMutableArray *resultsSource;
 

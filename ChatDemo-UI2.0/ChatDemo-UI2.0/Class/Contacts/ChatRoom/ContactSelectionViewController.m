@@ -95,7 +95,6 @@
         _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
         _searchController.canEditCell = YES;
         _searchController.editingStyle = UITableViewCellEditingStyleInsert | UITableViewCellEditingStyleDelete;
-        _searchController.searchResultsTableView.editing = YES;
         _searchController.delegate = self;
         _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
@@ -121,10 +120,17 @@
         }];
         
         [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
-            id object = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            if (![weakSelf.selectedContacts containsObject:object])
+            EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            if (![weakSelf.selectedContacts containsObject:buddy])
             {
-                [weakSelf.selectedContacts addObject:object];
+                NSInteger section = [weakSelf sectionForString:buddy.username];
+                if (section >= 0) {
+                    NSMutableArray *tmpArray = [weakSelf.dataSource objectAtIndex:section];
+                    NSInteger row = [tmpArray indexOfObject:buddy];
+                    [weakSelf.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                }
+                
+                [weakSelf.selectedContacts addObject:buddy];
                 [weakSelf reloadFooterView];
             }
         }];
@@ -132,10 +138,16 @@
         [_searchController setDidDeselectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
-            id object = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            if ([weakSelf.selectedContacts containsObject:object]) {
-                [weakSelf.selectedContacts removeObject:object];
+            EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            if ([weakSelf.selectedContacts containsObject:buddy]) {
+                NSInteger section = [weakSelf sectionForString:buddy.username];
+                if (section >= 0) {
+                    NSMutableArray *tmpArray = [weakSelf.dataSource objectAtIndex:section];
+                    NSInteger row = [tmpArray indexOfObject:buddy];
+                    [weakSelf.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO];
+                }
                 
+                [weakSelf.selectedContacts removeObject:buddy];
                 [weakSelf reloadFooterView];
             }
         }];
@@ -156,7 +168,10 @@
         [_footerView addSubview:_footerScrollView];
         
         _doneButton = [[UIButton alloc] initWithFrame:CGRectMake(_footerView.frame.size.width - 80, 8, 70, _footerView.frame.size.height - 16)];
-        [_doneButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_doneButton setBackgroundColor:[UIColor colorWithRed:10 / 255.0 green:82 / 255.0 blue:104 / 255.0 alpha:1.0]];
+        [_doneButton setTitle:@"接受" forState:UIControlStateNormal];
+        [_doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _doneButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
         [_doneButton setTitle:@"确定" forState:UIControlStateNormal];
         [_doneButton addTarget:self action:@selector(doneAction:) forControlEvents:UIControlEventTouchUpInside];
         [_footerView addSubview:_doneButton];
@@ -212,18 +227,27 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:YES animated:YES];
+    [self.searchBar setCancleButtonTitle:@"确定"];
     
     return YES;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.contactsSource searchText:(NSString *)searchText collationStringSelector:@selector(username) resultBlock:^(NSArray *results) {
+    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.contactsSource searchText:searchText collationStringSelector:@selector(username) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.searchController.resultsSource removeAllObjects];
                 [self.searchController.resultsSource addObjectsFromArray:results];
                 [self.searchController.searchResultsTableView reloadData];
+                
+                for (EMBuddy *buddy in results) {
+                    if ([self.selectedContacts containsObject:buddy])
+                    {
+                        NSInteger row = [results indexOfObject:buddy];
+                        [self.searchController.searchResultsTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
             });
         }
     }];
@@ -245,6 +269,13 @@
     [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
     [searchBar resignFirstResponder];
     [searchBar setShowsCancelButton:NO animated:YES];
+}
+
+#pragma mark - UISearchDisplayDelegate
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView
+{
+    tableView.editing = YES;
 }
 
 #pragma mark - private

@@ -22,6 +22,9 @@
 @property (weak, nonatomic) id<EMChooseViewDelegate> delegate;
 
 @property (strong, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) NSMutableArray *dataSource;
+
+@property (strong, nonatomic) UILocalizedIndexedCollation *indexCollation;//搜索核心
 
 
 /**
@@ -92,6 +95,15 @@
  *  @return 排好序的数组
  */
 - (NSArray *)sortRecords:(NSArray *)recordArray;
+
+/**
+ *  获取分组编号
+ *
+ *  @param string 排序时比较的字符串
+ *
+ *  @return 分组编号
+ */
+- (NSInteger)sectionForString:(NSString *)string;
 
 /**
  *  选择完成

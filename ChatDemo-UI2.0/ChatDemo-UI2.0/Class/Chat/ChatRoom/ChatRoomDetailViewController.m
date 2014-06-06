@@ -245,7 +245,7 @@
 - (void)loadDataSource
 {
     [self.dataSource removeAllObjects];
-    [self.dataSource addObjectsFromArray:[[EaseMob sharedInstance].chatManager buddyList]];
+    [self.dataSource addObjectsFromArray:_chatRoom.members];
     [self refreshScrollView];
 }
 
@@ -354,16 +354,27 @@
     [self.navigationController pushViewController:selectionController animated:YES];
 }
 
+//清空聊天记录
 - (void)clearAction
 {
-    
+    [[EaseMob sharedInstance].chatManager removeConversationByChatter:_chatRoom.roomName deleteMessages:YES];
 }
 
+//解散群组
 - (void)dissolveAction
 {
-    
+    EMError *error;
+    EMRoom *deleteRoom = [[EaseMob sharedInstance].chatManager destroyChatroom:_chatRoom.roomName error:&error];
+    [self hideHud];
+    if (!error && deleteRoom) {
+        [[EaseMob sharedInstance].chatManager removeConversationByChatter:deleteRoom.roomName deleteMessages:YES];
+    }
+    else{
+        [self showHint:@"解散群组失败"];
+    }
 }
 
+//退出群组
 - (void)exitAction
 {
     

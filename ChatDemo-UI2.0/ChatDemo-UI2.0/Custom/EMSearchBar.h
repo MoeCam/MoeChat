@@ -10,4 +10,11 @@
 
 @interface EMSearchBar : UISearchBar
 
+/**
+ *  自定义控件自带的取消按钮的文字（默认为“取消”/“Cancle”）
+ *
+ *  @param title 自定义文字
+ */
+- (void)setCancleButtonTitle:(NSString *)title;
+
 @end

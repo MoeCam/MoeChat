@@ -268,6 +268,11 @@
     }
 }
 
+- (void)room:(EMRoom *)room didDestroyWithError:(EMError *)error
+{
+    [self reloadDataSource];
+}
+
 - (void)didReceiveChatroomInvitationFrom:(NSString *)roomName
                                  inviter:(NSString *)username
                                  message:(NSString *)message

@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "LoginViewController.h"
-#import "BMKMapManager.h"
 #import "MobClick.h"
 
 @implementation AppDelegate
@@ -38,16 +37,7 @@
         [MobClick setLogEnabled:YES];
     }
 
-    
-    
-#warning Baidu地图SDK测试Key值
-    // 如果要关注网络及授权验证事件，请设定generalDelegate参数
-    BMKMapManager *mapManager = [[BMKMapManager alloc]init];
-    BOOL ret = [mapManager start:@"6QN0dGpbbrcFXqCpW4F86DeQ" generalDelegate:nil];
-    if (!ret) {
-        NSLog(@"manager start failed!");
-    }
-    
+#warning SDK注册
     [[EaseMob sharedInstance] registerSDKWithAppKey:@"easemob-demo#chatdemoui"];
     [[EaseMob sharedInstance] application:application
             didFinishLaunchingWithOptions:launchOptions];
@@ -57,33 +47,41 @@
     return YES;
 }
 
--(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken{
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken
+{
+#warning SDK方法调用
     [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
+#warning SDK方法调用
     [[EaseMob sharedInstance] applicationWillResignActive:application];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+#warning SDK方法调用
     [[EaseMob sharedInstance] applicationDidEnterBackground:application];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+#warning SDK方法调用
     [[EaseMob sharedInstance] applicationWillEnterForeground:application];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    
+#warning SDK方法调用
     [[EaseMob sharedInstance] applicationDidBecomeActive:application];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+#warning SDK方法调用
     [[EaseMob sharedInstance] applicationWillTerminate:application];
 }
 

@@ -35,13 +35,22 @@
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+/**
+ *  自定义控件自带的取消按钮的文字（默认为“取消”/“Cancle”）
+ *
+ *  @param title 自定义文字
+ */
+- (void)setCancleButtonTitle:(NSString *)title
 {
-    // Drawing code
+    for (UIView *searchbuttons in self.subviews)
+    {
+        if ([searchbuttons isKindOfClass:[UIButton class]])
+        {
+            UIButton *cancelButton = (UIButton*)searchbuttons;
+            [cancelButton setTitle:title forState:UIControlStateNormal];
+            break;
+        }
+    }
 }
-*/
 
 @end
