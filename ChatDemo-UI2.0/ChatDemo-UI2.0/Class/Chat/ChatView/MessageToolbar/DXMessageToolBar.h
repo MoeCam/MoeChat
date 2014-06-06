@@ -90,6 +90,8 @@
 
 @protocol DXMessageToolBarDelegate <NSObject>
 
+@optional
+
 /**
  *  在普通状态和语音状态之间进行切换时，会触发这个回调函数
  *

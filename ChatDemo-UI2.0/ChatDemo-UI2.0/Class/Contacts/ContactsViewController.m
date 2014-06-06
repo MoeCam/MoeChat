@@ -205,8 +205,8 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        return 2;
-//        return 1;
+//        return 2;
+        return 1;
     }
     
     return [[self.dataSource objectAtIndex:(section - 1)] count];
@@ -223,7 +223,7 @@
         }
         
         cell.imageView.image = [UIImage imageNamed:@"newFriends"];
-        cell.textLabel.text = @"新的朋友";
+        cell.textLabel.text = @"申请与通知";
         [cell addSubview:self.unapplyCountLabel];
     }
     else{
