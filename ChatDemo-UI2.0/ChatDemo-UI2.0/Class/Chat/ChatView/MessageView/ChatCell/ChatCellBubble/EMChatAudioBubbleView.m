@@ -104,6 +104,7 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
     _timeLabel.text = [NSString stringWithFormat:@"%d'",self.model.time];
     
     if (self.model.isSender) {
+        [_isReadView setHidden:YES];
         _animationImageView.image = [UIImage imageNamed:SENDER_ANIMATION_IMAGEVIEW_IMAGE_DEFAULT];
         _animationImageView.animationImages = _senderAnimationImages;
     }

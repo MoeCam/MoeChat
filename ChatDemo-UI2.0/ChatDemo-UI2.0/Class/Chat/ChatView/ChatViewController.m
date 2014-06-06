@@ -800,25 +800,19 @@
 
 -(void)sendTextMessage:(NSString *)textMessage
 {
-    EMMessage *tempMessage = [EMChatSendHelper sendTextMessageWithString:textMessage toUsername:_conversation.chatter requireEncryption:YES];
+    EMMessage *tempMessage = [EMChatSendHelper sendTextMessageWithString:textMessage toUsername:_conversation.chatter requireEncryption:NO];
     [self addChatDataToMessage:tempMessage];
 }
 
 -(void)sendImageMessage:(UIImage *)imageMessage
 {
-    EMMessage *tempMessage = [EMChatSendHelper sendImageMessageWithImage:imageMessage toUsername:_conversation.chatter requireEncryption:YES];
+    EMMessage *tempMessage = [EMChatSendHelper sendImageMessageWithImage:imageMessage toUsername:_conversation.chatter requireEncryption:NO];
     [self addChatDataToMessage:tempMessage];
-}
-
--(void)sendLocationMessage:(CLLocation *)locationMessage
-{
-    EMMessage *message = [EMChatSendHelper sendLocationLatitude:13.0 longitude:6.1234 address:@"北京市海淀区" toUsername:_conversation.chatter requireEncryption:YES];
-    [self addChatDataToMessage:message];
 }
 
 -(void)sendAudioMessage:(EMChatVoice *)voice
 {
-    EMMessage *tempMessage = [EMChatSendHelper sendVoice:voice toUsername:_conversation.chatter requireEncryption:YES];
+    EMMessage *tempMessage = [EMChatSendHelper sendVoice:voice toUsername:_conversation.chatter requireEncryption:NO];
     [self addChatDataToMessage:tempMessage];
 }
 

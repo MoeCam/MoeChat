@@ -15,6 +15,7 @@
  */
 @interface EMChooseViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 {
+    __weak id<EMChooseViewDelegate> _delegate;
     NSMutableArray *_dataSource;
 }
 
