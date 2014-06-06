@@ -182,7 +182,10 @@
     [[EaseMob sharedInstance].deviceManager asyncPlayVibration];
     
 #if !TARGET_IPHONE_SIMULATOR
-    [self showNotificationWithMessage:message];
+    BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
+    if (!isAppActivity) {
+        [self showNotificationWithMessage:message];
+    }
 #endif
     
 }
