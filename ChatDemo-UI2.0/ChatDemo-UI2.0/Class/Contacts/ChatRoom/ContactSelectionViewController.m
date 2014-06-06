@@ -9,6 +9,7 @@
 #import "ContactSelectionViewController.h"
 
 #import "EMSearchBar.h"
+#import "EMRemarkImageView.h"
 #import "EMSearchDisplayController.h"
 #import "RealtimeSearchUtil.h"
 
@@ -66,10 +67,6 @@
     self.tableView.editing = YES;
     self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height - self.footerView.frame.size.height);
     [self searchController];
-    
-//    if ([self.selectedContacts count] > 0) {
-//        for
-//    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -150,11 +147,11 @@
 - (UIView *)footerView
 {
     if (_footerView == nil) {
-        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
+        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 50, self.view.frame.size.width, 50)];
         _footerView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
         _footerView.backgroundColor = [UIColor colorWithRed:207 / 255.0 green:210 /255.0 blue:213 / 255.0 alpha:0.7];
         
-        _footerScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 5, _footerView.frame.size.width - 30 - 70, _footerView.frame.size.height - 10)];
+        _footerScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 0, _footerView.frame.size.width - 30 - 70, _footerView.frame.size.height - 5)];
         _footerScrollView.backgroundColor = [UIColor clearColor];
         [_footerView addSubview:_footerScrollView];
         
@@ -258,13 +255,13 @@
     
     CGFloat imageSize = self.footerScrollView.frame.size.height;
     NSInteger count = [self.selectedContacts count];
-    NSInteger marginCount = count == 0 ? 0 : (count - 1);
-    self.footerScrollView.contentSize = CGSizeMake(imageSize * count + 5 * marginCount, imageSize);
+    self.footerScrollView.contentSize = CGSizeMake(imageSize * count, imageSize);
     for (int i = 0; i < count; i++) {
-        NSInteger tmpMc = i == 0 ? 0 : i;
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * imageSize + 5 * tmpMc, 0, imageSize, imageSize)];
-        imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-        [self.footerScrollView addSubview:imageView];
+        EMBuddy *buddy = [self.selectedContacts objectAtIndex:i];
+        EMRemarkImageView *remarkView = [[EMRemarkImageView alloc] initWithFrame:CGRectMake(i * imageSize, 0, imageSize, imageSize)];
+        remarkView.image = [UIImage imageNamed:@"chatListCellHead.png"];
+        remarkView.remark = buddy.username;
+        [self.footerScrollView addSubview:remarkView];
     }
     
     if ([self.selectedContacts count] == 0) {
@@ -298,8 +295,36 @@
 
 - (void)doneAction:(id)sender
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(viewController:didFinishSelectedSources:)]) {
-        [self.delegate viewController:self didFinishSelectedSources:self.selectedContacts];
+    if([self.selectedContacts count] == 0)
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"群组成员不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+        return;
+    }
+    else{
+        [self showHudInView:self.tableView hint:@"创建群组..."];
+        
+        NSMutableArray *source = [NSMutableArray array];
+        for (EMBuddy *buddy in self.selectedContacts) {
+            [source addObject:buddy.username];
+        }
+        
+        [[EaseMob sharedInstance].chatManager asyncCreateChatroomWithSubject:_groupName description:_groupBrief password:nil invitees:source initialWelcomeMessage:@"" completion:^(EMRoom *room, EMError *error) {
+            [self hideHud];
+            if (room && !error) {
+                [self showHint:@"创建群组成功"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateRoomSuccess" object:room];
+                if (_CreateRoomFinished) {
+                    _CreateRoomFinished(YES);
+                }
+            }
+            else{
+                [self showHint:@"创建群组失败，请重新操作"];
+                if (_CreateRoomFinished) {
+                    _CreateRoomFinished(NO);
+                }
+            }
+        } onQueue:nil];
     }
 }
 

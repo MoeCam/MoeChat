@@ -9,11 +9,13 @@
 #import "CreateChatRoomViewController.h"
 
 #import "ContactSelectionViewController.h"
+#import "EMTextView.h"
 
-@interface CreateChatRoomViewController ()<UITextFieldDelegate, EMChooseViewDelegate>
+@interface CreateChatRoomViewController ()<UITextFieldDelegate, UITextViewDelegate>
 
 @property (strong, nonatomic) UIBarButtonItem *rightItem;
 @property (strong, nonatomic) UITextField *textField;
+@property (strong, nonatomic) EMTextView *textView;
 
 @end
 
@@ -55,6 +57,7 @@
     [self.navigationItem setLeftBarButtonItem:backItem];
     
     [self.view addSubview:self.textField];
+    [self.view addSubview:self.textView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,6 +89,23 @@
     return _textField;
 }
 
+- (EMTextView *)textView
+{
+    if (_textView == nil) {
+        _textView = [[EMTextView alloc] initWithFrame:CGRectMake(10, 70, self.view.frame.size.width - 20, 80)];
+        _textView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+        _textView.layer.borderWidth = 0.5;
+        _textView.layer.cornerRadius = 3;
+        _textView.font = [UIFont systemFontOfSize:14.0];
+        _textView.backgroundColor = [UIColor whiteColor];
+        _textView.placeholder = @"请输入群组简介";
+        _textView.returnKeyType = UIReturnKeyDone;
+        _textView.delegate = self;
+    }
+    
+    return _textView;
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -94,38 +114,18 @@
     return YES;
 }
 
-#pragma mark - EMChooseViewDelegate
+#pragma mark - UITextViewDelegate
 
-- (void)viewController:(EMChooseViewController *)viewController didFinishSelectedSources:(NSArray *)selectedSources
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if([selectedSources count] == 0)
-    {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"群组成员不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alertView show];
-        return;
-    }
-    else{
-        [self.navigationController popToViewController:self animated:NO];
-        _rightItem.enabled = NO;
+    if ([text isEqualToString:@"\n"]) {
         
-        [self showHudInView:self.view hint:@"创建群组..."];
-        EMError *error;
-        NSMutableArray *source = [NSMutableArray array];
-        for (EMBuddy *buddy in selectedSources) {
-            [source addObject:buddy.username];
-        }
-        EMRoom *room = [[EaseMob sharedInstance].chatManager createChatroomWithSubject:self.textField.text description:@"" password:nil invitees:source initialWelcomeMessage:@"" error:&error];
         
-        [self hideHud];
-        _rightItem.enabled = YES;
-        if (room && !error) {
-            [self showHint:@"创建群组成功"];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-        else{
-            [self showHint:@"创建群组失败，请重新操作"];
-        }
+        [textView resignFirstResponder];
+        return NO;
     }
+    
+    return YES;
 }
 
 #pragma mark - action
@@ -139,8 +139,16 @@
     }
     
     [self.view endEditing:YES];
+    
     ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] init];
-    selectionController.delegate = self;
+    selectionController.groupName = self.textField.text;
+    selectionController.groupBrief = self.textView.text;
+    [selectionController setCreateRoomFinished:^(BOOL success) {
+        if (success) {
+            [self.navigationController popToViewController:self animated:NO];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }];
     [self.navigationController pushViewController:selectionController animated:YES];
 }
 

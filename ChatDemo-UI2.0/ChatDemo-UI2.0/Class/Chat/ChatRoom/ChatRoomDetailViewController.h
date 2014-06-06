@@ -8,22 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ChatRoomContactView : UIView
+#import "EMRemarkImageView.h"
+
+@interface ChatRoomContactView : EMRemarkImageView
 {
     UIButton *_deleteButton;
-    UILabel *_nameLabel;
 }
 
-@property (nonatomic) NSInteger index;
-@property (nonatomic) BOOL editing;
-@property (strong, nonatomic) NSString *title;
-@property (strong, nonatomic) UIImageView *imageView;
 @property (copy) void (^deleteContact)(NSInteger index);
 
 @end
 
 @interface ChatRoomDetailViewController : UITableViewController
 
-- (instancetype)initWithAdmin:(BOOL)isAdmin;
+- (instancetype)initWithRoom:(EMRoom *)chatRoom;
 
 @end

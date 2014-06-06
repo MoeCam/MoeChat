@@ -11,5 +11,9 @@
 @interface ContactSelectionViewController : EMChooseViewController
 
 @property (strong, nonatomic) NSMutableArray *selectedContacts;
+@property (strong, nonatomic) NSString *groupName;
+@property (strong, nonatomic) NSString *groupBrief;
+
+@property (copy) void (^CreateRoomFinished)(BOOL success);
 
 @end

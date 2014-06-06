@@ -18,21 +18,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _editing = NO;
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 10, frame.size.width - 10, frame.size.height - 10)];
-        _imageView.clipsToBounds = YES;
-        _imageView.layer.cornerRadius = 0.5;
-//        _imageView.userInteractionEnabled = YES;
-        [self addSubview:_imageView];
-        
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(_imageView.frame) - 15, _imageView.frame.size.width, 15)];
-        _nameLabel.clipsToBounds = YES;
-        _nameLabel.textAlignment = NSTextAlignmentCenter;
-        _nameLabel.font = [UIFont systemFontOfSize:10.0];
-        _nameLabel.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.5];
-        _nameLabel.textColor = [UIColor whiteColor];
-        [_imageView addSubview:_nameLabel];
-        
         _deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_imageView.frame) - 8, 3, 15, 15)];
         [_deleteButton addTarget:self action:@selector(deleteAction) forControlEvents:UIControlEventTouchUpInside];
         [_deleteButton setImage:[UIImage imageNamed:@"chatroom_invitee_delete"] forState:UIControlStateNormal];
@@ -49,12 +34,6 @@
         _editing = editing;
         _deleteButton.hidden = !_editing;
     }
-}
-
-- (void)setTitle:(NSString *)title
-{
-    _title = title;
-    _nameLabel.text = title;
 }
 
 - (void)deleteAction
@@ -74,6 +53,7 @@
 @interface ChatRoomDetailViewController ()
 
 @property (nonatomic) BOOL isAdmin;
+@property (strong, nonatomic) EMRoom *chatRoom;
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -88,13 +68,18 @@
 
 @implementation ChatRoomDetailViewController
 
-- (instancetype)initWithAdmin:(BOOL)isAdmin
+- (instancetype)initWithRoom:(EMRoom *)chatRoom
 {
     self = [super init];
     if (self) {
         // Custom initialization
-        _isAdmin = isAdmin;
+        _chatRoom = chatRoom;
         _dataSource = [NSMutableArray array];
+        
+        _isAdmin = NO;
+//        for (EMBuddy *buddy in _chatRoom.admins) {
+//            <#statements#>
+//        }
     }
     return self;
 }
@@ -139,9 +124,11 @@
         [_addButton addTarget:self action:@selector(addContact:) forControlEvents:UIControlEventTouchUpInside];
         [_scrollView addSubview:_addButton];
         
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deleteContactBegin:)];
-        longPress.minimumPressDuration = 0.5;
-        [_scrollView addGestureRecognizer:longPress];
+        if (_isAdmin) {
+            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deleteContactBegin:)];
+            longPress.minimumPressDuration = 0.5;
+            [_scrollView addGestureRecognizer:longPress];
+        }
     }
     
     return _scrollView;
@@ -195,9 +182,9 @@
 - (UIView *)footerView
 {
     if (_footerView == nil) {
-        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 130)];
+        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 150)];
         
-        self.clearButton.frame = CGRectMake(20, 20, _footerView.frame.size.width - 40, 35);
+        self.clearButton.frame = CGRectMake(20, 40, _footerView.frame.size.width - 40, 35);
         [_footerView addSubview:self.clearButton];
         
         if (_isAdmin) {
@@ -287,8 +274,8 @@
                 EMBuddy *buddy = [self.dataSource objectAtIndex:index];
                 ChatRoomContactView *contactView = [[ChatRoomContactView alloc] initWithFrame:CGRectMake(j * kContactSize, i * kContactSize, kContactSize, kContactSize)];
                 contactView.index = i * kColOfRow + j;
-                contactView.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-                contactView.title = buddy.username;
+                contactView.image = [UIImage imageNamed:@"chatListCellHead.png"];
+                contactView.remark = buddy.username;
                 if (![buddy.username isEqualToString:loginUsername]) {
                     contactView.editing = isEditing;
                 }
@@ -302,7 +289,7 @@
                 [self.scrollView addSubview:contactView];
             }
             else{
-                if(index == self.dataSource.count)
+                if(_isAdmin && index == self.dataSource.count)
                 {
                     self.addButton.frame = CGRectMake(j * kContactSize + 5, i * kContactSize + 10, kContactSize - 10, kContactSize - 10);
                     [self.scrollView addSubview:self.addButton];
@@ -350,7 +337,7 @@
     for (ChatRoomContactView *contactView in self.scrollView.subviews)
     {
         if ([contactView isKindOfClass:[ChatRoomContactView class]]) {
-            if (isEditing && [contactView.title isEqualToString:loginUsername]) {
+            if (isEditing && [contactView.remark isEqualToString:loginUsername]) {
                 break;
             }
             

@@ -46,6 +46,8 @@
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createRoomSuccess:) name:@"CreateRoomSuccess" object:nil];
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = [[UIView alloc] init];
@@ -75,6 +77,7 @@
 - (void)dealloc
 {
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - getter
@@ -176,10 +179,18 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         
-        //to do 删除群组
-        
-        [self.dataSource removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self showHudInView:self.view hint:@"删除群组..."];
+        EMError *error;
+        EMRoom *room = [self.dataSource objectAtIndex:indexPath.row];
+        EMRoom *deleteRoom = [[EaseMob sharedInstance].chatManager destroyChatroom:room.roomName error:&error];
+        [self hideHud];
+        if (!error && deleteRoom) {
+            [self.dataSource removeObjectAtIndex:indexPath.row];
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+        else{
+            [self showHint:@"删除群组失败"];
+        }
     }
 }
 
@@ -247,7 +258,33 @@
 
 - (void)room:(EMRoom *)room didJoinWithError:(EMError *)error
 {
-    [self reloadDataSource];
+    if (room && !error) {
+        [self.tableView beginUpdates];
+        [self.dataSource insertObject:room atIndex:0];
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+        [self.tableView endUpdates];
+    }
+}
+
+- (void)didReceiveChatroomInvitationFrom:(NSString *)roomName
+                                 inviter:(NSString *)username
+                                 message:(NSString *)message
+{
+    
+}
+
+#pragma mark - notification
+
+- (void)createRoomSuccess:(NSNotification *)notification
+{
+    id object = notification.object;
+    if ([object isKindOfClass:[EMRoom class]]) {
+        EMRoom *room = (EMRoom *)object;
+        [self.tableView beginUpdates];
+        [self.dataSource insertObject:room atIndex:0];
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+        [self.tableView endUpdates];
+    }
 }
 
 #pragma mark - data

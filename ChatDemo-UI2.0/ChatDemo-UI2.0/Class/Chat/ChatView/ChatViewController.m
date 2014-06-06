@@ -106,7 +106,10 @@
     [self.navigationItem setLeftBarButtonItem:backItem];
     
     if (_isChatRoom) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"chatroomDetail"] style:UIBarButtonItemStylePlain target:self action:@selector(showRoomContact:)];
+        UIButton *detailButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+        [detailButton setImage:[UIImage imageNamed:@"chatroomDetail"] forState:UIControlStateNormal];
+        [detailButton addTarget:self action:@selector(showRoomContact:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:detailButton];
     }
     else{
         UIButton *clearButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
@@ -743,7 +746,7 @@
 - (void)showRoomContact:(id)sender
 {
     [self.view endEditing:YES];
-    ChatRoomDetailViewController *detailController = [[ChatRoomDetailViewController alloc] initWithAdmin:YES];
+    ChatRoomDetailViewController *detailController = [[ChatRoomDetailViewController alloc] initWithRoom:nil];
     detailController.title = @"测试";
     [self.navigationController pushViewController:detailController animated:YES];
 }
