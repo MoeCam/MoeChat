@@ -158,8 +158,8 @@
             [weakSelf.searchController.searchBar endEditing:YES];
             
             EMConversation *conversation = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:conversation.chatter isChatroom:NO];
-            
+            ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:conversation.chatter];
+            chatVC.title = conversation.chatter;
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
         }];
     }
@@ -280,9 +280,10 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    EMConversation *conversation = [self.dataSource objectAtIndex:indexPath.row];
-    ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:conversation.chatter isChatroom:NO];
     
+    EMConversation *conversation = [self.dataSource objectAtIndex:indexPath.row];
+    ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:conversation.chatter];
+    chatVC.title = conversation.chatter;
     [self.navigationController pushViewController:chatVC animated:YES];
 }
 

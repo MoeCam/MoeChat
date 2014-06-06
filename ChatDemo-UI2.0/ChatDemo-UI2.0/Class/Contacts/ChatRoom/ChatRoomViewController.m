@@ -127,7 +127,7 @@
             [weakSelf.searchController.searchBar endEditing:YES];
             
             EMRoom *room = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:room.roomSubject isChatroom:YES];
+            ChatViewController *chatVC = [[ChatViewController alloc] initWithGroup:room];
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
         }];
     }
@@ -210,7 +210,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    ChatViewController *chatController = [[ChatViewController alloc] initWithChatter:@"测试组" isChatroom:YES];
+    EMRoom *room = [self.dataSource objectAtIndex:indexPath.row];
+    ChatViewController *chatController = [[ChatViewController alloc] initWithGroup:room];
+    chatController.title = room.roomSubject;
     [self.navigationController pushViewController:chatController animated:YES];
 }
 

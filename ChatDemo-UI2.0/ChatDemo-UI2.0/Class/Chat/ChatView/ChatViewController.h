@@ -10,6 +10,8 @@
 
 @interface ChatViewController : UIViewController
 
-- (instancetype)initWithChatter:(NSString *)chatter isChatroom:(BOOL)isChatroom;
+- (instancetype)initWithChatter:(NSString *)chatter;
+
+- (instancetype)initWithGroup:(EMRoom *)chatGroup;
 
 @end

@@ -184,7 +184,8 @@
             }
             
             [weakSelf.searchController.searchBar endEditing:YES];
-            ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username isChatroom:NO];
+            ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username];
+            chatVC.title = buddy.username;
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
         }];
     }
@@ -374,7 +375,8 @@
             }
         }
         
-        ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username isChatroom:NO];
+        ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username];
+        chatVC.title = buddy.username;
         [self.navigationController pushViewController:chatVC animated:YES];
     }
 }

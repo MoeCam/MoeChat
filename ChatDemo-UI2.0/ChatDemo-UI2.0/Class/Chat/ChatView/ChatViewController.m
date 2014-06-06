@@ -35,6 +35,7 @@
 }
 
 @property (nonatomic) BOOL isChatRoom;
+@property (strong, nonatomic) EMRoom *chatGroup;
 
 @property (strong, nonatomic) NSMutableArray *dataSource;//tableView数据源
 @property (strong, nonatomic) SRRefreshView *slimeView;
@@ -51,12 +52,12 @@
 
 @implementation ChatViewController
 
-- (instancetype)initWithChatter:(NSString *)chatter isChatroom:(BOOL)isChatroom
+- (instancetype)initWithChatter:(NSString *)chatter
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization
-        _isChatRoom = isChatroom;
+        _isChatRoom = NO;
         
         //根据接收者的username获取当前会话的管理者
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:chatter];
@@ -68,12 +69,21 @@
     return self;
 }
 
+- (instancetype)initWithGroup:(EMRoom *)chatGroup
+{
+    self = [self initWithChatter:chatGroup.roomName];
+    if (self) {
+        // Custom initialization
+        _isChatRoom = YES;
+        _chatGroup = chatGroup;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = self.conversation.chatter;
     self.view.backgroundColor = [UIColor lightGrayColor];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         self.edgesForExtendedLayout =  UIRectEdgeNone;
@@ -118,8 +128,6 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:clearButton];
     }
 }
-
-
 
 - (void)didReceiveMemoryWarning
 {
