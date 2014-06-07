@@ -274,6 +274,21 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"username":username, @"applyMessage":message, @"acceptState":@NO}];
     [_contactsVC.applysArray addObject:dic];
+    
+#if !TARGET_IPHONE_SIMULATOR
+    [self playSoundAndVibration];
+    
+    BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
+    if (!isAppActivity) {
+        //发送本地推送
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        notification.fireDate = [NSDate date]; //触发通知的时间
+        notification.alertBody = [NSString stringWithFormat:@"%@ %@", username, @"添加你为好友"];
+        notification.alertAction = @"打开";
+        notification.timeZone = [NSTimeZone defaultTimeZone];
+    }
+#endif
+    
     [_contactsVC reloadApplyView];
 }
 
