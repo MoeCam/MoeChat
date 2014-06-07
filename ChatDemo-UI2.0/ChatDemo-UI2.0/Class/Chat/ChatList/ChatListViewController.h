@@ -11,6 +11,8 @@
 
 @interface ChatListViewController : BaseViewController
 
--(void)refreshDataSource;
+- (void)refreshDataSource;
+
+- (void)networkChanged:(EMConnectionState)connectionState;
 
 @end

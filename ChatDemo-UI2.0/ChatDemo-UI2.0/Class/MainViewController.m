@@ -330,4 +330,9 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     } onQueue:nil];
 }
 
+- (void)didConnectionStateChanged:(EMConnectionState)connectionState
+{
+    [_chatListVC networkChanged:connectionState];
+}
+
 @end
