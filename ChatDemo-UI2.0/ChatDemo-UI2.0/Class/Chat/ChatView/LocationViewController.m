@@ -121,10 +121,10 @@ static LocationViewController *defaultLocation = nil;
         if (!error && array.count > 0) {
             CLPlacemark *placemark = [array objectAtIndex:0];
             _addressString = placemark.name;
+            
+            [self removeToLocation:userLocation.coordinate];
         }
     }];
-    
-    [self removeToLocation:userLocation.coordinate];
 }
 
 - (void)mapView:(MKMapView *)mapView didFailToLocateUserWithError:(NSError *)error

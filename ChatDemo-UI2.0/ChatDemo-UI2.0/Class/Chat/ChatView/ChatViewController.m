@@ -429,11 +429,6 @@
     } onQueue:nil];
 }
 
-- (void)chatVideoCellBubblePressed:(EMMessageModel *)message
-{
-    
-}
-
 #pragma mark - IChatManagerDelegate
 
 -(void)didSendMessage:(EMMessage *)message error:(EMError *)error;
