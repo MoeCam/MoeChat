@@ -7,8 +7,10 @@
 //
 
 #import "AddFriendViewController.h"
-
+#import "UIViewController+HUD.h"
 #import "AddFriendCell.h"
+#import "EaseMob.h"
+#import "WCAlertView.h"
 
 @interface AddFriendViewController ()<UITextFieldDelegate, UIAlertViewDelegate>
 
@@ -150,10 +152,22 @@
     NSString *buddyName = [self.dataSource objectAtIndex:indexPath.row];
     if ([self didBuddyExist:buddyName]) {
         NSString *message = [NSString stringWithFormat:@"'%@'已经是你的好友了!", buddyName];
-        TTAlertNoTitle(message);
+        [WCAlertView showAlertWithTitle:message
+                                message:nil
+                     customizationBlock:nil
+                        completionBlock:nil
+                      cancelButtonTitle:@"确定"
+                      otherButtonTitles: nil];
+        
     }else if([self hasSendBuddyRequest:buddyName]){
         NSString *message = [NSString stringWithFormat:@"您已向'%@'发送好友请求了!", buddyName];
-        TTAlertNoTitle(message);
+        [WCAlertView showAlertWithTitle:message
+                                message:nil
+                     customizationBlock:nil
+                        completionBlock:nil
+                      cancelButtonTitle:@"确定"
+                      otherButtonTitles: nil];
+
     }else{
         [self showMessageAlertView];
     }

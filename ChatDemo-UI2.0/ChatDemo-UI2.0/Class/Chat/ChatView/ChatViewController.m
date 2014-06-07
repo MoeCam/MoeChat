@@ -19,7 +19,8 @@
 #import "EMMessageModelManager.h"
 #import "LocationViewController.h"
 #import "ChatRoomDetailViewController.h"
-
+#import "UIViewController+HUD.h"
+#import "WCAlertView.h"
 #import "NSDate+Category.h"
 #import "DXMessageToolBar.h"
 

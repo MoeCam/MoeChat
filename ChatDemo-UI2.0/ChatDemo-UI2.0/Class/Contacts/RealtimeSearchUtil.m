@@ -81,7 +81,11 @@ static RealtimeSearchUtil *defaultUtil = nil;
                 if (_selector) {
                     if([object respondsToSelector:_selector])
                     {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
                         tmpString = [[object performSelector:_selector] lowercaseString];
+#pragma clang diagnostic pop
+                        
                     }
                 }
                 else if ([object isKindOfClass:[NSString class]])
