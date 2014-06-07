@@ -190,7 +190,6 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
         [self showNotificationWithMessage:message];
     }
 #endif
-    
 }
 
 - (void)playSoundAndVibration{
@@ -276,7 +275,10 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [_contactsVC reloadDataSource];
 }
 
-- (void)didRemovedByBuddy:(NSString *)username{
+- (void)didRemovedByBuddy:(NSString *)username
+{
+    [[EaseMob sharedInstance].chatManager removeConversationByChatter:username deleteMessages:YES];
+    [_chatListVC refreshDataSource];
     [_contactsVC reloadDataSource];
 }
 

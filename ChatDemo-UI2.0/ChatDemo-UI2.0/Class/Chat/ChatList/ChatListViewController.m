@@ -295,9 +295,7 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         EMConversation *converation = [self.dataSource objectAtIndex:indexPath.row];
-        [[EaseMob sharedInstance].chatManager
-         removeConversationByChatter:converation.chatter
-         deleteMessages:NO];
+        [[EaseMob sharedInstance].chatManager removeConversationByChatter:converation.chatter deleteMessages:NO];
         [self.dataSource removeObjectAtIndex:indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -368,7 +366,6 @@
 {
     [self refreshDataSource];
 }
-
 
 #pragma mark - registerNotifications
 -(void)registerNotifications{

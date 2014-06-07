@@ -11,4 +11,6 @@
 
 @interface ChatListViewController : BaseViewController
 
+-(void)refreshDataSource;
+
 @end
