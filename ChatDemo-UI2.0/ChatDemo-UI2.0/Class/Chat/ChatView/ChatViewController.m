@@ -388,21 +388,20 @@
 -(void)chatAudioCellBubblePressed:(EMMessageModel *)message
 {
     if (message.isPlayed == NO) {
+        EMMessage *chatMessage = [_conversation loadMessage:message.messageId];
         for (int i = 0; i < _dataSource.count; i ++) {
             if ([_dataSource objectAtIndex:i] == message) {
                 message.isPlayed = YES;
                 [_dataSource replaceObjectAtIndex:i withObject:message];
-                
-                EMMessage *chatMessage = [_conversation loadMessage:message.messageId];
                 if (chatMessage.ext) {
                     NSMutableDictionary *dict = [chatMessage.ext mutableCopy];
                     if (![[dict objectForKey:@"isPlayed"] boolValue]) {
                         [dict setObject:@YES forKey:@"isPlayed"];
                         chatMessage.ext = dict;
                         [[EaseMob sharedInstance].chatManager saveMessage:chatMessage];
+                        break;
                     }
                 }
-                
             }
         }
     }
