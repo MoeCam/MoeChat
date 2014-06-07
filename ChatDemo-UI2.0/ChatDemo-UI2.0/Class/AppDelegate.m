@@ -10,6 +10,7 @@
 #import "MainViewController.h"
 #import "LoginViewController.h"
 #import "MobClick.h"
+#import "EaseMob.h"
 
 @implementation AppDelegate
 

@@ -14,6 +14,8 @@
 #import "ChatViewController.h"
 #import "CreateChatRoomViewController.h"
 #import "RealtimeSearchUtil.h"
+#import "EaseMob.h"
+#import "UIViewController+HUD.h"
 
 @interface ChatRoomViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, IChatManagerDelegate>
 

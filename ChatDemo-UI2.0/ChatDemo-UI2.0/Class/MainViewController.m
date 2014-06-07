@@ -10,6 +10,7 @@
 #import "ChatListViewController.h"
 #import "ContactsViewController.h"
 #import "SettingsViewController.h"
+#import "EaseMob.h"
 
 //两次提示的默认间隔
 const CGFloat kDefaultPlaySoundInterval = 3.0;
