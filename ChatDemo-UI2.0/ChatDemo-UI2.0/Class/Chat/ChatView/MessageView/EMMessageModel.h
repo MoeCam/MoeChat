@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EaseMob.h"
 
 #define KFIRETIME 20
 

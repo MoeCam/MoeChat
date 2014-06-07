@@ -141,6 +141,18 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
             [self stopAudioAnimation];
         }
     }
+    
+    if (object == _model && _model.type == eMessageBodyType_Voice && [keyPath isEqualToString:@"isPlayed"])
+    {
+        BOOL isPlayed = [[change objectForKey:NSKeyValueChangeNewKey] boolValue];
+        if (isPlayed) {
+            [_isReadView setHidden:YES];
+        }
+        else{
+            [_isReadView setHidden:NO];
+        }
+    }
+
 }
 
 #pragma mark - public

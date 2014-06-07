@@ -387,7 +387,9 @@
 // 语音的bubble被点击
 -(void)chatAudioCellBubblePressed:(EMMessageModel *)message
 {
+    // 修改isRead状态
     if (message.isPlayed == NO) {
+        message.isPlayed = YES;
         EMMessage *chatMessage = [_conversation loadMessage:message.messageId];
         for (int i = 0; i < _dataSource.count; i ++) {
             if ([_dataSource objectAtIndex:i] == message) {
@@ -404,7 +406,10 @@
                 }
             }
         }
+        
     }
+    
+    // 播放音频
     if (message.type == eMessageBodyType_Voice) {
         [self.messageReadManager startMessageAudio:message
                                            chatter:_conversation.chatter
@@ -468,9 +473,9 @@
                             [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                             [weakSelf.tableView endUpdates];
                             
-//                            [weakSelf.tableView reloadData];
+                            //                            [weakSelf.tableView reloadData];
                         });
-
+                        
                         break;
                     }
                 }
@@ -760,9 +765,9 @@
             [weakSelf.dataSource addObjectsFromArray:messages];
             [weakSelf.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
             [weakSelf.tableView endUpdates];
-        
-//            [weakSelf.tableView reloadData];
-        
+            
+            //            [weakSelf.tableView reloadData];
+            
             [weakSelf.tableView scrollToRowAtIndexPath:[indexPaths lastObject] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
         });
     });

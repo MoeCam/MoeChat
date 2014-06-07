@@ -40,6 +40,16 @@
     }
 }
 
+- (void)setIsPlayed:(BOOL)isPlayed
+{
+    if (_isPlayed != isPlayed) {
+        _isPlayed = isPlayed;
+        if (self.type == eMessageBodyType_Voice && [self observeKeyPath:@"isPlayed"]) {
+            [self setValue:[NSNumber numberWithInteger:isPlayed] forKeyPath:@"isPlayed"];
+        }
+    }
+}
+
 #pragma mark - public
 
 - (BOOL)observeKeyPath:(NSString *)keyPath
