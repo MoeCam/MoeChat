@@ -65,7 +65,7 @@
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:chatter];
         
         //通过会话管理者获取已收发消息
-         NSArray *chats = [_conversation loadNumbersOfMessages:10 before:[_conversation latestMessage].timestamp + 1];
+        NSArray *chats = [_conversation loadNumbersOfMessages:10 before:[_conversation latestMessage].timestamp + 1];
         [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
     }
     return self;
@@ -387,19 +387,38 @@
 // 语音的bubble被点击
 -(void)chatAudioCellBubblePressed:(EMMessageModel *)message
 {
+    if (message.isPlayed == NO) {
+        for (int i = 0; i < _dataSource.count; i ++) {
+            if ([_dataSource objectAtIndex:i] == message) {
+                message.isPlayed = YES;
+                [_dataSource replaceObjectAtIndex:i withObject:message];
+                
+                EMMessage *chatMessage = [_conversation loadMessage:message.messageId];
+                if (chatMessage.ext) {
+                    NSMutableDictionary *dict = [chatMessage.ext mutableCopy];
+                    if (![[dict objectForKey:@"isPlayed"] boolValue]) {
+                        [dict setObject:@YES forKey:@"isPlayed"];
+                        chatMessage.ext = dict;
+                        [[EaseMob sharedInstance].chatManager saveMessage:chatMessage];
+                    }
+                }
+                
+            }
+        }
+    }
     if (message.type == eMessageBodyType_Voice) {
         [self.messageReadManager startMessageAudio:message
                                            chatter:_conversation.chatter
                                          playBlock:^(BOOL playing) {
-            if(playing){
-                [[EaseMob sharedInstance].chatManager asyncPlayAudio:message.chatVoice completion:^(EMError *error) {
-                    [self.messageReadManager stopMessageAudio];
-                } onQueue:nil];
-            }
-            else{
-                [[EaseMob sharedInstance].chatManager stopPlayingAudio];
-            }
-        }];
+                                             if(playing){
+                                                 [[EaseMob sharedInstance].chatManager asyncPlayAudio:message.chatVoice completion:^(EMError *error) {
+                                                     [self.messageReadManager stopMessageAudio];
+                                                 } onQueue:nil];
+                                             }
+                                             else{
+                                                 [[EaseMob sharedInstance].chatManager stopPlayingAudio];
+                                             }
+                                         }];
     }
 }
 

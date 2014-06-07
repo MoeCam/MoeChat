@@ -142,17 +142,6 @@ static EMMessageManager *detailInstance = nil;
                 playBlock:(PlayBlock)block
 {
     BOOL isPlay = NO;
-    EMConversation *conversation = [[EaseMob sharedInstance].chatManager
-                                    conversationForChatter:chatter];
-    EMMessage *chatMessage = [conversation loadMessage:message.messageId];
-    if (chatMessage.ext) {
-        NSMutableDictionary *dict = [chatMessage.ext mutableCopy];
-        if (![[dict objectForKey:@"isPlayed"] boolValue]) {
-            [dict setObject:@YES forKey:@"isPlayed"];
-            chatMessage.ext = dict;
-            [[EaseMob sharedInstance].chatManager saveMessage:chatMessage];
-        }
-    }
     
     if(message.type == eMessageBodyType_Voice)
     {
