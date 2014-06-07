@@ -109,9 +109,7 @@
          ^(NSDictionary *loginInfo, EMError *error) {
              [self hideHud];
              if (loginInfo && !error) {
-                 [[NSNotificationCenter defaultCenter]postNotificationName:KNOTIFICATION_LOGINCHANGE
-                                                                    object:nil
-                                                                  userInfo:nil];
+                 [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
              }else {
                  switch (error.errorCode) {
                      case EMErrorServerNotReached:

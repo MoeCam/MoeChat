@@ -14,7 +14,7 @@
 //两次提示的默认间隔
 const CGFloat kDefaultPlaySoundInterval = 3.0;
 
-@interface MainViewController () <IChatManagerDelegate>
+@interface MainViewController () <UIAlertViewDelegate, IChatManagerDelegate>
 {
     ChatListViewController *_chatListVC;
     ContactsViewController *_contactsVC;
@@ -84,6 +84,15 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     }else if (item.tag == 2){
         self.title = @"设置";
         self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 100) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
     }
 }
 
@@ -293,5 +302,16 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 }
 
 #pragma mark - IChatManagerDelegate 群组变化
+
+#pragma mark - IChatManagerDelegate 登录状态变化
+
+- (void)didLoginFromOtherDevice
+{
+    [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的账号已在其他地方登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        alertView.tag = 100;
+        [alertView show];
+    } onQueue:nil];
+}
 
 @end

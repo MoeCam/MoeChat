@@ -90,7 +90,12 @@
     NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
     UINavigationController *nav = nil;
     
-    if (loginInfo && [loginInfo count] > 0) {
+    BOOL isLogin = loginInfo && [loginInfo count] > 0;
+    if (notification.object) {
+        isLogin = [notification.object boolValue] && isLogin;
+    }
+    
+    if (isLogin) {
         MainViewController *mainVC = [[MainViewController alloc] init];
         nav = [[UINavigationController alloc] initWithRootViewController:mainVC];
     }
