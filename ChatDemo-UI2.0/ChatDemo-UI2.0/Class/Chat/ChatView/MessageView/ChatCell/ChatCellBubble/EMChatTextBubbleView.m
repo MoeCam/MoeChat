@@ -78,19 +78,16 @@ NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTap
 
 #pragma mark - public
 
-//-(void)bubbleViewPressed:(id)sender
-//{
-//    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithCapacity:0];
-//    [userInfo setObject:self.model forKey:KMESSAGEKEY];
-//    [self routerEventWithName:kRouterEventTextBubbleTapEventName userInfo:userInfo];
-//}
-
-
 +(CGFloat)heightForBubbleWithObject:(EMMessageModel *)object
 {
     CGSize textBlockMinSize = {TEXTLABEL_MAX_WIDTH, CGFLOAT_MAX};
     CGSize size;
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+    static float systemVersion;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        systemVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+    });
+    if (systemVersion >= 7.0) {
         size = [object.content boundingRectWithSize:textBlockMinSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[self textLabelFont]} context:nil].size;
     }else{
         size = [object.content sizeWithFont:[self textLabelFont] constrainedToSize:textBlockMinSize lineBreakMode:[self textLabelLineBreakModel]];

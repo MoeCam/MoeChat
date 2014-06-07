@@ -32,6 +32,8 @@
     
     BOOL _isRecording;
     NSInteger _recordingCount;
+    
+    dispatch_queue_t _messageQueue;
 }
 
 @property (nonatomic) BOOL isChatRoom;
@@ -89,6 +91,8 @@
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
     [self setupBarButtonItem];
+    
+    _messageQueue = dispatch_queue_create("easemob.com", NULL);
     
 #warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
@@ -434,29 +438,32 @@
 
 -(void)didSendMessage:(EMMessage *)message error:(EMError *)error;
 {
-    if ([_conversation.chatter isEqualToString:message.conversation.chatter])
-    {
-        NSIndexPath *indexPath = nil;
-        for (int i = 0; i < self.dataSource.count; i ++) {
-            id object = [self.dataSource objectAtIndex:i];
-            if ([object isKindOfClass:[EMMessageModel class]]) {
-                EMMessage *currMsg = [self.dataSource objectAtIndex:i];
-                if ([message.messageId isEqualToString:currMsg.messageId]) {
-                    EMMessageModel *cellModel = [EMMessageModelManager modelWithMessage:message];
-                    
-                    [self.dataSource replaceObjectAtIndex:i withObject:cellModel];
-                    indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-                    break;
+    __weak ChatViewController *weakSelf = self;
+    dispatch_async(_messageQueue, ^{
+        if ([_conversation.chatter isEqualToString:message.conversation.chatter])
+        {
+            for (int i = 0; i < weakSelf.dataSource.count; i ++) {
+                id object = [weakSelf.dataSource objectAtIndex:i];
+                if ([object isKindOfClass:[EMMessageModel class]]) {
+                    EMMessage *currMsg = [weakSelf.dataSource objectAtIndex:i];
+                    if ([message.messageId isEqualToString:currMsg.messageId]) {
+                        EMMessageModel *cellModel = [EMMessageModelManager modelWithMessage:message];
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [weakSelf.tableView beginUpdates];
+                            [weakSelf.dataSource replaceObjectAtIndex:i withObject:cellModel];
+                            [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                            [weakSelf.tableView endUpdates];
+                            
+//                            [weakSelf.tableView reloadData];
+                        });
+
+                        break;
+                    }
                 }
             }
         }
-        
-        if (indexPath) {
-            [self.tableView beginUpdates];
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self.tableView endUpdates];
-        }
-    }
+    });
 }
 
 -(void)didReceiveMessage:(EMMessage *)message
@@ -725,29 +732,35 @@
 
 -(void)addChatDataToMessage:(EMMessage *)message
 {
-    NSArray *messages = [self addChatToMessage:message];
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < messages.count; i++) {
-        [self.dataSource addObject:[messages objectAtIndex:i]];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(self.dataSource.count - 1) inSection:0];
-        [indexPaths addObject:indexPath];
-    }
-    [self.tableView beginUpdates];
-    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
-    
-    [self performSelector:@selector(scrollViewToBottom:) withObject:nil afterDelay:0.1];
+    __weak ChatViewController *weakSelf = self;
+    dispatch_async(_messageQueue, ^{
+        NSArray *messages = [weakSelf addChatToMessage:message];
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        
+        for (int i = 0; i < messages.count; i++) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:weakSelf.dataSource.count+i inSection:0];
+            [indexPaths addObject:indexPath];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView beginUpdates];
+            [weakSelf.dataSource addObjectsFromArray:messages];
+            [weakSelf.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+            [weakSelf.tableView endUpdates];
+        
+//            [weakSelf.tableView reloadData];
+        
+            [weakSelf.tableView scrollToRowAtIndexPath:[indexPaths lastObject] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        });
+    });
 }
 
 - (void)scrollViewToBottom:(BOOL)animated
 {
     if (self.dataSource.count > 0) {
-        NSIndexPath *indexPath = [NSIndexPath
-                                  indexPathForRow:(self.dataSource.count - 1)
-                                  inSection:0];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(self.dataSource.count - 1) inSection:0];
         
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
 }
 

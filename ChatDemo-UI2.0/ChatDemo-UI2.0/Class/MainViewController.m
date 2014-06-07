@@ -193,7 +193,6 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     
 }
 
-
 - (void)playSoundAndVibration{
     
     //如果距离上次响铃和震动时间太短, 则跳过响铃
