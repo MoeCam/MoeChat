@@ -1,26 +1,26 @@
 //
-//  ChatRoomDetailViewController.m
+//  ChatGroupDetailViewController.m
 //  ChatDemo-UI2.0
 //
 //  Created by dhcdht on 14-5-31.
 //  Copyright (c) 2014年 dhcdht. All rights reserved.
 //
 
-#import "ChatRoomDetailViewController.h"
+#import "ChatGroupDetailViewController.h"
 
 #import "ContactSelectionViewController.h"
 
-#pragma mark - ChatRoomContactView
+#pragma mark - ChatGroupContactView
 
-@implementation ChatRoomContactView
+@implementation ChatGroupContactView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_imageView.frame) - 8, 3, 15, 15)];
+        _deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_imageView.frame) - 5, 3, 15, 15)];
         [_deleteButton addTarget:self action:@selector(deleteAction) forControlEvents:UIControlEventTouchUpInside];
-        [_deleteButton setImage:[UIImage imageNamed:@"chatroom_invitee_delete"] forState:UIControlStateNormal];
+        [_deleteButton setImage:[UIImage imageNamed:@"chatgroup_invitee_delete"] forState:UIControlStateNormal];
         _deleteButton.hidden = YES;
         [self addSubview:_deleteButton];
     }
@@ -45,14 +45,14 @@
 
 @end
 
-#pragma mark - ChatRoomDetailViewController
+#pragma mark - ChatGroupDetailViewController
 
 #define kColOfRow 5
 #define kContactSize 60
 
-@interface ChatRoomDetailViewController ()
+@interface ChatGroupDetailViewController ()
 
-@property (nonatomic) BOOL isAdmin;
+@property (nonatomic) GroupMemberType memberType;
 @property (strong, nonatomic) EMGroup *chatGroup;
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
@@ -66,7 +66,7 @@
 
 @end
 
-@implementation ChatRoomDetailViewController
+@implementation ChatGroupDetailViewController
 
 - (instancetype)initWithGroup:(EMGroup *)chatGroup
 {
@@ -76,10 +76,24 @@
         _chatGroup = chatGroup;
         _dataSource = [NSMutableArray array];
         
-        _isAdmin = NO;
-//        for (EMBuddy *buddy in _chatRoom.admins) {
-//            <#statements#>
-//        }
+        _memberType = GroupMemberTypeNormal;
+        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+        for (NSString *str in _chatGroup.owners) {
+            if ([str isEqualToString:loginUsername]) {
+                _memberType = GroupMemberTypeOwner;
+                break;
+            }
+        }
+        
+        if (_memberType == GroupMemberTypeNormal) {
+            for (NSString *str in _chatGroup.admins) {
+                if ([str isEqualToString:loginUsername]) {
+                    _memberType = GroupMemberTypeAdmin;
+                    break;
+                }
+            }
+        }
     }
     return self;
 }
@@ -119,12 +133,12 @@
         _scrollView.tag = 0;
         
         _addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kContactSize - 10, kContactSize - 10)];
-        [_addButton setImage:[UIImage imageNamed:@"chatroom_participant_add"] forState:UIControlStateNormal];
-        [_addButton setImage:[UIImage imageNamed:@"chatroom_participant_addHL"] forState:UIControlStateHighlighted];
+        [_addButton setImage:[UIImage imageNamed:@"chatgroup_participant_add"] forState:UIControlStateNormal];
+        [_addButton setImage:[UIImage imageNamed:@"chatgroup_participant_addHL"] forState:UIControlStateHighlighted];
         [_addButton addTarget:self action:@selector(addContact:) forControlEvents:UIControlEventTouchUpInside];
         [_scrollView addSubview:_addButton];
         
-        if (_isAdmin) {
+        if (_memberType != GroupMemberTypeNormal) {
             UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deleteContactBegin:)];
             longPress.minimumPressDuration = 0.5;
             [_scrollView addGestureRecognizer:longPress];
@@ -187,7 +201,7 @@
         self.clearButton.frame = CGRectMake(20, 40, _footerView.frame.size.width - 40, 35);
         [_footerView addSubview:self.clearButton];
         
-        if (_isAdmin) {
+        if (_memberType != GroupMemberTypeNormal) {
             self.dissolveButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 20, _footerView.frame.size.width - 40, 35);
             [_footerView addSubview:self.dissolveButton];
         }
@@ -245,6 +259,8 @@
 - (void)loadDataSource
 {
     [self.dataSource removeAllObjects];
+    [self.dataSource addObjectsFromArray:_chatGroup.owners];
+    [self.dataSource addObjectsFromArray:_chatGroup.admins];
     [self.dataSource addObjectsFromArray:_chatGroup.members];
     [self refreshScrollView];
 }
@@ -271,12 +287,12 @@
         for (j = 0; j < kColOfRow; j++) {
             NSInteger index = i * kColOfRow + j;
             if (index < [self.dataSource count]) {
-                EMBuddy *buddy = [self.dataSource objectAtIndex:index];
-                ChatRoomContactView *contactView = [[ChatRoomContactView alloc] initWithFrame:CGRectMake(j * kContactSize, i * kContactSize, kContactSize, kContactSize)];
+                NSString *username = [self.dataSource objectAtIndex:index];
+                ChatGroupContactView *contactView = [[ChatGroupContactView alloc] initWithFrame:CGRectMake(j * kContactSize, i * kContactSize, kContactSize, kContactSize)];
                 contactView.index = i * kColOfRow + j;
                 contactView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-                contactView.remark = buddy.username;
-                if (![buddy.username isEqualToString:loginUsername]) {
+                contactView.remark = username;
+                if (![username isEqualToString:loginUsername]) {
                     contactView.editing = isEditing;
                 }
                 
@@ -289,7 +305,7 @@
                 [self.scrollView addSubview:contactView];
             }
             else{
-                if(_isAdmin && index == self.dataSource.count)
+                if(_memberType != GroupMemberTypeNormal && index == self.dataSource.count)
                 {
                     self.addButton.frame = CGRectMake(j * kContactSize + 5, i * kContactSize + 10, kContactSize - 10, kContactSize - 10);
                     [self.scrollView addSubview:self.addButton];
@@ -334,11 +350,11 @@
     NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
     NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
     
-    for (ChatRoomContactView *contactView in self.scrollView.subviews)
+    for (ChatGroupContactView *contactView in self.scrollView.subviews)
     {
-        if ([contactView isKindOfClass:[ChatRoomContactView class]]) {
-            if (isEditing && [contactView.remark isEqualToString:loginUsername]) {
-                break;
+        if ([contactView isKindOfClass:[ChatGroupContactView class]]) {
+            if ([contactView.remark isEqualToString:loginUsername]) {
+                continue;
             }
             
             [contactView setEditing:isEditing];
@@ -377,7 +393,7 @@
 //退出群组
 - (void)exitAction
 {
-    
+    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId];
 }
 
 @end

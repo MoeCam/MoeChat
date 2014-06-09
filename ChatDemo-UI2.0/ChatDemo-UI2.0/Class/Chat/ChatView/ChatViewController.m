@@ -18,7 +18,7 @@
 #import "EMMessageManager.h"
 #import "EMMessageModelManager.h"
 #import "LocationViewController.h"
-#import "ChatRoomDetailViewController.h"
+#import "ChatGroupDetailViewController.h"
 #import "UIViewController+HUD.h"
 #import "WCAlertView.h"
 #import "NSDate+Category.h"
@@ -773,7 +773,7 @@
 {
     [self.view endEditing:YES];
     if (_isChatGroup && _chatGroup) {
-        ChatRoomDetailViewController *detailController = [[ChatRoomDetailViewController alloc] initWithGroup:_chatGroup];
+        ChatGroupDetailViewController *detailController = [[ChatGroupDetailViewController alloc] initWithGroup:_chatGroup];
         detailController.title = @"测试";
         [self.navigationController pushViewController:detailController animated:YES];
     }

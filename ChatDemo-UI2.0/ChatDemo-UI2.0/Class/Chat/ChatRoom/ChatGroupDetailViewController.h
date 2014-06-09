@@ -1,5 +1,5 @@
 //
-//  ChatRoomDetailViewController.h
+//  ChatGroupDetailViewController.h
 //  ChatDemo-UI2.0
 //
 //  Created by dhcdht on 14-5-31.
@@ -10,7 +10,7 @@
 
 #import "EMRemarkImageView.h"
 
-@interface ChatRoomContactView : EMRemarkImageView
+@interface ChatGroupContactView : EMRemarkImageView
 {
     UIButton *_deleteButton;
 }
@@ -19,7 +19,16 @@
 
 @end
 
-@interface ChatRoomDetailViewController : UITableViewController
+/**
+ *  群组成员类型
+ */
+typedef enum{
+    GroupMemberTypeOwner,//所有者
+    GroupMemberTypeAdmin,//管理员
+    GroupMemberTypeNormal,//普通
+}GroupMemberType;
+
+@interface ChatGroupDetailViewController : UITableViewController
 
 - (instancetype)initWithGroup:(EMGroup *)chatGroup;
 

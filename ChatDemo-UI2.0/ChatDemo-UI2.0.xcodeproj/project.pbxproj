@@ -18,6 +18,7 @@
 		3C6BBA0619419EBD00A64684 /* EMRemarkImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6BBA0519419EBD00A64684 /* EMRemarkImageView.m */; };
 		3C6BBA091941A58C00A64684 /* XHMessageTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6BBA081941A58C00A64684 /* XHMessageTextView.m */; };
 		3C6BBA0C1941A7CF00A64684 /* EMTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6BBA0B1941A7CF00A64684 /* EMTextView.m */; };
+		3C8F37DC1945595D00429EAC /* libEaseMobClientSDKLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C8F37DB1945595D00429EAC /* libEaseMobClientSDKLite.a */; };
 		3C9DDAB4193871D8007C765A /* EMSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9DDAB3193871D8007C765A /* EMSearchDisplayController.m */; };
 		3CB71390193A3B61008133A9 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CB7138F193A3B61008133A9 /* libMobClickLibrary.a */; };
 		3CBF90C019302F5000AD68AE /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBF90BF19302F5000AD68AE /* BaseViewController.m */; };
@@ -41,10 +42,10 @@
 		3CBF90E719302F6000AD68AE /* tabbarSelectBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CBF90D519302F6000AD68AE /* tabbarSelectBg@2x.png */; };
 		9003D8681939D8D000DC38A4 /* ChatListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7791939D8D000DC38A4 /* ChatListCell.m */; };
 		9003D8691939D8D000DC38A4 /* ChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D77B1939D8D000DC38A4 /* ChatListViewController.m */; };
-		9003D86A1939D8D000DC38A4 /* chatroom_invitee_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9003D77D1939D8D000DC38A4 /* chatroom_invitee_delete@2x.png */; };
-		9003D86B1939D8D000DC38A4 /* chatroom_participant_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9003D77E1939D8D000DC38A4 /* chatroom_participant_add@2x.png */; };
-		9003D86C1939D8D000DC38A4 /* chatroom_participant_addHL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9003D77F1939D8D000DC38A4 /* chatroom_participant_addHL@2x.png */; };
-		9003D86D1939D8D000DC38A4 /* ChatRoomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7811939D8D000DC38A4 /* ChatRoomDetailViewController.m */; };
+		9003D86A1939D8D000DC38A4 /* chatgroup_invitee_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9003D77D1939D8D000DC38A4 /* chatgroup_invitee_delete@2x.png */; };
+		9003D86B1939D8D000DC38A4 /* chatgroup_participant_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9003D77E1939D8D000DC38A4 /* chatgroup_participant_add@2x.png */; };
+		9003D86C1939D8D000DC38A4 /* chatgroup_participant_addHL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9003D77F1939D8D000DC38A4 /* chatgroup_participant_addHL@2x.png */; };
+		9003D86D1939D8D000DC38A4 /* ChatGroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7811939D8D000DC38A4 /* ChatGroupDetailViewController.m */; };
 		9003D86E1939D8D000DC38A4 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7861939D8D000DC38A4 /* ChatViewController.m */; };
 		9003D86F1939D8D000DC38A4 /* EMChatSendHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7881939D8D000DC38A4 /* EMChatSendHelper.m */; };
 		9003D8701939D8D000DC38A4 /* DXMessageToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D78B1939D8D000DC38A4 /* DXMessageToolBar.m */; };
@@ -328,6 +329,7 @@
 		3C6BBA081941A58C00A64684 /* XHMessageTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMessageTextView.m; sourceTree = "<group>"; };
 		3C6BBA0A1941A7CF00A64684 /* EMTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMTextView.h; sourceTree = "<group>"; };
 		3C6BBA0B1941A7CF00A64684 /* EMTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMTextView.m; sourceTree = "<group>"; };
+		3C8F37DB1945595D00429EAC /* libEaseMobClientSDKLite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseMobClientSDKLite.a; path = "../../../../Library/Developer/Xcode/DerivedData/sdk-eakerumhlgbzbbbehugmlifyazja/Build/Products/Debug-iphoneos/libEaseMobClientSDKLite.a"; sourceTree = "<group>"; };
 		3C9DDAB2193871D8007C765A /* EMSearchDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchDisplayController.h; sourceTree = "<group>"; };
 		3C9DDAB3193871D8007C765A /* EMSearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchDisplayController.m; sourceTree = "<group>"; };
 		3CB7138F193A3B61008133A9 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
@@ -355,11 +357,11 @@
 		9003D7791939D8D000DC38A4 /* ChatListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListCell.m; sourceTree = "<group>"; };
 		9003D77A1939D8D000DC38A4 /* ChatListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatListViewController.h; sourceTree = "<group>"; };
 		9003D77B1939D8D000DC38A4 /* ChatListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListViewController.m; sourceTree = "<group>"; };
-		9003D77D1939D8D000DC38A4 /* chatroom_invitee_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatroom_invitee_delete@2x.png"; sourceTree = "<group>"; };
-		9003D77E1939D8D000DC38A4 /* chatroom_participant_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatroom_participant_add@2x.png"; sourceTree = "<group>"; };
-		9003D77F1939D8D000DC38A4 /* chatroom_participant_addHL@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatroom_participant_addHL@2x.png"; sourceTree = "<group>"; };
-		9003D7801939D8D000DC38A4 /* ChatRoomDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatRoomDetailViewController.h; sourceTree = "<group>"; };
-		9003D7811939D8D000DC38A4 /* ChatRoomDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatRoomDetailViewController.m; sourceTree = "<group>"; };
+		9003D77D1939D8D000DC38A4 /* chatgroup_invitee_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatgroup_invitee_delete@2x.png"; sourceTree = "<group>"; };
+		9003D77E1939D8D000DC38A4 /* chatgroup_participant_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatgroup_participant_add@2x.png"; sourceTree = "<group>"; };
+		9003D77F1939D8D000DC38A4 /* chatgroup_participant_addHL@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatgroup_participant_addHL@2x.png"; sourceTree = "<group>"; };
+		9003D7801939D8D000DC38A4 /* ChatGroupDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatGroupDetailViewController.h; sourceTree = "<group>"; };
+		9003D7811939D8D000DC38A4 /* ChatGroupDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatGroupDetailViewController.m; sourceTree = "<group>"; };
 		9003D7851939D8D000DC38A4 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		9003D7861939D8D000DC38A4 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		9003D7871939D8D000DC38A4 /* EMChatSendHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatSendHelper.h; sourceTree = "<group>"; };
@@ -741,6 +743,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C8F37DC1945595D00429EAC /* libEaseMobClientSDKLite.a in Frameworks */,
 				3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */,
 				3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */,
 				902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */,
@@ -879,11 +882,11 @@
 		9003D77C1939D8D000DC38A4 /* ChatRoom */ = {
 			isa = PBXGroup;
 			children = (
-				9003D77D1939D8D000DC38A4 /* chatroom_invitee_delete@2x.png */,
-				9003D77E1939D8D000DC38A4 /* chatroom_participant_add@2x.png */,
-				9003D77F1939D8D000DC38A4 /* chatroom_participant_addHL@2x.png */,
-				9003D7801939D8D000DC38A4 /* ChatRoomDetailViewController.h */,
-				9003D7811939D8D000DC38A4 /* ChatRoomDetailViewController.m */,
+				9003D77D1939D8D000DC38A4 /* chatgroup_invitee_delete@2x.png */,
+				9003D77E1939D8D000DC38A4 /* chatgroup_participant_add@2x.png */,
+				9003D77F1939D8D000DC38A4 /* chatgroup_participant_addHL@2x.png */,
+				9003D7801939D8D000DC38A4 /* ChatGroupDetailViewController.h */,
+				9003D7811939D8D000DC38A4 /* ChatGroupDetailViewController.m */,
 			);
 			path = ChatRoom;
 			sourceTree = "<group>";
@@ -1415,6 +1418,7 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3C8F37DB1945595D00429EAC /* libEaseMobClientSDKLite.a */,
 				3C06AB0219405D330076FF0B /* MapKit.framework */,
 				3C06AAFE194050A00076FF0B /* CoreLocation.framework */,
 				902DEC541931D934006CA75E /* libresolv.dylib */,
@@ -1862,7 +1866,7 @@
 				9003D9041939D8D000DC38A4 /* EMChatToolBar.xib in Resources */,
 				9003D87F1939D8D000DC38A4 /* chatBar_more.png in Resources */,
 				9003D8C61939D8D000DC38A4 /* VoiceSearchFeedback011@2x.png in Resources */,
-				9003D86B1939D8D000DC38A4 /* chatroom_participant_add@2x.png in Resources */,
+				9003D86B1939D8D000DC38A4 /* chatgroup_participant_add@2x.png in Resources */,
 				90911032192EEA70008A48AA /* InfoPlist.strings in Resources */,
 				3CBF90D919302F6000AD68AE /* tabbar_chats@2x.png in Resources */,
 				3CBF90DD19302F6000AD68AE /* tabbar_contacts@2x.png in Resources */,
@@ -1929,11 +1933,11 @@
 				9003D8B11939D8D000DC38A4 /* VoiceSearchFeedback001.png in Resources */,
 				9003D8811939D8D000DC38A4 /* chatBar_moreSelected.png in Resources */,
 				9003D9011939D8D000DC38A4 /* chat_sender_bg.png in Resources */,
-				9003D86A1939D8D000DC38A4 /* chatroom_invitee_delete@2x.png in Resources */,
+				9003D86A1939D8D000DC38A4 /* chatgroup_invitee_delete@2x.png in Resources */,
 				9003D8DC1939D8D000DC38A4 /* chatBar_more_cardSelected@2x.png in Resources */,
 				9003D8E21939D8D000DC38A4 /* chatBar_textBg@2x.png in Resources */,
 				9003D8B01939D8D000DC38A4 /* chatFire_audioPlaying3@2x.png in Resources */,
-				9003D86C1939D8D000DC38A4 /* chatroom_participant_addHL@2x.png in Resources */,
+				9003D86C1939D8D000DC38A4 /* chatgroup_participant_addHL@2x.png in Resources */,
 				9003D8AC1939D8D000DC38A4 /* chatFire_audioPlaying1@2x.png in Resources */,
 				9003D8C91939D8D000DC38A4 /* VoiceSearchFeedback013.png in Resources */,
 				9003D8FD1939D8D000DC38A4 /* chat_sender_audio_playing_003.png in Resources */,
@@ -2011,7 +2015,7 @@
 				3C9DDAB4193871D8007C765A /* EMSearchDisplayController.m in Sources */,
 				9003D9141939D8D000DC38A4 /* AddFriendViewController.m in Sources */,
 				9003D9121939D8D000DC38A4 /* ContactsViewController.m in Sources */,
-				9003D86D1939D8D000DC38A4 /* ChatRoomDetailViewController.m in Sources */,
+				9003D86D1939D8D000DC38A4 /* ChatGroupDetailViewController.m in Sources */,
 				9003D8761939D8D000DC38A4 /* DXRecordView.m in Sources */,
 				9003D9151939D8D000DC38A4 /* ApplyFriendCell.m in Sources */,
 				9091110D192EEAED008A48AA /* SDWebImageDecoder.m in Sources */,
@@ -2202,6 +2206,7 @@
 					"/Users/dujiepeng/works/ChatDemoUI/sdkexamples-ios/EaseMobSDK/lib",
 					/Users/dhcdht/Desktop/Project/EaseMobSDK/lib,
 					"$(PROJECT_DIR)/ChatDemo-UI2.0/3rdparty",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/sdk-eakerumhlgbzbbbehugmlifyazja/Build/Products/Debug-iphoneos",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
@@ -2234,6 +2239,7 @@
 					"/Users/dujiepeng/works/ChatDemoUI/sdkexamples-ios/EaseMobSDK/lib",
 					/Users/dhcdht/Desktop/Project/EaseMobSDK/lib,
 					"$(PROJECT_DIR)/ChatDemo-UI2.0/3rdparty",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/sdk-eakerumhlgbzbbbehugmlifyazja/Build/Products/Debug-iphoneos",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

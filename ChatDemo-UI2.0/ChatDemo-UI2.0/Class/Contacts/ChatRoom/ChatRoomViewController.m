@@ -259,6 +259,11 @@
 
 #pragma mark - IChatManagerDelegate
 
+- (void)didFinishedJoiningAllGroups:(NSArray *)groups
+{
+    [self reloadDataSource];
+}
+
 - (void)group:(EMGroup *)group didJoinWithError:(EMError *)error
 {
     if (group && !error) {
