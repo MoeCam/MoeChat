@@ -14,7 +14,6 @@
 #import "ChatViewController.h"
 #import "CreateChatRoomViewController.h"
 #import "RealtimeSearchUtil.h"
-#import "EaseMob.h"
 #import "UIViewController+HUD.h"
 
 @interface ChatRoomViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, IChatManagerDelegate>
@@ -48,7 +47,7 @@
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createRoomSuccess:) name:@"CreateRoomSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createGroupSuccess:) name:@"CreateGroupSuccess" object:nil];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
@@ -113,9 +112,9 @@
                 cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             }
             
-            EMRoom *room = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            EMGroup *group = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
-            cell.textLabel.text = room.roomSubject;
+            cell.textLabel.text = group.groupSubject;
             
             return cell;
         }];
@@ -128,8 +127,8 @@
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [weakSelf.searchController.searchBar endEditing:YES];
             
-            EMRoom *room = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            ChatViewController *chatVC = [[ChatViewController alloc] initWithGroup:room];
+            EMGroup *group = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            ChatViewController *chatVC = [[ChatViewController alloc] initWithGroup:group];
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
         }];
     }
@@ -161,9 +160,9 @@
         cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    EMRoom *room = [self.dataSource objectAtIndex:indexPath.row];
+    EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
     cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
-    cell.textLabel.text = room.roomSubject;
+    cell.textLabel.text = group.groupSubject;
     
     return cell;
 }
@@ -183,10 +182,10 @@
         
         [self showHudInView:self.view hint:@"删除群组..."];
         EMError *error;
-        EMRoom *room = [self.dataSource objectAtIndex:indexPath.row];
-        EMRoom *deleteRoom = [[EaseMob sharedInstance].chatManager destroyChatroom:room.roomName error:&error];
+        EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
+        EMGroup *deleteGroup = [[EaseMob sharedInstance].chatManager destroyGroup:group.groupId error:&error];
         [self hideHud];
-        if (!error && deleteRoom) {
+        if (!error && deleteGroup) {
             [self.dataSource removeObjectAtIndex:indexPath.row];
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
@@ -212,9 +211,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    EMRoom *room = [self.dataSource objectAtIndex:indexPath.row];
-    ChatViewController *chatController = [[ChatViewController alloc] initWithGroup:room];
-    chatController.title = room.roomSubject;
+    EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
+    ChatViewController *chatController = [[ChatViewController alloc] initWithGroup:group];
+    chatController.title = group.groupSubject;
     [self.navigationController pushViewController:chatController animated:YES];
 }
 
@@ -229,7 +228,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(roomSubject) resultBlock:^(NSArray *results) {
+    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(groupSubject) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.searchController.resultsSource removeAllObjects];
@@ -260,37 +259,49 @@
 
 #pragma mark - IChatManagerDelegate
 
-- (void)room:(EMRoom *)room didJoinWithError:(EMError *)error
+- (void)group:(EMGroup *)group didJoinWithError:(EMError *)error
 {
-    if (room && !error) {
+    if (group && !error) {
         [self.tableView beginUpdates];
-        [self.dataSource insertObject:room atIndex:0];
+        [self.dataSource insertObject:group atIndex:0];
         [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
         [self.tableView endUpdates];
     }
 }
 
-- (void)room:(EMRoom *)room didDestroyWithError:(EMError *)error
+- (void)group:(EMGroup *)group didDestroyWithError:(EMError *)error
 {
     [self reloadDataSource];
 }
 
-- (void)didReceiveChatroomInvitationFrom:(NSString *)roomName
-                                 inviter:(NSString *)username
-                                 message:(NSString *)message
+- (void)group:(EMGroup *)group didLeave:(EMGroupLeaveReason)reason error:(EMError *)error
+{
+    [self reloadDataSource];
+}
+
+- (void)didReceiveGroupInvitationFrom:(NSString *)groupId
+                              inviter:(NSString *)username
+                              message:(NSString *)message
+{
+    
+}
+
+- (void)didReceiveGroupRejectFrom:(NSString *)groupId
+                          invitee:(NSString *)username
+                           reason:(NSString *)reason
 {
     
 }
 
 #pragma mark - notification
 
-- (void)createRoomSuccess:(NSNotification *)notification
+- (void)createGroupSuccess:(NSNotification *)notification
 {
     id object = notification.object;
-    if ([object isKindOfClass:[EMRoom class]]) {
-        EMRoom *room = (EMRoom *)object;
+    if ([object isKindOfClass:[EMGroup class]]) {
+        EMGroup *group = (EMGroup *)object;
         [self.tableView beginUpdates];
-        [self.dataSource insertObject:room atIndex:0];
+        [self.dataSource insertObject:group atIndex:0];
         [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
         [self.tableView endUpdates];
     }
@@ -302,7 +313,7 @@
 {
     [self.dataSource removeAllObjects];
     
-    NSArray *rooms = [[EaseMob sharedInstance].chatManager chatroomList];
+    NSArray *rooms = [[EaseMob sharedInstance].chatManager groupList];
     [self.dataSource addObjectsFromArray:rooms];
     
     [self.tableView reloadData];

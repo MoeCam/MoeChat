@@ -10,25 +10,66 @@
 
 @interface EMChatSendHelper : NSObject
 
+/**
+ *  发送文字消息（包括系统表情）
+ *
+ *  @param str               发送的文字
+ *  @param username          接收方
+ *  @param isChatGroup       是否是群聊
+ *  @param requireEncryption 是否加密
+ *
+ *  @return 封装的消息体
+ */
 +(EMMessage *)sendTextMessageWithString:(NSString *)str
                              toUsername:(NSString *)username
+                            isChatGroup:(BOOL)isChatGroup
                       requireEncryption:(BOOL)requireEncryption;
 
-// 发送图片
+/**
+ *  发送图片消息
+ *
+ *  @param image             发送的图片
+ *  @param username          接收方
+ *  @param isChatGroup       是否是群聊
+ *  @param requireEncryption 是否加密
+ *
+ *  @return 封装的消息体
+ */
 +(EMMessage *)sendImageMessageWithImage:(UIImage *)image
                              toUsername:(NSString *)username
+                            isChatGroup:(BOOL)isChatGroup
                       requireEncryption:(BOOL)requireEncryption;
 
-// 发送音频
+/**
+ *  发送音频消息
+ *
+ *  @param image             发送的音频
+ *  @param username          接收方
+ *  @param isChatGroup       是否是群聊
+ *  @param requireEncryption 是否加密
+ *
+ *  @return 封装的消息体
+ */
 +(EMMessage *)sendVoice:(EMChatVoice *)voice
              toUsername:(NSString *)username
+            isChatGroup:(BOOL)isChatGroup
       requireEncryption:(BOOL)requireEncryption;
 
-// 发送位置
+/**
+ *  发送位置消息（定位）
+ *
+ *  @param image             发送的位置
+ *  @param username          接收方
+ *  @param isChatGroup       是否是群聊
+ *  @param requireEncryption 是否加密
+ *
+ *  @return 封装的消息体
+ */
 +(EMMessage *)sendLocationLatitude:(double)latitude
                          longitude:(double)longitude
                            address:(NSString *)address
                         toUsername:(NSString *)username
+                        isChatGroup:(BOOL)isChatGroup
                  requireEncryption:(BOOL)requireEncryption;
 
 @end

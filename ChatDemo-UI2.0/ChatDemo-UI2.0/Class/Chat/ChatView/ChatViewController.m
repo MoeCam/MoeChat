@@ -37,8 +37,8 @@
     dispatch_queue_t _messageQueue;
 }
 
-@property (nonatomic) BOOL isChatRoom;
-@property (strong, nonatomic) EMRoom *chatGroup;
+@property (nonatomic) BOOL isChatGroup;
+@property (strong, nonatomic) EMGroup *chatGroup;
 
 @property (strong, nonatomic) NSMutableArray *dataSource;//tableView数据源
 @property (strong, nonatomic) SRRefreshView *slimeView;
@@ -60,7 +60,7 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization
-        _isChatRoom = NO;
+        _isChatGroup = NO;
         
         //根据接收者的username获取当前会话的管理者
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:chatter];
@@ -72,12 +72,12 @@
     return self;
 }
 
-- (instancetype)initWithGroup:(EMRoom *)chatGroup
+- (instancetype)initWithGroup:(EMGroup *)chatGroup
 {
-    self = [self initWithChatter:chatGroup.roomName];
+    self = [self initWithChatter:chatGroup.groupId];
     if (self) {
         // Custom initialization
-        _isChatRoom = YES;
+        _isChatGroup = YES;
         _chatGroup = chatGroup;
     }
     return self;
@@ -120,7 +120,7 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
     
-    if (_isChatRoom) {
+    if (_isChatGroup) {
         UIButton *detailButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
         [detailButton setImage:[UIImage imageNamed:@"chatroomDetail"] forState:UIControlStateNormal];
         [detailButton addTarget:self action:@selector(showRoomContact:) forControlEvents:UIControlEventTouchUpInside];
@@ -515,16 +515,10 @@
 
 #pragma mark - LocationViewDelegate
 
--(void)sendLocationLatitude:(double)latitude
-                  longitude:(double)longitude
-                 andAddress:(NSString *)address{
-    
-    EMMessage *tempMessage = [EMChatSendHelper sendLocationLatitude:latitude
-                                                          longitude:longitude
-                                                            address:address
-                                                         toUsername:_conversation.chatter
-                                                  requireEncryption:YES];
-    [self addChatDataToMessage:tempMessage];
+-(void)sendLocationLatitude:(double)latitude longitude:(double)longitude andAddress:(NSString *)address
+{
+    EMMessage *locationMessage = [EMChatSendHelper sendLocationLatitude:latitude longitude:longitude address:address toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
+    [self addChatDataToMessage:locationMessage];
 }
 
 #pragma mark - DXMessageToolBarDelegate
@@ -778,9 +772,11 @@
 - (void)showRoomContact:(id)sender
 {
     [self.view endEditing:YES];
-    ChatRoomDetailViewController *detailController = [[ChatRoomDetailViewController alloc] initWithRoom:nil];
-    detailController.title = @"测试";
-    [self.navigationController pushViewController:detailController animated:YES];
+    if (_isChatGroup && _chatGroup) {
+        ChatRoomDetailViewController *detailController = [[ChatRoomDetailViewController alloc] initWithGroup:_chatGroup];
+        detailController.title = @"测试";
+        [self.navigationController pushViewController:detailController animated:YES];
+    }
 }
 
 - (void)removeAllMessages:(id)sender
@@ -835,19 +831,19 @@
 
 -(void)sendTextMessage:(NSString *)textMessage
 {
-    EMMessage *tempMessage = [EMChatSendHelper sendTextMessageWithString:textMessage toUsername:_conversation.chatter requireEncryption:NO];
+    EMMessage *tempMessage = [EMChatSendHelper sendTextMessageWithString:textMessage toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
     [self addChatDataToMessage:tempMessage];
 }
 
 -(void)sendImageMessage:(UIImage *)imageMessage
 {
-    EMMessage *tempMessage = [EMChatSendHelper sendImageMessageWithImage:imageMessage toUsername:_conversation.chatter requireEncryption:NO];
+    EMMessage *tempMessage = [EMChatSendHelper sendImageMessageWithImage:imageMessage toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
     [self addChatDataToMessage:tempMessage];
 }
 
 -(void)sendAudioMessage:(EMChatVoice *)voice
 {
-    EMMessage *tempMessage = [EMChatSendHelper sendVoice:voice toUsername:_conversation.chatter requireEncryption:NO];
+    EMMessage *tempMessage = [EMChatSendHelper sendVoice:voice toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
     [self addChatDataToMessage:tempMessage];
 }
 

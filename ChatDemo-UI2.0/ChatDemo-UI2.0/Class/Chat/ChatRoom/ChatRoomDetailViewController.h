@@ -21,6 +21,6 @@
 
 @interface ChatRoomDetailViewController : UITableViewController
 
-- (instancetype)initWithRoom:(EMRoom *)chatRoom;
+- (instancetype)initWithGroup:(EMGroup *)chatGroup;
 
 @end

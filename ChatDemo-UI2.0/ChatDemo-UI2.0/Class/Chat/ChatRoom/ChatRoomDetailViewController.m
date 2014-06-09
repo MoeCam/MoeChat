@@ -53,7 +53,7 @@
 @interface ChatRoomDetailViewController ()
 
 @property (nonatomic) BOOL isAdmin;
-@property (strong, nonatomic) EMRoom *chatRoom;
+@property (strong, nonatomic) EMGroup *chatGroup;
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -68,12 +68,12 @@
 
 @implementation ChatRoomDetailViewController
 
-- (instancetype)initWithRoom:(EMRoom *)chatRoom
+- (instancetype)initWithGroup:(EMGroup *)chatGroup
 {
     self = [super init];
     if (self) {
         // Custom initialization
-        _chatRoom = chatRoom;
+        _chatGroup = chatGroup;
         _dataSource = [NSMutableArray array];
         
         _isAdmin = NO;
@@ -245,7 +245,7 @@
 - (void)loadDataSource
 {
     [self.dataSource removeAllObjects];
-    [self.dataSource addObjectsFromArray:_chatRoom.members];
+    [self.dataSource addObjectsFromArray:_chatGroup.members];
     [self refreshScrollView];
 }
 
@@ -357,17 +357,17 @@
 //清空聊天记录
 - (void)clearAction
 {
-    [[EaseMob sharedInstance].chatManager removeConversationByChatter:_chatRoom.roomName deleteMessages:YES];
+    [[EaseMob sharedInstance].chatManager removeConversationByChatter:_chatGroup.groupId deleteMessages:YES];
 }
 
 //解散群组
 - (void)dissolveAction
 {
     EMError *error;
-    EMRoom *deleteRoom = [[EaseMob sharedInstance].chatManager destroyChatroom:_chatRoom.roomName error:&error];
+    EMGroup *deleteGroup = [[EaseMob sharedInstance].chatManager destroyGroup:_chatGroup.groupId error:&error];
     [self hideHud];
-    if (!error && deleteRoom) {
-        [[EaseMob sharedInstance].chatManager removeConversationByChatter:deleteRoom.roomName deleteMessages:YES];
+    if (!error && deleteGroup) {
+        [[EaseMob sharedInstance].chatManager removeConversationByChatter:deleteGroup.groupId deleteMessages:YES];
     }
     else{
         [self showHint:@"解散群组失败"];

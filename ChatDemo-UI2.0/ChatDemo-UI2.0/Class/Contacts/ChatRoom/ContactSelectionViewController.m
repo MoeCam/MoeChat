@@ -340,11 +340,11 @@
             [source addObject:buddy.username];
         }
         
-        [[EaseMob sharedInstance].chatManager asyncCreateChatroomWithSubject:_groupName description:_groupBrief password:nil invitees:source initialWelcomeMessage:@"" completion:^(EMRoom *room, EMError *error) {
+        [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:_groupName description:_groupBrief password:nil invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
             [self hideHud];
-            if (room && !error) {
+            if (group && !error) {
                 [self showHint:@"创建群组成功"];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateRoomSuccess" object:room];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateGroupSuccess" object:group];
                 if (_CreateRoomFinished) {
                     _CreateRoomFinished(YES);
                 }
