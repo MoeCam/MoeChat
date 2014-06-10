@@ -21,6 +21,10 @@
     return self;
 }
 
+- (void)dealloc{
+    
+}
+
 - (void)finalize
 {
     [super finalize];
