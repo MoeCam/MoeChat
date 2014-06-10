@@ -296,10 +296,23 @@
                     contactView.editing = isEditing;
                 }
                 
+                __weak ChatGroupDetailViewController *weakSelf = self;
                 [contactView setDeleteContact:^(NSInteger index) {
-                    //to do 删除群组成员
-                    [self.dataSource removeObjectAtIndex:index];
-                    [self refreshScrollView];
+//                    [weakSelf showHudInView:weakSelf.view hint:@"正在删除成员..."];
+//                    EMError *error;
+//                    [_chatGroup kickOccupant:[weakSelf.dataSource objectAtIndex:index] error:&error];
+//                    [weakSelf hideHud];
+//                    if (!error) {
+//                        [weakSelf.dataSource removeObjectAtIndex:index];
+//                        [weakSelf refreshScrollView];
+//                    }
+//                    else{
+//                        [weakSelf showHint:@"删除成员失败"];
+//                    }
+                    
+                    [[EaseMob sharedInstance].chatManager asyncRemoveOccupant:[weakSelf.dataSource objectAtIndex:index] fromGroup:_chatGroup.groupId];
+                    [weakSelf.dataSource removeObjectAtIndex:index];
+                    [weakSelf refreshScrollView];
                 }];
                 
                 [self.scrollView addSubview:contactView];
@@ -373,27 +386,39 @@
 //清空聊天记录
 - (void)clearAction
 {
-    [[EaseMob sharedInstance].chatManager removeConversationByChatter:_chatGroup.groupId deleteMessages:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveAllMessages" object:_chatGroup.groupId];
 }
 
 //解散群组
 - (void)dissolveAction
 {
+    [self showHudInView:self.view hint:@"解散群组"];
     EMError *error;
-    EMGroup *deleteGroup = [[EaseMob sharedInstance].chatManager destroyGroup:_chatGroup.groupId error:&error];
+#warning [destroyGroup:error:]不会调用代理方法
+    EMGroup *group = [[EaseMob sharedInstance].chatManager destroyGroup:_chatGroup.groupId error:&error];
     [self hideHud];
-    if (!error && deleteGroup) {
-        [[EaseMob sharedInstance].chatManager removeConversationByChatter:deleteGroup.groupId deleteMessages:YES];
+    if (error && !group) {
+        [self showHint:@"解散群组失败"];
     }
     else{
-        [self showHint:@"解散群组失败"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroupSuccess" object:_chatGroup];
     }
 }
 
 //退出群组
 - (void)exitAction
 {
-    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId];
+    [self showHudInView:self.view hint:@"退出群组"];
+    EMError *error;
+#warning [destroyGroup:error:]不会调用代理方法
+    EMGroup *group = [[EaseMob sharedInstance].chatManager leaveGroup:_chatGroup.groupId error:&error];
+    [self hideHud];
+    if (error && !group) {
+        [self showHint:@"退出群组失败"];
+    }
+    else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroupSuccess" object:_chatGroup];
+    }
 }
 
 @end

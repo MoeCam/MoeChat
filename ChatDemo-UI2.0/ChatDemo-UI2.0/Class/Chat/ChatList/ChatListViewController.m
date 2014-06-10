@@ -298,9 +298,24 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     EMConversation *conversation = [self.dataSource objectAtIndex:indexPath.row];
-    ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:conversation.chatter];
-    chatVC.title = conversation.chatter;
-    [self.navigationController pushViewController:chatVC animated:YES];
+    
+    ChatViewController *chatController;
+    NSString *title = conversation.chatter;
+    if (conversation.isGroup) {
+        NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
+        for (EMGroup *group in groupArray) {
+            if ([group.groupId isEqualToString:conversation.chatter]) {
+                chatController = [[ChatViewController alloc] initWithGroup:group];
+                title = group.groupSubject;
+                break;
+            }
+        }
+    }
+    else{
+        chatController = [[ChatViewController alloc] initWithChatter:conversation.chatter];
+    }
+    chatController.title = title;
+    [self.navigationController pushViewController:chatController animated:YES];
 }
 
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{

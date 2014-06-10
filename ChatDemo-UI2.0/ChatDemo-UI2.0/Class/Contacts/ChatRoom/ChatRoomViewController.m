@@ -48,6 +48,7 @@
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createGroupSuccess:) name:@"CreateGroupSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitGroupSuccess:) name:@"ExitGroupSuccess" object:nil];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
@@ -167,34 +168,6 @@
     return cell;
 }
 
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        
-        [self showHudInView:self.view hint:@"删除群组..."];
-        EMError *error;
-        EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
-        EMGroup *deleteGroup = [[EaseMob sharedInstance].chatManager destroyGroup:group.groupId error:&error];
-        [self hideHud];
-        if (!error && deleteGroup) {
-            [self.dataSource removeObjectAtIndex:indexPath.row];
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-        else{
-            [self showHint:@"删除群组失败"];
-        }
-    }
-}
-
 #pragma mark - Table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -274,28 +247,19 @@
     }
 }
 
-- (void)group:(EMGroup *)group didDestroyWithError:(EMError *)error
+- (void)group:(EMGroup *)group didRemoveOccupant:(NSString *)username error:(EMError *)error
 {
-    [self reloadDataSource];
+    if (!error) {
+        [self reloadDataSource];
+    }
 }
 
 - (void)group:(EMGroup *)group didLeave:(EMGroupLeaveReason)reason error:(EMError *)error
 {
-    [self reloadDataSource];
-}
-
-- (void)didReceiveGroupInvitationFrom:(NSString *)groupId
-                              inviter:(NSString *)username
-                              message:(NSString *)message
-{
-    
-}
-
-- (void)didReceiveGroupRejectFrom:(NSString *)groupId
-                          invitee:(NSString *)username
-                           reason:(NSString *)reason
-{
-    
+    if (reason == eGroupLeaveReason_BeRemoved) {
+        NSString *str = [NSString stringWithFormat:@"你被从群组\'%@\'中踢出", group.groupId];
+        TTAlertNoTitle(str);
+    }
 }
 
 #pragma mark - notification
@@ -308,6 +272,20 @@
         [self.tableView beginUpdates];
         [self.dataSource insertObject:group atIndex:0];
         [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+        [self.tableView endUpdates];
+    }
+}
+
+- (void)exitGroupSuccess:(NSNotification *)notification
+{
+    id object = notification.object;
+    if ([object isKindOfClass:[EMGroup class]]) {
+        [self.navigationController popToViewController:self animated:YES];
+        EMGroup *group = (EMGroup *)object;
+        [self.tableView beginUpdates];
+        NSInteger row = [self.dataSource indexOfObject:group];
+        [self.dataSource removeObject:group];
+        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
         [self.tableView endUpdates];
     }
 }

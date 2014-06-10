@@ -30,6 +30,7 @@
 @property (strong, nonatomic) EMSearchBar *searchBar;
 @property (strong, nonatomic) SRRefreshView *slimeView;
 @property (strong, nonatomic) ApplyViewController *applyController;
+@property (strong, nonatomic) ChatRoomViewController *groupController;
 
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
 
@@ -358,8 +359,10 @@
         }
         else if (indexPath.row == 1)
         {
-            ChatRoomViewController *roomController = [[ChatRoomViewController alloc] initWithStyle:UITableViewStylePlain];
-            [self.navigationController pushViewController:roomController animated:YES];
+            if (_groupController == nil) {
+                _groupController = [[ChatRoomViewController alloc] initWithStyle:UITableViewStylePlain];
+            }
+            [self.navigationController pushViewController:_groupController animated:YES];
         }
     }
     else{
@@ -545,6 +548,15 @@
     if(_applyController)
     {
         [_applyController.tableView reloadData];
+    }
+}
+
+- (void)reloadGroupView
+{
+    [self reloadApplyView];
+    
+    if (_groupController) {
+        [_groupController reloadDataSource];
     }
 }
 

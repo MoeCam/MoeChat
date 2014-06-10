@@ -76,9 +76,15 @@
     NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
     if (dic) {
         cell.indexPath = indexPath;
-        cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-        cell.textLabel.text = [dic objectForKey:@"username"];
-//        cell.detailTextLabel.text = [dic objectForKey:@"applyMessage"];
+         cell.titleLabel.text = [dic objectForKey:@"title"];
+        BOOL isGroup = [[dic objectForKey:@"isGroup"] boolValue];
+        if (isGroup) {
+            cell.headerImageView.image = [UIImage imageNamed:@"groupHeader"];
+        }
+        else{
+            cell.headerImageView.image = [UIImage imageNamed:@"chatListCellHead"];
+        }
+        cell.contentLabel.text = [dic objectForKey:@"applyMessage"];
     }
     
     return cell;
@@ -95,7 +101,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50;
+    NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
+    return [ApplyFriendCell heightWithContent:[dic objectForKey:@"applyMessage"]];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -105,21 +112,32 @@
 
 #pragma mark - ApplyFriendCellDelegate
 
+- (void)removeDataFromDataSource:(NSDictionary *)dic
+{
+    [self.dataSource removeObject:dic];
+    [self.tableView reloadData];
+}
+
 - (void)applyCellAddFriendAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row < [self.dataSource count]) {
         [self showHudInView:self.view hint:@"正在发送申请..."];
         NSMutableDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
+        BOOL isGroup = [[dic objectForKey:@"isGroup"] boolValue];
         EMError *error;
-        [[EaseMob sharedInstance].chatManager acceptBuddyRequest:[dic objectForKey:@"username"] error:&error];
-        [self hideHud];
-        if (!error) {
-            [self.dataSource removeObject:dic];
-            [self.tableView reloadData];
-            [self showHint:@"添加好友成功"];
+        if (isGroup) {
+            [[EaseMob sharedInstance].chatManager acceptInvitationFromGroup:[dic objectForKey:@"id"] error:error];
         }
         else{
-            [self showHint:@"添加好友失败"];
+            [[EaseMob sharedInstance].chatManager acceptBuddyRequest:[dic objectForKey:@"username"] error:&error];
+        }
+        
+        [self hideHud];
+        if (!error) {
+            [self removeDataFromDataSource:dic];
+        }
+        else{
+            [self showHint:@"接受失败"];
         }
     }
 }
@@ -129,15 +147,21 @@
     if (indexPath.row < [self.dataSource count]) {
         [self showHudInView:self.view hint:@"正在发送申请..."];
         NSMutableDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
+        BOOL isGroup = [[dic objectForKey:@"isGroup"] boolValue];
         EMError *error;
-        [[EaseMob sharedInstance].chatManager rejectBuddyRequest:[dic objectForKey:@"username"] reason:@"" error:&error];
-        [self hideHud];
-        if (!error) {
-            [self.dataSource removeObject:dic];
-            [self.tableView reloadData];
+        if (isGroup) {
+            [[EaseMob sharedInstance].chatManager rejectInvitationForGroup:[dic objectForKey:@"id"] toInviter:[dic objectForKey:@"username"] reason:@""];
         }
         else{
-            [self showHint:@"拒绝申请失败"];
+            [[EaseMob sharedInstance].chatManager rejectBuddyRequest:[dic objectForKey:@"username"] reason:@"" error:&error];
+        }
+        
+        [self hideHud];
+        if (!error) {
+            [self removeDataFromDataSource:dic];
+        }
+        else{
+            [self showHint:@"拒绝失败"];
         }
     }
 }

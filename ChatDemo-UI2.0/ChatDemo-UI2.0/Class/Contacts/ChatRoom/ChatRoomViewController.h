@@ -10,4 +10,6 @@
 
 @interface ChatRoomViewController : UITableViewController
 
+- (void)reloadDataSource;
+
 @end

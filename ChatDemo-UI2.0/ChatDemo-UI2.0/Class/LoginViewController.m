@@ -92,6 +92,7 @@
                          TTAlertNoTitle(@"连接服务器超时!");
                          break;
                      default:
+                         TTAlertNoTitle(@"注册失败");
                          break;
                  }
              }
@@ -122,6 +123,7 @@
                          TTAlertNoTitle(@"连接服务器超时!");
                          break;
                      default:
+                         TTAlertNoTitle(@"登录失败");
                          break;
                  }
              }

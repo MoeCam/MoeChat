@@ -151,6 +151,7 @@
 {
     [super viewWillDisappear:animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllMessages:) name:@"RemoveAllMessages" object:nil];
     // 设置当前conversation的所有message为已读
     [_conversation markMessagesAsRead:YES];
     
@@ -167,6 +168,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 #warning 以下第一行代码必须写，将self从ChatManager的代理中移除
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
@@ -781,6 +783,13 @@
 
 - (void)removeAllMessages:(id)sender
 {
+    if ([sender isKindOfClass:[NSNotification class]]) {
+        NSString *groupId = (NSString *)[(NSNotification *)sender object];
+        if (!_isChatGroup || ![groupId isEqualToString:_conversation.chatter]) {
+            return;
+        }
+    }
+    
     [_conversation loadAllMessages];
     if (_conversation.messages.count == 0) {
         [self showHint:@"消息已经清空"];

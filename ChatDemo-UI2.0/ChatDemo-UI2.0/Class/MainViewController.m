@@ -273,7 +273,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     if (!message) {
         message = [NSString stringWithFormat:@"%@ 添加你为好友", username];
     }
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"username":username, @"applyMessage":message, @"acceptState":@NO}];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":username, @"username":username, @"applyMessage":message, @"acceptState":@NO, @"isGroup":@NO}];
     [_contactsVC.applysArray addObject:dic];
     
 #if !TARGET_IPHONE_SIMULATOR
@@ -318,6 +318,54 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 }
 
 #pragma mark - IChatManagerDelegate 群组变化
+
+- (void)didReceiveGroupInvitationFrom:(NSString *)groupId
+                              inviter:(NSString *)username
+                              message:(NSString *)message
+{
+    if (!groupId || !username) {
+        return;
+    }
+    
+    NSString *groupName = groupId;
+    NSArray *groupList = [[EaseMob sharedInstance].chatManager groupList];
+    for (EMGroup *group in groupList) {
+        if ([group.groupId isEqualToString:groupId]) {
+            groupName = group.groupSubject;
+            break;
+        }
+    }
+    
+    if (!message || message.length == 0) {
+        message = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, groupName];
+    }
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupName, @"id":groupId, @"username":username, @"applyMessage":message, @"acceptState":@NO, @"isGroup":@YES}];
+    [_contactsVC.applysArray addObject:dic];
+    
+#if !TARGET_IPHONE_SIMULATOR
+    [self playSoundAndVibration];
+    
+    BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
+    if (!isAppActivity) {
+        //发送本地推送
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        notification.fireDate = [NSDate date]; //触发通知的时间
+        notification.alertBody = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, groupName];
+        notification.alertAction = @"打开";
+        notification.timeZone = [NSTimeZone defaultTimeZone];
+    }
+#endif
+    
+    [_contactsVC reloadGroupView];
+}
+
+- (void)didReceiveGroupRejectFrom:(NSString *)groupId
+                          invitee:(NSString *)username
+                           reason:(NSString *)reason
+{
+    NSString *message = [NSString stringWithFormat:@"你被'%@'无耻的拒绝了", username];
+    TTAlertNoTitle(message);
+}
 
 #pragma mark - IChatManagerDelegate 登录状态变化
 
