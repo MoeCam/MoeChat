@@ -12,7 +12,7 @@
 #import "EMMessageModel.h"
 
 typedef void (^FinishBlock)(BOOL success);
-typedef void (^PlayBlock)(BOOL playing);
+typedef void (^PlayBlock)(BOOL playing, EMMessageModel *messageModel);
 
 @class EMChatFireBubbleView;
 @interface EMMessageManager : NSObject<MWPhotoBrowserDelegate>

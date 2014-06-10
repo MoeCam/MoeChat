@@ -171,7 +171,7 @@ static EMMessageManager *detailInstance = nil;
     }
     
     if (block) {
-        block(isPlay);
+        block(isPlay, message);
     }
 }
 

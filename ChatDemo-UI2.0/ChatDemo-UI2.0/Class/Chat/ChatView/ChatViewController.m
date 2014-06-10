@@ -408,10 +408,10 @@
     if (message.type == eMessageBodyType_Voice) {
         [self.messageReadManager startMessageAudio:message
                                            chatter:_conversation.chatter
-                                         playBlock:^(BOOL playing) {
+                                         playBlock:^(BOOL playing, EMMessageModel *messageModel) {
                                              if(playing){
                                                  [[EaseMob sharedInstance].chatManager asyncPlayAudio:message.chatVoice completion:^(EMError *error) {
-                                                     [self.messageReadManager stopMessageAudio];
+                                                     messageModel.isPlaying = NO;
                                                  } onQueue:nil];
                                              }
                                              else{
