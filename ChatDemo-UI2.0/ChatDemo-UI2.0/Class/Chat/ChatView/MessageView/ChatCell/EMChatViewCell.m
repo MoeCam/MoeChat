@@ -7,6 +7,10 @@
 //
 
 #import "EMChatViewCell.h"
+#import "UIResponder+Router.h"
+
+NSString *const kResendButtonTapEventName = @"kResendButtonTapEventName";
+NSString *const kShouldResendCell = @"kShouldResendCell";
 
 @implementation EMChatViewCell
 
@@ -97,7 +101,8 @@
 // 重发按钮事件
 -(void)retryButtonPressed:(UIButton *)sender
 {
-    NSLog(@"retryButtonPressed---");
+    [self routerEventWithName:kResendButtonTapEventName
+                     userInfo:@{kShouldResendCell:self}];
 }
 
 #pragma mark - private
