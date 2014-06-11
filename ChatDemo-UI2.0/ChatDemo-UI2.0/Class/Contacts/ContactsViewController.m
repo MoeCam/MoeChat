@@ -362,6 +362,9 @@
             if (_groupController == nil) {
                 _groupController = [[ChatRoomViewController alloc] initWithStyle:UITableViewStylePlain];
             }
+            else{
+                [_groupController reloadDataSource];
+            }
             [self.navigationController pushViewController:_groupController animated:YES];
         }
     }

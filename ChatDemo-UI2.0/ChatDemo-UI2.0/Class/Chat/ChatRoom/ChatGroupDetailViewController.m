@@ -298,21 +298,21 @@
                 
                 __weak ChatGroupDetailViewController *weakSelf = self;
                 [contactView setDeleteContact:^(NSInteger index) {
-//                    [weakSelf showHudInView:weakSelf.view hint:@"正在删除成员..."];
-//                    EMError *error;
-//                    [_chatGroup kickOccupant:[weakSelf.dataSource objectAtIndex:index] error:&error];
-//                    [weakSelf hideHud];
-//                    if (!error) {
-//                        [weakSelf.dataSource removeObjectAtIndex:index];
-//                        [weakSelf refreshScrollView];
-//                    }
-//                    else{
-//                        [weakSelf showHint:@"删除成员失败"];
-//                    }
+                    [weakSelf showHudInView:weakSelf.view hint:@"正在删除成员..."];
+                    EMError *error;
+                    [_chatGroup kickOccupant:[weakSelf.dataSource objectAtIndex:index] error:&error];
+                    [weakSelf hideHud];
+                    if (!error) {
+                        [weakSelf.dataSource removeObjectAtIndex:index];
+                        [weakSelf refreshScrollView];
+                    }
+                    else{
+                        [weakSelf showHint:@"删除成员失败"];
+                    }
                     
-                    [[EaseMob sharedInstance].chatManager asyncRemoveOccupant:[weakSelf.dataSource objectAtIndex:index] fromGroup:_chatGroup.groupId];
-                    [weakSelf.dataSource removeObjectAtIndex:index];
-                    [weakSelf refreshScrollView];
+//                    [[EaseMob sharedInstance].chatManager asyncRemoveOccupant:[weakSelf.dataSource objectAtIndex:index] fromGroup:_chatGroup.groupId];
+//                    [weakSelf.dataSource removeObjectAtIndex:index];
+//                    [weakSelf refreshScrollView];
                 }];
                 
                 [self.scrollView addSubview:contactView];

@@ -28,6 +28,7 @@
         [self.contentView addSubview:_titleLabel];
         
         _contentLabel = [[UILabel alloc] init];
+        _contentLabel.numberOfLines = 0;
         _contentLabel.backgroundColor = [UIColor clearColor];
         _contentLabel.textColor = [UIColor grayColor];
         _contentLabel.font = [UIFont systemFontOfSize:14.0];
