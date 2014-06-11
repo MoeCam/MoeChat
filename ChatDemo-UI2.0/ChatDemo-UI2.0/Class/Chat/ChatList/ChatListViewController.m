@@ -408,6 +408,10 @@
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
 
+- (void)dealloc{
+    [self unregisterNotifications];
+}
+
 #pragma mark - public
 
 -(void)refreshDataSource
