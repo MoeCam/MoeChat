@@ -10,10 +10,9 @@
 
 @interface ContactSelectionViewController : EMChooseViewController
 
-@property (strong, nonatomic) NSMutableArray *selectedContacts;
-@property (strong, nonatomic) NSString *groupName;
-@property (strong, nonatomic) NSString *groupBrief;
+@property (copy) void (^SelectedContactsFinished)(ContactSelectionViewController *viewController, NSArray *selectedContacts);
 
-@property (copy) void (^CreateRoomFinished)(BOOL success);
+//已有选中的成员username，在该页面，这些成员不能被取消选择
+- (instancetype)initWithBlockSelectedUsernames:(NSArray *)blockUsernames;
 
 @end

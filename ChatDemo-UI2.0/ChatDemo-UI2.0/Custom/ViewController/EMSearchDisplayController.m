@@ -16,7 +16,6 @@
     if (self) {
         // Custom initialization
         _resultsSource = [NSMutableArray array];
-        _canEditCell = NO;
         _editingStyle = UITableViewCellEditingStyleDelete;
         
         self.searchResultsDataSource = self;
@@ -24,11 +23,6 @@
         self.searchResultsTitle = @"搜索结果";
     }
     return self;
-}
-
-- (void)setCanEditCell:(BOOL)canEditCell
-{
-    _canEditCell = canEditCell;
 }
 
 #pragma mark - Table view data source
@@ -67,7 +61,12 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    return self.canEditCell;
+    if (_canEditRowAtIndexPath) {
+        return _canEditRowAtIndexPath(tableView, indexPath);
+    }
+    else{
+        return NO;
+    }
 }
 
 #pragma mark - Table view delegate

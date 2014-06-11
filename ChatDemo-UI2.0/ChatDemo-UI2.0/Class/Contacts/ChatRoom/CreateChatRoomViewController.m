@@ -140,14 +140,28 @@
     
     [self.view endEditing:YES];
     
+    __weak CreateChatRoomViewController *weakSelf = self;
     ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] init];
-    selectionController.groupName = self.textField.text;
-    selectionController.groupBrief = self.textView.text;
-    [selectionController setCreateRoomFinished:^(BOOL success) {
-        if (success) {
-            [self.navigationController popToViewController:self animated:NO];
-            [self.navigationController popViewControllerAnimated:YES];
+    [selectionController setSelectedContactsFinished:^(ContactSelectionViewController *viewController, NSArray *selectedContacts) {
+        [viewController showHudInView:viewController.view hint:@"创建群组..."];
+        
+        NSMutableArray *source = [NSMutableArray array];
+        for (EMBuddy *buddy in selectedContacts) {
+            [source addObject:buddy.username];
         }
+        
+        [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:weakSelf.textField.text description:weakSelf.textView.text password:nil invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
+            [self hideHud];
+            if (group && !error) {
+                [self showHint:@"创建群组成功"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateGroupSuccess" object:group];
+                [weakSelf.navigationController popToViewController:self animated:NO];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+            else{
+                [weakSelf showHint:@"创建群组失败，请重新操作"];
+            }
+        } onQueue:nil];
     }];
     [self.navigationController pushViewController:selectionController animated:YES];
 }

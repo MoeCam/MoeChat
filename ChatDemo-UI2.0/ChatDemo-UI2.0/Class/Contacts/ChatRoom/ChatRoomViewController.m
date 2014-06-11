@@ -235,7 +235,7 @@
 - (void)group:(EMGroup *)group didUpdateSubject:(NSString *)newSubject error:(EMError *)error
 {
     if (group) {
-        //
+//        group.groupSubject = newSubject;
     }
 }
 
@@ -243,16 +243,6 @@
 {
     [self reloadDataSource];
 }
-
-//- (void)group:(EMGroup *)group didJoinWithError:(EMError *)error
-//{
-//    if (group && !error) {
-//        [self.tableView beginUpdates];
-//        [self.dataSource insertObject:group atIndex:0];
-//        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
-//        [self.tableView endUpdates];
-//    }
-//}
 
 - (void)group:(EMGroup *)group didRemoveOccupant:(NSString *)username error:(EMError *)error
 {

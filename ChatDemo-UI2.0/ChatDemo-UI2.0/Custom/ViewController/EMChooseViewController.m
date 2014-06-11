@@ -19,9 +19,9 @@
 
 @implementation EMChooseViewController
 
-- (id)init
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super init];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
         if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])

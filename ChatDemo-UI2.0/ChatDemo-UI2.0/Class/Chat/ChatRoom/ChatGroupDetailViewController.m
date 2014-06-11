@@ -379,7 +379,15 @@
 
 - (void)addContact:(id)sender
 {
-    ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] init];
+    ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] initWithBlockSelectedUsernames:_chatGroup.occupants];
+    [selectionController setSelectedContactsFinished:^(ContactSelectionViewController *viewController, NSArray *selectedContacts) {
+        NSMutableArray *source = [NSMutableArray array];
+        for (EMBuddy *buddy in selectedContacts) {
+            [source addObject:buddy.username];
+        }
+        
+        [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:_chatGroup.groupId welcomeMessage:@""];
+    }];
     [self.navigationController pushViewController:selectionController animated:YES];
 }
 

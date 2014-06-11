@@ -15,7 +15,9 @@
 
 @interface ContactSelectionViewController ()<UISearchBarDelegate, UISearchDisplayDelegate>
 
-@property (strong, nonatomic) NSArray *contactsSource;
+@property (strong, nonatomic) NSMutableArray *contactsSource;
+@property (strong, nonatomic) NSMutableArray *selectedContacts;
+@property (strong, nonatomic) NSMutableArray *blockSelectedUsernames;
 
 @property (strong, nonatomic) EMSearchBar *searchBar;
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
@@ -33,6 +35,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        _contactsSource = [NSMutableArray array];
         _selectedContacts = [NSMutableArray array];
         
         [self setObjectComparisonStringBlock:^NSString *(id object) {
@@ -47,6 +50,17 @@
             return [buddy1.username caseInsensitiveCompare: buddy2.username];
         }];
     }
+    return self;
+}
+
+- (instancetype)initWithBlockSelectedUsernames:(NSArray *)blockUsernames
+{
+    self = [self initWithNibName:nil bundle:nil];
+    if (self) {
+        _blockSelectedUsernames = [NSMutableArray array];
+        [_blockSelectedUsernames addObjectsFromArray:blockUsernames];
+    }
+    
     return self;
 }
 
@@ -67,6 +81,28 @@
     self.tableView.editing = YES;
     self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height - self.footerView.frame.size.height);
     [self searchController];
+    
+    if ([_blockSelectedUsernames count] > 0) {
+        for (NSString *username in _blockSelectedUsernames) {
+            NSInteger section = [self sectionForString:username];
+            NSMutableArray *tmpArray = [_dataSource objectAtIndex:section];
+            if (tmpArray && [tmpArray count] > 0) {
+                for (int i = 0; i < [tmpArray count]; i++) {
+                    EMBuddy *buddy = [tmpArray objectAtIndex:i];
+                    if ([buddy.username isEqualToString:username]) {
+                        [self.selectedContacts addObject:buddy];
+                        [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                        
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if ([_selectedContacts count] > 0) {
+            [self reloadFooterView];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -83,6 +119,7 @@
         _searchBar = [[EMSearchBar alloc] initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, 44)];
         _searchBar.delegate = self;
         _searchBar.placeholder = @"搜索";
+        _searchBar.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
         _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
     }
     
@@ -93,7 +130,6 @@
 {
     if (_searchController == nil) {
         _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-        _searchController.canEditCell = YES;
         _searchController.editingStyle = UITableViewCellEditingStyleInsert | UITableViewCellEditingStyleDelete;
         _searchController.delegate = self;
         _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -113,6 +149,15 @@
             cell.textLabel.text = buudy.username;
             
             return cell;
+        }];
+        
+        [_searchController setCanEditRowAtIndexPath:^BOOL(UITableView *tableView, NSIndexPath *indexPath) {
+            if ([weakSelf.blockSelectedUsernames count] > 0) {
+                EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+                return ![weakSelf isBlockUsername:buddy.username];
+            }
+            
+            return YES;
         }];
         
         [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
@@ -199,6 +244,17 @@
     return cell;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    if ([_blockSelectedUsernames count] > 0) {
+        EMBuddy *buddy = [[_dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+        return ![self isBlockUsername:buddy.username];
+    }
+    
+    return YES;
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -214,9 +270,9 @@
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id object = [[_dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    if ([self.selectedContacts containsObject:object]) {
-        [self.selectedContacts removeObject:object];
+    EMBuddy *buddy = [[_dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if ([self.selectedContacts containsObject:buddy]) {
+        [self.selectedContacts removeObject:buddy];
         
         [self reloadFooterView];
     }
@@ -280,6 +336,21 @@
 
 #pragma mark - private
 
+- (BOOL)isBlockUsername:(NSString *)username
+{
+    if (username && [username length] > 0) {
+        if ([_blockSelectedUsernames count] > 0) {
+            for (NSString *tmpName in _blockSelectedUsernames) {
+                if ([username isEqualToString:tmpName]) {
+                    return YES;
+                }
+            }
+        }
+    }
+    
+    return NO;
+}
+
 - (void)reloadFooterView
 {
     [self.footerScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -309,16 +380,16 @@
 {
     [self showHudInView:self.view hint:@"加载联系人..."];
     [_dataSource removeAllObjects];
-    self.contactsSource = [[EaseMob sharedInstance].chatManager buddyList];
+    [_contactsSource removeAllObjects];
     
-    NSMutableArray *tmpArray = [NSMutableArray array];
-    for (EMBuddy *buddy in self.contactsSource) {
+    NSArray *buddyList = [[EaseMob sharedInstance].chatManager buddyList];
+    for (EMBuddy *buddy in buddyList) {
         if (buddy.followState != eEMBuddyFollowState_NotFollowed) {
-            [tmpArray addObject:buddy];
+            [self.contactsSource addObject:buddy];
         }
     }
     
-    [_dataSource addObjectsFromArray:[self sortRecords:tmpArray]];
+    [_dataSource addObjectsFromArray:[self sortRecords:self.contactsSource]];
     
     [self hideHud];
     [self.tableView reloadData];
@@ -326,36 +397,9 @@
 
 - (void)doneAction:(id)sender
 {
-    if([self.selectedContacts count] == 0)
+    if(_SelectedContactsFinished)
     {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"群组成员不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alertView show];
-        return;
-    }
-    else{
-        [self showHudInView:self.tableView hint:@"创建群组..."];
-        
-        NSMutableArray *source = [NSMutableArray array];
-        for (EMBuddy *buddy in self.selectedContacts) {
-            [source addObject:buddy.username];
-        }
-        
-        [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:_groupName description:_groupBrief password:nil invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
-            [self hideHud];
-            if (group && !error) {
-                [self showHint:@"创建群组成功"];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateGroupSuccess" object:group];
-                if (_CreateRoomFinished) {
-                    _CreateRoomFinished(YES);
-                }
-            }
-            else{
-                [self showHint:@"创建群组失败，请重新操作"];
-                if (_CreateRoomFinished) {
-                    _CreateRoomFinished(NO);
-                }
-            }
-        } onQueue:nil];
+        _SelectedContactsFinished(self, self.selectedContacts);
     }
 }
 
