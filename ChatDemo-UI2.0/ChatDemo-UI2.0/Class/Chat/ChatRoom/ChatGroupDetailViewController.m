@@ -300,7 +300,8 @@
                 [contactView setDeleteContact:^(NSInteger index) {
                     [weakSelf showHudInView:weakSelf.view hint:@"正在删除成员..."];
                     EMError *error;
-                    [_chatGroup kickOccupant:[weakSelf.dataSource objectAtIndex:index] error:&error];
+                    
+                    [[EaseMob sharedInstance].chatManager removeOccupant:[weakSelf.dataSource objectAtIndex:index] fromGroup:_chatGroup.groupId error:&error];
                     [weakSelf hideHud];
                     if (!error) {
                         [weakSelf.dataSource removeObjectAtIndex:index];
@@ -309,10 +310,6 @@
                     else{
                         [weakSelf showHint:@"删除成员失败"];
                     }
-                    
-//                    [[EaseMob sharedInstance].chatManager asyncRemoveOccupant:[weakSelf.dataSource objectAtIndex:index] fromGroup:_chatGroup.groupId];
-//                    [weakSelf.dataSource removeObjectAtIndex:index];
-//                    [weakSelf refreshScrollView];
                 }];
                 
                 [self.scrollView addSubview:contactView];
