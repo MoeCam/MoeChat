@@ -402,8 +402,8 @@
 {
     [self showHudInView:self.view hint:@"解散群组"];
     EMError *error;
-#warning [destroyGroup:error:]不会调用代理方法
-    EMGroup *group = [[EaseMob sharedInstance].chatManager destroyGroup:_chatGroup.groupId error:&error];
+#warning [leaveGroup:error:]不会调用代理方法
+    EMGroup *group = [[EaseMob sharedInstance].chatManager leaveGroup:_chatGroup.groupId error:&error];
     [self hideHud];
     if (error && !group) {
         [self showHint:@"解散群组失败"];

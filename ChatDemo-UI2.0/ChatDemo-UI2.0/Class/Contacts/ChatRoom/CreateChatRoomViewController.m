@@ -150,7 +150,12 @@
             [source addObject:buddy.username];
         }
         
-        [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:weakSelf.textField.text description:weakSelf.textView.text password:nil invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
+        [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:weakSelf.textField.text
+                                                              description:weakSelf.textView.text
+                                                                 password:nil
+                                                                 invitees:source
+                                                    initialWelcomeMessage:@""
+                                                               completion:^(EMGroup *group, EMError *error) {
             [self hideHud];
             if (group && !error) {
                 [self showHint:@"创建群组成功"];
