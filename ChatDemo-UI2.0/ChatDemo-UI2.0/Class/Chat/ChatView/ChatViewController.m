@@ -173,6 +173,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 #warning 以下第一行代码必须写，将self从ChatManager的代理中移除
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    [[[EaseMob sharedInstance] deviceManager] removeDelegate:self];
 }
 
 #pragma mark - getter
@@ -384,29 +385,34 @@
     else if([eventName isEqualToString:kResendButtonTapEventName]){
         EMChatViewCell *resendCell = [userInfo objectForKey:kShouldResendCell];
         EMMessageModel *messageModel = resendCell.message;
-//        messageModel.status = eMessageDeliveryState_Delivering;
-//        id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
-//        [chatManager asyncResendMessage:messageModel.message progress:nil];
+        messageModel.status = eMessageDeliveryState_Delivering;
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:resendCell];
+        [self.tableView beginUpdates];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath]
+                              withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView endUpdates];
+        id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
+        [chatManager asyncResendMessage:messageModel.message progress:nil];
         
-        switch (messageModel.type) {
-            case eMessageBodyType_Text:
-                [self sendTextMessage:messageModel.content];
-                break;
-            case eMessageBodyType_Image:
-                [self sendImageMessage:messageModel.image];
-                break;
-            case eMessageBodyType_Voice:
-                [self sendAudioMessage:messageModel.chatVoice];
-                break;
-            case eMessageBodyType_Location:
-                [self sendLocationLatitude:messageModel.latitude
-                                 longitude:messageModel.longitude
-                                andAddress:messageModel.address];
-                break;
-                
-            default:
-                break;
-        }
+//        switch (messageModel.type) {
+//            case eMessageBodyType_Text:
+//                [self sendTextMessage:messageModel.content];
+//                break;
+//            case eMessageBodyType_Image:
+//                [self sendImageMessage:messageModel.image];
+//                break;
+//            case eMessageBodyType_Voice:
+//                [self sendAudioMessage:messageModel.chatVoice];
+//                break;
+//            case eMessageBodyType_Location:
+//                [self sendLocationLatitude:messageModel.latitude
+//                                 longitude:messageModel.longitude
+//                                andAddress:messageModel.address];
+//                break;
+//                
+//            default:
+//                break;
+//        }
     }
 }
 
