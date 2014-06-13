@@ -153,7 +153,7 @@
     if (_clearButton == nil) {
         _clearButton = [[UIButton alloc] init];
         [_clearButton setTitle:@"清空聊天记录" forState:UIControlStateNormal];
-        [_clearButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_clearButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_clearButton addTarget:self action:@selector(clearAction) forControlEvents:UIControlEventTouchUpInside];
         [_clearButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
     }
@@ -166,7 +166,7 @@
     if (_dissolveButton == nil) {
         _dissolveButton = [[UIButton alloc] init];
         [_dissolveButton setTitle:@"解散该群" forState:UIControlStateNormal];
-        [_dissolveButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_dissolveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_dissolveButton addTarget:self action:@selector(dissolveAction) forControlEvents:UIControlEventTouchUpInside];
         [_dissolveButton setBackgroundColor:[UIColor redColor]];
     }
@@ -179,7 +179,7 @@
     if (_exitButton == nil) {
         _exitButton = [[UIButton alloc] init];
         [_exitButton setTitle:@"退出该群" forState:UIControlStateNormal];
-        [_exitButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_exitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_exitButton addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
         [_exitButton setBackgroundColor:[UIColor redColor]];
     }
