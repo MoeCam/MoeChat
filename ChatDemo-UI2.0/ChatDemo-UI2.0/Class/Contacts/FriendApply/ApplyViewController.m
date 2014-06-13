@@ -126,7 +126,7 @@
         BOOL isGroup = [[dic objectForKey:@"isGroup"] boolValue];
         EMError *error;
         if (isGroup) {
-            [[EaseMob sharedInstance].chatManager acceptInvitationFromGroup:[dic objectForKey:@"id"]];
+            [[EaseMob sharedInstance].chatManager acceptInvitationFromGroup:[dic objectForKey:@"id"] error:&error];
         }
         else{
             [[EaseMob sharedInstance].chatManager acceptBuddyRequest:[dic objectForKey:@"username"] error:&error];
