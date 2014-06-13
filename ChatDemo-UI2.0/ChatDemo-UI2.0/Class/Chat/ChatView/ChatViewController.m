@@ -715,15 +715,21 @@
 
 - (void)loadMoreMessages
 {
-//    [_tableView beginUpdates];
+    [_tableView beginUpdates];
     NSInteger currentCount = [self.dataSource count];
     NSArray *chats = [_conversation loadNumbersOfMessages:(currentCount + 10) before:[_conversation latestMessage].timestamp + 1];
     [self.dataSource removeAllObjects];
     [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
-//    [_tableView ];
-//    
-//    [_tableView endUpdates];
-    [_tableView reloadData];
+    
+    NSMutableArray *indexPaths = [NSMutableArray array];
+    for (int i = 0; i < [self.dataSource count] - currentCount; i++) {
+        [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+    }
+    
+    [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    [_tableView endUpdates];
+    
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.dataSource count] - currentCount - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 }
 
 - (NSArray *)sortChatSource:(NSArray *)array

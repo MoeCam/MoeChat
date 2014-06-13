@@ -276,12 +276,12 @@
     id object = notification.object;
     if ([object isKindOfClass:[EMGroup class]]) {
         [self.navigationController popToViewController:self animated:YES];
-        EMGroup *group = (EMGroup *)object;
-        [self.tableView beginUpdates];
-        NSInteger row = [self.dataSource indexOfObject:group];
-        [self.dataSource removeObject:group];
-        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
-        [self.tableView endUpdates];
+//        EMGroup *group = (EMGroup *)object;
+//        [self.tableView beginUpdates];
+//        NSInteger row = [self.dataSource indexOfObject:group];
+//        [self.dataSource removeObject:group];
+//        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+//        [self.tableView endUpdates];
     }
 }
 

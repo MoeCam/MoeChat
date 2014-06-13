@@ -399,7 +399,19 @@
 {
     if(_SelectedContactsFinished)
     {
-        _SelectedContactsFinished(self, self.selectedContacts);
+        if ([_blockSelectedUsernames count] == 0) {
+            _SelectedContactsFinished(self, self.selectedContacts);
+        }
+        else{
+            NSMutableArray *resultArray = [NSMutableArray array];
+            for (EMBuddy *buddy in self.selectedContacts) {
+                if(![self isBlockUsername:buddy.username])
+                {
+                    [resultArray addObject:buddy];
+                }
+            }
+            _SelectedContactsFinished(self, resultArray);
+        }
     }
 }
 
