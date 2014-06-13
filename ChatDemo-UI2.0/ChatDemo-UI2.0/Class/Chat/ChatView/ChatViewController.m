@@ -63,22 +63,21 @@
         _isChatGroup = NO;
         
         //根据接收者的username获取当前会话的管理者
-        _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:chatter];
-        
-        //通过会话管理者获取已收发消息
-        NSArray *chats = [_conversation loadNumbersOfMessages:10 before:[_conversation latestMessage].timestamp + 1];
-        [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
+        _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:chatter isGroup:_isChatGroup];
     }
     return self;
 }
 
 - (instancetype)initWithGroup:(EMGroup *)chatGroup
 {
-    self = [self initWithChatter:chatGroup.groupId];
+    self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization
         _isChatGroup = YES;
         _chatGroup = chatGroup;
+        
+        //根据接收者的username获取当前会话的管理者
+        _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:chatGroup.groupId isGroup:_isChatGroup];
     }
     return self;
 }
@@ -91,17 +90,18 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
-    [self setupBarButtonItem];
-    
     [[[EaseMob sharedInstance] deviceManager] addDelegate:self onQueue:nil];
-    
-    _messageQueue = dispatch_queue_create("easemob.com", NULL);
-    
 #warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     //注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
+    _messageQueue = dispatch_queue_create("easemob.com", NULL);
+    //通过会话管理者获取已收发消息
+    NSArray *chats = [_conversation loadNumbersOfMessages:10 before:[_conversation latestMessage].timestamp + 1];
+    [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
+    
+    [self setupBarButtonItem];
     [self.view addSubview:self.tableView];
     [self.tableView addSubview:self.slimeView];
     [self.view addSubview:self.chatToolBar];
