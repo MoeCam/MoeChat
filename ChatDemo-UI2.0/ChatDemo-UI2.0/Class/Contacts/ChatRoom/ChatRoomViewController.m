@@ -9,6 +9,7 @@
 #import "ChatRoomViewController.h"
 
 #import "EMSearchBar.h"
+#import "SRRefreshView.h"
 #import "BaseTableViewCell.h"
 #import "EMSearchDisplayController.h"
 #import "ChatViewController.h"
@@ -16,10 +17,11 @@
 #import "RealtimeSearchUtil.h"
 #import "UIViewController+HUD.h"
 
-@interface ChatRoomViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, IChatManagerDelegate>
+@interface ChatRoomViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, IChatManagerDelegate, SRRefreshDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
+@property (strong, nonatomic) SRRefreshView *slimeView;
 @property (strong, nonatomic) EMSearchBar *searchBar;
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
 
@@ -54,6 +56,7 @@
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.tableHeaderView = self.searchBar;
+    [self.tableView addSubview:self.slimeView];
     [self searchController];
     
     UIButton *createButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
@@ -83,6 +86,23 @@
 }
 
 #pragma mark - getter
+
+- (SRRefreshView *)slimeView
+{
+    if (_slimeView == nil) {
+        _slimeView = [[SRRefreshView alloc] init];
+        _slimeView.delegate = self;
+        _slimeView.upInset = 0;
+        _slimeView.slimeMissWhenGoingBack = YES;
+        _slimeView.slime.bodyColor = [UIColor grayColor];
+        _slimeView.slime.skinColor = [UIColor grayColor];
+        _slimeView.slime.lineWith = 1;
+        _slimeView.slime.shadowBlur = 4;
+        _slimeView.slime.shadowColor = [UIColor grayColor];
+    }
+    
+    return _slimeView;
+}
 
 - (UISearchBar *)searchBar
 {
@@ -233,6 +253,31 @@
     [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
     [searchBar resignFirstResponder];
     [searchBar setShowsCancelButton:NO animated:YES];
+}
+
+#pragma mark - SRRefreshDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_slimeView scrollViewDidScroll];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [_slimeView scrollViewDidEndDraging];
+}
+
+- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
+{
+    EMError *error;
+    NSArray *list = [[EaseMob sharedInstance].chatManager fetchAllGroupsWithError:&error];
+    if (!error) {
+        [self.dataSource removeAllObjects];
+        [self.dataSource addObjectsFromArray:list];
+        [self.tableView reloadData];
+    }
+    
+    [_slimeView endRefresh];
 }
 
 #pragma mark - IChatManagerDelegate
