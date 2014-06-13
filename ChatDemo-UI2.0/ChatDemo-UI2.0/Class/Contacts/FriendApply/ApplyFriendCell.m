@@ -44,7 +44,7 @@
         [self.contentView addSubview:_addButton];
         
         _refuseButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 120, 0, 50, 30)];
-        [_refuseButton setBackgroundColor:[UIColor lightGrayColor]];
+        [_refuseButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
         [_refuseButton setTitle:@"拒绝" forState:UIControlStateNormal];
         _refuseButton.clipsToBounds = YES;
         [_refuseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

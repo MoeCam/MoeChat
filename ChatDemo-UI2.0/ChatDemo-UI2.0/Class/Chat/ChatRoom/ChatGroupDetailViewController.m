@@ -155,9 +155,7 @@
         [_clearButton setTitle:@"清空聊天记录" forState:UIControlStateNormal];
         [_clearButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_clearButton addTarget:self action:@selector(clearAction) forControlEvents:UIControlEventTouchUpInside];
-        _clearButton.layer.borderWidth = 1.0;
-        _clearButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-        _clearButton.layer.cornerRadius = 5.0;
+        [_clearButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
     }
     
     return _clearButton;
@@ -170,9 +168,7 @@
         [_dissolveButton setTitle:@"解散该群" forState:UIControlStateNormal];
         [_dissolveButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_dissolveButton addTarget:self action:@selector(dissolveAction) forControlEvents:UIControlEventTouchUpInside];
-        _dissolveButton.layer.borderWidth = 1.0;
-        _dissolveButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-        _dissolveButton.layer.cornerRadius = 5.0;
+        [_dissolveButton setBackgroundColor:[UIColor redColor]];
     }
     
     return _dissolveButton;
@@ -185,9 +181,7 @@
         [_exitButton setTitle:@"退出该群" forState:UIControlStateNormal];
         [_exitButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_exitButton addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
-        _exitButton.layer.borderWidth = 1.0;
-        _exitButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-        _exitButton.layer.cornerRadius = 5.0;
+        [_exitButton setBackgroundColor:[UIColor redColor]];
     }
     
     return _exitButton;
@@ -196,17 +190,17 @@
 - (UIView *)footerView
 {
     if (_footerView == nil) {
-        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 150)];
+        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 160)];
         
         self.clearButton.frame = CGRectMake(20, 40, _footerView.frame.size.width - 40, 35);
         [_footerView addSubview:self.clearButton];
         
         if (_memberType != GroupMemberTypeNormal) {
-            self.dissolveButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 20, _footerView.frame.size.width - 40, 35);
+            self.dissolveButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
             [_footerView addSubview:self.dissolveButton];
         }
         else{
-            self.exitButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 20, _footerView.frame.size.width - 40, 35);
+            self.exitButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
             [_footerView addSubview:self.exitButton];
         }
     }

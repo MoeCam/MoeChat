@@ -232,14 +232,12 @@
 
 #pragma mark - IChatManagerDelegate
 
-- (void)group:(EMGroup *)group didUpdateSubject:(NSString *)newSubject error:(EMError *)error
+- (void)groupDidUpdateInfo:(EMGroup *)group error:(EMError *)error
 {
-    if (group) {
-//        group.groupSubject = newSubject;
-    }
+    [self reloadDataSource];
 }
 
-- (void)didFinishedJoiningAllGroups:(NSArray *)groups
+- (void)didUpdateGroupList:(NSArray *)allGroups
 {
     [self reloadDataSource];
 }
