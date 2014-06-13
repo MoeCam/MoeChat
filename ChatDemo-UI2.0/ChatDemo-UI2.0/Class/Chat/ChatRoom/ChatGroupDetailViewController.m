@@ -75,25 +75,6 @@
         // Custom initialization
         _chatGroup = chatGroup;
         _dataSource = [NSMutableArray array];
-        
-        _memberType = GroupMemberTypeNormal;
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-        for (NSString *str in _chatGroup.owners) {
-            if ([str isEqualToString:loginUsername]) {
-                _memberType = GroupMemberTypeOwner;
-                break;
-            }
-        }
-        
-        if (_memberType == GroupMemberTypeNormal) {
-            for (NSString *str in _chatGroup.admins) {
-                if ([str isEqualToString:loginUsername]) {
-                    _memberType = GroupMemberTypeAdmin;
-                    break;
-                }
-            }
-        }
     }
     return self;
 }
@@ -204,14 +185,9 @@
         self.clearButton.frame = CGRectMake(20, 40, _footerView.frame.size.width - 40, 35);
         [_footerView addSubview:self.clearButton];
         
-        if (_memberType != GroupMemberTypeNormal) {
-            self.dissolveButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
-            [_footerView addSubview:self.dissolveButton];
-        }
-        else{
-            self.exitButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
-            [_footerView addSubview:self.exitButton];
-        }
+        self.dissolveButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
+        
+        self.exitButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
     }
     
     return _footerView;
@@ -267,11 +243,31 @@
     EMError *error;
     _chatGroup = [[EaseMob sharedInstance].chatManager fetchGroupInfo:_chatGroup.groupId error:&error];
     if (!error) {
+        _memberType = GroupMemberTypeNormal;
+        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+        for (NSString *str in _chatGroup.owners) {
+            if ([str isEqualToString:loginUsername]) {
+                _memberType = GroupMemberTypeOwner;
+                break;
+            }
+        }
+        
+        if (_memberType == GroupMemberTypeNormal) {
+            for (NSString *str in _chatGroup.admins) {
+                if ([str isEqualToString:loginUsername]) {
+                    _memberType = GroupMemberTypeAdmin;
+                    break;
+                }
+            }
+        }
+        
         [self.dataSource addObjectsFromArray:_chatGroup.owners];
         [self.dataSource addObjectsFromArray:_chatGroup.admins];
         [self.dataSource addObjectsFromArray:_chatGroup.members];
     }
     [self refreshScrollView];
+    [self refreshFooterView];
     
     [self hideHud];
 }
@@ -342,6 +338,18 @@
     }
     
     [self.tableView reloadData];
+}
+
+- (void)refreshFooterView
+{
+    if (_memberType != GroupMemberTypeNormal) {
+        [_exitButton removeFromSuperview];
+        [_footerView addSubview:self.dissolveButton];
+    }
+    else{
+        [_dissolveButton removeFromSuperview];
+        [_footerView addSubview:self.exitButton];
+    }
 }
 
 #pragma mark - action
