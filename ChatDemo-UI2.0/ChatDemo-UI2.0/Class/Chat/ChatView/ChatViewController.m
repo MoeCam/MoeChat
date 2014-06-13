@@ -161,11 +161,11 @@
     [[EaseMob sharedInstance].chatManager stopPlayingAudio];
     [self.messageReadManager stopMessageAudio];
     
-    //判断当前会话是否为空，若为空则删除该会话
-    EMMessage *message = [_conversation latestMessage];
-    if (message == nil) {
-        [[EaseMob sharedInstance].chatManager removeConversationByChatter:_conversation.chatter deleteMessages:YES];
-    }
+//    //判断当前会话是否为空，若为空则删除该会话
+//    EMMessage *message = [_conversation latestMessage];
+//    if (message == nil) {
+//        [[EaseMob sharedInstance].chatManager removeConversationByChatter:_conversation.chatter deleteMessages:YES];
+//    }
 }
 
 - (void)dealloc
@@ -805,7 +805,7 @@
     [self.view endEditing:YES];
     if (_isChatGroup && _chatGroup) {
         ChatGroupDetailViewController *detailController = [[ChatGroupDetailViewController alloc] initWithGroup:_chatGroup];
-        detailController.title = @"测试";
+        detailController.title = _chatGroup.groupSubject;
         [self.navigationController pushViewController:detailController animated:YES];
     }
 }

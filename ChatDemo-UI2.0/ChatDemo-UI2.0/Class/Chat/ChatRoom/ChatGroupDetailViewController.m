@@ -261,11 +261,19 @@
 
 - (void)loadDataSource
 {
+    [self showHudInView:self.view hint:@"加载数据..."];
     [self.dataSource removeAllObjects];
-    [self.dataSource addObjectsFromArray:_chatGroup.owners];
-    [self.dataSource addObjectsFromArray:_chatGroup.admins];
-    [self.dataSource addObjectsFromArray:_chatGroup.members];
+    
+    EMError *error;
+    _chatGroup = [[EaseMob sharedInstance].chatManager fetchGroupInfo:_chatGroup.groupId error:&error];
+    if (!error) {
+        [self.dataSource addObjectsFromArray:_chatGroup.owners];
+        [self.dataSource addObjectsFromArray:_chatGroup.admins];
+        [self.dataSource addObjectsFromArray:_chatGroup.members];
+    }
     [self refreshScrollView];
+    
+    [self hideHud];
 }
 
 - (void)refreshScrollView

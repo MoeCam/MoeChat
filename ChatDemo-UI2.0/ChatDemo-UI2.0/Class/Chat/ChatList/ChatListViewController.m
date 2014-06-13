@@ -138,8 +138,8 @@
             }
             
             EMConversation *conversation = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            cell.name = conversation.chatter;
             if (!conversation.isGroup) {
-                cell.name = conversation.chatter;
                 cell.placeholderImage = [UIImage imageNamed:@"chatListCellHead.png"];
             }
             else{
@@ -291,8 +291,8 @@
         cell = [[ChatListCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identify];
     }
     EMConversation *conversation = [self.dataSource objectAtIndex:indexPath.row];
+    cell.name = conversation.chatter;
     if (!conversation.isGroup) {
-        cell.name = conversation.chatter;
         cell.placeholderImage = [UIImage imageNamed:@"chatListCellHead.png"];
     }
     else{
@@ -426,6 +426,11 @@
 -(void)didUnreadMessagesCountChanged
 {
     [self refreshDataSource];
+}
+
+- (void)didUpdateGroupList:(NSArray *)allGroups
+{
+    [_tableView reloadData];
 }
 
 #pragma mark - registerNotifications

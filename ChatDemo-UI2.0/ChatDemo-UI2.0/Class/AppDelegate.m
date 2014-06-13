@@ -39,6 +39,7 @@
 
 #warning SDK注册
     [[EaseMob sharedInstance] registerSDKWithAppKey:@"easemob-demo#chatdemoui"];
+    [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
     [[EaseMob sharedInstance] application:application
             didFinishLaunchingWithOptions:launchOptions];
 
