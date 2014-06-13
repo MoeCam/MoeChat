@@ -328,14 +328,6 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     }
     
     NSString *groupName = groupId;
-    NSArray *groupList = [[EaseMob sharedInstance].chatManager groupList];
-    for (EMGroup *group in groupList) {
-        if ([group.groupId isEqualToString:groupId]) {
-            groupName = group.groupSubject;
-            break;
-        }
-    }
-    
     if (!message || message.length == 0) {
         message = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, groupName];
     }

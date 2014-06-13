@@ -156,10 +156,9 @@
                                                                  invitees:source
                                                     initialWelcomeMessage:@""
                                                                completion:^(EMGroup *group, EMError *error) {
-            [self hideHud];
+            [weakSelf hideHud];
             if (group && !error) {
                 [self showHint:@"创建群组成功"];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateGroupSuccess" object:group];
                 [weakSelf.navigationController popToViewController:self animated:NO];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }

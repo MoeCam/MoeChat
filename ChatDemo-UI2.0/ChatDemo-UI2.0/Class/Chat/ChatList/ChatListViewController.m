@@ -138,11 +138,23 @@
             }
             
             EMConversation *conversation = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            cell.name = conversation.chatter;
+            if (!conversation.isGroup) {
+                cell.name = conversation.chatter;
+                cell.placeholderImage = [UIImage imageNamed:@"chatListCellHead.png"];
+            }
+            else{
+                cell.placeholderImage = [UIImage imageNamed:@"groupHeader"];
+                NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
+                for (EMGroup *group in groupArray) {
+                    if ([group.groupId isEqualToString:conversation.chatter]) {
+                        cell.name = group.groupSubject;
+                        break;
+                    }
+                }
+            }
             cell.detailMsg = [weakSelf subTitleMessageByConversation:conversation];
             cell.time = [weakSelf lastMessageTimeByConversation:conversation];
             cell.unreadCount = [weakSelf unreadMessageCountByConversation:conversation];
-            cell.placeholderImage = [UIImage imageNamed:@"chatListCellHead.png"];
             if (indexPath.row % 2 == 1) {
                 cell.contentView.backgroundColor = RGBACOLOR(246, 246, 246, 1);
             }else{
@@ -195,7 +207,13 @@
 - (NSMutableArray *)loadDataSource
 {
     NSMutableArray *ret = nil;
-    NSArray *conversationList = [[EaseMob sharedInstance].chatManager conversations];
+    NSArray *conversations = [[EaseMob sharedInstance].chatManager conversations];
+    NSMutableArray *conversationList = [NSMutableArray array];
+    for (EMConversation *obj in conversations) {
+        if ([obj latestMessage] != nil) {
+            [conversationList addObject:obj];
+        }
+    }
     NSArray* sorte = [conversationList sortedArrayUsingComparator:
            ^(EMConversation *obj1, EMConversation* obj2){
                EMMessage *message1 = [obj1 latestMessage];
@@ -273,11 +291,23 @@
         cell = [[ChatListCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identify];
     }
     EMConversation *conversation = [self.dataSource objectAtIndex:indexPath.row];
-    cell.name = conversation.chatter;
+    if (!conversation.isGroup) {
+        cell.name = conversation.chatter;
+        cell.placeholderImage = [UIImage imageNamed:@"chatListCellHead.png"];
+    }
+    else{
+        cell.placeholderImage = [UIImage imageNamed:@"groupHeader"];
+        NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
+        for (EMGroup *group in groupArray) {
+            if ([group.groupId isEqualToString:conversation.chatter]) {
+                cell.name = group.groupSubject;
+                break;
+            }
+        }
+    }
     cell.detailMsg = [self subTitleMessageByConversation:conversation];
     cell.time = [self lastMessageTimeByConversation:conversation];
     cell.unreadCount = [self unreadMessageCountByConversation:conversation];
-    cell.placeholderImage = [UIImage imageNamed:@"chatListCellHead.png"];
     if (indexPath.row % 2 == 1) {
         cell.contentView.backgroundColor = RGBACOLOR(246, 246, 246, 1);
     }else{

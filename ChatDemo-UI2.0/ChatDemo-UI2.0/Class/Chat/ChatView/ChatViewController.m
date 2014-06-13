@@ -393,26 +393,6 @@
         [self.tableView endUpdates];
         id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
         [chatManager asyncResendMessage:messageModel.message progress:nil];
-        
-//        switch (messageModel.type) {
-//            case eMessageBodyType_Text:
-//                [self sendTextMessage:messageModel.content];
-//                break;
-//            case eMessageBodyType_Image:
-//                [self sendImageMessage:messageModel.image];
-//                break;
-//            case eMessageBodyType_Voice:
-//                [self sendAudioMessage:messageModel.chatVoice];
-//                break;
-//            case eMessageBodyType_Location:
-//                [self sendLocationLatitude:messageModel.latitude
-//                                 longitude:messageModel.longitude
-//                                andAddress:messageModel.address];
-//                break;
-//                
-//            default:
-//                break;
-//        }
     }
 }
 
@@ -735,10 +715,14 @@
 
 - (void)loadMoreMessages
 {
+//    [_tableView beginUpdates];
     NSInteger currentCount = [self.dataSource count];
     NSArray *chats = [_conversation loadNumbersOfMessages:(currentCount + 10) before:[_conversation latestMessage].timestamp + 1];
     [self.dataSource removeAllObjects];
     [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
+//    [_tableView ];
+//    
+//    [_tableView endUpdates];
     [_tableView reloadData];
 }
 

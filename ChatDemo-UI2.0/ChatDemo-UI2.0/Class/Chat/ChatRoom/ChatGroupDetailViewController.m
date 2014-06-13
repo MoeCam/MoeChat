@@ -18,7 +18,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_imageView.frame) - 5, 3, 15, 15)];
+        _deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_imageView.frame) - 20, 3, 30, 30)];
         [_deleteButton addTarget:self action:@selector(deleteAction) forControlEvents:UIControlEventTouchUpInside];
         [_deleteButton setImage:[UIImage imageNamed:@"chatgroup_invitee_delete"] forState:UIControlStateNormal];
         _deleteButton.hidden = YES;
@@ -50,7 +50,7 @@
 #define kColOfRow 5
 #define kContactSize 60
 
-@interface ChatGroupDetailViewController ()
+@interface ChatGroupDetailViewController ()<IChatManagerDelegate>
 
 @property (nonatomic) GroupMemberType memberType;
 @property (strong, nonatomic) EMGroup *chatGroup;
@@ -102,6 +102,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+#warning 把self注册为SDK的delegate
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+    
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
@@ -122,6 +126,11 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
 
 #pragma mark - getter
@@ -168,7 +177,7 @@
         [_dissolveButton setTitle:@"解散该群" forState:UIControlStateNormal];
         [_dissolveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_dissolveButton addTarget:self action:@selector(dissolveAction) forControlEvents:UIControlEventTouchUpInside];
-        [_dissolveButton setBackgroundColor:[UIColor redColor]];
+        [_dissolveButton setBackgroundColor: [UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
     }
     
     return _dissolveButton;
@@ -181,7 +190,7 @@
         [_exitButton setTitle:@"退出该群" forState:UIControlStateNormal];
         [_exitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_exitButton addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
-        [_exitButton setBackgroundColor:[UIColor redColor]];
+        [_exitButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
     }
     
     return _exitButton;
@@ -293,17 +302,16 @@
                 __weak ChatGroupDetailViewController *weakSelf = self;
                 [contactView setDeleteContact:^(NSInteger index) {
                     [weakSelf showHudInView:weakSelf.view hint:@"正在删除成员..."];
-                    EMError *error;
-                    
-                    [[EaseMob sharedInstance].chatManager removeOccupant:[weakSelf.dataSource objectAtIndex:index] fromGroup:_chatGroup.groupId error:&error];
-                    [weakSelf hideHud];
-                    if (!error) {
-                        [weakSelf.dataSource removeObjectAtIndex:index];
-                        [weakSelf refreshScrollView];
-                    }
-                    else{
-                        [weakSelf showHint:@"删除成员失败"];
-                    }
+                    [[EaseMob sharedInstance].chatManager asyncRemoveOccupant:[weakSelf.dataSource objectAtIndex:index] fromGroup:_chatGroup.groupId completion:^(EMGroup *group, EMError *error) {
+                        [weakSelf hideHud];
+                        if (!error) {
+                            [weakSelf.dataSource removeObjectAtIndex:index];
+                            [weakSelf refreshScrollView];
+                        }
+                        else{
+                            [weakSelf showHint:@"删除成员失败"];
+                        }
+                    } onQueue:nil];
                 }];
                 
                 [self.scrollView addSubview:contactView];
@@ -370,6 +378,7 @@
 
 - (void)addContact:(id)sender
 {
+    __weak ChatGroupDetailViewController *weakSelf = self;
     ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] initWithBlockSelectedUsernames:_chatGroup.occupants];
     [selectionController setSelectedContactsFinished:^(ContactSelectionViewController *viewController, NSArray *selectedContacts) {
         NSMutableArray *source = [NSMutableArray array];
@@ -378,6 +387,8 @@
         }
         
         [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:_chatGroup.groupId welcomeMessage:@""];
+        
+        [weakSelf.navigationController popToViewController:self animated:YES];
     }];
     [self.navigationController pushViewController:selectionController animated:YES];
 }
@@ -391,33 +402,35 @@
 //解散群组
 - (void)dissolveAction
 {
+    __weak ChatGroupDetailViewController *weakSelf = self;
     [self showHudInView:self.view hint:@"解散群组"];
-    EMError *error;
-#warning [leaveGroup:error:]不会调用代理方法
-    EMGroup *group = [[EaseMob sharedInstance].chatManager leaveGroup:_chatGroup.groupId error:&error];
-    [self hideHud];
-    if (error && !group) {
-        [self showHint:@"解散群组失败"];
-    }
-    else{
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroupSuccess" object:_chatGroup];
-    }
+#warning [asyncLeaveGroup:completion:onQueue:]不会调用代理方法
+    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
+        [weakSelf hideHud];
+        if (error) {
+            [weakSelf showHint:@"解散群组失败"];
+        }
+        else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroupSuccess" object:_chatGroup];
+        }
+    } onQueue:nil];
 }
 
 //退出群组
 - (void)exitAction
 {
+    __weak ChatGroupDetailViewController *weakSelf = self;
     [self showHudInView:self.view hint:@"退出群组"];
-    EMError *error;
-#warning [destroyGroup:error:]不会调用代理方法
-    EMGroup *group = [[EaseMob sharedInstance].chatManager leaveGroup:_chatGroup.groupId error:&error];
-    [self hideHud];
-    if (error && !group) {
-        [self showHint:@"退出群组失败"];
-    }
-    else{
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroupSuccess" object:_chatGroup];
-    }
+#warning [asyncLeaveGroup:completion:onQueue:]不会调用代理方法
+    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
+        [weakSelf hideHud];
+        if (error) {
+            [weakSelf showHint:@"退出群组失败"];
+        }
+        else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroupSuccess" object:_chatGroup];
+        }
+    } onQueue:nil];
 }
 
 @end
