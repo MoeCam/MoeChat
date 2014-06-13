@@ -163,7 +163,12 @@
     
     EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
     cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
-    cell.textLabel.text = group.groupSubject;
+    if (!group.groupSubject || group.groupSubject.length > 0) {
+        cell.textLabel.text = group.groupSubject;
+    }
+    else {
+        cell.textLabel.text = group.groupId;
+    }
     
     return cell;
 }
