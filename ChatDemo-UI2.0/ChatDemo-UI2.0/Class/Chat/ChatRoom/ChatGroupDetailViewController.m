@@ -63,6 +63,7 @@
 @property (strong, nonatomic) UIButton *clearButton;
 @property (strong, nonatomic) UIButton *exitButton;
 @property (strong, nonatomic) UIButton *dissolveButton;
+@property (strong, nonatomic) UILongPressGestureRecognizer *longPress;
 
 @end
 
@@ -75,6 +76,7 @@
         // Custom initialization
         _chatGroup = chatGroup;
         _dataSource = [NSMutableArray array];
+        _memberType = GroupMemberTypeNormal;
     }
     return self;
 }
@@ -126,12 +128,12 @@
         [_addButton setImage:[UIImage imageNamed:@"chatgroup_participant_add"] forState:UIControlStateNormal];
         [_addButton setImage:[UIImage imageNamed:@"chatgroup_participant_addHL"] forState:UIControlStateHighlighted];
         [_addButton addTarget:self action:@selector(addContact:) forControlEvents:UIControlEventTouchUpInside];
-        [_scrollView addSubview:_addButton];
+//        [_scrollView addSubview:_addButton];
         
+        _longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deleteContactBegin:)];
+        _longPress.minimumPressDuration = 0.5;
         if (_memberType != GroupMemberTypeNormal) {
-            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deleteContactBegin:)];
-            longPress.minimumPressDuration = 0.5;
-            [_scrollView addGestureRecognizer:longPress];
+            [_scrollView addGestureRecognizer:_longPress];
         }
     }
     
@@ -243,38 +245,43 @@
         [weakSelf.dataSource removeAllObjects];
         
         EMError *error;
-        _chatGroup = [[EaseMob sharedInstance].chatManager fetchGroupInfo:_chatGroup.groupId error:&error];
+        EMGroup *group = [[EaseMob sharedInstance].chatManager fetchGroupInfo:_chatGroup.groupId error:&error];
         if (!error) {
-            _memberType = GroupMemberTypeNormal;
+            weakSelf.chatGroup = group;
+            weakSelf.memberType = GroupMemberTypeNormal;
             NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
             NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-            for (NSString *str in _chatGroup.owners) {
+            for (NSString *str in weakSelf.chatGroup.owners) {
                 if ([str isEqualToString:loginUsername]) {
-                    _memberType = GroupMemberTypeOwner;
+                    weakSelf.memberType = GroupMemberTypeOwner;
                     break;
                 }
             }
             
-            if (_memberType == GroupMemberTypeNormal) {
-                for (NSString *str in _chatGroup.admins) {
+            if (weakSelf.memberType == GroupMemberTypeNormal) {
+                for (NSString *str in weakSelf.chatGroup.admins) {
                     if ([str isEqualToString:loginUsername]) {
-                        _memberType = GroupMemberTypeAdmin;
+                        weakSelf.memberType = GroupMemberTypeAdmin;
                         break;
                     }
                 }
             }
             
-            [weakSelf.dataSource addObjectsFromArray:_chatGroup.owners];
-            [weakSelf.dataSource addObjectsFromArray:_chatGroup.admins];
-            [weakSelf.dataSource addObjectsFromArray:_chatGroup.members];
+            [weakSelf.dataSource addObjectsFromArray:weakSelf.chatGroup.owners];
+            [weakSelf.dataSource addObjectsFromArray:weakSelf.chatGroup.admins];
+            [weakSelf.dataSource addObjectsFromArray:weakSelf.chatGroup.members];
             
-            [weakSelf hideHud];
-            [weakSelf refreshScrollView];
-            [weakSelf refreshFooterView];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf hideHud];
+                [weakSelf refreshScrollView];
+                [weakSelf refreshFooterView];
+            });
         }
         else{
-            [weakSelf hideHud];
-            [weakSelf showHint:@"获取群组详情失败，请稍后重试"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf hideHud];
+                [weakSelf showHint:@"获取群组详情失败，请稍后重试"];
+            });
         }
     });
 }
@@ -282,6 +289,14 @@
 - (void)refreshScrollView
 {
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+    if (self.memberType != GroupMemberTypeNormal) {
+        [self.scrollView addGestureRecognizer:_longPress];
+        [self.scrollView addSubview:self.addButton];
+    }
+    else{
+        [self.scrollView removeGestureRecognizer:_longPress];
+    }
     
     int tmp = ([self.dataSource count] + 1) % kColOfRow;
     int row = ([self.dataSource count] + 1) / kColOfRow;
@@ -331,7 +346,6 @@
                 if(_memberType != GroupMemberTypeNormal && index == self.dataSource.count)
                 {
                     self.addButton.frame = CGRectMake(j * kContactSize + 5, i * kContactSize + 10, kContactSize - 10, kContactSize - 10);
-                    [self.scrollView addSubview:self.addButton];
                 }
                 
                 isEnd = YES;
