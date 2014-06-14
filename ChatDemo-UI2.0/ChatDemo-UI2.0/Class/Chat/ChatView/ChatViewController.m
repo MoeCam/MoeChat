@@ -468,12 +468,19 @@
         }
         [self showHint:@"大图获取失败!"];
     } onQueue:nil];
+//    [chatManager asyncFetchMessageThumbnail:message.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
+//        [self reloadTableViewDataWithMessage:message.message];
+//    } onQueue:nil];
 }
 
 #pragma mark - IChatManagerDelegate
 
 -(void)didSendMessage:(EMMessage *)message error:(EMError *)error;
 {
+    [self reloadTableViewDataWithMessage:message];
+}
+
+- (void)reloadTableViewDataWithMessage:(EMMessage *)message{
     __weak ChatViewController *weakSelf = self;
     dispatch_async(_messageQueue, ^{
         if ([_conversation.chatter isEqualToString:message.conversation.chatter])
@@ -484,14 +491,12 @@
                     EMMessage *currMsg = [weakSelf.dataSource objectAtIndex:i];
                     if ([message.messageId isEqualToString:currMsg.messageId]) {
                         EMMessageModel *cellModel = [EMMessageModelManager modelWithMessage:message];
-                        
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [weakSelf.tableView beginUpdates];
                             [weakSelf.dataSource replaceObjectAtIndex:i withObject:cellModel];
                             [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                             [weakSelf.tableView endUpdates];
                             
-                            //                            [weakSelf.tableView reloadData];
                         });
                         
                         break;
@@ -503,30 +508,15 @@
 }
 
 - (void)didFetchMessageAttachmentFinished:(EMMessage *)message error:(EMError *)error{
-    __weak ChatViewController *weakSelf = self;
-    dispatch_async(_messageQueue, ^{
-        if ([_conversation.chatter isEqualToString:message.conversation.chatter])
-        {
-            for (int i = 0; i < weakSelf.dataSource.count; i ++) {
-                id object = [weakSelf.dataSource objectAtIndex:i];
-                if ([object isKindOfClass:[EMMessageModel class]]) {
-                    EMMessage *currMsg = [weakSelf.dataSource objectAtIndex:i];
-                    if ([message.messageId isEqualToString:currMsg.messageId]) {
-                        EMMessageModel *cellModel = [EMMessageModelManager modelWithMessage:message];
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [weakSelf.tableView beginUpdates];
-                            [weakSelf.dataSource replaceObjectAtIndex:i withObject:cellModel];
-                            [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                            [weakSelf.tableView endUpdates];
-                            
-                        });
-                        
-                        break;
-                    }
-                }
-            }
-        }
-    });
+    if (!error) {
+        [self reloadTableViewDataWithMessage:message];
+    }else{
+        
+    }
+}
+
+- (void)didFetchingMessageAttachment:(EMMessage *)message progress:(float)progress{
+    NSLog(@"didFetchingMessageAttachment: %f", progress);
 }
 
 -(void)didReceiveMessage:(EMMessage *)message
