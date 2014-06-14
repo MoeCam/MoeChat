@@ -161,6 +161,10 @@
     [[EaseMob sharedInstance].chatManager stopPlayingAudio];
     [self.messageReadManager stopMessageAudio];
     
+    DXRecordView *record = (DXRecordView *)_chatToolBar.recordView;
+    [record recordButtonTouchUpInside];
+    [record removeFromSuperview];
+    
 //    //判断当前会话是否为空，若为空则删除该会话
 //    EMMessage *message = [_conversation latestMessage];
 //    if (message == nil) {
@@ -629,8 +633,8 @@
  */
 - (void)didCancelRecordingVoiceAction:(UIView *)recordView
 {
-    DXRecordView *record = (DXRecordView *)recordView;
-    [record recordButtonTouchUpOutside];
+//    DXRecordView *record = (DXRecordView *)recordView;
+//    [record recordButtonTouchUpOutside];
     
     [[EaseMob sharedInstance].chatManager
      asyncCancelRecordingAudioWithCompletion:^(EMChatVoice *voice, EMError *error){
@@ -643,9 +647,9 @@
  */
 - (void)didFinishRecoingVoiceAction:(UIView *)recordView
 {
-    DXRecordView *record = (DXRecordView *)recordView;
-    [record recordButtonTouchUpInside];
-    
+//    DXRecordView *record = (DXRecordView *)recordView;
+//    [record recordButtonTouchUpInside];
+//    
     [[EaseMob sharedInstance].chatManager
      asyncStopRecordingAudioWithCompletion:^(EMChatVoice *voice, EMError *error){
          _isRecording = NO;
@@ -663,22 +667,22 @@
      } onQueue:nil];
 }
 
-/**
- *  当手指离开按钮的范围内时，主要为了通知外部的HUD
- */
-- (void)didDragOutsideAction:(UIView *)recordView
-{
-    DXRecordView *record = (DXRecordView *)recordView;
-    [record recordButtonDragOutside];
-}
-/**
- *  当手指再次进入按钮的范围内时，主要也是为了通知外部的HUD
- */
-- (void)didDragInsideAction:(UIView *)recordView
-{
-    DXRecordView *record = (DXRecordView *)recordView;
-    [record recordButtonDragInside];
-}
+///**
+// *  当手指离开按钮的范围内时，主要为了通知外部的HUD
+// */
+//- (void)didDragOutsideAction:(UIView *)recordView
+//{
+//    DXRecordView *record = (DXRecordView *)recordView;
+//    [record recordButtonDragOutside];
+//}
+///**
+// *  当手指再次进入按钮的范围内时，主要也是为了通知外部的HUD
+// */
+//- (void)didDragInsideAction:(UIView *)recordView
+//{
+//    DXRecordView *record = (DXRecordView *)recordView;
+//    [record recordButtonDragInside];
+//}
 
 #pragma mark - UIImagePickerControllerDelegate
 

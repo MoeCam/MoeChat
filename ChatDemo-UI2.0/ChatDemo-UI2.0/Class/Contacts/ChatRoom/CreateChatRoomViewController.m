@@ -156,14 +156,14 @@
                                                                  invitees:source
                                                     initialWelcomeMessage:@""
                                                                completion:^(EMGroup *group, EMError *error) {
-            [weakSelf hideHud];
+            [viewController hideHud];
             if (group && !error) {
-                [self showHint:@"创建群组成功"];
+                [viewController showHint:@"创建群组成功"];
                 [weakSelf.navigationController popToViewController:self animated:NO];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }
             else{
-                [weakSelf showHint:@"创建群组失败，请重新操作"];
+                [viewController showHint:@"创建群组失败，请重新操作"];
             }
         } onQueue:nil];
     }];

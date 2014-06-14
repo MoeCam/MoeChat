@@ -582,12 +582,12 @@
 
 - (void)recordButtonTouchDown
 {
-    if (_delegate && [_delegate respondsToSelector:@selector(didStartRecordingVoiceAction:)]) {
-        [_delegate didStartRecordingVoiceAction:self.recordView];
-    }
-    
     if ([self.recordView isKindOfClass:[DXRecordView class]]) {
         [(DXRecordView *)self.recordView recordButtonTouchDown];
+    }
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(didStartRecordingVoiceAction:)]) {
+        [_delegate didStartRecordingVoiceAction:self.recordView];
     }
 }
 
@@ -601,43 +601,45 @@
     if ([self.recordView isKindOfClass:[DXRecordView class]]) {
         [(DXRecordView *)self.recordView recordButtonTouchUpOutside];
     }
+    
     [self.recordView removeFromSuperview];
 }
 
 - (void)recordButtonTouchUpInside
 {
+    if ([self.recordView isKindOfClass:[DXRecordView class]]) {
+        [(DXRecordView *)self.recordView recordButtonTouchUpInside];
+    }
+    
     if ([self.delegate respondsToSelector:@selector(didFinishRecoingVoiceAction:)])
     {
         [self.delegate didFinishRecoingVoiceAction:self.recordView];
     }
     
-    if ([self.recordView isKindOfClass:[DXRecordView class]]) {
-        [(DXRecordView *)self.recordView recordButtonTouchUpInside];
-    }
     [self.recordView removeFromSuperview];
 }
 
 - (void)recordDragOutside
 {
+    if ([self.recordView isKindOfClass:[DXRecordView class]]) {
+        [(DXRecordView *)self.recordView recordButtonDragOutside];
+    }
+    
     if ([self.delegate respondsToSelector:@selector(didDragOutsideAction:)])
     {
         [self.delegate didDragOutsideAction:self.recordView];
-    }
-    
-    if ([self.recordView isKindOfClass:[DXRecordView class]]) {
-        [(DXRecordView *)self.recordView recordButtonDragOutside];
     }
 }
 
 - (void)recordDragInside
 {
+    if ([self.recordView isKindOfClass:[DXRecordView class]]) {
+        [(DXRecordView *)self.recordView recordButtonDragInside];
+    }
+    
     if ([self.delegate respondsToSelector:@selector(didDragInsideAction:)])
     {
         [self.delegate didDragInsideAction:self.recordView];
-    }
-    
-    if ([self.recordView isKindOfClass:[DXRecordView class]]) {
-        [(DXRecordView *)self.recordView recordButtonDragInside];
     }
 }
 

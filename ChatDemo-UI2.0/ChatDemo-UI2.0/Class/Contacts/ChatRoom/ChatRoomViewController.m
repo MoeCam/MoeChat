@@ -56,7 +56,7 @@
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.tableHeaderView = self.searchBar;
-    [self.tableView addSubview:self.slimeView];
+//    [self.tableView addSubview:self.slimeView];
     [self searchController];
     
     UIButton *createButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
