@@ -450,23 +450,36 @@
 // 图片的bubble被点击
 -(void)chatImageCellBubblePressed:(EMMessageModel *)message
 {
+    __weak ChatViewController *weakSelf = self;
     id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
-    [self showHudInView:self.view hint:@"正在获取大图..."];
-    [chatManager asyncFetchMessage:message.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
-        [self hideHud];
-        if (!error) {
-            NSString *localPath = aMessage == nil ? message.localPath : [[aMessage.messageBodies firstObject] localPath];
-            if (localPath && localPath.length > 0) {
-                NSURL *url = [NSURL fileURLWithPath:localPath];
-                [self.messageReadManager showBrowserWithImages:@[url]];
-                return ;
-            }
+    if ([message.messageBody messageBodyType] == eMessageBodyType_Image) {
+        EMImageMessageBody *imageBody = (EMImageMessageBody *)message.messageBody;
+        if (imageBody.thumbnailDownloaded) {
+            [weakSelf showHudInView:weakSelf.view hint:@"正在获取大图..."];
+            [chatManager asyncFetchMessage:message.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
+                [weakSelf hideHud];
+                if (!error) {
+                    NSString *localPath = aMessage == nil ? message.localPath : [[aMessage.messageBodies firstObject] localPath];
+                    if (localPath && localPath.length > 0) {
+                        NSURL *url = [NSURL fileURLWithPath:localPath];
+                        [weakSelf.messageReadManager showBrowserWithImages:@[url]];
+                        return ;
+                    }
+                }
+                [weakSelf showHint:@"大图获取失败!"];
+            } onQueue:nil];
+        }else{
+            //获取缩略图
+            [chatManager asyncFetchMessageThumbnail:message.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
+                if (!error) {
+                    [weakSelf reloadTableViewDataWithMessage:message.message];
+                }else{
+                    [weakSelf showHint:@"缩略图获取失败!"];
+                }
+                
+            } onQueue:nil];
         }
-        [self showHint:@"大图获取失败!"];
-    } onQueue:nil];
-//    [chatManager asyncFetchMessageThumbnail:message.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
-//        [self reloadTableViewDataWithMessage:message.message];
-//    } onQueue:nil];
+    }
 }
 
 #pragma mark - IChatManagerDelegate
