@@ -269,13 +269,13 @@
 
 - (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
 {
-    EMError *error;
-    NSArray *list = [[EaseMob sharedInstance].chatManager fetchAllGroupsWithError:&error];
-    if (!error) {
-        [self.dataSource removeAllObjects];
-        [self.dataSource addObjectsFromArray:list];
-        [self.tableView reloadData];
-    }
+//    EMError *error;
+//    NSArray *list = [[EaseMob sharedInstance].chatManager fetchAllGroupsWithError:&error];
+//    if (!error) {
+//        [self.dataSource removeAllObjects];
+//        [self.dataSource addObjectsFromArray:list];
+//        [self.tableView reloadData];
+//    }
     
     [_slimeView endRefresh];
 }

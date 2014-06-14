@@ -237,39 +237,46 @@
 
 - (void)loadDataSource
 {
+    __weak ChatGroupDetailViewController *weakSelf = self;
     [self showHudInView:self.view hint:@"加载数据..."];
-    [self.dataSource removeAllObjects];
-    
-    EMError *error;
-    _chatGroup = [[EaseMob sharedInstance].chatManager fetchGroupInfo:_chatGroup.groupId error:&error];
-    if (!error) {
-        _memberType = GroupMemberTypeNormal;
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-        for (NSString *str in _chatGroup.owners) {
-            if ([str isEqualToString:loginUsername]) {
-                _memberType = GroupMemberTypeOwner;
-                break;
-            }
-        }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [weakSelf.dataSource removeAllObjects];
         
-        if (_memberType == GroupMemberTypeNormal) {
-            for (NSString *str in _chatGroup.admins) {
+        EMError *error;
+        _chatGroup = [[EaseMob sharedInstance].chatManager fetchGroupInfo:_chatGroup.groupId error:&error];
+        if (!error) {
+            _memberType = GroupMemberTypeNormal;
+            NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+            NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+            for (NSString *str in _chatGroup.owners) {
                 if ([str isEqualToString:loginUsername]) {
-                    _memberType = GroupMemberTypeAdmin;
+                    _memberType = GroupMemberTypeOwner;
                     break;
                 }
             }
+            
+            if (_memberType == GroupMemberTypeNormal) {
+                for (NSString *str in _chatGroup.admins) {
+                    if ([str isEqualToString:loginUsername]) {
+                        _memberType = GroupMemberTypeAdmin;
+                        break;
+                    }
+                }
+            }
+            
+            [weakSelf.dataSource addObjectsFromArray:_chatGroup.owners];
+            [weakSelf.dataSource addObjectsFromArray:_chatGroup.admins];
+            [weakSelf.dataSource addObjectsFromArray:_chatGroup.members];
+            
+            [weakSelf hideHud];
+            [weakSelf refreshScrollView];
+            [weakSelf refreshFooterView];
         }
-        
-        [self.dataSource addObjectsFromArray:_chatGroup.owners];
-        [self.dataSource addObjectsFromArray:_chatGroup.admins];
-        [self.dataSource addObjectsFromArray:_chatGroup.members];
-    }
-    [self refreshScrollView];
-    [self refreshFooterView];
-    
-    [self hideHud];
+        else{
+            [weakSelf hideHud];
+            [weakSelf showHint:@"获取群组详情失败，请稍后重试"];
+        }
+    });
 }
 
 - (void)refreshScrollView
