@@ -49,8 +49,8 @@
     [self networkStateView];
     
     [self searchController];
-    [self showHudInView:self.view hint:@"加载会话..."];
-    [self.slimeView setLoadingWithExpansion];
+//    [self showHudInView:self.view hint:@"加载会话..."];
+//    [self.slimeView setLoadingWithExpansion];
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,7 +62,7 @@
 {
     [super viewWillAppear:animated];
     
-//    [self refreshDataSource];
+    [self refreshDataSource];
     [self registerNotifications];
 }
 
