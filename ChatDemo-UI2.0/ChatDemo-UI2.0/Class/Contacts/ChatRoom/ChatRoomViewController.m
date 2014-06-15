@@ -183,7 +183,7 @@
     
     EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
     cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
-    if (!group.groupSubject || group.groupSubject.length > 0) {
+    if (group.groupSubject || group.groupSubject.length > 0) {
         cell.textLabel.text = group.groupSubject;
     }
     else {
@@ -284,7 +284,9 @@
 
 - (void)groupDidUpdateInfo:(EMGroup *)group error:(EMError *)error
 {
-    [self reloadDataSource];
+    if (!error) {
+        [self reloadDataSource];
+    }
 }
 
 - (void)didUpdateGroupList:(NSArray *)allGroups
