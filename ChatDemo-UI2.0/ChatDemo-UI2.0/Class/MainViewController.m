@@ -123,7 +123,6 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
                          withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_chats"]];
     [self unSelectedTapTabBarItems:_chatListVC.tabBarItem];
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
-//    UINavigationController *chatNav = [[UINavigationController alloc] initWithRootViewController:_chatListVC];
     
     _contactsVC = [[ContactsViewController alloc] initWithNibName:nil bundle:nil];
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"通讯录"
@@ -133,7 +132,6 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
                          withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_contacts"]];
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
     [self selectedTapTabBarItems:_contactsVC.tabBarItem];
-//    UINavigationController *contactNav = [[UINavigationController alloc] initWithRootViewController:_contactsVC];
     
     _settingsVC = [[SettingsViewController alloc] init];
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"设置"
@@ -144,7 +142,6 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     _settingsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
     [self selectedTapTabBarItems:_settingsVC.tabBarItem];
-//    UINavigationController *settingNav = [[UINavigationController alloc] initWithRootViewController:_settingsVC];
     
     self.viewControllers = @[_chatListVC, _contactsVC, _settingsVC];
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
@@ -182,6 +179,11 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 }
 
 #pragma mark - IChatManagerDelegate 消息变化
+
+- (void)didUpdateConversationList:(NSArray *)conversationList
+{
+    [_chatListVC refreshDataSource];
+}
 
 // 未读消息数量变化回调
 -(void)didUnreadMessagesCountChanged
@@ -357,6 +359,14 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 {
     NSString *message = [NSString stringWithFormat:@"你被'%@'无耻的拒绝了", username];
     TTAlertNoTitle(message);
+}
+
+- (void)group:(EMGroup *)group didLeave:(EMGroupLeaveReason)reason error:(EMError *)error
+{
+    if (reason == eGroupLeaveReason_BeRemoved) {
+        NSString *str = [NSString stringWithFormat:@"你被从群组\'%@\'中踢出", group.groupId];
+        TTAlertNoTitle(str);
+    }
 }
 
 #pragma mark - IChatManagerDelegate 登录状态变化

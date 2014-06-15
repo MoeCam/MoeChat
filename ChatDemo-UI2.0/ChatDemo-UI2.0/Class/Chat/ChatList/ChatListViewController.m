@@ -49,8 +49,8 @@
     [self networkStateView];
     
     [self searchController];
-//    [self showHudInView:self.view hint:@"加载会话..."];
-//    [self.slimeView setLoadingWithExpansion];
+    [self showHudInView:self.view hint:@"加载会话..."];
+    [self.slimeView setLoadingWithExpansion];
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,7 +62,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self refreshDataSource];
+//    [self refreshDataSource];
     [self registerNotifications];
 }
 
@@ -208,13 +208,13 @@
 {
     NSMutableArray *ret = nil;
     NSArray *conversations = [[EaseMob sharedInstance].chatManager conversations];
-    NSMutableArray *conversationList = [NSMutableArray array];
-    for (EMConversation *obj in conversations) {
-        if ([obj latestMessage] != nil) {
-            [conversationList addObject:obj];
-        }
-    }
-    NSArray* sorte = [conversationList sortedArrayUsingComparator:
+//    NSMutableArray *conversationList = [NSMutableArray array];
+//    for (EMConversation *obj in conversations) {
+//        if ([obj latestMessage] != nil || obj.isGroup) {
+//            [conversationList addObject:obj];
+//        }
+//    }
+    NSArray* sorte = [conversations sortedArrayUsingComparator:
            ^(EMConversation *obj1, EMConversation* obj2){
                EMMessage *message1 = [obj1 latestMessage];
                EMMessage *message2 = [obj1 latestMessage];
@@ -430,7 +430,7 @@
 
 - (void)didUpdateGroupList:(NSArray *)allGroups
 {
-    [_tableView reloadData];
+    [self refreshDataSource];
 }
 
 #pragma mark - registerNotifications

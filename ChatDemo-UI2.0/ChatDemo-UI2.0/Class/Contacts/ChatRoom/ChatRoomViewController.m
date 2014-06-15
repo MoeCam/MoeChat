@@ -301,14 +301,6 @@
     }
 }
 
-- (void)group:(EMGroup *)group didLeave:(EMGroupLeaveReason)reason error:(EMError *)error
-{
-    if (reason == eGroupLeaveReason_BeRemoved) {
-        NSString *str = [NSString stringWithFormat:@"你被从群组\'%@\'中踢出", group.groupId];
-        TTAlertNoTitle(str);
-    }
-}
-
 #pragma mark - notification
 
 - (void)createGroupSuccess:(NSNotification *)notification
