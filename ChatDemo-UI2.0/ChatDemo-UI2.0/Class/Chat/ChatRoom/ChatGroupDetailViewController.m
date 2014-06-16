@@ -427,7 +427,7 @@
             [source addObject:buddy.username];
         }
         
-        _chatGroup = [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:_chatGroup.groupId welcomeMessage:@""];
+        _chatGroup = [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:_chatGroup.groupId welcomeMessage:@"" error:nil];
         
         [weakSelf.navigationController popToViewController:self animated:YES];
         [weakSelf reloadDataSource];
