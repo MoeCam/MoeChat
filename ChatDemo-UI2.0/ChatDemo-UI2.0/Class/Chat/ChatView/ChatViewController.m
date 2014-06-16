@@ -738,11 +738,11 @@
 
 - (void)loadMoreMessages
 {
-    [_tableView beginUpdates];
     NSInteger currentCount = [self.dataSource count];
     NSArray *chats = [_conversation loadNumbersOfMessages:(currentCount + 10) before:[_conversation latestMessage].timestamp + 1];
     
     if ([chats count] > currentCount) {
+        [_tableView beginUpdates];
         [self.dataSource removeAllObjects];
         [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
         NSMutableArray *indexPaths = [NSMutableArray array];
@@ -765,7 +765,7 @@
         for (EMMessage *message in array) {
             NSDate *createDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)message.timestamp];
             NSTimeInterval tempDate = [createDate timeIntervalSinceDate:self.chatTagDate];
-            if (tempDate > 60 || tempDate < -60 || tempDate == 0) {
+            if (tempDate > 60 || tempDate < -60 || (self.chatTagDate == nil)) {
                 [resultArray addObject:[createDate formattedTime]];
                 self.chatTagDate = createDate;
             }
@@ -781,7 +781,7 @@
     NSMutableArray *ret = [[NSMutableArray alloc] init];
     NSDate *createDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)message.timestamp];
     NSTimeInterval tempDate = [createDate timeIntervalSinceDate:self.chatTagDate];
-    if (tempDate > 60 || tempDate < -60 || tempDate == 0) {
+    if (tempDate > 60 || tempDate < -60 || (self.chatTagDate == nil)) {
         [ret addObject:[createDate formattedTime]];
         self.chatTagDate = createDate;
     }
