@@ -142,7 +142,7 @@
     
     __weak CreateChatRoomViewController *weakSelf = self;
     ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] init];
-    [selectionController setSelectedContactsFinished:^(ContactSelectionViewController *viewController, NSArray *selectedContacts) {
+    [selectionController setSelectedContactsFinished:^(__weak ContactSelectionViewController *viewController, NSArray *selectedContacts) {
         [viewController showHudInView:viewController.view hint:@"创建群组..."];
         
         NSMutableArray *source = [NSMutableArray array];

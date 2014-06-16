@@ -421,7 +421,7 @@
 {
     __weak ChatGroupDetailViewController *weakSelf = self;
     ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] initWithBlockSelectedUsernames:_chatGroup.occupants];
-    [selectionController setSelectedContactsFinished:^(ContactSelectionViewController *viewController, NSArray *selectedContacts) {
+    [selectionController setSelectedContactsFinished:^(__weak ContactSelectionViewController *viewController, NSArray *selectedContacts) {
         NSMutableArray *source = [NSMutableArray array];
         for (EMBuddy *buddy in selectedContacts) {
             [source addObject:buddy.username];

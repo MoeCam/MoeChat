@@ -539,7 +539,7 @@
 {
     if (_isChatGroup && [group.groupId isEqualToString:_chatGroup.groupId]) {
         [self.navigationController popToViewController:self animated:NO];
-        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:NO];
 //        if (reason == eGroupLeaveReason_BeRemoved || reason == eGroupLeaveReason_Destroyed) {
 //            NSArray *controllers = self.navigationController.viewControllers;
 //            NSInteger index = [controllers indexOfObject:self];
@@ -741,18 +741,20 @@
     [_tableView beginUpdates];
     NSInteger currentCount = [self.dataSource count];
     NSArray *chats = [_conversation loadNumbersOfMessages:(currentCount + 10) before:[_conversation latestMessage].timestamp + 1];
-    [self.dataSource removeAllObjects];
-    [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
     
-    NSMutableArray *indexPaths = [NSMutableArray array];
-    for (int i = 0; i < [self.dataSource count] - currentCount; i++) {
-        [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+    if ([chats count] > currentCount) {
+        [self.dataSource removeAllObjects];
+        [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
+        NSMutableArray *indexPaths = [NSMutableArray array];
+        for (int i = 0; i < [self.dataSource count] - currentCount; i++) {
+            [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+        }
+        
+        [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        [_tableView endUpdates];
+        
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.dataSource count] - currentCount - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
-    
-    [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-    [_tableView endUpdates];
-    
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.dataSource count] - currentCount - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 }
 
 - (NSArray *)sortChatSource:(NSArray *)array

@@ -399,8 +399,9 @@
 {
     if(_SelectedContactsFinished)
     {
+        __weak ContactSelectionViewController *weakSelf = self;
         if ([_blockSelectedUsernames count] == 0) {
-            _SelectedContactsFinished(self, self.selectedContacts);
+            _SelectedContactsFinished(weakSelf, weakSelf.selectedContacts);
         }
         else{
             NSMutableArray *resultArray = [NSMutableArray array];
