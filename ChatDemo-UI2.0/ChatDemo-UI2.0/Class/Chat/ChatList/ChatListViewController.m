@@ -49,8 +49,6 @@
     [self networkStateView];
     
     [self searchController];
-//    [self showHudInView:self.view hint:@"加载会话..."];
-//    [self.slimeView setLoadingWithExpansion];
 }
 
 - (void)didReceiveMemoryWarning
@@ -452,7 +450,7 @@
 -(void)refreshDataSource
 {
     self.dataSource = [self loadDataSource];
-    [self.tableView reloadData];
+    [_tableView reloadData];
     [self hideHud];
 }
 

@@ -50,7 +50,6 @@
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createGroupSuccess:) name:@"CreateGroupSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitGroupSuccess:) name:@"ExitGroupSuccess" object:nil];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
@@ -294,13 +293,6 @@
     [self reloadDataSource];
 }
 
-- (void)group:(EMGroup *)group didRemoveOccupant:(NSString *)username error:(EMError *)error
-{
-    if (!error) {
-        [self reloadDataSource];
-    }
-}
-
 #pragma mark - notification
 
 - (void)createGroupSuccess:(NSNotification *)notification
@@ -312,20 +304,6 @@
         [self.dataSource insertObject:group atIndex:0];
         [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
         [self.tableView endUpdates];
-    }
-}
-
-- (void)exitGroupSuccess:(NSNotification *)notification
-{
-    id object = notification.object;
-    if ([object isKindOfClass:[EMGroup class]]) {
-        [self.navigationController popToViewController:self animated:YES];
-//        EMGroup *group = (EMGroup *)object;
-//        [self.tableView beginUpdates];
-//        NSInteger row = [self.dataSource indexOfObject:group];
-//        [self.dataSource removeObject:group];
-//        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
-//        [self.tableView endUpdates];
     }
 }
 

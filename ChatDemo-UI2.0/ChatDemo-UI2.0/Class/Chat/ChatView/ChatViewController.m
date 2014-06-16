@@ -535,6 +535,22 @@
     }
 }
 
+- (void)group:(EMGroup *)group didLeave:(EMGroupLeaveReason)reason error:(EMError *)error
+{
+    if (_isChatGroup && [group.groupId isEqualToString:_chatGroup.groupId]) {
+        [self.navigationController popToViewController:self animated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
+//        if (reason == eGroupLeaveReason_BeRemoved || reason == eGroupLeaveReason_Destroyed) {
+//            NSArray *controllers = self.navigationController.viewControllers;
+//            NSInteger index = [controllers indexOfObject:self];
+//            if (index > 0) {
+//                UIViewController *toController = [controllers objectAtIndex:(index - 1)];
+//                
+//            }
+//        }
+    }
+}
+
 #pragma mark - EMChatBarMoreViewDelegate
 
 - (void)moreViewPhotoAction:(DXChatBarMoreView *)moreView

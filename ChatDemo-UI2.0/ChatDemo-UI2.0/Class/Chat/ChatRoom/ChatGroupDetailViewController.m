@@ -102,7 +102,7 @@
     tap.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tap];
     
-    [self loadDataSource];
+    [self fetchGroupInfo];
 }
 
 - (void)didReceiveMemoryWarning
@@ -237,45 +237,16 @@
 
 #pragma mark - data
 
-- (void)loadDataSource
+- (void)fetchGroupInfo
 {
     __weak ChatGroupDetailViewController *weakSelf = self;
     [self showHudInView:self.view hint:@"加载数据..."];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [weakSelf.dataSource removeAllObjects];
-        
         EMError *error;
         EMGroup *group = [[EaseMob sharedInstance].chatManager fetchGroupInfo:_chatGroup.groupId error:&error];
         if (!error) {
             weakSelf.chatGroup = group;
-            weakSelf.memberType = GroupMemberTypeNormal;
-            NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-            NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-            for (NSString *str in weakSelf.chatGroup.owners) {
-                if ([str isEqualToString:loginUsername]) {
-                    weakSelf.memberType = GroupMemberTypeOwner;
-                    break;
-                }
-            }
-            
-            if (weakSelf.memberType == GroupMemberTypeNormal) {
-                for (NSString *str in weakSelf.chatGroup.admins) {
-                    if ([str isEqualToString:loginUsername]) {
-                        weakSelf.memberType = GroupMemberTypeAdmin;
-                        break;
-                    }
-                }
-            }
-            
-            [weakSelf.dataSource addObjectsFromArray:weakSelf.chatGroup.owners];
-            [weakSelf.dataSource addObjectsFromArray:weakSelf.chatGroup.admins];
-            [weakSelf.dataSource addObjectsFromArray:weakSelf.chatGroup.members];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf hideHud];
-                [weakSelf refreshScrollView];
-                [weakSelf refreshFooterView];
-            });
+            [weakSelf reloadDataSource];
         }
         else{
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -283,6 +254,39 @@
                 [weakSelf showHint:@"获取群组详情失败，请稍后重试"];
             });
         }
+    });
+}
+
+- (void)reloadDataSource
+{
+    [self.dataSource removeAllObjects];
+    self.memberType = GroupMemberTypeNormal;
+    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+    for (NSString *str in self.chatGroup.owners) {
+        if ([str isEqualToString:loginUsername]) {
+            self.memberType = GroupMemberTypeOwner;
+            break;
+        }
+    }
+    
+    if (self.memberType == GroupMemberTypeNormal) {
+        for (NSString *str in self.chatGroup.admins) {
+            if ([str isEqualToString:loginUsername]) {
+                self.memberType = GroupMemberTypeAdmin;
+                break;
+            }
+        }
+    }
+    
+    [self.dataSource addObjectsFromArray:self.chatGroup.owners];
+    [self.dataSource addObjectsFromArray:self.chatGroup.admins];
+    [self.dataSource addObjectsFromArray:self.chatGroup.members];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshScrollView];
+        [self refreshFooterView];
+        [self hideHud];
     });
 }
 
@@ -423,9 +427,10 @@
             [source addObject:buddy.username];
         }
         
-        [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:_chatGroup.groupId welcomeMessage:@""];
+        _chatGroup = [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:_chatGroup.groupId welcomeMessage:@""];
         
         [weakSelf.navigationController popToViewController:self animated:YES];
+        [weakSelf reloadDataSource];
     }];
     [self.navigationController pushViewController:selectionController animated:YES];
 }
@@ -447,9 +452,6 @@
         if (error) {
             [weakSelf showHint:@"解散群组失败"];
         }
-        else{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroupSuccess" object:_chatGroup];
-        }
     } onQueue:nil];
 }
 
@@ -463,9 +465,6 @@
         [weakSelf hideHud];
         if (error) {
             [weakSelf showHint:@"退出群组失败"];
-        }
-        else{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroupSuccess" object:_chatGroup];
         }
     } onQueue:nil];
 }

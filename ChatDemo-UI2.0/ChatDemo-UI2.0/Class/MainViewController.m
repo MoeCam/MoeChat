@@ -363,8 +363,26 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 
 - (void)group:(EMGroup *)group didLeave:(EMGroupLeaveReason)reason error:(EMError *)error
 {
+    NSString *tmpStr = group.groupSubject;
+    NSString *str;
+    if (!tmpStr || tmpStr.length == 0) {
+        NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
+        for (EMGroup *obj in groupArray) {
+            if ([obj.groupId isEqualToString:group.groupId]) {
+                tmpStr = obj.groupSubject;
+                break;
+            }
+        }
+    }
+    
     if (reason == eGroupLeaveReason_BeRemoved) {
-        NSString *str = [NSString stringWithFormat:@"你被从群组\'%@\'中踢出", group.groupId];
+        str = [NSString stringWithFormat:@"你被从群组\'%@\'中踢出", tmpStr];
+    }
+//    else if (reason == eGroupLeaveReason_Destroyed)
+//    {
+//        str = [NSString stringWithFormat:@"群组\'%@\'解散了", tmpStr];
+//    }
+    if (str.length > 0) {
         TTAlertNoTitle(str);
     }
 }
