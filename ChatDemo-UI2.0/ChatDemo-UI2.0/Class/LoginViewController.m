@@ -82,13 +82,13 @@
                  TTAlertNoTitle(@"注册成功,请登录");
              }else{
                  switch (error.errorCode) {
-                     case EMErrorServerNotReached:
+                     case EMErrorServerNotReachable:
                          TTAlertNoTitle(@"连接服务器失败!");
                          break;
-                     case EMErrorServerRegisterConflicted:
+                     case EMErrorServerDuplicatedAccount:
                          TTAlertNoTitle(@"您注册的用户已存在!");
                          break;
-                     case EMErrorServerConnectedTimeOut:
+                     case EMErrorServerTimeout:
                          TTAlertNoTitle(@"连接服务器超时!");
                          break;
                      default:
@@ -113,13 +113,13 @@
                  [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
              }else {
                  switch (error.errorCode) {
-                     case EMErrorServerNotReached:
+                     case EMErrorServerNotReachable:
                          TTAlertNoTitle(@"连接服务器失败!");
                          break;
-                     case EMErrorServerAuthenticateFailed:
+                     case EMErrorServerAuthenticationFailure:
                          TTAlertNoTitle(@"用户名或密码错误");
                          break;
-                     case EMErrorServerConnectedTimeOut:
+                     case EMErrorServerTimeout:
                          TTAlertNoTitle(@"连接服务器超时!");
                          break;
                      default:
