@@ -206,12 +206,6 @@
 {
     NSMutableArray *ret = nil;
     NSArray *conversations = [[EaseMob sharedInstance].chatManager conversations];
-//    NSMutableArray *conversationList = [NSMutableArray array];
-//    for (EMConversation *obj in conversations) {
-//        if ([obj latestMessage] != nil || obj.isGroup) {
-//            [conversationList addObject:obj];
-//        }
-//    }
     NSArray* sorte = [conversations sortedArrayUsingComparator:
            ^(EMConversation *obj1, EMConversation* obj2){
                EMMessage *message1 = [obj1 latestMessage];

@@ -162,11 +162,13 @@
     [[EaseMob sharedInstance].chatManager stopPlayingAudio];
     [self.messageReadManager stopMessageAudio];
     
-//    //判断当前会话是否为空，若为空则删除该会话
-//    EMMessage *message = [_conversation latestMessage];
-//    if (message == nil) {
-//        [[EaseMob sharedInstance].chatManager removeConversationByChatter:_conversation.chatter deleteMessages:YES];
-//    }
+    //判断当前会话是否为群组，是否为空，若都符合则删除该会话
+    if (_isChatGroup) {
+        EMMessage *message = [_conversation latestMessage];
+        if (message == nil) {
+            [[EaseMob sharedInstance].chatManager removeConversationByChatter:_conversation.chatter deleteMessages:YES];
+        }
+    }
 }
 
 - (void)dealloc
