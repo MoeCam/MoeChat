@@ -438,7 +438,12 @@
 //清空聊天记录
 - (void)clearAction
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveAllMessages" object:_chatGroup.groupId];
+    [WCAlertView showAlertWithTitle:@"提示" message:@"请确认删除" customizationBlock:nil completionBlock:
+     ^(NSUInteger buttonIndex, WCAlertView *alertView) {
+         if (buttonIndex == 1) {
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveAllMessages" object:_chatGroup.groupId];
+         }
+     } cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
 }
 
 //解散群组

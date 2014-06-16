@@ -96,6 +96,8 @@
     //注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllMessages:) name:@"RemoveAllMessages" object:nil];
+    
     _messageQueue = dispatch_queue_create("easemob.com", NULL);
     //通过会话管理者获取已收发消息
     NSArray *chats = [_conversation loadNumbersOfMessages:10 before:[_conversation latestMessage].timestamp + 1];
@@ -153,7 +155,6 @@
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllMessages:) name:@"RemoveAllMessages" object:nil];
     // 设置当前conversation的所有message为已读
     [_conversation markMessagesAsRead:YES];
     
@@ -837,17 +838,20 @@
 
 - (void)removeAllMessages:(id)sender
 {
-    if ([sender isKindOfClass:[NSNotification class]]) {
-        NSString *groupId = (NSString *)[(NSNotification *)sender object];
-        if (!_isChatGroup || ![groupId isEqualToString:_conversation.chatter]) {
-            return;
-        }
-    }
-    
     [_conversation loadAllMessages];
     if (_conversation.messages.count == 0) {
         [self showHint:@"消息已经清空"];
         return;
+    }
+    
+    if ([sender isKindOfClass:[NSNotification class]]) {
+        NSString *groupId = (NSString *)[(NSNotification *)sender object];
+        if (_isChatGroup && [groupId isEqualToString:_conversation.chatter]) {
+            [_conversation removeAllMessages];
+            [_dataSource removeAllObjects];
+            [_tableView reloadData];
+            return;
+        }
     }
     
     [WCAlertView showAlertWithTitle:@"提示"
@@ -857,14 +861,11 @@
                  } completionBlock:
      ^(NSUInteger buttonIndex, WCAlertView *alertView) {
          if (buttonIndex == 1) {
-             if (_conversation.messages.count > 0) {
-                 [_conversation removeAllMessages];
-                 [_dataSource removeAllObjects];
-                 [self.tableView reloadData];
-             }
+             [_conversation removeAllMessages];
+             [_dataSource removeAllObjects];
+             [self.tableView reloadData];
          }
-     } cancelButtonTitle:@"取消"
-                  otherButtonTitles:@"确定", nil];
+     } cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
 }
 
 - (void)showMenuViewController:(UIView *)showInView andIndexPath:(NSIndexPath *)indexPath messageType:(MessageBodyType)messageType
