@@ -31,6 +31,13 @@ NSString *const kRouterEventChatHeadImageTapEventName = @"kRouterEventChatHeadIm
         _headImageView.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_headImageView];
         
+        _nameLabel = [[UILabel alloc] init];
+        _nameLabel.backgroundColor = [UIColor clearColor];
+        _nameLabel.textColor = [UIColor grayColor];
+        _nameLabel.textAlignment = NSTextAlignmentCenter;
+        _nameLabel.font = [UIFont systemFontOfSize:12];
+        [self.contentView addSubview:_nameLabel];
+        
         [self setupSubviewsForMessage:message];
     }
     return self;
@@ -43,6 +50,8 @@ NSString *const kRouterEventChatHeadImageTapEventName = @"kRouterEventChatHeadIm
     CGRect frame = _headImageView.frame;
     frame.origin.x = _message.isSender ? (self.bounds.size.width - _headImageView.frame.size.width - HEAD_PADDING) : HEAD_PADDING;
     _headImageView.frame = frame;
+    
+    _nameLabel.frame = CGRectMake(CGRectGetMinX(_headImageView.frame), CGRectGetMaxY(_headImageView.frame), CGRectGetWidth(_headImageView.frame), NAME_LABEL_HEIGHT);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -57,6 +66,8 @@ NSString *const kRouterEventChatHeadImageTapEventName = @"kRouterEventChatHeadIm
 - (void)setMessage:(EMMessageModel *)message
 {
     _message = message;
+    
+    _nameLabel.hidden = !message.isChatGroup;
     
     UIImage *placeholderImage = [UIImage imageNamed:@"chatListCellHead"];
     [self.headImageView setImageWithURL:_message.headImageURL placeholderImage:placeholderImage];

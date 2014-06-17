@@ -43,6 +43,11 @@
 {
     [super viewDidLoad];
     
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
+    {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    }
+    
     self.title = @"群组";
     
 #warning 把self注册为SDK的delegate
@@ -55,7 +60,7 @@
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.tableHeaderView = self.searchBar;
-//    [self.tableView addSubview:self.slimeView];
+    [self.tableView addSubview:self.slimeView];
     [self searchController];
     
     UIButton *createButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
@@ -268,13 +273,13 @@
 
 - (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
 {
-//    EMError *error;
-//    NSArray *list = [[EaseMob sharedInstance].chatManager fetchAllGroupsWithError:&error];
-//    if (!error) {
-//        [self.dataSource removeAllObjects];
-//        [self.dataSource addObjectsFromArray:list];
-//        [self.tableView reloadData];
-//    }
+    EMError *error;
+    NSArray *list = [[EaseMob sharedInstance].chatManager fetchAllGroupsWithError:&error];
+    if (!error) {
+        [self.dataSource removeAllObjects];
+        [self.dataSource addObjectsFromArray:list];
+        [self.tableView reloadData];
+    }
     
     [_slimeView endRefresh];
 }

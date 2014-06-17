@@ -6,6 +6,8 @@
 //  Copyright (c) 2014年 easemob. All rights reserved.
 //
 
+#import <CoreTelephony/CTCall.h>
+#import <CoreTelephony/CTCallCenter.h>
 #import "ChatViewController.h"
 
 #import "SRRefreshView.h"
@@ -37,6 +39,7 @@
     dispatch_queue_t _messageQueue;
 }
 
+@property (strong, nonatomic) CTCallCenter *callCenter;
 @property (nonatomic) BOOL isChatGroup;
 @property (strong, nonatomic) EMGroup *chatGroup;
 
@@ -90,6 +93,24 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
+    
+    _callCenter = [[CTCallCenter alloc] init];
+    _callCenter.callEventHandler = ^(CTCall *call){
+//        if(call.callState == CTCallStateIncoming){
+//            _isRecording = NO;
+//            [_chatToolBar cancleTouchRecord];
+//            
+//            // 设置当前conversation的所有message为已读
+//            [_conversation markMessagesAsRead:YES];
+//            
+//            //停止音频播放及播放动画
+//            [[EaseMob sharedInstance].chatManager stopPlayingAudio];
+//            [self.messageReadManager stopMessageAudio];
+//            
+//        }
+    };
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(callReceived:) name:CTCallStateIncoming object:nil];
     [[[EaseMob sharedInstance] deviceManager] addDelegate:self onQueue:nil];
 #warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
@@ -177,6 +198,11 @@
 #warning 以下第一行代码必须写，将self从ChatManager的代理中移除
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[[EaseMob sharedInstance] deviceManager] removeDelegate:self];
+}
+
+- (void)callReceived:(id)sender
+{
+    
 }
 
 #pragma mark - getter
@@ -758,18 +784,11 @@
     NSArray *chats = [_conversation loadNumbersOfMessages:(currentCount + 10) before:[_conversation latestMessage].timestamp + 1];
     
     if ([chats count] > currentCount) {
-        [_tableView beginUpdates];
         [self.dataSource removeAllObjects];
         [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
-        NSMutableArray *indexPaths = [NSMutableArray array];
-        for (int i = 0; i < [self.dataSource count] - currentCount; i++) {
-            [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-        }
+        [_tableView reloadData];
         
-        [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-        [_tableView endUpdates];
-        
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.dataSource count] - currentCount - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.dataSource count] - currentCount inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
 }
 
@@ -816,6 +835,7 @@
         
         for (int i = 0; i < messages.count; i++) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:weakSelf.dataSource.count+i inSection:0];
+//            [indexPaths insertObject:indexPath atIndex:0];
             [indexPaths addObject:indexPath];
         }
         
@@ -827,7 +847,7 @@
             
             //            [weakSelf.tableView reloadData];
             
-            [weakSelf.tableView scrollToRowAtIndexPath:[indexPaths lastObject] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+            [weakSelf.tableView scrollToRowAtIndexPath:[indexPaths lastObject] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         });
     });
 }
@@ -865,6 +885,7 @@
             [_conversation removeAllMessages];
             [_dataSource removeAllObjects];
             [_tableView reloadData];
+            [self showHint:@"消息已经清空"];
             return;
         }
     }

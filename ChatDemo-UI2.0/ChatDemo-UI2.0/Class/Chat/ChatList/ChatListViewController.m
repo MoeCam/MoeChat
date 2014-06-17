@@ -337,6 +337,7 @@
         chatController = [[ChatViewController alloc] initWithChatter:conversation.chatter];
     }
     chatController.title = title;
+    [conversation markMessagesAsRead:YES];
     [self.navigationController pushViewController:chatController animated:YES];
 }
 

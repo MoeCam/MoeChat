@@ -38,6 +38,7 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
     bubbleFrame.origin.y = self.headImageView.frame.origin.y;
     
     if (self.message.isSender) {
+        bubbleFrame.origin.y = self.headImageView.frame.origin.y;
         // 菊花状态 （因不确定菊花具体位置，要在子类中实现位置的修改）
         switch (self.message.status) {
             case eMessageDeliveryState_Delivering:
@@ -84,6 +85,11 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
 - (void)setMessage:(EMMessageModel *)message
 {
     [super setMessage:message];
+    
+    if (message.isChatGroup) {
+        _nameLabel.text = message.username;
+        _nameLabel.hidden = message.isSender;
+    }
     
     _bubbleView.model = message;
     [_bubbleView sizeToFit];
@@ -201,7 +207,11 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
 + (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath withObject:(EMMessageModel *)model
 {
     NSInteger bubbleHeight = [EMChatViewCell bubbleViewHeightForMessage:model];
-    return MAX(HEAD_PADDING * 2 + HEAD_SIZE, bubbleHeight) + CELLPADDING;
+    NSInteger headHeight = HEAD_PADDING * 2 + HEAD_SIZE;
+    if (model.isChatGroup && !model.isSender) {
+        headHeight += NAME_LABEL_HEIGHT;
+    }
+    return MAX(headHeight, bubbleHeight) + CELLPADDING;
 }
 
 

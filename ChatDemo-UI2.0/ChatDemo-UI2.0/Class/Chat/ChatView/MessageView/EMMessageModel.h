@@ -21,7 +21,7 @@
 
 @property (nonatomic) BOOL isSender;    //是否是发送者
 @property (nonatomic) BOOL isRead;      //是否已读
-@property (nonatomic) BOOL isChatroom;  //是否是群聊
+@property (nonatomic) BOOL isChatGroup;  //是否是群聊
 
 @property (nonatomic, strong) NSString *messageId;
 @property (nonatomic, strong) NSURL *headImageURL;

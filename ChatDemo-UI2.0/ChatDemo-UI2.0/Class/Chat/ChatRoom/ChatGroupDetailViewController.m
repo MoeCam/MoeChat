@@ -422,15 +422,15 @@
     __weak ChatGroupDetailViewController *weakSelf = self;
     ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] initWithBlockSelectedUsernames:_chatGroup.occupants];
     [selectionController setSelectedContactsFinished:^(__weak ContactSelectionViewController *viewController, NSArray *selectedContacts) {
-        [viewController showHudInView:viewController.view hint:@"添加组成员..."];
+        [weakSelf.navigationController popToViewController:weakSelf animated:NO];
+        [weakSelf showHudInView:viewController.view hint:@"添加组成员..."];
         NSMutableArray *source = [NSMutableArray array];
         for (EMBuddy *buddy in selectedContacts) {
             [source addObject:buddy.username];
         }
         
         _chatGroup = [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:_chatGroup.groupId welcomeMessage:@"" error:nil];
-        [viewController hideHud];
-        [weakSelf.navigationController popToViewController:self animated:YES];
+        [weakSelf hideHud];
         [weakSelf reloadDataSource];
     }];
     [self.navigationController pushViewController:selectionController animated:YES];

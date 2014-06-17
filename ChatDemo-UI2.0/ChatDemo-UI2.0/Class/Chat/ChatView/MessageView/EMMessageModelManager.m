@@ -27,8 +27,14 @@
     model.type = messageBody.messageBodyType;
     model.messageId = message.messageId;
     model.isSender = isSender;
-    model.username = message.from;
     model.isPlaying = NO;
+    model.isChatGroup = message.isGroup;
+    if (model.isChatGroup) {
+        model.username = message.groupSenderName;
+    }
+    else{
+        model.username = message.from;
+    }
     
     if (isSender) {
         model.headImageURL = nil;
