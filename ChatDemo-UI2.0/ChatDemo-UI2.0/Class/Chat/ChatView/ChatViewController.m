@@ -519,7 +519,7 @@
     });
 }
 
-- (void)didFetchMessageAttachmentFinished:(EMMessage *)message error:(EMError *)error{
+- (void)didFetchMessageAttachmentsFinished:(EMMessage *)message error:(EMError *)error{
     if (!error) {
         [self reloadTableViewDataWithMessage:message];
     }else{
@@ -527,7 +527,7 @@
     }
 }
 
-- (void)didFetchingMessageAttachment:(EMMessage *)message progress:(float)progress{
+- (void)didFetchingMessageAttachments:(EMMessage *)message progress:(float)progress{
     NSLog(@"didFetchingMessageAttachment: %f", progress);
 }
 
@@ -552,6 +552,19 @@
 //            }
 //        }
     }
+}
+
+- (void)didInterruptionRecordAudio
+{
+    _isRecording = NO;
+    [_chatToolBar cancleTouchRecord];
+    
+    // 设置当前conversation的所有message为已读
+    [_conversation markMessagesAsRead:YES];
+    
+    //停止音频播放及播放动画
+    [[EaseMob sharedInstance].chatManager stopPlayingAudio];
+    [self.messageReadManager stopMessageAudio];
 }
 
 #pragma mark - EMChatBarMoreViewDelegate

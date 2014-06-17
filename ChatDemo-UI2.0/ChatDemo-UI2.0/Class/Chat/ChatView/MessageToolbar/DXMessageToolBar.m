@@ -659,6 +659,19 @@
     return result;
 }
 
+/**
+ *  取消触摸录音键
+ */
+- (void)cancleTouchRecord
+{
+//    self.recordButton.selected = NO;
+//    self.recordButton.highlighted = NO;
+    if ([_recordView isKindOfClass:[DXRecordView class]]) {
+        [(DXRecordView *)_recordView recordButtonTouchUpInside];
+        [_recordView removeFromSuperview];
+    }
+}
+
 + (CGFloat)defaultHeight
 {
     return kVerticalPadding * 2 + kInputTextViewMinHeight;

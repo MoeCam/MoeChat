@@ -152,7 +152,6 @@
         
         [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:weakSelf.textField.text
                                                               description:weakSelf.textView.text
-                                                                 password:nil
                                                                  invitees:source
                                                     initialWelcomeMessage:@""
                                                                completion:^(EMGroup *group, EMError *error) {
