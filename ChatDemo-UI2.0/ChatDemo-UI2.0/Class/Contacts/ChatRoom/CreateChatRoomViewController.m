@@ -139,20 +139,16 @@
         [source addObject:buddy.username];
     }
     
-    [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:self.textField.text
-                                                          description:self.textView.text
-                                                             invitees:source
-                                                initialWelcomeMessage:@""
-                                                           completion:^(EMGroup *group, EMError *error) {
-                                                               [self hideHud];
-                                                               if (group && !error) {
-                                                                   [self showHint:@"创建群组成功"];
-                                                                   [self.navigationController popViewControllerAnimated:YES];
-                                                               }
-                                                               else{
-                                                                   [self showHint:@"创建群组失败，请重新操作"];
-                                                               }
-                                                           } onQueue:nil];
+    [[EaseMob sharedInstance].chatManager asyncCreatePrivateGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
+        [self hideHud];
+        if (group && !error) {
+            [self showHint:@"创建群组成功"];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else{
+            [self showHint:@"创建群组失败，请重新操作"];
+        }
+    } onQueue:nil];
 }
 
 #pragma mark - action
