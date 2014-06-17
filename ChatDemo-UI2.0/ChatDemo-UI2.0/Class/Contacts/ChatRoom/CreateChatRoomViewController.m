@@ -11,7 +11,7 @@
 #import "ContactSelectionViewController.h"
 #import "EMTextView.h"
 
-@interface CreateChatRoomViewController ()<UITextFieldDelegate, UITextViewDelegate>
+@interface CreateChatRoomViewController ()<UITextFieldDelegate, UITextViewDelegate, EMChooseViewDelegate>
 
 @property (strong, nonatomic) UIBarButtonItem *rightItem;
 @property (strong, nonatomic) UITextField *textField;
@@ -128,6 +128,33 @@
     return YES;
 }
 
+#pragma mark - EMChooseViewDelegate
+
+- (void)viewController:(EMChooseViewController *)viewController didFinishSelectedSources:(NSArray *)selectedSources
+{
+    [self showHudInView:self.view hint:@"创建群组..."];
+    
+    NSMutableArray *source = [NSMutableArray array];
+    for (EMBuddy *buddy in selectedSources) {
+        [source addObject:buddy.username];
+    }
+    
+    [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:self.textField.text
+                                                          description:self.textView.text
+                                                             invitees:source
+                                                initialWelcomeMessage:@""
+                                                           completion:^(EMGroup *group, EMError *error) {
+                                                               [self hideHud];
+                                                               if (group && !error) {
+                                                                   [self showHint:@"创建群组成功"];
+                                                                   [self.navigationController popViewControllerAnimated:YES];
+                                                               }
+                                                               else{
+                                                                   [self showHint:@"创建群组失败，请重新操作"];
+                                                               }
+                                                           } onQueue:nil];
+}
+
 #pragma mark - action
 
 - (void)addContacts:(id)sender
@@ -140,32 +167,8 @@
     
     [self.view endEditing:YES];
     
-    __weak CreateChatRoomViewController *weakSelf = self;
     ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] init];
-    [selectionController setSelectedContactsFinished:^(__weak ContactSelectionViewController *viewController, NSArray *selectedContacts) {
-        [viewController showHudInView:viewController.view hint:@"创建群组..."];
-        
-        NSMutableArray *source = [NSMutableArray array];
-        for (EMBuddy *buddy in selectedContacts) {
-            [source addObject:buddy.username];
-        }
-        
-        [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:weakSelf.textField.text
-                                                              description:weakSelf.textView.text
-                                                                 invitees:source
-                                                    initialWelcomeMessage:@""
-                                                               completion:^(EMGroup *group, EMError *error) {
-            [viewController hideHud];
-            if (group && !error) {
-                [viewController showHint:@"创建群组成功"];
-                [weakSelf.navigationController popToViewController:self animated:NO];
-                [weakSelf.navigationController popViewControllerAnimated:YES];
-            }
-            else{
-                [viewController showHint:@"创建群组失败，请重新操作"];
-            }
-        } onQueue:nil];
-    }];
+    selectionController.delegate = self;
     [self.navigationController pushViewController:selectionController animated:YES];
 }
 

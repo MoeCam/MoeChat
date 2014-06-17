@@ -200,11 +200,6 @@
     [[[EaseMob sharedInstance] deviceManager] removeDelegate:self];
 }
 
-- (void)callReceived:(id)sender
-{
-    
-}
-
 #pragma mark - getter
 
 - (NSMutableArray *)dataSource

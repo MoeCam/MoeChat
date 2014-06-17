@@ -187,7 +187,7 @@
     
     EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
     cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
-    if (group.groupSubject || group.groupSubject.length > 0) {
+    if (group.groupSubject && group.groupSubject.length > 0) {
         cell.textLabel.text = group.groupSubject;
     }
     else {
@@ -273,13 +273,13 @@
 
 - (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
 {
-    EMError *error;
-    NSArray *list = [[EaseMob sharedInstance].chatManager fetchAllGroupsWithError:&error];
-    if (!error) {
-        [self.dataSource removeAllObjects];
-        [self.dataSource addObjectsFromArray:list];
-        [self.tableView reloadData];
-    }
+    [[EaseMob sharedInstance].chatManager asyncFetchAllGroupsWithCompletion:^(NSArray *groups, EMError *error) {
+        if (!error) {
+            [self.dataSource removeAllObjects];
+            [self.dataSource addObjectsFromArray:groups];
+            [self.tableView reloadData];
+        }
+    } onQueue:nil];
     
     [_slimeView endRefresh];
 }

@@ -397,11 +397,10 @@
 
 - (void)doneAction:(id)sender
 {
-    if(_SelectedContactsFinished)
-    {
-        __weak ContactSelectionViewController *weakSelf = self;
+    if (_delegate && [_delegate respondsToSelector:@selector(viewController:didFinishSelectedSources:)]) {
         if ([_blockSelectedUsernames count] == 0) {
-            _SelectedContactsFinished(weakSelf, weakSelf.selectedContacts);
+            [_delegate viewController:self didFinishSelectedSources:self.selectedContacts];
+            [self.navigationController popViewControllerAnimated:NO];
         }
         else{
             NSMutableArray *resultArray = [NSMutableArray array];
@@ -411,7 +410,8 @@
                     [resultArray addObject:buddy];
                 }
             }
-            _SelectedContactsFinished(self, resultArray);
+            [_delegate viewController:self didFinishSelectedSources:resultArray];
+            [self.navigationController popViewControllerAnimated:NO];
         }
     }
 }

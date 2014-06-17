@@ -50,7 +50,7 @@
 #define kColOfRow 5
 #define kContactSize 60
 
-@interface ChatGroupDetailViewController ()<IChatManagerDelegate>
+@interface ChatGroupDetailViewController ()<IChatManagerDelegate, EMChooseViewDelegate>
 
 @property (nonatomic) GroupMemberType memberType;
 @property (strong, nonatomic) EMGroup *chatGroup;
@@ -233,6 +233,22 @@
         return self.scrollView.frame.size.height + 10;
     }
     return row * kContactSize + 10;
+}
+
+#pragma mark - EMChooseViewDelegate
+- (void)viewController:(EMChooseViewController *)viewController didFinishSelectedSources:(NSArray *)selectedSources
+{
+    [self showHudInView:self.view hint:@"添加组成员..."];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSMutableArray *source = [NSMutableArray array];
+        for (EMBuddy *buddy in selectedSources) {
+            [source addObject:buddy.username];
+        }
+        
+        _chatGroup = [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:_chatGroup.groupId welcomeMessage:@"" error:nil];
+        [self reloadDataSource];
+    });
 }
 
 #pragma mark - data
@@ -421,18 +437,7 @@
 {
     __weak ChatGroupDetailViewController *weakSelf = self;
     ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] initWithBlockSelectedUsernames:_chatGroup.occupants];
-    [selectionController setSelectedContactsFinished:^(__weak ContactSelectionViewController *viewController, NSArray *selectedContacts) {
-        [weakSelf.navigationController popToViewController:weakSelf animated:NO];
-        [weakSelf showHudInView:viewController.view hint:@"添加组成员..."];
-        NSMutableArray *source = [NSMutableArray array];
-        for (EMBuddy *buddy in selectedContacts) {
-            [source addObject:buddy.username];
-        }
-        
-        _chatGroup = [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:_chatGroup.groupId welcomeMessage:@"" error:nil];
-        [weakSelf hideHud];
-        [weakSelf reloadDataSource];
-    }];
+    selectionController.delegate = self;
     [self.navigationController pushViewController:selectionController animated:YES];
 }
 
