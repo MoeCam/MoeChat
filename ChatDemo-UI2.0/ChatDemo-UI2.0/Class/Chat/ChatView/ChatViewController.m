@@ -147,7 +147,7 @@
     
     if (_isChatGroup) {
         UIButton *detailButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
-        [detailButton setImage:[UIImage imageNamed:@"chatroomDetail"] forState:UIControlStateNormal];
+        [detailButton setImage:[UIImage imageNamed:@"group_detail"] forState:UIControlStateNormal];
         [detailButton addTarget:self action:@selector(showRoomContact:) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:detailButton];
     }
@@ -564,14 +564,6 @@
     if (_isChatGroup && [group.groupId isEqualToString:_chatGroup.groupId]) {
         [self.navigationController popToViewController:self animated:NO];
         [self.navigationController popViewControllerAnimated:NO];
-//        if (reason == eGroupLeaveReason_BeRemoved || reason == eGroupLeaveReason_Destroyed) {
-//            NSArray *controllers = self.navigationController.viewControllers;
-//            NSInteger index = [controllers indexOfObject:self];
-//            if (index > 0) {
-//                UIViewController *toController = [controllers objectAtIndex:(index - 1)];
-//                
-//            }
-//        }
     }
 }
 
@@ -718,18 +710,13 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
+    [picker dismissViewControllerAnimated:YES completion:nil];
     [self sendImageMessage:orgImage];
-    
-    [picker dismissViewControllerAnimated:YES completion:^{
-        
-    }];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [self.imagePicker dismissViewControllerAnimated:YES completion:^{
-        
-    }];
+    [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - MenuItem actions

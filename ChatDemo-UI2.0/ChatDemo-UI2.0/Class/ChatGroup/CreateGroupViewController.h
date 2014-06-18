@@ -1,5 +1,5 @@
 //
-//  ChatRoomViewController.h
+//  CreateGroupViewController.h
 //  ChatDemo-UI2.0
 //
 //  Created by dhcdht on 14-5-30.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ChatRoomViewController : UITableViewController
-
-- (void)reloadDataSource;
+@interface CreateGroupViewController : UIViewController
 
 @end

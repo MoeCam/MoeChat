@@ -20,7 +20,7 @@
     if (self) {
         _deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_imageView.frame) - 20, 3, 30, 30)];
         [_deleteButton addTarget:self action:@selector(deleteAction) forControlEvents:UIControlEventTouchUpInside];
-        [_deleteButton setImage:[UIImage imageNamed:@"chatgroup_invitee_delete"] forState:UIControlStateNormal];
+        [_deleteButton setImage:[UIImage imageNamed:@"group_invitee_delete"] forState:UIControlStateNormal];
         _deleteButton.hidden = YES;
         [self addSubview:_deleteButton];
     }
@@ -125,8 +125,8 @@
         _scrollView.tag = 0;
         
         _addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kContactSize - 10, kContactSize - 10)];
-        [_addButton setImage:[UIImage imageNamed:@"chatgroup_participant_add"] forState:UIControlStateNormal];
-        [_addButton setImage:[UIImage imageNamed:@"chatgroup_participant_addHL"] forState:UIControlStateHighlighted];
+        [_addButton setImage:[UIImage imageNamed:@"group_participant_add"] forState:UIControlStateNormal];
+        [_addButton setImage:[UIImage imageNamed:@"group_participant_addHL"] forState:UIControlStateHighlighted];
         [_addButton addTarget:self action:@selector(addContact:) forControlEvents:UIControlEventTouchUpInside];
 //        [_scrollView addSubview:_addButton];
         
@@ -457,7 +457,6 @@
 {
     __weak ChatGroupDetailViewController *weakSelf = self;
     [self showHudInView:self.view hint:@"解散群组"];
-#warning [asyncLeaveGroup:completion:onQueue:]不会调用代理方法
     [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
         [weakSelf hideHud];
         if (error) {

@@ -1,17 +1,17 @@
 //
-//  CreateChatRoomViewController.m
+//  CreateGroupViewController.m
 //  ChatDemo-UI2.0
 //
 //  Created by dhcdht on 14-5-30.
 //  Copyright (c) 2014年 dhcdht. All rights reserved.
 //
 
-#import "CreateChatRoomViewController.h"
+#import "CreateGroupViewController.h"
 
 #import "ContactSelectionViewController.h"
 #import "EMTextView.h"
 
-@interface CreateChatRoomViewController ()<UITextFieldDelegate, UITextViewDelegate, EMChooseViewDelegate>
+@interface CreateGroupViewController ()<UITextFieldDelegate, UITextViewDelegate, EMChooseViewDelegate>
 
 @property (strong, nonatomic) UIBarButtonItem *rightItem;
 @property (strong, nonatomic) UITextField *textField;
@@ -19,7 +19,7 @@
 
 @end
 
-@implementation CreateChatRoomViewController
+@implementation CreateGroupViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

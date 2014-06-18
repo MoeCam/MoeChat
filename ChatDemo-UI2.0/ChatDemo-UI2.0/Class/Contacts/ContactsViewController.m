@@ -16,7 +16,7 @@
 #import "EMSearchDisplayController.h"
 #import "AddFriendViewController.h"
 #import "ApplyViewController.h"
-#import "ChatRoomViewController.h"
+#import "GroupListViewController.h"
 #import "ChatViewController.h"
 
 @interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, SRRefreshDelegate>
@@ -30,7 +30,7 @@
 @property (strong, nonatomic) EMSearchBar *searchBar;
 @property (strong, nonatomic) SRRefreshView *slimeView;
 @property (strong, nonatomic) ApplyViewController *applyController;
-@property (strong, nonatomic) ChatRoomViewController *groupController;
+@property (strong, nonatomic) GroupListViewController *groupController;
 
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
 
@@ -360,7 +360,7 @@
         else if (indexPath.row == 1)
         {
             if (_groupController == nil) {
-                _groupController = [[ChatRoomViewController alloc] initWithStyle:UITableViewStylePlain];
+                _groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
             }
             else{
                 [_groupController reloadDataSource];

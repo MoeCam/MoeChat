@@ -1,23 +1,23 @@
 //
-//  ChatRoomViewController.m
+//  GroupListViewController.m
 //  ChatDemo-UI2.0
 //
 //  Created by dhcdht on 14-5-30.
 //  Copyright (c) 2014年 dhcdht. All rights reserved.
 //
 
-#import "ChatRoomViewController.h"
+#import "GroupListViewController.h"
 
 #import "EMSearchBar.h"
 #import "SRRefreshView.h"
 #import "BaseTableViewCell.h"
 #import "EMSearchDisplayController.h"
 #import "ChatViewController.h"
-#import "CreateChatRoomViewController.h"
+#import "CreateGroupViewController.h"
 #import "RealtimeSearchUtil.h"
 #import "UIViewController+HUD.h"
 
-@interface ChatRoomViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, IChatManagerDelegate, SRRefreshDelegate>
+@interface GroupListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, IChatManagerDelegate, SRRefreshDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation ChatRoomViewController
+@implementation GroupListViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -127,7 +127,7 @@
         _searchController.delegate = self;
         _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
-        __weak ChatRoomViewController *weakSelf = self;
+        __weak GroupListViewController *weakSelf = self;
         [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
             static NSString *CellIdentifier = @"ContactListCell";
             BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -328,7 +328,7 @@
 
 - (void)createChatRoom
 {
-    CreateChatRoomViewController *createChatroom = [[CreateChatRoomViewController alloc] init];
+    CreateGroupViewController *createChatroom = [[CreateGroupViewController alloc] init];
     [self.navigationController pushViewController:createChatroom animated:YES];
 }
 
