@@ -255,7 +255,18 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     //发送本地推送
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     notification.fireDate = [NSDate date]; //触发通知的时间
-    NSString *title = message.isGroup ? message.groupSenderName : message.from;
+    
+    NSString *title = message.from;
+    if (message.isGroup) {
+        NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
+        for (EMGroup *group in groupArray) {
+            if ([group.groupId isEqualToString:message.conversation.chatter]) {
+                title = [NSString stringWithFormat:@"%@(%@)", message.groupSenderName, group.groupSubject];
+                break;
+            }
+        }
+    }
+    
     notification.alertBody = [NSString stringWithFormat:@"%@:%@", title, messageStr];
     notification.alertAction = @"打开";
     notification.timeZone = [NSTimeZone defaultTimeZone];
