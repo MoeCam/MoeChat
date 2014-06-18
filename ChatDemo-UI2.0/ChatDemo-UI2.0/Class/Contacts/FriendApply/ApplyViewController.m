@@ -10,6 +10,8 @@
 
 #import "ApplyFriendCell.h"
 
+static ApplyViewController *controller = nil;
+
 @interface ApplyViewController ()<ApplyFriendCellDelegate>
 
 @end
@@ -26,12 +28,22 @@
     return self;
 }
 
++ (instancetype)shareController
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        controller = [[self alloc] initWithStyle:UITableViewStylePlain];
+    });
+    
+    return controller;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
-    self.title = @"好友申请";
+    self.title = @"申请通知";
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -76,7 +88,7 @@
     NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
     if (dic) {
         cell.indexPath = indexPath;
-         cell.titleLabel.text = [dic objectForKey:@"title"];
+        cell.titleLabel.text = [dic objectForKey:@"title"];
         BOOL isGroup = [[dic objectForKey:@"isGroup"] boolValue];
         if (isGroup) {
             cell.headerImageView.image = [UIImage imageNamed:@"groupHeader"];

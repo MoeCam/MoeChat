@@ -7,6 +7,8 @@
 //
 
 #import "AddFriendViewController.h"
+
+#import "ApplyViewController.h"
 #import "UIViewController+HUD.h"
 #import "AddFriendCell.h"
 #import "EaseMob.h"
@@ -197,6 +199,21 @@
             [alertView show];
             
             return;
+        }
+        
+        //判断是否已发来申请
+        NSArray *applyArray = [[ApplyViewController shareController] dataSource];
+        if (applyArray && [applyArray count] > 0) {
+            for (NSDictionary *dic in applyArray) {
+                BOOL isGroup = [[dic objectForKey:@"isGroup"] boolValue];
+                if (!isGroup && [[dic objectForKey:@"title"] isEqualToString:_textField.text]) {
+                    NSString *str = [NSString stringWithFormat:@"%@已经给你发来了申请", _textField.text];
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:str delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    [alertView show];
+                    
+                    return;
+                }
+            }
         }
         
         [self.dataSource removeAllObjects];

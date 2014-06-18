@@ -12,4 +12,6 @@
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
++ (instancetype)shareController;
+
 @end

@@ -351,7 +351,7 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             if (_applyController == nil) {
-                _applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
+                _applyController = [ApplyViewController shareController];
             }
             
             _applyController.dataSource = self.applysArray;
