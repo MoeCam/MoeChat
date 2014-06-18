@@ -540,7 +540,7 @@
     });
 }
 
-- (void)didMessageAttachmentsStatusChange:(EMMessage *)message error:(EMError *)error{
+- (void)didMessageAttachmentsStatusChanged:(EMMessage *)message error:(EMError *)error{
     if (!error) {
         id<IEMFileMessageBody>fileBody = (id<IEMFileMessageBody>)[message.messageBodies firstObject];
         if ([fileBody messageBodyType] == eMessageBodyType_Image) {
