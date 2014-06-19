@@ -466,7 +466,7 @@
     id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
     if ([message.messageBody messageBodyType] == eMessageBodyType_Image) {
         EMImageMessageBody *imageBody = (EMImageMessageBody *)message.messageBody;
-        if (imageBody.thumbnailDownloaded) {
+        if (imageBody.thumbnailDownloadSatus == EMAttachmentDownloadSuccessed) {
             [weakSelf showHudInView:weakSelf.view hint:@"正在获取大图..."];
             [chatManager asyncFetchMessage:message.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
                 [weakSelf hideHud];
@@ -528,9 +528,28 @@
     });
 }
 
-- (void)didFetchMessageAttachmentsFinished:(EMMessage *)message error:(EMError *)error{
+- (void)didMessageAttachmentsStatusChanged:(EMMessage *)message error:(EMError *)error{
     if (!error) {
-        [self reloadTableViewDataWithMessage:message];
+        id<IEMFileMessageBody>fileBody = (id<IEMFileMessageBody>)[message.messageBodies firstObject];
+        if ([fileBody messageBodyType] == eMessageBodyType_Image) {
+            EMImageMessageBody *imageBody = (EMImageMessageBody *)fileBody;
+            if ([imageBody thumbnailDownloadSatus] == EMAttachmentDownloadSuccessed)
+            {
+                [self reloadTableViewDataWithMessage:message];
+            }
+        }else if([fileBody messageBodyType] == eMessageBodyType_Video){
+            EMVideoMessageBody *videoBody = (EMVideoMessageBody *)fileBody;
+            if ([videoBody thumbnailDownloadSatus] == EMAttachmentDownloadSuccessed)
+            {
+                [self reloadTableViewDataWithMessage:message];
+            }
+        }else if([fileBody messageBodyType] == eMessageBodyType_Voice){
+            if ([fileBody attachmentDownloadStatus] == EMAttachmentDownloadSuccessed)
+            {
+                [self reloadTableViewDataWithMessage:message];
+            }
+        }
+        
     }else{
         
     }
