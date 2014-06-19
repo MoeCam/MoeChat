@@ -10,8 +10,6 @@
 #import "BaseViewController.h"
 @interface ContactsViewController : BaseViewController
 
-@property (strong, nonatomic) NSMutableArray *applysArray;
-
 //好友请求变化时，更新好友请求未处理的个数
 - (void)reloadApplyView;
 

@@ -281,15 +281,6 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 - (void)didReceiveBuddyRequest:(NSString *)username
                        message:(NSString *)message
 {
-    if (!username) {
-        return;
-    }
-    if (!message) {
-        message = [NSString stringWithFormat:@"%@ 添加你为好友", username];
-    }
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":username, @"username":username, @"applyMessage":message, @"acceptState":@NO, @"isGroup":@NO}];
-    [_contactsVC.applysArray addObject:dic];
-    
 #if !TARGET_IPHONE_SIMULATOR
     [self playSoundAndVibration];
     
@@ -337,28 +328,17 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
                               inviter:(NSString *)username
                               message:(NSString *)message
 {
-    if (!groupId || !username) {
-        return;
-    }
-    
-    NSString *groupName = groupId;
-    if (!message || message.length == 0) {
-        message = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, groupName];
-    }
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupName, @"id":groupId, @"username":username, @"applyMessage":message, @"acceptState":@NO, @"isGroup":@YES}];
-    [_contactsVC.applysArray addObject:dic];
-    
 #if !TARGET_IPHONE_SIMULATOR
     [self playSoundAndVibration];
     
     BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
     if (!isAppActivity) {
         //发送本地推送
-        UILocalNotification *notification = [[UILocalNotification alloc] init];
-        notification.fireDate = [NSDate date]; //触发通知的时间
-        notification.alertBody = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, groupName];
-        notification.alertAction = @"打开";
-        notification.timeZone = [NSTimeZone defaultTimeZone];
+//        UILocalNotification *notification = [[UILocalNotification alloc] init];
+//        notification.fireDate = [NSDate date]; //触发通知的时间
+//        notification.alertBody = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, groupName];
+//        notification.alertAction = @"打开";
+//        notification.timeZone = [NSTimeZone defaultTimeZone];
     }
 #endif
     

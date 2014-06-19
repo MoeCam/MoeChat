@@ -283,7 +283,7 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:YES animated:YES];
-    [self.searchBar setCancleButtonTitle:@"确定"];
+    [self.searchBar setCancelButtonTitle:@"确定"];
     
     return YES;
 }

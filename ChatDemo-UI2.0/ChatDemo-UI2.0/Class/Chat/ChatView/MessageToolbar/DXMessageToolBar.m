@@ -662,7 +662,7 @@
 /**
  *  取消触摸录音键
  */
-- (void)cancleTouchRecord
+- (void)cancelTouchRecord
 {
 //    self.recordButton.selected = NO;
 //    self.recordButton.highlighted = NO;

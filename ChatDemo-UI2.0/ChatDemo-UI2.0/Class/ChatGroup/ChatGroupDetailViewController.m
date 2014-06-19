@@ -435,7 +435,6 @@
 
 - (void)addContact:(id)sender
 {
-    __weak ChatGroupDetailViewController *weakSelf = self;
     ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] initWithBlockSelectedUsernames:_chatGroup.occupants];
     selectionController.delegate = self;
     [self.navigationController pushViewController:selectionController animated:YES];
@@ -470,7 +469,6 @@
 {
     __weak ChatGroupDetailViewController *weakSelf = self;
     [self showHudInView:self.view hint:@"退出群组"];
-#warning [asyncLeaveGroup:completion:onQueue:]不会调用代理方法
     [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
         [weakSelf hideHud];
         if (error) {

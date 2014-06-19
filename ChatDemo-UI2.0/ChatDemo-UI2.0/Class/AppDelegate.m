@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "LoginViewController.h"
+#import "ApplyViewController.h"
 #import "MobClick.h"
 
 @implementation AppDelegate
@@ -86,6 +87,41 @@
     [[EaseMob sharedInstance] applicationWillTerminate:application];
 }
 
+#pragma mark - IChatManagerDelegate 好友变化
+
+- (void)didReceiveBuddyRequest:(NSString *)username
+                       message:(NSString *)message
+{
+    if (!username) {
+        return;
+    }
+    if (!message) {
+        message = [NSString stringWithFormat:@"%@ 添加你为好友", username];
+    }
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":username, @"username":username, @"applyMessage":message, @"acceptState":@NO, @"isGroup":@NO}];
+    [[[ApplyViewController shareController] dataSource] addObject:dic];
+}
+
+#pragma mark - IChatManagerDelegate 群组变化
+
+- (void)didReceiveGroupInvitationFrom:(NSString *)groupId
+                              inviter:(NSString *)username
+                              message:(NSString *)message
+{
+    if (!groupId || !username) {
+        return;
+    }
+    
+    NSString *groupName = groupId;
+    if (!message || message.length == 0) {
+        message = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, groupName];
+    }
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupName, @"id":groupId, @"username":username, @"applyMessage":message, @"acceptState":@NO, @"isGroup":@YES}];
+    [[[ApplyViewController shareController] dataSource] addObject:dic];
+}
+
+#pragma mark - private
+
 -(void)loginStateChange:(NSNotification *)notification
 {
     NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
@@ -97,10 +133,17 @@
     }
     
     if (isLogin) {
+#warning 注册为SDK的ChatManager的delegate (及时监听到申请和通知)
+        [[EaseMob sharedInstance].chatManager removeDelegate:self];
+        [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+        
         MainViewController *mainVC = [[MainViewController alloc] init];
         nav = [[UINavigationController alloc] initWithRootViewController:mainVC];
     }
     else{
+#warning 不监听代理方法
+        [[EaseMob sharedInstance].chatManager removeDelegate:self];
+        
         LoginViewController *loginController = [[LoginViewController alloc] init];
         nav = [[UINavigationController alloc] initWithRootViewController:loginController];
         loginController.title = @"环信Demo";

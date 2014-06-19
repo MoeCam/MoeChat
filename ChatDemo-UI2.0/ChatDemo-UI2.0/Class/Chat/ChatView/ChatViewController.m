@@ -6,8 +6,6 @@
 //  Copyright (c) 2014年 easemob. All rights reserved.
 //
 
-#import <CoreTelephony/CTCall.h>
-#import <CoreTelephony/CTCallCenter.h>
 #import "ChatViewController.h"
 
 #import "SRRefreshView.h"
@@ -26,6 +24,8 @@
 #import "NSDate+Category.h"
 #import "DXMessageToolBar.h"
 
+#define KPageCount 20
+
 @interface ChatViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, SRRefreshDelegate, IChatManagerDelegate, DXChatBarMoreViewDelegate, DXMessageToolBarDelegate, LocationViewDelegate, IDeviceManagerDelegate>
 {
     UIMenuController *_menuController;
@@ -33,13 +33,11 @@
     UIMenuItem *_deleteMenuItem;
     NSIndexPath *_longPressIndexPath;
     
-    BOOL _isRecording;
     NSInteger _recordingCount;
     
     dispatch_queue_t _messageQueue;
 }
 
-@property (strong, nonatomic) CTCallCenter *callCenter;
 @property (nonatomic) BOOL isChatGroup;
 @property (strong, nonatomic) EMGroup *chatGroup;
 
@@ -94,25 +92,8 @@
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
     
-    _callCenter = [[CTCallCenter alloc] init];
-    _callCenter.callEventHandler = ^(CTCall *call){
-//        if(call.callState == CTCallStateIncoming){
-//            _isRecording = NO;
-//            [_chatToolBar cancleTouchRecord];
-//            
-//            // 设置当前conversation的所有message为已读
-//            [_conversation markMessagesAsRead:YES];
-//            
-//            //停止音频播放及播放动画
-//            [[EaseMob sharedInstance].chatManager stopPlayingAudio];
-//            [self.messageReadManager stopMessageAudio];
-//            
-//        }
-    };
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(callReceived:) name:CTCallStateIncoming object:nil];
+    #warning 以下三行代码必须写，注册为SDK的ChatManager的delegate
     [[[EaseMob sharedInstance] deviceManager] addDelegate:self onQueue:nil];
-#warning 以下两行代码必须写，注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     //注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
@@ -121,13 +102,14 @@
     
     _messageQueue = dispatch_queue_create("easemob.com", NULL);
     //通过会话管理者获取已收发消息
-    NSArray *chats = [_conversation loadNumbersOfMessages:10 before:[_conversation latestMessage].timestamp + 1];
+    NSArray *chats = [_conversation loadNumbersOfMessages:KPageCount before:[_conversation latestMessage].timestamp + 1];
     [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
     
     [self setupBarButtonItem];
     [self.view addSubview:self.tableView];
     [self.tableView addSubview:self.slimeView];
     [self.view addSubview:self.chatToolBar];
+    
     //将self注册为chatToolBar的moreView的代理
     if ([self.chatToolBar.moreView isKindOfClass:[DXChatBarMoreView class]]) {
         [(DXChatBarMoreView *)self.chatToolBar.moreView setDelegate:self];
@@ -429,6 +411,12 @@
 // 语音的bubble被点击
 -(void)chatAudioCellBubblePressed:(EMMessageModel *)message
 {
+//    id <IEMFileMessageBody> body = [message.message.messageBodies firstObject];
+//    BOOL isAttachmentDownloaded = [body attachmentDownloaded];
+//    if (!isAttachmentDownloaded) {
+//        [self showHint:@"正在下载语音，稍后点击"];
+//        return;
+//    }
     // 修改isRead状态
     if (message.isPlayed == NO) {
         message.isPlayed = YES;
@@ -569,14 +557,13 @@
 
 - (void)didInterruptionRecordAudio
 {
-    _isRecording = NO;
-    [_chatToolBar cancleTouchRecord];
+    [_chatToolBar cancelTouchRecord];
     
     // 设置当前conversation的所有message为已读
     [_conversation markMessagesAsRead:YES];
     
     //停止音频播放及播放动画
-    [[EaseMob sharedInstance].chatManager stopPlayingAudio];
+//    [[EaseMob sharedInstance].chatManager stopPlayingAudio];
     [self.messageReadManager stopMessageAudio];
 }
 
@@ -595,8 +582,13 @@
 - (void)moreViewTakePicAction:(DXChatBarMoreView *)moreView
 {
     [self keyBoardHidden];
+    
+#if TARGET_IPHONE_SIMULATOR
+    [self showHint:@"模拟器不支持拍照"];
+#elif TARGET_OS_IPHONE
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
+#endif
 }
 
 - (void)moreViewLocationAction:(DXChatBarMoreView *)moreView
@@ -644,28 +636,28 @@
  */
 - (void)didStartRecordingVoiceAction:(UIView *)recordView
 {
-    if (_isRecording) {
-        ++_recordingCount;
-        if (_recordingCount > 10)
-        {
-            _recordingCount = 0;
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"亲，已经戳漏了，随时崩溃给你看" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alertView show];
-        }
-        else if (_recordingCount > 5) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"亲，手别抖了，快被戳漏了" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alertView show];
-        }
-        return;
-    }
-    _isRecording = YES;
+//    if (_isRecording) {
+//        ++_recordingCount;
+//        if (_recordingCount > 10)
+//        {
+//            _recordingCount = 0;
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"亲，已经戳漏了，随时崩溃给你看" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//            [alertView show];
+//        }
+//        else if (_recordingCount > 5) {
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"亲，手别抖了，快被戳漏了" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//            [alertView show];
+//        }
+//        return;
+//    }
+//    _isRecording = YES;
     
     DXRecordView *tmpView = (DXRecordView *)recordView;
     tmpView.center = self.view.center;
     [self.view addSubview:tmpView];
     [self.view bringSubviewToFront:recordView];
     
-    EMError *error = nil;
+    NSError *error = nil;
     [[EaseMob sharedInstance].chatManager startRecordingAudioWithError:&error];
     if (error) {
         NSLog(@"开始录音失败");
@@ -677,10 +669,7 @@
  */
 - (void)didCancelRecordingVoiceAction:(UIView *)recordView
 {
-    [[EaseMob sharedInstance].chatManager
-     asyncCancelRecordingAudioWithCompletion:^(EMChatVoice *voice, EMError *error){
-         _isRecording = NO;
-     } onQueue:nil];
+    [[EaseMob sharedInstance].chatManager asyncCancelRecordingAudioWithCompletion:nil onQueue:nil];
 }
 
 /**
@@ -689,17 +678,11 @@
 - (void)didFinishRecoingVoiceAction:(UIView *)recordView
 {
     [[EaseMob sharedInstance].chatManager
-     asyncStopRecordingAudioWithCompletion:^(EMChatVoice *voice, EMError *error){
-         _isRecording = NO;
+     asyncStopRecordingAudioWithCompletion:^(EMChatVoice *voice, NSError *error){
          if (!error) {
-             if (voice.duration <= 0) {
-                 [self showHint:@"录音时间过短"];
-             }
-             else{
-                 [self sendAudioMessage:voice];
-             }
+             [self sendAudioMessage:voice];
          }else{
-             [self showHint:@"录音失败，请重新操作"];
+             [self showHint:error.domain];
          }
          
      } onQueue:nil];
@@ -763,7 +746,7 @@
 - (void)loadMoreMessages
 {
     NSInteger currentCount = [self.dataSource count];
-    NSArray *chats = [_conversation loadNumbersOfMessages:(currentCount + 10) before:[_conversation latestMessage].timestamp + 1];
+    NSArray *chats = [_conversation loadNumbersOfMessages:(currentCount + KPageCount) before:[_conversation latestMessage].timestamp + 1];
     
     if ([chats count] > currentCount) {
         [self.dataSource removeAllObjects];

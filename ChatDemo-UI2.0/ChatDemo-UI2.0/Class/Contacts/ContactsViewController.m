@@ -42,8 +42,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _applysArray = [NSMutableArray array];
-        
         _dataSource = [NSMutableArray array];
         _contactsSource = [NSMutableArray array];
         _sectionTitles = [NSMutableArray array];
@@ -354,7 +352,6 @@
                 _applyController = [ApplyViewController shareController];
             }
             
-            _applyController.dataSource = self.applysArray;
             [self.navigationController pushViewController:_applyController animated:YES];
         }
         else if (indexPath.row == 1)
@@ -501,6 +498,7 @@
 
 - (void)reloadDataSource
 {
+    [self showHudInView:self.view hint:@"刷新数据..."];
     [self.dataSource removeAllObjects];
     [self.contactsSource removeAllObjects];
     
@@ -521,18 +519,14 @@
     [self.dataSource addObjectsFromArray:[self sortDataArray:self.contactsSource]];
     
     [_tableView reloadData];
+    [self hideHud];
 }
 
 #pragma mark - action
 
 - (void)reloadApplyView
 {
-    NSInteger count = 0;
-    for (NSDictionary *dic in self.applysArray) {
-        if (![[dic objectForKey:@"acceptState"] boolValue]) {
-            count += 1;
-        }
-    }
+    NSInteger count = [[[ApplyViewController shareController] dataSource] count];
     
     if (count == 0) {
         self.unapplyCountLabel.hidden = YES;
@@ -546,11 +540,6 @@
         self.unapplyCountLabel.text = tmpStr;
         self.unapplyCountLabel.frame = rect;
         self.unapplyCountLabel.hidden = NO;
-    }
-    
-    if(_applyController)
-    {
-        [_applyController.tableView reloadData];
     }
 }
 

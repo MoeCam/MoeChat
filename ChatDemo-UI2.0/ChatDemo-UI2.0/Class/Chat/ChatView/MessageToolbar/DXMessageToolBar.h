@@ -89,7 +89,7 @@
 /**
  *  取消触摸录音键
  */
-- (void)cancleTouchRecord;
+- (void)cancelTouchRecord;
 
 @end
 

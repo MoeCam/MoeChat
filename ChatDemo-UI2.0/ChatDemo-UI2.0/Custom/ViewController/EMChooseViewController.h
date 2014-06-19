@@ -116,6 +116,8 @@
 
 @protocol EMChooseViewDelegate <NSObject>
 
+@optional
+
 - (NSComparisonResult)comparisonObjectSelector:(id)object1 andObject:(id)object2;
 
 /**
