@@ -273,7 +273,7 @@
 
 - (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
 {
-    [[EaseMob sharedInstance].chatManager asyncFetchAllGroupsWithCompletion:^(NSArray *groups, EMError *error) {
+    [[EaseMob sharedInstance].chatManager asyncFetchAllPrivateGroupsWithCompletion:^(NSArray *groups, EMError *error) {
         if (!error) {
             [self.dataSource removeAllObjects];
             [self.dataSource addObjectsFromArray:groups];

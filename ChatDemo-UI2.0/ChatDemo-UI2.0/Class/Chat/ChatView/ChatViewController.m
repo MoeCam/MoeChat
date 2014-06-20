@@ -697,9 +697,9 @@
 - (void)didFinishRecoingVoiceAction:(UIView *)recordView
 {
     [[EaseMob sharedInstance].chatManager
-     asyncStopRecordingAudioWithCompletion:^(EMChatVoice *voice, NSError *error){
+     asyncStopRecordingAudioWithCompletion:^(EMChatVoice *aChatVoice, NSError *error){
          if (!error) {
-             [self sendAudioMessage:voice];
+             [self sendAudioMessage:aChatVoice];
          }else{
              [self showHint:error.domain];
          }
