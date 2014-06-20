@@ -370,10 +370,6 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     if (reason == eGroupLeaveReason_BeRemoved) {
         str = [NSString stringWithFormat:@"你被从群组\'%@\'中踢出", tmpStr];
     }
-//    else if (reason == eGroupLeaveReason_Destroyed)
-//    {
-//        str = [NSString stringWithFormat:@"群组\'%@\'解散了", tmpStr];
-//    }
     if (str.length > 0) {
         TTAlertNoTitle(str);
     }

@@ -186,6 +186,7 @@
     }
     
     EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
+//    NSString *imageName = group.is
     cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
     if (group.groupSubject && group.groupSubject.length > 0) {
         cell.textLabel.text = group.groupSubject;
