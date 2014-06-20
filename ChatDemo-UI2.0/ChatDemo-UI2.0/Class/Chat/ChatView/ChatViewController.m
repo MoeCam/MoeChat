@@ -701,7 +701,7 @@
          if (!error) {
              [self sendAudioMessage:aChatVoice];
          }else{
-             [self showHint:error.domain];
+             [self showHint:@"录音失败"];
          }
          
      } onQueue:nil];

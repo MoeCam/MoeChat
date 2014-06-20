@@ -43,6 +43,11 @@
     [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
     [[EaseMob sharedInstance] application:application
             didFinishLaunchingWithOptions:launchOptions];
+    
+#warning 注册为SDK的ChatManager的delegate (及时监听到申请和通知)
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+    
 
     [self loginStateChange:nil];
     [self.window makeKeyAndVisible];
@@ -133,17 +138,10 @@
     }
     
     if (isLogin) {
-#warning 注册为SDK的ChatManager的delegate (及时监听到申请和通知)
-        [[EaseMob sharedInstance].chatManager removeDelegate:self];
-        [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
-        
         MainViewController *mainVC = [[MainViewController alloc] init];
         nav = [[UINavigationController alloc] initWithRootViewController:mainVC];
     }
     else{
-#warning 不监听代理方法
-        [[EaseMob sharedInstance].chatManager removeDelegate:self];
-        
         LoginViewController *loginController = [[LoginViewController alloc] init];
         nav = [[UINavigationController alloc] initWithRootViewController:loginController];
         loginController.title = @"环信Demo";

@@ -8,7 +8,7 @@
 
 #import "SettingsViewController.h"
 
-//#import "EaseMob.h"
+#import "ApplyViewController.h"
 
 @interface SettingsViewController ()
 
@@ -110,6 +110,7 @@
             [alertView show];
         }
         else{
+            [[[ApplyViewController shareController] dataSource] removeAllObjects];
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
         }
     } onQueue:nil];

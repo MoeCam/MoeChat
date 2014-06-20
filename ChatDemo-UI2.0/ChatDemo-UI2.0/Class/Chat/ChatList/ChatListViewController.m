@@ -416,12 +416,13 @@
 }
 
 #pragma mark - IChatMangerDelegate
+
 -(void)didUnreadMessagesCountChanged
 {
     [self refreshDataSource];
 }
 
-- (void)didUpdateGroupList:(NSArray *)allGroups
+- (void)didUpdateGroupList:(NSArray *)allGroups error:(EMError *)error
 {
     [self refreshDataSource];
 }
