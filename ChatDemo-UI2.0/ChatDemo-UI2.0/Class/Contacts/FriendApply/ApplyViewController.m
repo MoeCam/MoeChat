@@ -64,7 +64,7 @@ static ApplyViewController *controller = nil;
 {
     [super viewWillAppear:animated];
     
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
 }
 
 - (void)back
@@ -114,7 +114,7 @@ static ApplyViewController *controller = nil;
         cell.titleLabel.text = [dic objectForKey:@"title"];
         BOOL isGroup = [[dic objectForKey:@"isGroup"] boolValue];
         if (isGroup) {
-            cell.headerImageView.image = [UIImage imageNamed:@"groupHeader"];
+            cell.headerImageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
         }
         else{
             cell.headerImageView.image = [UIImage imageNamed:@"chatListCellHead"];

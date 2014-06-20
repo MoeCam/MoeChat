@@ -105,6 +105,7 @@
     }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":username, @"username":username, @"applyMessage":message, @"acceptState":@NO, @"isGroup":@NO}];
     [[[ApplyViewController shareController] dataSource] addObject:dic];
+    [[[ApplyViewController shareController] tableView] reloadData];
 }
 
 #pragma mark - IChatManagerDelegate 群组变化

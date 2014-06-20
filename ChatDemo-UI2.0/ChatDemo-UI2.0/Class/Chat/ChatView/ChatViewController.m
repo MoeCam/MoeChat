@@ -123,7 +123,7 @@
 {
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
-    [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
     
@@ -164,14 +164,6 @@
     //停止音频播放及播放动画
     [[EaseMob sharedInstance].chatManager stopPlayingAudio];
     [self.messageReadManager stopMessageAudio];
-    
-    //判断当前会话是否为群组，是否为空，若都符合则删除该会话
-    if (_isChatGroup) {
-        EMMessage *message = [_conversation latestMessage];
-        if (message == nil) {
-            [[EaseMob sharedInstance].chatManager removeConversationByChatter:_conversation.chatter deleteMessages:YES];
-        }
-    }
 }
 
 - (void)dealloc
@@ -180,6 +172,17 @@
 #warning 以下第一行代码必须写，将self从ChatManager的代理中移除
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[[EaseMob sharedInstance] deviceManager] removeDelegate:self];
+}
+
+- (void)back
+{
+    //判断当前会话是否为空，若符合则删除该会话
+    EMMessage *message = [_conversation latestMessage];
+    if (message == nil) {
+        [[EaseMob sharedInstance].chatManager removeConversationByChatter:_conversation.chatter deleteMessages:YES];
+    }
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - getter

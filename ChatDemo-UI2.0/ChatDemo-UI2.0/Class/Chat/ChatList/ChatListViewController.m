@@ -141,14 +141,16 @@
                 cell.placeholderImage = [UIImage imageNamed:@"chatListCellHead.png"];
             }
             else{
-                cell.placeholderImage = [UIImage imageNamed:@"groupHeader"];
+                NSString *imageName = @"groupPublicHeader";
                 NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
                 for (EMGroup *group in groupArray) {
                     if ([group.groupId isEqualToString:conversation.chatter]) {
                         cell.name = group.groupSubject;
+                        imageName = group.isPublic ? @"groupPublicHeader" : @"groupPrivateHeader";
                         break;
                     }
                 }
+                cell.placeholderImage = [UIImage imageNamed:imageName];
             }
             cell.detailMsg = [weakSelf subTitleMessageByConversation:conversation];
             cell.time = [weakSelf lastMessageTimeByConversation:conversation];
@@ -288,14 +290,16 @@
         cell.placeholderImage = [UIImage imageNamed:@"chatListCellHead.png"];
     }
     else{
-        cell.placeholderImage = [UIImage imageNamed:@"groupHeader"];
+        NSString *imageName = @"groupPublicHeader";
         NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
         for (EMGroup *group in groupArray) {
             if ([group.groupId isEqualToString:conversation.chatter]) {
                 cell.name = group.groupSubject;
+                imageName = group.isPublic ? @"groupPublicHeader" : @"groupPrivateHeader";
                 break;
             }
         }
+        cell.placeholderImage = [UIImage imageNamed:imageName];
     }
     cell.detailMsg = [self subTitleMessageByConversation:conversation];
     cell.time = [self lastMessageTimeByConversation:conversation];

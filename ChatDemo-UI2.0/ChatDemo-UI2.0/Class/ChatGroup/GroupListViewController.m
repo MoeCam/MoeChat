@@ -138,7 +138,8 @@
             }
             
             EMGroup *group = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
+            NSString *imageName = group.isPublic ? @"groupPublicHeader" : @"groupPrivateHeader";
+            cell.imageView.image = [UIImage imageNamed:imageName];
             cell.textLabel.text = group.groupSubject;
             
             return cell;
@@ -186,8 +187,8 @@
     }
     
     EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
-//    NSString *imageName = group.is
-    cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
+    NSString *imageName = group.isPublic ? @"groupPublicHeader" : @"groupPrivateHeader";
+    cell.imageView.image = [UIImage imageNamed:imageName];
     if (group.groupSubject && group.groupSubject.length > 0) {
         cell.textLabel.text = group.groupSubject;
     }

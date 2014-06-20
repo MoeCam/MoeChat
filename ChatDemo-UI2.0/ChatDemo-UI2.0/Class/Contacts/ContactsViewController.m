@@ -29,7 +29,6 @@
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) EMSearchBar *searchBar;
 @property (strong, nonatomic) SRRefreshView *slimeView;
-@property (strong, nonatomic) ApplyViewController *applyController;
 @property (strong, nonatomic) GroupListViewController *groupController;
 
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
@@ -236,7 +235,7 @@
         if (indexPath.section == 0 && indexPath.row == 1) {
             if (indexPath.row == 1)
             {
-                cell.imageView.image = [UIImage imageNamed:@"groupHeader"];
+                cell.imageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
                 cell.textLabel.text = @"群组";
             }
         }
@@ -348,11 +347,7 @@
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            if (_applyController == nil) {
-                _applyController = [ApplyViewController shareController];
-            }
-            
-            [self.navigationController pushViewController:_applyController animated:YES];
+            [self.navigationController pushViewController:[ApplyViewController shareController] animated:YES];
         }
         else if (indexPath.row == 1)
         {
