@@ -322,6 +322,10 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     TTAlertNoTitle(message);
 }
 
+- (void)didAcceptBuddySucceed:(NSString *)username{
+    [_contactsVC reloadDataSource];
+}
+
 #pragma mark - IChatManagerDelegate 群组变化
 
 - (void)didReceiveGroupInvitationFrom:(NSString *)groupId
