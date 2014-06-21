@@ -13,9 +13,12 @@
 
 @interface CreateGroupViewController ()<UITextFieldDelegate, UITextViewDelegate, EMChooseViewDelegate>
 
+@property (nonatomic) BOOL isPublic;
 @property (strong, nonatomic) UIBarButtonItem *rightItem;
 @property (strong, nonatomic) UITextField *textField;
 @property (strong, nonatomic) EMTextView *textView;
+@property (strong, nonatomic) UIView *switchView;
+@property (strong, nonatomic) UILabel *groupTypeLabel;
 
 @end
 
@@ -26,6 +29,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        _isPublic = NO;
     }
     return self;
 }
@@ -58,6 +62,7 @@
     
     [self.view addSubview:self.textField];
     [self.view addSubview:self.textView];
+    [self.view addSubview:self.switchView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -71,7 +76,7 @@
 - (UITextField *)textField
 {
     if (_textField == nil) {
-        _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 40)];
+        _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 300, 40)];
         _textField.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         _textField.layer.borderWidth = 0.5;
         _textField.layer.cornerRadius = 3;
@@ -92,7 +97,7 @@
 - (EMTextView *)textView
 {
     if (_textView == nil) {
-        _textView = [[EMTextView alloc] initWithFrame:CGRectMake(10, 70, self.view.frame.size.width - 20, 80)];
+        _textView = [[EMTextView alloc] initWithFrame:CGRectMake(10, 70, 300, 80)];
         _textView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         _textView.layer.borderWidth = 0.5;
         _textView.layer.cornerRadius = 3;
@@ -104,6 +109,32 @@
     }
     
     return _textView;
+}
+
+- (UIView *)switchView
+{
+    if (_switchView == nil) {
+        _switchView = [[UIView alloc] initWithFrame:CGRectMake(10, 160, 300, 35)];
+        _switchView.backgroundColor = [UIColor clearColor];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, _switchView.frame.size.height)];
+        label.backgroundColor = [UIColor clearColor];
+        label.text = @"群组权限";
+        [_switchView addSubview:label];
+        
+        UISwitch *switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(100, 0, 50, _switchView.frame.size.height)];
+        [switchControl addTarget:self action:@selector(groupTypeChange:) forControlEvents:UIControlEventValueChanged];
+        [_switchView addSubview:switchControl];
+        
+        _groupTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(160, 0, 100, _switchView.frame.size.height)];
+        _groupTypeLabel.backgroundColor = [UIColor clearColor];
+        _groupTypeLabel.font = [UIFont systemFontOfSize:14.0];
+        _groupTypeLabel.textColor = [UIColor grayColor];
+        _groupTypeLabel.text = @"私有群";
+        [_switchView addSubview:_groupTypeLabel];
+    }
+    
+    return _switchView;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -139,19 +170,36 @@
         [source addObject:buddy.username];
     }
     
-    [[EaseMob sharedInstance].chatManager asyncCreatePrivateGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
-        [self hideHud];
-        if (group && !error) {
-            [self showHint:@"创建群组成功"];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-        else{
-            [self showHint:@"创建群组失败，请重新操作"];
-        }
-    } onQueue:nil];
+    if (_isPublic) {
+        
+    }
+    else{
+        [[EaseMob sharedInstance].chatManager asyncCreatePrivateGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
+            [self hideHud];
+            if (group && !error) {
+                [self showHint:@"创建群组成功"];
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+            else{
+                [self showHint:@"创建群组失败，请重新操作"];
+            }
+        } onQueue:nil];
+    }
 }
 
 #pragma mark - action
+
+- (void)groupTypeChange:(UISwitch *)control
+{
+    if (control.isOn) {
+        _groupTypeLabel.text = @"公有群";
+    }
+    else{
+        _groupTypeLabel.text = @"私有群";
+    }
+    
+    _isPublic = control.isOn;
+}
 
 - (void)addContacts:(id)sender
 {

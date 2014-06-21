@@ -1,24 +1,20 @@
 //
-//  GroupListViewController.m
+//  PublicGroupListViewController.m
 //  ChatDemo-UI2.0
 //
-//  Created by dhcdht on 14-5-30.
+//  Created by dhcdht on 14-6-20.
 //  Copyright (c) 2014年 dhcdht. All rights reserved.
 //
 
-#import "GroupListViewController.h"
+#import "PublicGroupListViewController.h"
 
 #import "EMSearchBar.h"
 #import "SRRefreshView.h"
-#import "BaseTableViewCell.h"
 #import "EMSearchDisplayController.h"
-#import "ChatViewController.h"
-#import "CreateGroupViewController.h"
-#import "PublicGroupListViewController.h"
+#import "PublicGroupDetailViewController.h"
 #import "RealtimeSearchUtil.h"
-#import "UIViewController+HUD.h"
 
-@interface GroupListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, IChatManagerDelegate, SRRefreshDelegate>
+@interface PublicGroupListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, SRRefreshDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
@@ -28,7 +24,7 @@
 
 @end
 
-@implementation GroupListViewController
+@implementation PublicGroupListViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -49,30 +45,16 @@
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
     
-    self.title = @"群组";
+    // Uncomment the following line to preserve selection between presentations.
+    self.title = @"公有群组";
     
-#warning 把self注册为SDK的delegate
-    [[EaseMob sharedInstance].chatManager removeDelegate:self];
-    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
-    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.tableHeaderView = self.searchBar;
     [self.tableView addSubview:self.slimeView];
     [self searchController];
-    
-    UIButton *publicButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 44)];
-    [publicButton setImage:[UIImage imageNamed:@"nav_createGroup"] forState:UIControlStateNormal];
-    [publicButton addTarget:self action:@selector(showPublicGroupList) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *publicItem = [[UIBarButtonItem alloc] initWithCustomView:publicButton];
-    
-    UIButton *createButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 44)];
-    [createButton setImage:[UIImage imageNamed:@"add.png"] forState:UIControlStateNormal];
-    [createButton addTarget:self action:@selector(createGroup) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *createGroupItem = [[UIBarButtonItem alloc] initWithCustomView:createButton];
-    
-    [self.navigationItem setRightBarButtonItems:@[createGroupItem, publicItem]];
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
@@ -87,12 +69,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc
-{
-    [[EaseMob sharedInstance].chatManager removeDelegate:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - getter
@@ -133,7 +109,7 @@
         _searchController.delegate = self;
         _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
-        __weak GroupListViewController *weakSelf = self;
+        __weak PublicGroupListViewController *weakSelf = self;
         [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
             static NSString *CellIdentifier = @"ContactListCell";
             BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -160,8 +136,8 @@
             [weakSelf.searchController.searchBar endEditing:YES];
             
             EMGroup *group = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            ChatViewController *chatVC = [[ChatViewController alloc] initWithGroup:group];
-            [weakSelf.navigationController pushViewController:chatVC animated:YES];
+            PublicGroupDetailViewController *detailController = [[PublicGroupDetailViewController alloc] initWithGroup:group];
+            [weakSelf.navigationController pushViewController:detailController animated:YES];
         }];
     }
     
@@ -193,8 +169,7 @@
     }
     
     EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
-    NSString *imageName = group.isPublic ? @"groupPublicHeader" : @"groupPrivateHeader";
-    cell.imageView.image = [UIImage imageNamed:imageName];
+    cell.imageView.image = [UIImage imageNamed:@"groupPublicHeader"];
     if (group.groupSubject && group.groupSubject.length > 0) {
         cell.textLabel.text = group.groupSubject;
     }
@@ -212,19 +187,14 @@
     return 50;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
-    ChatViewController *chatController = [[ChatViewController alloc] initWithGroup:group];
-    chatController.title = group.groupSubject;
-    [self.navigationController pushViewController:chatController animated:YES];
+    PublicGroupDetailViewController *detailController = [[PublicGroupDetailViewController alloc] initWithGroup:group];
+    detailController.title = group.groupSubject;
+    [self.navigationController pushViewController:detailController animated:YES];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -292,45 +262,18 @@
     [_slimeView endRefresh];
 }
 
-#pragma mark - IChatManagerDelegate
-
-- (void)groupDidUpdateInfo:(EMGroup *)group error:(EMError *)error
-{
-    if (!error) {
-        [self reloadDataSource];
-    }
-}
-
-- (void)didUpdateGroupList:(NSArray *)allGroups error:(EMError *)error
-{
-    [self reloadDataSource];
-}
 
 #pragma mark - data
 
 - (void)reloadDataSource
 {
+    [self showHudInView:self.view hint:@"加载数据..."];
     [self.dataSource removeAllObjects];
     
     NSArray *rooms = [[EaseMob sharedInstance].chatManager groupList];
     [self.dataSource addObjectsFromArray:rooms];
     
-    [self.tableView reloadData];
+    [self hideHud];
 }
-
-#pragma mark - action
-
-- (void)showPublicGroupList
-{
-    PublicGroupListViewController *publicController = [[PublicGroupListViewController alloc] initWithStyle:UITableViewStylePlain];
-    [self.navigationController pushViewController:publicController animated:YES];
-}
-
-- (void)createGroup
-{
-    CreateGroupViewController *createChatroom = [[CreateGroupViewController alloc] init];
-    [self.navigationController pushViewController:createChatroom animated:YES];
-}
-
 
 @end
