@@ -67,7 +67,7 @@ static const CGFloat labelPadding = 10;
     _label.opaque = NO;
     _label.backgroundColor = [UIColor clearColor];
     _label.textAlignment = NSTextAlignmentCenter;
-    _label.lineBreakMode = UILineBreakModeWordWrap;
+    _label.lineBreakMode = NSLineBreakByWordWrapping;
     _label.numberOfLines = 0;
     _label.textColor = [UIColor whiteColor];
     if (SYSTEM_VERSION_LESS_THAN(@"7")) {
