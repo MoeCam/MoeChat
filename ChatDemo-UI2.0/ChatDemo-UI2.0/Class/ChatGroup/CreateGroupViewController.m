@@ -126,7 +126,11 @@
         [switchControl addTarget:self action:@selector(groupTypeChange:) forControlEvents:UIControlEventValueChanged];
         [_switchView addSubview:switchControl];
         
-        _groupTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(160, 0, 100, _switchView.frame.size.height)];
+//        _groupTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(160, 0, 100, _switchView.frame.size.height)];
+        _groupTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(switchControl.frame.origin.x + switchControl.frame.size.width,
+                                                                    switchControl.frame.origin.y,
+                                                                    100,
+                                                                    _switchView.frame.size.height)];
         _groupTypeLabel.backgroundColor = [UIColor clearColor];
         _groupTypeLabel.font = [UIFont systemFontOfSize:14.0];
         _groupTypeLabel.textColor = [UIColor grayColor];
