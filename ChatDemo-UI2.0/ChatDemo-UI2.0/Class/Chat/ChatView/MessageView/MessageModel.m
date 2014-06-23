@@ -10,9 +10,9 @@
   * from EaseMob Technologies.
   */
 
-#import "EMMessageModel.h"
+#import "MessageModel.h"
 
-@implementation EMMessageModel
+@implementation MessageModel
 
 - (instancetype)init
 {

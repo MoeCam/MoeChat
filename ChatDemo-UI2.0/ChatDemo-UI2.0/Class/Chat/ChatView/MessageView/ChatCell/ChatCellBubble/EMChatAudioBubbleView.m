@@ -96,7 +96,7 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
 
 #pragma mark - setter
 
-- (void)setModel:(EMMessageModel *)model
+- (void)setModel:(MessageModel *)model
 {
     if(model != nil)
     {
@@ -168,7 +168,7 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
 }
 
 
-+(CGFloat)heightForBubbleWithObject:(EMMessageModel *)object
++(CGFloat)heightForBubbleWithObject:(MessageModel *)object
 {
     return 2 * BUBBLE_VIEW_PADDING + ANIMATION_IMAGEVIEW_SIZE;
 }

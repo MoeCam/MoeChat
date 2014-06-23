@@ -73,7 +73,7 @@ NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTap
 
 #pragma mark - setter
 
-- (void)setModel:(EMMessageModel *)model
+- (void)setModel:(MessageModel *)model
 {
     [super setModel:model];
     
@@ -82,7 +82,7 @@ NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTap
 
 #pragma mark - public
 
-+(CGFloat)heightForBubbleWithObject:(EMMessageModel *)object
++(CGFloat)heightForBubbleWithObject:(MessageModel *)object
 {
     CGSize textBlockMinSize = {TEXTLABEL_MAX_WIDTH, CGFLOAT_MAX};
     CGSize size;

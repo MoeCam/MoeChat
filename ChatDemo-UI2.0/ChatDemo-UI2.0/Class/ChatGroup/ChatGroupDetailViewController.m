@@ -261,9 +261,7 @@
 {
     __weak ChatGroupDetailViewController *weakSelf = self;
     [self showHudInView:self.view hint:@"加载数据..."];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error;
-        EMGroup *group = [[EaseMob sharedInstance].chatManager fetchGroupInfo:_chatGroup.groupId error:&error];
+    [[EaseMob sharedInstance].chatManager asyncFetchGroupInfo:_chatGroup.groupId completion:^(EMGroup *group, EMError *error) {
         if (!error) {
             weakSelf.chatGroup = group;
             [weakSelf reloadDataSource];
@@ -274,7 +272,7 @@
                 [weakSelf showHint:@"获取群组详情失败，请稍后重试"];
             });
         }
-    });
+    } onQueue:nil];
 }
 
 - (void)reloadDataSource

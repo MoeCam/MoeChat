@@ -12,7 +12,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "EMMessageModel.h"
+#import "MessageModel.h"
 #import "EMChatBaseBubbleView.h"
 
 #import "UIResponder+Router.h"
@@ -35,21 +35,21 @@ extern NSString *const kRouterEventChatHeadImageTapEventName;
     EMChatBaseBubbleView *_bubbleView;
     
     CGFloat _nameLabelHeight;
-    EMMessageModel *_message;
+    MessageModel *_messageModel;
 }
 
-@property (nonatomic, strong) EMMessageModel *message;
+@property (nonatomic, strong) MessageModel *messageModel;
 
 @property (nonatomic, strong) UIImageView *headImageView;       //头像
 @property (nonatomic, strong) UILabel *nameLabel;               //姓名（暂时不支持显示）
 @property (nonatomic, strong) EMChatBaseBubbleView *bubbleView;   //内容区域
 
-- (id)initWithMessage:(EMMessageModel *)message reuseIdentifier:(NSString *)reuseIdentifier;
+- (id)initWithMessageModel:(MessageModel *)model reuseIdentifier:(NSString *)reuseIdentifier;
 
-- (void)setupSubviewsForMessage:(EMMessageModel *)message;
+- (void)setupSubviewsForMessageModel:(MessageModel *)model;
 
-+ (NSString *)cellIdentifierForMessage:(EMMessageModel *)message;
++ (NSString *)cellIdentifierForMessageModel:(MessageModel *)model;
 
-+ (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath withObject:(EMMessageModel *)model;
++ (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath withObject:(MessageModel *)model;
 
 @end

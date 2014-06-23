@@ -71,7 +71,7 @@ NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleT
 
 #pragma mark - setter
 
-- (void)setModel:(EMMessageModel *)model
+- (void)setModel:(MessageModel *)model
 {
     [super setModel:model];
     
@@ -94,7 +94,7 @@ NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleT
 }
 
 
-+(CGFloat)heightForBubbleWithObject:(EMMessageModel *)object
++(CGFloat)heightForBubbleWithObject:(MessageModel *)object
 {
     CGSize retSize = object.size;
     if (retSize.width == 0 || retSize.height == 0) {

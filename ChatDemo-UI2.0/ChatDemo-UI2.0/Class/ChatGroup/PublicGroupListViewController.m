@@ -255,14 +255,7 @@
 
 - (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
 {
-    [[EaseMob sharedInstance].chatManager asyncFetchAllPrivateGroupsWithCompletion:^(NSArray *groups, EMError *error) {
-        if (!error) {
-            [self.dataSource removeAllObjects];
-            [self.dataSource addObjectsFromArray:groups];
-            [self.tableView reloadData];
-        }
-    } onQueue:nil];
-    
+    [self reloadDataSource];
     [_slimeView endRefresh];
 }
 

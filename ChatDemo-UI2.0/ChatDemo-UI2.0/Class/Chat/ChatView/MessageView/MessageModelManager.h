@@ -12,7 +12,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface EMMessageModelManager : NSObject
+@interface MessageModelManager : NSObject
 
 + (id)modelWithMessage:(EMMessage *)message;
 

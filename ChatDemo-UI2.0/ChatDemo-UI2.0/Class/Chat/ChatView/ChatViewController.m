@@ -19,8 +19,8 @@
 #import "EMChatViewCell.h"
 #import "EMChatTimeCell.h"
 #import "EMChatSendHelper.h"
-#import "EMMessageManager.h"
-#import "EMMessageModelManager.h"
+#import "MessageReadManager.h"
+#import "MessageModelManager.h"
 #import "LocationViewController.h"
 #import "ChatGroupDetailViewController.h"
 #import "UIViewController+HUD.h"
@@ -52,7 +52,7 @@
 
 @property (strong, nonatomic) UIImagePickerController *imagePicker;
 
-@property (strong, nonatomic) EMMessageManager *messageReadManager;//message阅读的管理者
+@property (strong, nonatomic) MessageReadManager *messageReadManager;//message阅读的管理者
 @property (strong, nonatomic) EMConversation *conversation;//会话管理者
 @property (strong, nonatomic) NSDate *chatTagDate;
 
@@ -257,10 +257,10 @@
     return _imagePicker;
 }
 
-- (EMMessageManager *)messageReadManager
+- (MessageReadManager *)messageReadManager
 {
     if (_messageReadManager == nil) {
-        _messageReadManager = [EMMessageManager defaultManager];
+        _messageReadManager = [MessageReadManager defaultManager];
     }
     
     return _messageReadManager;
@@ -305,15 +305,15 @@
             return timeCell;
         }
         else{
-            EMMessageModel *message = (EMMessageModel *)obj;
-            NSString *cellIdentifier = [EMChatViewCell cellIdentifierForMessage:message];
+            MessageModel *model = (MessageModel *)obj;
+            NSString *cellIdentifier = [EMChatViewCell cellIdentifierForMessageModel:model];
             EMChatViewCell *cell = (EMChatViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
             if (cell == nil) {
-                cell = [[EMChatViewCell alloc] initWithMessage:message reuseIdentifier:cellIdentifier];
+                cell = [[EMChatViewCell alloc] initWithMessageModel:model reuseIdentifier:cellIdentifier];
                 cell.backgroundColor = [UIColor clearColor];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
-            cell.message = message;
+            cell.messageModel = model;
             
             return cell;
         }
@@ -331,7 +331,7 @@
         return 40;
     }
     else{
-        return [EMChatViewCell tableView:tableView heightForRowAtIndexPath:indexPath withObject:(EMMessageModel *)obj];
+        return [EMChatViewCell tableView:tableView heightForRowAtIndexPath:indexPath withObject:(MessageModel *)obj];
     }
 }
 
@@ -369,11 +369,11 @@
         CGPoint location = [recognizer locationInView:self.tableView];
         NSIndexPath * indexPath = [self.tableView indexPathForRowAtPoint:location];
         id object = [self.dataSource objectAtIndex:indexPath.row];
-        if ([object isKindOfClass:[EMMessageModel class]]) {
+        if ([object isKindOfClass:[MessageModel class]]) {
             EMChatViewCell *cell = (EMChatViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
             [cell becomeFirstResponder];
             _longPressIndexPath = indexPath;
-            [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:cell.message.type];
+            [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:cell.messageModel.type];
         }
     }
 }
@@ -382,22 +382,19 @@
 
 - (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
 {
-    EMMessageModel *message = [userInfo objectForKey:KMESSAGEKEY];
-    if ([eventName isEqualToString:kRouterEventChatHeadImageTapEventName]){
-        [self avatarPressed:message];
-    }
-    else if ([eventName isEqualToString:kRouterEventAudioBubbleTapEventName]) {
-        [self chatAudioCellBubblePressed:message];
+    MessageModel *model = [userInfo objectForKey:KMESSAGEKEY];
+    if ([eventName isEqualToString:kRouterEventAudioBubbleTapEventName]) {
+        [self chatAudioCellBubblePressed:model];
     }
     else if ([eventName isEqualToString:kRouterEventImageBubbleTapEventName]){
-        [self chatImageCellBubblePressed:message];
+        [self chatImageCellBubblePressed:model];
     }
     else if ([eventName isEqualToString:kRouterEventLocationBubbleTapEventName]){
-        [self chatLocationCellBubblePressed:message];
+        [self chatLocationCellBubblePressed:model];
     }
     else if([eventName isEqualToString:kResendButtonTapEventName]){
         EMChatViewCell *resendCell = [userInfo objectForKey:kShouldResendCell];
-        EMMessageModel *messageModel = resendCell.message;
+        MessageModel *messageModel = resendCell.messageModel;
         messageModel.status = eMessageDeliveryState_Delivering;
         NSIndexPath *indexPath = [self.tableView indexPathForCell:resendCell];
         [self.tableView beginUpdates];
@@ -409,14 +406,8 @@
     }
 }
 
-//点击头像
--(void)avatarPressed:(EMMessageModel *)message
-{
-    
-}
-
 // 语音的bubble被点击
--(void)chatAudioCellBubblePressed:(EMMessageModel *)message
+-(void)chatAudioCellBubblePressed:(MessageModel *)model
 {
 //    id <IEMFileMessageBody> body = [message.message.messageBodies firstObject];
 //    BOOL isAttachmentDownloaded = [body attachmentDownloaded];
@@ -425,9 +416,9 @@
 //        return;
 //    }
     // 修改isRead状态
-    if (message.isPlayed == NO) {
-        message.isPlayed = YES;
-        EMMessage *chatMessage = [_conversation loadMessage:message.messageId];
+    if (model.isPlayed == NO) {
+        model.isPlayed = YES;
+        EMMessage *chatMessage = [_conversation loadMessage:model.messageId];
         if (chatMessage.ext) {
             NSMutableDictionary *dict = [chatMessage.ext mutableCopy];
             if (![[dict objectForKey:@"isPlayed"] boolValue]) {
@@ -439,14 +430,14 @@
     }
     
     // 播放音频
-    if (message.type == eMessageBodyType_Voice) {
-        [self.messageReadManager startMessageAudio:message
+    if (model.type == eMessageBodyType_Voice) {
+        [self.messageReadManager startMessageAudio:model
                                            chatter:_conversation.chatter
-                                         playBlock:^(BOOL playing, EMMessageModel *messageModel) {
+                                         playBlock:^(BOOL playing, MessageModel *messageModel) {
                                              if(playing){
                                                  
                                                  [[[EaseMob sharedInstance] deviceManager] enableProximitySensor];
-                                                 [[EaseMob sharedInstance].chatManager asyncPlayAudio:message.chatVoice completion:^(EMError *error) {
+                                                 [[EaseMob sharedInstance].chatManager asyncPlayAudio:model.chatVoice completion:^(EMError *error) {
                                                      messageModel.isPlaying = NO;
                                                      [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
                                                  } onQueue:nil];
@@ -460,25 +451,25 @@
 }
 
 // 位置的bubble被点击
--(void)chatLocationCellBubblePressed:(EMMessageModel *)message
+-(void)chatLocationCellBubblePressed:(MessageModel *)model
 {
-    LocationViewController *locationController = [[LocationViewController alloc] initWithLocation:CLLocationCoordinate2DMake(message.latitude, message.longitude)];
+    LocationViewController *locationController = [[LocationViewController alloc] initWithLocation:CLLocationCoordinate2DMake(model.latitude, model.longitude)];
     [self.navigationController pushViewController:locationController animated:YES];
 }
 
 // 图片的bubble被点击
--(void)chatImageCellBubblePressed:(EMMessageModel *)message
+-(void)chatImageCellBubblePressed:(MessageModel *)model
 {
     __weak ChatViewController *weakSelf = self;
     id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
-    if ([message.messageBody messageBodyType] == eMessageBodyType_Image) {
-        EMImageMessageBody *imageBody = (EMImageMessageBody *)message.messageBody;
+    if ([model.messageBody messageBodyType] == eMessageBodyType_Image) {
+        EMImageMessageBody *imageBody = (EMImageMessageBody *)model.messageBody;
         if (imageBody.thumbnailDownloadSatus == EMAttachmentDownloadSuccessed) {
             [weakSelf showHudInView:weakSelf.view hint:@"正在获取大图..."];
-            [chatManager asyncFetchMessage:message.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
+            [chatManager asyncFetchMessage:model.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
                 [weakSelf hideHud];
                 if (!error) {
-                    NSString *localPath = aMessage == nil ? message.localPath : [[aMessage.messageBodies firstObject] localPath];
+                    NSString *localPath = aMessage == nil ? model.localPath : [[aMessage.messageBodies firstObject] localPath];
                     if (localPath && localPath.length > 0) {
                         NSURL *url = [NSURL fileURLWithPath:localPath];
                         [weakSelf.messageReadManager showBrowserWithImages:@[url]];
@@ -489,9 +480,9 @@
             } onQueue:nil];
         }else{
             //获取缩略图
-            [chatManager asyncFetchMessageThumbnail:message.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
+            [chatManager asyncFetchMessageThumbnail:model.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
                 if (!error) {
-                    [weakSelf reloadTableViewDataWithMessage:message.message];
+                    [weakSelf reloadTableViewDataWithMessage:model.message];
                 }else{
                     [weakSelf showHint:@"缩略图获取失败!"];
                 }
@@ -515,10 +506,10 @@
         {
             for (int i = 0; i < weakSelf.dataSource.count; i ++) {
                 id object = [weakSelf.dataSource objectAtIndex:i];
-                if ([object isKindOfClass:[EMMessageModel class]]) {
+                if ([object isKindOfClass:[MessageModel class]]) {
                     EMMessage *currMsg = [weakSelf.dataSource objectAtIndex:i];
                     if ([message.messageId isEqualToString:currMsg.messageId]) {
-                        EMMessageModel *cellModel = [EMMessageModelManager modelWithMessage:message];
+                        MessageModel *cellModel = [MessageModelManager modelWithMessage:message];
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [weakSelf.tableView beginUpdates];
                             [weakSelf.dataSource replaceObjectAtIndex:i withObject:cellModel];
@@ -735,7 +726,7 @@
     // todo by du. 复制
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     if (_longPressIndexPath.row > 0) {
-        EMMessageModel *model = [self.dataSource objectAtIndex:_longPressIndexPath.row];
+        MessageModel *model = [self.dataSource objectAtIndex:_longPressIndexPath.row];
         pasteboard.string = model.content;
     }
     
@@ -745,9 +736,9 @@
 - (void)deleteMenuAction:(id)sender
 {
     if (_longPressIndexPath && _longPressIndexPath.row > 0) {
-        EMMessageModel * message = [self.dataSource objectAtIndex:_longPressIndexPath.row];
-        NSMutableArray *messages = [NSMutableArray arrayWithObjects:message, nil];
-        [_conversation removeMessage:message.messageId];
+        MessageModel *model = [self.dataSource objectAtIndex:_longPressIndexPath.row];
+        NSMutableArray *messages = [NSMutableArray arrayWithObjects:model, nil];
+        [_conversation removeMessage:model.messageId];
         NSMutableArray *indexPaths = [NSMutableArray arrayWithObjects:_longPressIndexPath, nil];;
         if (_longPressIndexPath.row - 1 >= 0) {
             id nextMessage = nil;
@@ -795,7 +786,7 @@
                 [resultArray addObject:[createDate formattedTime]];
                 self.chatTagDate = createDate;
             }
-            [resultArray addObject:[EMMessageModelManager modelWithMessage:message]];
+            [resultArray addObject:[MessageModelManager modelWithMessage:message]];
         }
     }
     
@@ -812,7 +803,7 @@
         self.chatTagDate = createDate;
     }
     
-    [ret addObject:[EMMessageModelManager modelWithMessage:message]];
+    [ret addObject:[MessageModelManager modelWithMessage:message]];
     
     return ret;
 }

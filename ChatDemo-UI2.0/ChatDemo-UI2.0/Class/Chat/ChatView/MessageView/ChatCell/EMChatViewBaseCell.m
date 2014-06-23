@@ -22,7 +22,7 @@ NSString *const kRouterEventChatHeadImageTapEventName = @"kRouterEventChatHeadIm
 
 @implementation EMChatViewBaseCell
 
-- (id)initWithMessage:(EMMessageModel *)message reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithMessageModel:(MessageModel *)model reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -42,7 +42,7 @@ NSString *const kRouterEventChatHeadImageTapEventName = @"kRouterEventChatHeadIm
         _nameLabel.font = [UIFont systemFontOfSize:12];
         [self.contentView addSubview:_nameLabel];
         
-        [self setupSubviewsForMessage:message];
+        [self setupSubviewsForModel:model];
     }
     return self;
 }
@@ -52,7 +52,7 @@ NSString *const kRouterEventChatHeadImageTapEventName = @"kRouterEventChatHeadIm
     [super layoutSubviews];
     
     CGRect frame = _headImageView.frame;
-    frame.origin.x = _message.isSender ? (self.bounds.size.width - _headImageView.frame.size.width - HEAD_PADDING) : HEAD_PADDING;
+    frame.origin.x = _messageModel.isSender ? (self.bounds.size.width - _headImageView.frame.size.width - HEAD_PADDING) : HEAD_PADDING;
     _headImageView.frame = frame;
     
     _nameLabel.frame = CGRectMake(CGRectGetMinX(_headImageView.frame), CGRectGetMaxY(_headImageView.frame), CGRectGetWidth(_headImageView.frame), NAME_LABEL_HEIGHT);
@@ -67,21 +67,21 @@ NSString *const kRouterEventChatHeadImageTapEventName = @"kRouterEventChatHeadIm
 
 #pragma mark - setter
 
-- (void)setMessage:(EMMessageModel *)message
+- (void)setMessageModel:(MessageModel *)messageModel
 {
-    _message = message;
+    _messageModel = messageModel;
     
-    _nameLabel.hidden = !message.isChatGroup;
+    _nameLabel.hidden = !messageModel.isChatGroup;
     
     UIImage *placeholderImage = [UIImage imageNamed:@"chatListCellHead"];
-    [self.headImageView setImageWithURL:_message.headImageURL placeholderImage:placeholderImage];
+    [self.headImageView setImageWithURL:_messageModel.headImageURL placeholderImage:placeholderImage];
 }
 
 #pragma mark - private
 
 -(void)headImagePressed:(id)sender
 {
-    [super routerEventWithName:kRouterEventChatHeadImageTapEventName userInfo:@{KMESSAGEKEY:self.message}];
+    [super routerEventWithName:kRouterEventChatHeadImageTapEventName userInfo:@{KMESSAGEKEY:self.messageModel}];
 }
 
 - (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
@@ -91,9 +91,9 @@ NSString *const kRouterEventChatHeadImageTapEventName = @"kRouterEventChatHeadIm
 
 #pragma mark - public
 
-- (void)setupSubviewsForMessage:(EMMessageModel *)message
+- (void)setupSubviewsForModel:(MessageModel *)model
 {
-    if (message.isSender) {
+    if (model.isSender) {
         self.headImageView.frame = CGRectMake(self.bounds.size.width - HEAD_SIZE - HEAD_PADDING, CELLPADDING, HEAD_SIZE, HEAD_SIZE);
     }
     else{
@@ -101,17 +101,17 @@ NSString *const kRouterEventChatHeadImageTapEventName = @"kRouterEventChatHeadIm
     }
 }
 
-+ (NSString *)cellIdentifierForMessage:(EMMessageModel *)message
++ (NSString *)cellIdentifierForMessageModel:(MessageModel *)model
 {
     NSString *identifier = @"MessageCell";
-    if (message.isSender) {
+    if (model.isSender) {
         identifier = [identifier stringByAppendingString:@"Sender"];
     }
     else{
         identifier = [identifier stringByAppendingString:@"Receiver"];
     }
     
-    switch (message.type) {
+    switch (model.type) {
         case eMessageBodyType_Text:
         {
             identifier = [identifier stringByAppendingString:@"Text"];
@@ -145,7 +145,7 @@ NSString *const kRouterEventChatHeadImageTapEventName = @"kRouterEventChatHeadIm
     return identifier;
 }
 
-+ (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath withObject:(EMMessageModel *)model
++ (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath withObject:(MessageModel *)model
 {
     return HEAD_SIZE + CELLPADDING;
 }

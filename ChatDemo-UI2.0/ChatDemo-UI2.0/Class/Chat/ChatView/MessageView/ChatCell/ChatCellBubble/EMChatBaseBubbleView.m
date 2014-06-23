@@ -45,7 +45,7 @@ NSString *const kRouterEventChatCellBubbleTapEventName = @"kRouterEventChatCellB
 
 #pragma mark - setter
 
-- (void)setModel:(EMMessageModel *)model
+- (void)setModel:(MessageModel *)model
 {
     _model = model;
     
@@ -58,7 +58,7 @@ NSString *const kRouterEventChatCellBubbleTapEventName = @"kRouterEventChatCellB
 
 #pragma mark - public
 
-+ (CGFloat)heightForBubbleWithObject:(EMMessageModel *)object
++ (CGFloat)heightForBubbleWithObject:(MessageModel *)object
 {
     return 30;
 }

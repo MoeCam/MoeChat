@@ -10,12 +10,12 @@
   * from EaseMob Technologies.
   */
 
-#import "EMMessageModelManager.h"
+#import "MessageModelManager.h"
 
-#import "EMMessageModel.h"
+#import "MessageModel.h"
 #import "EaseMob.h"
 
-@implementation EMMessageModelManager
+@implementation MessageModelManager
 
 + (id)modelWithMessage:(EMMessage *)message
 {
@@ -24,7 +24,7 @@
     NSString *login = [userInfo objectForKey:kSDKUsername];
     BOOL isSender = [login isEqualToString:message.from] ? YES : NO;
     
-    EMMessageModel *model = [[EMMessageModel alloc] init];
+    MessageModel *model = [[MessageModel alloc] init];
     model.isRead = message.isRead;
     model.messageBody = messageBody;
     model.message = message;

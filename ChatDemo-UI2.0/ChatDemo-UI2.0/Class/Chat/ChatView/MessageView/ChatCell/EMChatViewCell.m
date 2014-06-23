@@ -18,9 +18,9 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
 
 @implementation EMChatViewCell
 
-- (id)initWithMessage:(EMMessageModel *)message reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithMessageModel:(MessageModel *)model reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithMessage:message reuseIdentifier:reuseIdentifier];
+    self = [super initWithMessageModel:model reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
         self.headImageView.clipsToBounds = YES;
@@ -41,10 +41,10 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
     CGRect bubbleFrame = _bubbleView.frame;
     bubbleFrame.origin.y = self.headImageView.frame.origin.y;
     
-    if (self.message.isSender) {
+    if (self.messageModel.isSender) {
         bubbleFrame.origin.y = self.headImageView.frame.origin.y;
         // 菊花状态 （因不确定菊花具体位置，要在子类中实现位置的修改）
-        switch (self.message.status) {
+        switch (self.messageModel.status) {
             case eMessageDeliveryState_Delivering:
             {
                 [_activityView setHidden:NO];
@@ -86,16 +86,16 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
     }
 }
 
-- (void)setMessage:(EMMessageModel *)message
+- (void)setMessageModel:(MessageModel *)model
 {
-    [super setMessage:message];
+    [super setMessageModel:model];
     
-    if (message.isChatGroup) {
-        _nameLabel.text = message.username;
-        _nameLabel.hidden = message.isSender;
+    if (model.isChatGroup) {
+        _nameLabel.text = model.username;
+        _nameLabel.hidden = model.isSender;
     }
     
-    _bubbleView.model = message;
+    _bubbleView.model = model;
     [_bubbleView sizeToFit];
 }
 
@@ -117,11 +117,11 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
 
 #pragma mark - private
 
-- (void)setupSubviewsForMessage:(EMMessageModel *)message
+- (void)setupSubviewsForMessageModel:(MessageModel *)messageModel
 {
-    [super setupSubviewsForMessage:message];
+    [super setupSubviewsForMessageModel:messageModel];
     
-    if (message.isSender) {
+    if (messageModel.isSender) {
         // 发送进度显示view
         _activityView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SEND_STATUS_SIZE, SEND_STATUS_SIZE)];
         [_activityView setHidden:YES];
@@ -140,13 +140,13 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
         [_activityView addSubview:_activtiy];
     }
     
-    _bubbleView = [self bubbleViewForMessage:message];
+    _bubbleView = [self bubbleViewForMessageModel:messageModel];
     [self.contentView addSubview:_bubbleView];
 }
 
-- (EMChatBaseBubbleView *)bubbleViewForMessage:(EMMessageModel *)message
+- (EMChatBaseBubbleView *)bubbleViewForMessageModel:(MessageModel *)messageModel
 {
-    switch (message.type) {
+    switch (messageModel.type) {
         case eMessageBodyType_Text:
         {
             return [[EMChatTextBubbleView alloc] init];
@@ -175,27 +175,27 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
     return nil;
 }
 
-+ (CGFloat)bubbleViewHeightForMessage:(EMMessageModel *)message
++ (CGFloat)bubbleViewHeightForMessageModel:(MessageModel *)messageModel
 {
-    switch (message.type) {
+    switch (messageModel.type) {
         case eMessageBodyType_Text:
         {
-            return [EMChatTextBubbleView heightForBubbleWithObject:message];
+            return [EMChatTextBubbleView heightForBubbleWithObject:messageModel];
         }
             break;
         case eMessageBodyType_Image:
         {
-            return [EMChatImageBubbleView heightForBubbleWithObject:message];
+            return [EMChatImageBubbleView heightForBubbleWithObject:messageModel];
         }
             break;
         case eMessageBodyType_Voice:
         {
-            return [EMChatAudioBubbleView heightForBubbleWithObject:message];
+            return [EMChatAudioBubbleView heightForBubbleWithObject:messageModel];
         }
             break;
         case eMessageBodyType_Location:
         {
-            return [EMChatLocationBubbleView heightForBubbleWithObject:message];
+            return [EMChatLocationBubbleView heightForBubbleWithObject:messageModel];
         }
             break;
             
@@ -208,9 +208,9 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
 
 #pragma mark - public
 
-+ (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath withObject:(EMMessageModel *)model
++ (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath withObject:(MessageModel *)model
 {
-    NSInteger bubbleHeight = [EMChatViewCell bubbleViewHeightForMessage:model];
+    NSInteger bubbleHeight = [EMChatViewCell bubbleViewHeightForMessageModel:model];
     NSInteger headHeight = HEAD_PADDING * 2 + HEAD_SIZE;
     if (model.isChatGroup && !model.isSender) {
         headHeight += NAME_LABEL_HEIGHT;

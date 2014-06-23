@@ -207,9 +207,9 @@
 		9003D9041939D8D000DC38A4 /* EMChatToolBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9003D83F1939D8D000DC38A4 /* EMChatToolBar.xib */; };
 		9003D9051939D8D000DC38A4 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8421939D8D000DC38A4 /* HPGrowingTextView.m */; };
 		9003D9061939D8D000DC38A4 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8441939D8D000DC38A4 /* HPTextViewInternal.m */; };
-		9003D9071939D8D000DC38A4 /* EMMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8461939D8D000DC38A4 /* EMMessageManager.m */; };
-		9003D9081939D8D000DC38A4 /* EMMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8481939D8D000DC38A4 /* EMMessageModel.m */; };
-		9003D9091939D8D000DC38A4 /* EMMessageModelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D84A1939D8D000DC38A4 /* EMMessageModelManager.m */; };
+		9003D9071939D8D000DC38A4 /* MessageReadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8461939D8D000DC38A4 /* MessageReadManager.m */; };
+		9003D9081939D8D000DC38A4 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8481939D8D000DC38A4 /* MessageModel.m */; };
+		9003D9091939D8D000DC38A4 /* MessageModelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D84A1939D8D000DC38A4 /* MessageModelManager.m */; };
 		9003D90A1939D8D000DC38A4 /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D84C1939D8D000DC38A4 /* LocationViewController.m */; };
 		9003D9111939D8D000DC38A4 /* ChineseToPinyin.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8591939D8D000DC38A4 /* ChineseToPinyin.m */; };
 		9003D9121939D8D000DC38A4 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D85B1939D8D000DC38A4 /* ContactsViewController.m */; };
@@ -548,12 +548,12 @@
 		9003D8421939D8D000DC38A4 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		9003D8431939D8D000DC38A4 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
 		9003D8441939D8D000DC38A4 /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
-		9003D8451939D8D000DC38A4 /* EMMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMessageManager.h; sourceTree = "<group>"; };
-		9003D8461939D8D000DC38A4 /* EMMessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMessageManager.m; sourceTree = "<group>"; };
-		9003D8471939D8D000DC38A4 /* EMMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMessageModel.h; sourceTree = "<group>"; };
-		9003D8481939D8D000DC38A4 /* EMMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMessageModel.m; sourceTree = "<group>"; };
-		9003D8491939D8D000DC38A4 /* EMMessageModelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMessageModelManager.h; sourceTree = "<group>"; };
-		9003D84A1939D8D000DC38A4 /* EMMessageModelManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMessageModelManager.m; sourceTree = "<group>"; };
+		9003D8451939D8D000DC38A4 /* MessageReadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageReadManager.h; sourceTree = "<group>"; };
+		9003D8461939D8D000DC38A4 /* MessageReadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageReadManager.m; sourceTree = "<group>"; };
+		9003D8471939D8D000DC38A4 /* MessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
+		9003D8481939D8D000DC38A4 /* MessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageModel.m; sourceTree = "<group>"; };
+		9003D8491939D8D000DC38A4 /* MessageModelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModelManager.h; sourceTree = "<group>"; };
+		9003D84A1939D8D000DC38A4 /* MessageModelManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageModelManager.m; sourceTree = "<group>"; };
 		9003D84B1939D8D000DC38A4 /* LocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
 		9003D84C1939D8D000DC38A4 /* LocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationViewController.m; sourceTree = "<group>"; };
 		9003D8581939D8D000DC38A4 /* ChineseToPinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChineseToPinyin.h; sourceTree = "<group>"; };
@@ -1055,12 +1055,12 @@
 				9003D7C81939D8D000DC38A4 /* ChatCell */,
 				9003D7DC1939D8D000DC38A4 /* ChatImages */,
 				9003D83C1939D8D000DC38A4 /* ChatToolBar */,
-				9003D8451939D8D000DC38A4 /* EMMessageManager.h */,
-				9003D8461939D8D000DC38A4 /* EMMessageManager.m */,
-				9003D8471939D8D000DC38A4 /* EMMessageModel.h */,
-				9003D8481939D8D000DC38A4 /* EMMessageModel.m */,
-				9003D8491939D8D000DC38A4 /* EMMessageModelManager.h */,
-				9003D84A1939D8D000DC38A4 /* EMMessageModelManager.m */,
+				9003D8451939D8D000DC38A4 /* MessageReadManager.h */,
+				9003D8461939D8D000DC38A4 /* MessageReadManager.m */,
+				9003D8471939D8D000DC38A4 /* MessageModel.h */,
+				9003D8481939D8D000DC38A4 /* MessageModel.m */,
+				9003D8491939D8D000DC38A4 /* MessageModelManager.h */,
+				9003D84A1939D8D000DC38A4 /* MessageModelManager.m */,
 			);
 			path = MessageView;
 			sourceTree = "<group>";
@@ -2047,7 +2047,7 @@
 				9003D86F1939D8D000DC38A4 /* EMChatSendHelper.m in Sources */,
 				90911112192EEAED008A48AA /* UIButton+WebCache.m in Sources */,
 				9091111C192EEAED008A48AA /* UIViewController+HUD.m in Sources */,
-				9003D9081939D8D000DC38A4 /* EMMessageModel.m in Sources */,
+				9003D9081939D8D000DC38A4 /* MessageModel.m in Sources */,
 				9003D8A71939D8D000DC38A4 /* EMChatViewCell.m in Sources */,
 				9003D8A51939D8D000DC38A4 /* EMChatTimeCell.m in Sources */,
 				9091112F192EEC0F008A48AA /* SettingsViewController.m in Sources */,
@@ -2059,14 +2059,14 @@
 				9091110E192EEAED008A48AA /* SDWebImageDownloader.m in Sources */,
 				90911137192EEC91008A48AA /* LoginViewController.m in Sources */,
 				90911119192EEAED008A48AA /* NSDate+Category.m in Sources */,
-				9003D9071939D8D000DC38A4 /* EMMessageManager.m in Sources */,
+				9003D9071939D8D000DC38A4 /* MessageReadManager.m in Sources */,
 				905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */,
 				3C914D8619514BBD0002DAD3 /* CreateGroupViewController.m in Sources */,
 				9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */,
 				9003D8751939D8D000DC38A4 /* DXChatBarMoreView.m in Sources */,
 				90911101192EEAED008A48AA /* PSTCollectionViewItemKey.m in Sources */,
 				9003D8A61939D8D000DC38A4 /* EMChatViewBaseCell.m in Sources */,
-				9003D9091939D8D000DC38A4 /* EMMessageModelManager.m in Sources */,
+				9003D9091939D8D000DC38A4 /* MessageModelManager.m in Sources */,
 				9003D8A31939D8D000DC38A4 /* EMChatTextBubbleView.m in Sources */,
 				909110F7192EEAED008A48AA /* MWTapDetectingImageView.m in Sources */,
 				909110F2192EEAED008A48AA /* MWCaptionView.m in Sources */,

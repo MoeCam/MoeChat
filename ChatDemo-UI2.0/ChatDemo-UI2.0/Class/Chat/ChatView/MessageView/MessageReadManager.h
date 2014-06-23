@@ -13,25 +13,25 @@
 #import <Foundation/Foundation.h>
 
 #import "MWPhotoBrowser.h"
-#import "EMMessageModel.h"
+#import "MessageModel.h"
 
 typedef void (^FinishBlock)(BOOL success);
-typedef void (^PlayBlock)(BOOL playing, EMMessageModel *messageModel);
+typedef void (^PlayBlock)(BOOL playing, MessageModel *messageModel);
 
 @class EMChatFireBubbleView;
-@interface EMMessageManager : NSObject<MWPhotoBrowserDelegate>
+@interface MessageReadManager : NSObject<MWPhotoBrowserDelegate>
 
 @property (strong, nonatomic) MWPhotoBrowser *photoBrowser;
 @property (strong, nonatomic) FinishBlock finishBlock;
 
-@property (strong, nonatomic) EMMessageModel *audioMessage;
+@property (strong, nonatomic) MessageModel *audioMessage;
 
 + (id)defaultManager;
 
 //default
 - (void)showBrowserWithImages:(NSArray *)imageArray;
 
-- (void)startMessageAudio:(EMMessageModel *)message
+- (void)startMessageAudio:(MessageModel *)message
                   chatter:(NSString *)chatter
                 playBlock:(PlayBlock)block;
 - (void)stopMessageAudio;

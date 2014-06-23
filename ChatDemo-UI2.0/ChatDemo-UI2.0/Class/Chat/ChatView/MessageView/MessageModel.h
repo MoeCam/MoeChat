@@ -14,7 +14,7 @@
 
 #define KFIRETIME 20
 
-@interface EMMessageModel : NSObject
+@interface MessageModel : NSObject
 {
     BOOL _isPlaying;
     NSMutableDictionary *_observerKeys;

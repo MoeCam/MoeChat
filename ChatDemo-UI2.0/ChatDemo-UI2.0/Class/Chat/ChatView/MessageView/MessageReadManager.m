@@ -10,13 +10,13 @@
   * from EaseMob Technologies.
   */
 
-#import "EMMessageManager.h"
+#import "MessageReadManager.h"
 #import "EaseMob.h"
 #import "UIImageView+WebCache.h"
 
-static EMMessageManager *detailInstance = nil;
+static MessageReadManager *detailInstance = nil;
 
-@interface EMMessageManager()
+@interface MessageReadManager()
 
 @property (strong, nonatomic) UIWindow *keyWindow;
 
@@ -27,7 +27,7 @@ static EMMessageManager *detailInstance = nil;
 
 @end
 
-@implementation EMMessageManager
+@implementation MessageReadManager
 
 + (id)defaultManager
 {
@@ -141,7 +141,7 @@ static EMMessageManager *detailInstance = nil;
     [rootController presentViewController:self.photoNavigationController animated:YES completion:nil];
 }
 
-- (void)startMessageAudio:(EMMessageModel *)message
+- (void)startMessageAudio:(MessageModel *)message
                   chatter:(NSString *)chatter
                 playBlock:(PlayBlock)block
 {
