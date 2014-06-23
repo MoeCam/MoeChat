@@ -95,7 +95,7 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
         _nameLabel.hidden = model.isSender;
     }
     
-    _bubbleView.model = model;
+    _bubbleView.model = self.messageModel;
     [_bubbleView sizeToFit];
 }
 

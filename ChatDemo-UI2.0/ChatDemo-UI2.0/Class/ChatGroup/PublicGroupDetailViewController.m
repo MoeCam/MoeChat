@@ -14,19 +14,22 @@
 
 @interface PublicGroupDetailViewController ()
 
+@property (strong, nonatomic) NSString *groupId;
 @property (strong, nonatomic) EMGroup *group;
 @property (strong, nonatomic) UIView *headerView;
 @property (strong, nonatomic) UIView *footerView;
+
+@property (strong, nonatomic) UILabel *nameLabel;
 
 @end
 
 @implementation PublicGroupDetailViewController
 
-- (instancetype)initWithGroup:(EMGroup *)group
+- (instancetype)initWithGroupId:(NSString *)groupId
 {
     self = [self initWithStyle:UITableViewStylePlain];
     if (self) {
-        _group = group;
+        _groupId = groupId;
     }
     
     return self;
@@ -51,6 +54,14 @@
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableHeaderView = self.headerView;
     self.tableView.tableFooterView = self.footerView;
+    
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    [self.navigationItem setLeftBarButtonItem:backItem];
+    
+    [self fetchGroupInfo];
 }
 
 - (void)didReceiveMemoryWarning
@@ -71,10 +82,10 @@
         imageView.image = [UIImage imageNamed:@"groupPublicHeader"];
         [_headerView addSubview:imageView];
         
-        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, _headerView.frame.size.width - 80 - 20, 30)];
-        nameLabel.backgroundColor = [UIColor clearColor];
-        nameLabel.text = (_group.groupSubject && _group.groupSubject.length) > 0 ? _group.groupSubject : _group.groupId;
-        [_headerView addSubview:nameLabel];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, _headerView.frame.size.width - 80 - 20, 30)];
+        _nameLabel.backgroundColor = [UIColor clearColor];
+        _nameLabel.text = (_group.groupSubject && _group.groupSubject.length) > 0 ? _group.groupSubject : _group.groupId;
+        [_headerView addSubview:_nameLabel];
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, _headerView.frame.size.height - 0.5, _headerView.frame.size.width, 0.5)];
         line.backgroundColor = [UIColor lightGrayColor];
@@ -130,8 +141,8 @@
     }
     
     if (indexPath.row == 0) {
-        cell.textLabel.text = @"群组名";
-        cell.detailTextLabel.text = _group.groupSubject;
+        cell.textLabel.text = @"群主";
+        cell.detailTextLabel.text = [_group.owners objectAtIndex:0];
     }
     else{
         cell.textLabel.text = @"群组简介";
@@ -156,6 +167,26 @@
 }
 
 #pragma mark - action
+
+- (void)fetchGroupInfo
+{
+    [self showHudInView:self.view hint:@"加载数据..."];
+    __weak PublicGroupDetailViewController *weakSelf = self;
+    [[EaseMob sharedInstance].chatManager asyncFetchGroupInfo:_groupId completion:^(EMGroup *group, EMError *error) {
+        weakSelf.group = group;
+        [weakSelf reloadSubviewsInfo];
+        [weakSelf hideHud];
+    } onQueue:nil];
+}
+
+- (void)reloadSubviewsInfo
+{
+    __weak PublicGroupDetailViewController *weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        weakSelf.nameLabel.text = (_group.groupSubject && _group.groupSubject.length) > 0 ? _group.groupSubject : _group.groupId;
+        [weakSelf.tableView reloadData];
+    });
+}
 
 - (void)joinAction
 {

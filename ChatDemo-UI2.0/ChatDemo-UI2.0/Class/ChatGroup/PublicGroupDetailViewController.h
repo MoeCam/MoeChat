@@ -14,6 +14,6 @@
 
 @interface PublicGroupDetailViewController : UITableViewController
 
-- (instancetype)initWithGroup:(EMGroup *)group;
+- (instancetype)initWithGroupId:(NSString *)groupId;
 
 @end

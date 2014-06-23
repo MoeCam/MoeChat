@@ -140,7 +140,7 @@
             [weakSelf.searchController.searchBar endEditing:YES];
             
             EMGroup *group = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            PublicGroupDetailViewController *detailController = [[PublicGroupDetailViewController alloc] initWithGroup:group];
+            PublicGroupDetailViewController *detailController = [[PublicGroupDetailViewController alloc] initWithGroupId:group.groupId];
             [weakSelf.navigationController pushViewController:detailController animated:YES];
         }];
     }
@@ -196,7 +196,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
-    PublicGroupDetailViewController *detailController = [[PublicGroupDetailViewController alloc] initWithGroup:group];
+    PublicGroupDetailViewController *detailController = [[PublicGroupDetailViewController alloc] initWithGroupId:group.groupId];
     detailController.title = group.groupSubject;
     [self.navigationController pushViewController:detailController animated:YES];
 }
@@ -270,6 +270,7 @@
     [[EaseMob sharedInstance].chatManager asyncFetchAllPublicGroupsWithCompletion:^(NSArray *groups, EMError *error) {
         [weakSelf.dataSource removeAllObjects];
         [weakSelf.dataSource addObjectsFromArray:groups];
+        [weakSelf.tableView reloadData];
         [weakSelf hideHud];
     } onQueue:nil];
 }

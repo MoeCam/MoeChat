@@ -42,7 +42,7 @@ NSString *const kRouterEventChatHeadImageTapEventName = @"kRouterEventChatHeadIm
         _nameLabel.font = [UIFont systemFontOfSize:12];
         [self.contentView addSubview:_nameLabel];
         
-        [self setupSubviewsForModel:model];
+        [self setupSubviewsForMessageModel:model];
     }
     return self;
 }
@@ -91,7 +91,7 @@ NSString *const kRouterEventChatHeadImageTapEventName = @"kRouterEventChatHeadIm
 
 #pragma mark - public
 
-- (void)setupSubviewsForModel:(MessageModel *)model
+- (void)setupSubviewsForMessageModel:(MessageModel *)model
 {
     if (model.isSender) {
         self.headImageView.frame = CGRectMake(self.bounds.size.width - HEAD_SIZE - HEAD_PADDING, CELLPADDING, HEAD_SIZE, HEAD_SIZE);
