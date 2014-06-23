@@ -178,18 +178,28 @@
         [source addObject:buddy.username];
     }
     
+    __weak CreateGroupViewController *weakSelf = self;
     if (_isPublic) {
-        
+        [[EaseMob sharedInstance].chatManager asyncCreatePublicGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
+            [weakSelf hideHud];
+            if (group && !error) {
+                [weakSelf showHint:@"创建群组成功"];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+            else{
+                [weakSelf showHint:@"创建群组失败，请重新操作"];
+            }
+        } onQueue:nil];
     }
     else{
         [[EaseMob sharedInstance].chatManager asyncCreatePrivateGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
-            [self hideHud];
+            [weakSelf hideHud];
             if (group && !error) {
-                [self showHint:@"创建群组成功"];
-                [self.navigationController popViewControllerAnimated:YES];
+                [weakSelf showHint:@"创建群组成功"];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
             }
             else{
-                [self showHint:@"创建群组失败，请重新操作"];
+                [weakSelf showHint:@"创建群组失败，请重新操作"];
             }
         } onQueue:nil];
     }

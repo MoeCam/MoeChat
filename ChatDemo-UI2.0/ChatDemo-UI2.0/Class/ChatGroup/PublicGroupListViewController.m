@@ -272,12 +272,13 @@
 - (void)reloadDataSource
 {
     [self showHudInView:self.view hint:@"加载数据..."];
-    [self.dataSource removeAllObjects];
     
-    NSArray *rooms = [[EaseMob sharedInstance].chatManager groupList];
-    [self.dataSource addObjectsFromArray:rooms];
-    
-    [self hideHud];
+    __weak PublicGroupListViewController *weakSelf = self;
+    [[EaseMob sharedInstance].chatManager asyncFetchAllPublicGroupsWithCompletion:^(NSArray *groups, EMError *error) {
+        [weakSelf.dataSource removeAllObjects];
+        [weakSelf.dataSource addObjectsFromArray:groups];
+        [weakSelf hideHud];
+    } onQueue:nil];
 }
 
 @end
