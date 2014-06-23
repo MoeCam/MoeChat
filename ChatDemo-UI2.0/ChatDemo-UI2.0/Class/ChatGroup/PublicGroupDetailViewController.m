@@ -190,7 +190,17 @@
 
 - (void)joinAction
 {
-    
+    [self showHudInView:self.view hint:@"加入群组..."];
+    __weak PublicGroupDetailViewController *weakSelf = self;
+    [[EaseMob sharedInstance].chatManager asyncJoinPublicGroup:_groupId completion:^(EMGroup *group, EMError *error) {
+        if(!error)
+        {
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }
+        else{
+            [weakSelf showHint:@"加入群组失败，请重新操作"];
+        }
+    } onQueue:nil];
 }
 
 @end

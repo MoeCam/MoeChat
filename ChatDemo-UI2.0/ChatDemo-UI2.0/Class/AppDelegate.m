@@ -114,8 +114,7 @@
         message = [NSString stringWithFormat:@"%@ 添加你为好友", username];
     }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":username, @"username":username, @"applyMessage":message, @"acceptState":@NO, @"isGroup":@NO}];
-    [[[ApplyViewController shareController] dataSource] addObject:dic];
-    [[[ApplyViewController shareController] tableView] reloadData];
+    [[ApplyViewController shareController] addNewApply:dic];
 }
 
 #pragma mark - IChatManagerDelegate 群组变化
@@ -133,7 +132,7 @@
         message = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, groupName];
     }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupName, @"id":groupId, @"username":username, @"applyMessage":message, @"acceptState":@NO, @"isGroup":@YES}];
-    [[[ApplyViewController shareController] dataSource] addObject:dic];
+    [[ApplyViewController shareController] addNewApply:dic];
 }
 
 #pragma mark - private

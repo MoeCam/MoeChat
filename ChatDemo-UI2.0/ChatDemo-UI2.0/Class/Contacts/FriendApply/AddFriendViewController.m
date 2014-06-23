@@ -165,7 +165,9 @@
                       cancelButtonTitle:@"确定"
                       otherButtonTitles: nil];
         
-    }else if([self hasSendBuddyRequest:buddyName]){
+    }
+    else if([self hasSendBuddyRequest:buddyName])
+    {
         NSString *message = [NSString stringWithFormat:@"您已向'%@'发送好友请求了!", buddyName];
         [WCAlertView showAlertWithTitle:message
                                 message:nil

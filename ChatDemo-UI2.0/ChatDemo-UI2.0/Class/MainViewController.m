@@ -399,4 +399,11 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [_chatListVC networkChanged:connectionState];
 }
 
+#pragma mark - public
+
+- (void)jumpToChatList
+{
+    
+}
+
 @end

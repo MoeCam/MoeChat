@@ -14,4 +14,6 @@
 
 @interface MainViewController : UITabBarController
 
+- (void)jumpToChatList;
+
 @end

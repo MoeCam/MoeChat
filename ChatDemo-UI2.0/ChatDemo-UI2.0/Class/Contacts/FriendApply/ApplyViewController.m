@@ -110,6 +110,7 @@ static ApplyViewController *controller = nil;
     if (cell == nil) {
         cell = [[ApplyFriendCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.delegate = self;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
@@ -203,6 +204,34 @@ static ApplyViewController *controller = nil;
             [self showHint:@"拒绝失败"];
         }
     }
+}
+
+#pragma mark - public
+
+- (void)addNewApply:(NSDictionary *)dictionary
+{
+    if (dictionary && [dictionary count] > 0) {
+        NSString *newUsername = [dictionary objectForKey:@"username"];
+        BOOL isGroup = [[dictionary objectForKey:@"isGroup"] boolValue];
+        if (newUsername && newUsername.length > 0) {
+            for (NSDictionary *tmpDic in _dataSource) {
+                NSString *tmpUsername = [tmpDic objectForKey:@"username"];
+                BOOL tmpIsGroup = [[tmpDic objectForKey:@"isGroup"] boolValue];
+                if (isGroup == tmpIsGroup && [tmpUsername isEqualToString:newUsername]) {
+                    
+                    [_dataSource removeObject:tmpDic];
+                    [_dataSource insertObject:dictionary atIndex:0];
+                    [self.tableView reloadData];
+                    break;
+                }
+            }
+        }
+    }
+}
+
+- (void)clear
+{
+    [_dataSource removeAllObjects];
 }
 
 @end
