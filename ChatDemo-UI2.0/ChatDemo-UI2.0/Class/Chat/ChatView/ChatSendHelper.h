@@ -12,7 +12,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface EMChatSendHelper : NSObject
+@interface ChatSendHelper : NSObject
 
 /**
  *  发送文字消息（包括系统表情）

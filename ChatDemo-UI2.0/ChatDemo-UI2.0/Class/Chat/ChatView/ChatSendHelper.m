@@ -10,13 +10,13 @@
   * from EaseMob Technologies.
   */
 
-#import "EMChatSendHelper.h"
+#import "ChatSendHelper.h"
 #import "EMMessage.h"
 #import "EMChatText.h"
 #import "EMTextMessageBody.h"
 #import "EaseMob.h"
 
-@implementation EMChatSendHelper
+@implementation ChatSendHelper
 
 +(EMMessage *)sendTextMessageWithString:(NSString *)str
                              toUsername:(NSString *)username

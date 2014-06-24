@@ -11,7 +11,6 @@
   */
 
 #import "MessageReadManager.h"
-#import "EaseMob.h"
 #import "UIImageView+WebCache.h"
 
 static MessageReadManager *detailInstance = nil;
@@ -141,49 +140,65 @@ static MessageReadManager *detailInstance = nil;
     [rootController presentViewController:self.photoNavigationController animated:YES completion:nil];
 }
 
-- (void)startMessageAudio:(MessageModel *)message
-                  chatter:(NSString *)chatter
-                playBlock:(PlayBlock)block
+- (BOOL)prepareMessageAudioModel:(MessageModel *)messageModel
+                      updateViewCompletion:(void (^)(MessageModel *prevAudioModel, MessageModel *currentAudioModel))updateCompletion
 {
-    BOOL isPlay = NO;
+    BOOL isPrepare = NO;
+    MessageModel *prevAudioModel = self.audioMessageModel;
+    MessageModel *currentAudioModel = messageModel;
+    self.audioMessageModel = messageModel;
     
-    if(message.type == eMessageBodyType_Voice)
+    prevAudioModel.isPlaying = NO;
+    
+    if(messageModel.type == eMessageBodyType_Voice)
     {
-        if (self.audioMessage != message) {
-            if (self.audioMessage) {
-                self.audioMessage.isPlaying = NO;
-            }
+        BOOL isPlaying = messageModel.isPlaying;
+        if (isPlaying) {
+            messageModel.isPlaying = NO;
+            self.audioMessageModel = nil;
+            currentAudioModel = nil;
             
-            if (!message.isRead) {
-                message.isRead = YES;
-            }
+            [[EaseMob sharedInstance].chatManager stopPlayingAudio];
+            [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
+        }
+        else {
+            messageModel.isPlaying = YES;
+            isPrepare = YES;
             
-            message.isPlaying = YES;
-            isPlay = YES;
-        }
-        else{
-            if (message.isPlaying) {
-                message.isPlaying = NO;
+            if (!messageModel.isPlayed) {
+                messageModel.isPlayed = YES;
+                EMMessage *chatMessage = messageModel.message;
+                if (chatMessage.ext) {
+                    NSMutableDictionary *dict = [chatMessage.ext mutableCopy];
+                    if (![[dict objectForKey:@"isPlayed"] boolValue]) {
+                        [dict setObject:@YES forKey:@"isPlayed"];
+                        chatMessage.ext = dict;
+                        [[EaseMob sharedInstance].chatManager saveMessage:chatMessage];
+                    }
+                }
             }
-            else{
-                message.isPlaying = YES;
-                isPlay = YES;
-            }
         }
-        
-        self.audioMessage = message;
     }
     
-    if (block) {
-        block(isPlay, message);
+    if (updateCompletion) {
+        updateCompletion(prevAudioModel, currentAudioModel);
     }
+    
+    return isPrepare;
 }
 
-- (void)stopMessageAudio
+- (MessageModel *)stopMessageAudioModel
 {
-    if (self.audioMessage.type == eMessageBodyType_Voice) {
-        self.audioMessage.isPlaying = NO;
+    MessageModel *model = nil;
+    if (self.audioMessageModel.type == eMessageBodyType_Voice) {
+        if (self.audioMessageModel.isPlaying) {
+            model = self.audioMessageModel;
+        }
+        self.audioMessageModel.isPlaying = NO;
+        self.audioMessageModel = nil;
     }
+    
+    return model;
 }
 
 

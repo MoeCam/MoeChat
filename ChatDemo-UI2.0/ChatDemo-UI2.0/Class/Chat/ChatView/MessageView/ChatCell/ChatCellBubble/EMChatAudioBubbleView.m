@@ -98,11 +98,6 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
 
 - (void)setModel:(MessageModel *)model
 {
-    if(model != nil)
-    {
-        [model addObserver:self keyPath:@"isPlaying"];
-    }
-    
     [super setModel:model];
     
     _timeLabel.text = [NSString stringWithFormat:@"%d'",self.model.time];
@@ -131,40 +126,11 @@ NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleT
     }
 }
 
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (object == _model && _model.type == eMessageBodyType_Voice && [keyPath isEqualToString:@"isPlaying"])
-    {
-        BOOL isPlaying = [[change objectForKey:NSKeyValueChangeNewKey] boolValue];
-        if (isPlaying) {
-            [self startAudioAnimation];
-        }
-        else{
-            [self stopAudioAnimation];
-        }
-    }
-    
-    if (object == _model && _model.type == eMessageBodyType_Voice && [keyPath isEqualToString:@"isPlayed"])
-    {
-        BOOL isPlayed = [[change objectForKey:NSKeyValueChangeNewKey] boolValue];
-        if (isPlayed) {
-            [_isReadView setHidden:YES];
-        }
-        else{
-            [_isReadView setHidden:NO];
-        }
-    }
-
-}
-
 #pragma mark - public
 
 -(void)bubbleViewPressed:(id)sender
 {
     [self routerEventWithName:kRouterEventAudioBubbleTapEventName userInfo:@{KMESSAGEKEY:self.model}];
-    [_isReadView setHidden:YES];
 }
 
 

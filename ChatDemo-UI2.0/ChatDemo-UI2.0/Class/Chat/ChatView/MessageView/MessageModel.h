@@ -17,7 +17,6 @@
 @interface MessageModel : NSObject
 {
     BOOL _isPlaying;
-    NSMutableDictionary *_observerKeys;
 }
 
 @property (nonatomic) MessageBodyType type;
@@ -58,10 +57,5 @@
 
 @property (nonatomic, strong)id<IEMMessageBody> messageBody;
 @property (nonatomic, strong)EMMessage *message;
-
-- (BOOL)observeKeyPath:(NSString *)keyPath;
-- (void)addObserver:(NSObject *)object keyPath:(NSString *)keyPath;
-- (void)removeObserver:(NSObject *)object keyPath:(NSString *)keyPath;
-- (void)clearObservers;
 
 @end

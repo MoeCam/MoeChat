@@ -18,7 +18,7 @@
 #import "DXFaceView.h"
 #import "EMChatViewCell.h"
 #import "EMChatTimeCell.h"
-#import "EMChatSendHelper.h"
+#import "ChatSendHelper.h"
 #import "MessageReadManager.h"
 #import "MessageModelManager.h"
 #import "LocationViewController.h"
@@ -165,9 +165,7 @@
     // 设置当前conversation的所有message为已读
     [_conversation markMessagesAsRead:YES];
     
-    //停止音频播放及播放动画
-    [[EaseMob sharedInstance].chatManager stopPlayingAudio];
-    [self.messageReadManager stopMessageAudio];
+    [self stopAudioPlaying];
 }
 
 - (void)dealloc
@@ -409,44 +407,42 @@
 // 语音的bubble被点击
 -(void)chatAudioCellBubblePressed:(MessageModel *)model
 {
-//    id <IEMFileMessageBody> body = [message.message.messageBodies firstObject];
-//    BOOL isAttachmentDownloaded = [body attachmentDownloaded];
-//    if (!isAttachmentDownloaded) {
-//        [self showHint:@"正在下载语音，稍后点击"];
-//        return;
-//    }
-    // 修改isRead状态
-    if (model.isPlayed == NO) {
-        model.isPlayed = YES;
-        EMMessage *chatMessage = [_conversation loadMessage:model.messageId];
-        if (chatMessage.ext) {
-            NSMutableDictionary *dict = [chatMessage.ext mutableCopy];
-            if (![[dict objectForKey:@"isPlayed"] boolValue]) {
-                [dict setObject:@YES forKey:@"isPlayed"];
-                chatMessage.ext = dict;
-                [[EaseMob sharedInstance].chatManager saveMessage:chatMessage];
-            }
-        }
+    id <IEMFileMessageBody> body = [model.message.messageBodies firstObject];
+    EMAttachmentDownloadStatus downloadStatus = [body attachmentDownloadStatus];
+    if (downloadStatus == EMAttachmentDownloading) {
+        [self showHint:@"正在下载语音，稍后点击"];
+        return;
+    }
+    else if (downloadStatus == EMAttachmentDownloadFailure)
+    {
+        [self showHint:@"正在下载语音，稍后点击"];
+        [[EaseMob sharedInstance].chatManager asyncFetchMessage:model.message progress:nil];
+        
+        return;
     }
     
     // 播放音频
     if (model.type == eMessageBodyType_Voice) {
-        [self.messageReadManager startMessageAudio:model
-                                           chatter:_conversation.chatter
-                                         playBlock:^(BOOL playing, MessageModel *messageModel) {
-                                             if(playing){
-                                                 
-                                                 [[[EaseMob sharedInstance] deviceManager] enableProximitySensor];
-                                                 [[EaseMob sharedInstance].chatManager asyncPlayAudio:model.chatVoice completion:^(EMError *error) {
-                                                     messageModel.isPlaying = NO;
-                                                     [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
-                                                 } onQueue:nil];
-                                             }
-                                             else{
-                                                 [[EaseMob sharedInstance].chatManager stopPlayingAudio];
-                                                 [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
-                                             }
-                                         }];
+        __weak ChatViewController *weakSelf = self;
+        BOOL isPrepare = [self.messageReadManager prepareMessageAudioModel:model updateViewCompletion:^(MessageModel *prevAudioModel, MessageModel *currentAudioModel) {
+            if (prevAudioModel || currentAudioModel) {
+                [weakSelf.tableView reloadData];
+            }
+        }];
+        
+        if (isPrepare) {
+            __weak ChatViewController *weakSelf = self;
+            [[[EaseMob sharedInstance] deviceManager] enableProximitySensor];
+            [[EaseMob sharedInstance].chatManager asyncPlayAudio:model.chatVoice completion:^(EMError *error) {
+                [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
+                [weakSelf.messageReadManager stopMessageAudioModel];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.tableView reloadData];
+                });
+                
+            } onQueue:nil];
+        }
     }
 }
 
@@ -579,9 +575,7 @@
     // 设置当前conversation的所有message为已读
     [_conversation markMessagesAsRead:YES];
     
-    //停止音频播放及播放动画
-//    [[EaseMob sharedInstance].chatManager stopPlayingAudio];
-    [self.messageReadManager stopMessageAudio];
+    [self stopAudioPlaying];
 }
 
 #pragma mark - EMChatBarMoreViewDelegate
@@ -622,7 +616,7 @@
 
 -(void)sendLocationLatitude:(double)latitude longitude:(double)longitude andAddress:(NSString *)address
 {
-    EMMessage *locationMessage = [EMChatSendHelper sendLocationLatitude:latitude longitude:longitude address:address toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
+    EMMessage *locationMessage = [ChatSendHelper sendLocationLatitude:latitude longitude:longitude address:address toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
     [self addChatDataToMessage:locationMessage];
 }
 
@@ -759,6 +753,26 @@
 }
 
 #pragma mark - private
+
+- (void)stopAudioPlaying
+{
+    //停止音频播放及播放动画
+    [[EaseMob sharedInstance].chatManager stopPlayingAudio];
+    MessageModel *playingModel = [self.messageReadManager stopMessageAudioModel];
+    
+    NSIndexPath *indexPath = nil;
+    if (playingModel) {
+        indexPath = [NSIndexPath indexPathForRow:[self.dataSource indexOfObject:playingModel] inSection:0];
+    }
+    
+    if (indexPath) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView beginUpdates];
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView endUpdates];
+        });
+    }
+}
 
 - (void)loadMoreMessages
 {
@@ -913,19 +927,19 @@
 
 -(void)sendTextMessage:(NSString *)textMessage
 {
-    EMMessage *tempMessage = [EMChatSendHelper sendTextMessageWithString:textMessage toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
+    EMMessage *tempMessage = [ChatSendHelper sendTextMessageWithString:textMessage toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
     [self addChatDataToMessage:tempMessage];
 }
 
 -(void)sendImageMessage:(UIImage *)imageMessage
 {
-    EMMessage *tempMessage = [EMChatSendHelper sendImageMessageWithImage:imageMessage toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
+    EMMessage *tempMessage = [ChatSendHelper sendImageMessageWithImage:imageMessage toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
     [self addChatDataToMessage:tempMessage];
 }
 
 -(void)sendAudioMessage:(EMChatVoice *)voice
 {
-    EMMessage *tempMessage = [EMChatSendHelper sendVoice:voice toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
+    EMMessage *tempMessage = [ChatSendHelper sendVoice:voice toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
     [self addChatDataToMessage:tempMessage];
 }
 

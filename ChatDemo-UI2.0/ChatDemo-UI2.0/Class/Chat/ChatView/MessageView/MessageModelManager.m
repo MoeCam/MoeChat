@@ -86,7 +86,7 @@
                 BOOL isPlayed = [[dict objectForKey:@"isPlayed"] boolValue];
                 model.isPlayed = isPlayed;
             }else {
-                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@NO,@"isPlayde", nil];
+                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@NO,@"isPlayed", nil];
                 message.ext = dict;
                 [[EaseMob sharedInstance].chatManager saveMessage:message];
             }

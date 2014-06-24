@@ -56,7 +56,7 @@
 		9003D8681939D8D000DC38A4 /* ChatListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7791939D8D000DC38A4 /* ChatListCell.m */; };
 		9003D8691939D8D000DC38A4 /* ChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D77B1939D8D000DC38A4 /* ChatListViewController.m */; };
 		9003D86E1939D8D000DC38A4 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7861939D8D000DC38A4 /* ChatViewController.m */; };
-		9003D86F1939D8D000DC38A4 /* EMChatSendHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7881939D8D000DC38A4 /* EMChatSendHelper.m */; };
+		9003D86F1939D8D000DC38A4 /* ChatSendHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7881939D8D000DC38A4 /* ChatSendHelper.m */; };
 		9003D8701939D8D000DC38A4 /* DXMessageToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D78B1939D8D000DC38A4 /* DXMessageToolBar.m */; };
 		9003D8711939D8D000DC38A4 /* DXFaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D78F1939D8D000DC38A4 /* DXFaceView.m */; };
 		9003D8721939D8D000DC38A4 /* faceDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = 9003D7911939D8D000DC38A4 /* faceDelete.png */; };
@@ -380,8 +380,8 @@
 		9003D77B1939D8D000DC38A4 /* ChatListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListViewController.m; sourceTree = "<group>"; };
 		9003D7851939D8D000DC38A4 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		9003D7861939D8D000DC38A4 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
-		9003D7871939D8D000DC38A4 /* EMChatSendHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatSendHelper.h; sourceTree = "<group>"; };
-		9003D7881939D8D000DC38A4 /* EMChatSendHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatSendHelper.m; sourceTree = "<group>"; };
+		9003D7871939D8D000DC38A4 /* ChatSendHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatSendHelper.h; sourceTree = "<group>"; };
+		9003D7881939D8D000DC38A4 /* ChatSendHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatSendHelper.m; sourceTree = "<group>"; };
 		9003D78A1939D8D000DC38A4 /* DXMessageToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DXMessageToolBar.h; sourceTree = "<group>"; };
 		9003D78B1939D8D000DC38A4 /* DXMessageToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DXMessageToolBar.m; sourceTree = "<group>"; };
 		9003D78E1939D8D000DC38A4 /* DXFaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DXFaceView.h; sourceTree = "<group>"; };
@@ -917,8 +917,8 @@
 				3C06AB001940597D0076FF0B /* delete@2x.png */,
 				9003D7851939D8D000DC38A4 /* ChatViewController.h */,
 				9003D7861939D8D000DC38A4 /* ChatViewController.m */,
-				9003D7871939D8D000DC38A4 /* EMChatSendHelper.h */,
-				9003D7881939D8D000DC38A4 /* EMChatSendHelper.m */,
+				9003D7871939D8D000DC38A4 /* ChatSendHelper.h */,
+				9003D7881939D8D000DC38A4 /* ChatSendHelper.m */,
 				9003D7891939D8D000DC38A4 /* MessageToolbar */,
 				9003D7C71939D8D000DC38A4 /* MessageView */,
 				9003D84B1939D8D000DC38A4 /* LocationViewController.h */,
@@ -2044,7 +2044,7 @@
 				90911100192EEAED008A48AA /* PSTCollectionViewFlowLayout.m in Sources */,
 				909110F8192EEAED008A48AA /* MWTapDetectingView.m in Sources */,
 				90911109192EEAED008A48AA /* MKAnnotationView+WebCache.m in Sources */,
-				9003D86F1939D8D000DC38A4 /* EMChatSendHelper.m in Sources */,
+				9003D86F1939D8D000DC38A4 /* ChatSendHelper.m in Sources */,
 				90911112192EEAED008A48AA /* UIButton+WebCache.m in Sources */,
 				9091111C192EEAED008A48AA /* UIViewController+HUD.m in Sources */,
 				9003D9081939D8D000DC38A4 /* MessageModel.m in Sources */,
