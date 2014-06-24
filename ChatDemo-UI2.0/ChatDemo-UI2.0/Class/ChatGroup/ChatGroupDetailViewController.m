@@ -350,7 +350,8 @@
                 __weak ChatGroupDetailViewController *weakSelf = self;
                 [contactView setDeleteContact:^(NSInteger index) {
                     [weakSelf showHudInView:weakSelf.view hint:@"正在删除成员..."];
-                    [[EaseMob sharedInstance].chatManager asyncRemoveOccupant:[weakSelf.dataSource objectAtIndex:index] fromGroup:_chatGroup.groupId completion:^(EMGroup *group, EMError *error) {
+                    NSArray *occupants = [NSArray arrayWithObject:[weakSelf.dataSource objectAtIndex:index]];
+                    [[EaseMob sharedInstance].chatManager asyncRemoveOccupants:occupants fromGroup:_chatGroup.groupId completion:^(EMGroup *group, EMError *error) {
                         [weakSelf hideHud];
                         if (!error) {
                             [weakSelf.dataSource removeObjectAtIndex:index];
