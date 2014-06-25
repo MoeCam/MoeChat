@@ -20,6 +20,7 @@
 @property (nonatomic, strong) UIButton *photoButton;
 @property (nonatomic, strong) UIButton *takePicButton;
 @property (nonatomic, strong) UIButton *locationButton;
+@property (nonatomic, strong) UIButton *videoButton;
 
 - (void)setupSubviews;
 
@@ -31,5 +32,6 @@
 - (void)moreViewTakePicAction:(DXChatBarMoreView *)moreView;
 - (void)moreViewPhotoAction:(DXChatBarMoreView *)moreView;
 - (void)moreViewLocationAction:(DXChatBarMoreView *)moreView;
+- (void)moreViewVideoAction:(DXChatBarMoreView *)moreView;
 
 @end

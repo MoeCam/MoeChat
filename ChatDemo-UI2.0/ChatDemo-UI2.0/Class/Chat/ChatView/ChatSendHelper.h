@@ -47,7 +47,7 @@
 /**
  *  发送音频消息
  *
- *  @param image             发送的音频
+ *  @param voice             发送的音频
  *  @param username          接收方
  *  @param isChatGroup       是否是群聊
  *  @param requireEncryption 是否加密
@@ -62,7 +62,9 @@
 /**
  *  发送位置消息（定位）
  *
- *  @param image             发送的位置
+ *  @param latitude          经度
+ *  @param longitude         纬度
+ *  @param address           位置描述信息
  *  @param username          接收方
  *  @param isChatGroup       是否是群聊
  *  @param requireEncryption 是否加密
@@ -75,5 +77,20 @@
                         toUsername:(NSString *)username
                         isChatGroup:(BOOL)isChatGroup
                  requireEncryption:(BOOL)requireEncryption;
+
+/**
+ *  发送视频文件消息
+ *
+ *  @param video             发送的视频
+ *  @param username          接收方
+ *  @param isChatGroup       是否是群聊
+ *  @param requireEncryption 是否加密
+ *
+ *  @return 封装的消息体
+ */
++(EMMessage *)sendVideo:(EMChatVideo *)video
+             toUsername:(NSString *)username
+            isChatGroup:(BOOL)isChatGroup
+      requireEncryption:(BOOL)requireEncryption;
 
 @end

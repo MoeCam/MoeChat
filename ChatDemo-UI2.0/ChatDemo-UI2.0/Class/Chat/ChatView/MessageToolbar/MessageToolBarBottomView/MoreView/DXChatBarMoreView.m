@@ -52,6 +52,14 @@
     [_takePicButton setImage:[UIImage imageNamed:@"chatBar_colorMore_cameraSelected"] forState:UIControlStateHighlighted];
     [_takePicButton addTarget:self action:@selector(takePicAction) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_takePicButton];
+    
+    
+    _videoButton =[UIButton buttonWithType:UIButtonTypeCustom];
+    [_videoButton setFrame:CGRectMake(insets * 4 + CHAT_BUTTON_SIZE * 3, 10, CHAT_BUTTON_SIZE , CHAT_BUTTON_SIZE)];
+    [_videoButton setImage:[UIImage imageNamed:@"chatBar_colorMore_camera"] forState:UIControlStateNormal];
+    [_videoButton setImage:[UIImage imageNamed:@"chatBar_colorMore_cameraSelected"] forState:UIControlStateHighlighted];
+    [_videoButton addTarget:self action:@selector(takeVideoAction) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_videoButton];
 }
 
 #pragma mark - action
@@ -73,6 +81,12 @@
 {
     if (_delegate && [_delegate respondsToSelector:@selector(moreViewLocationAction:)]) {
         [_delegate moreViewLocationAction:self];
+    }
+}
+
+- (void)takeVideoAction{
+    if (_delegate && [_delegate respondsToSelector:@selector(moreViewLocationAction:)]) {
+        [_delegate moreViewVideoAction:self];
     }
 }
 
