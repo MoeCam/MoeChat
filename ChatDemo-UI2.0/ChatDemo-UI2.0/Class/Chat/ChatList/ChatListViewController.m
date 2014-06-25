@@ -340,6 +340,10 @@
                 break;
             }
         }
+        
+        if (chatController == nil) {
+            chatController = [[ChatViewController alloc] initWithChatter:conversation.chatter];
+        }
     }
     else{
         chatController = [[ChatViewController alloc] initWithChatter:conversation.chatter];

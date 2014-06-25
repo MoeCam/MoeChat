@@ -298,8 +298,11 @@
     }
     
     [self.dataSource addObjectsFromArray:self.chatGroup.owners];
-    [self.dataSource addObjectsFromArray:self.chatGroup.admins];
-    [self.dataSource addObjectsFromArray:self.chatGroup.members];
+    for (NSString *str in self.chatGroup.occupants) {
+        if (![self.chatGroup.owners containsObject:str]) {
+            [self.dataSource addObject:str];
+        }
+    }
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self refreshScrollView];
@@ -354,6 +357,7 @@
                     [[EaseMob sharedInstance].chatManager asyncRemoveOccupants:occupants fromGroup:_chatGroup.groupId completion:^(EMGroup *group, EMError *error) {
                         [weakSelf hideHud];
                         if (!error) {
+                            weakSelf.chatGroup = group;
                             [weakSelf.dataSource removeObjectAtIndex:index];
                             [weakSelf refreshScrollView];
                         }

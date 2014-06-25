@@ -222,11 +222,13 @@ static ApplyViewController *controller = nil;
                     [_dataSource removeObject:tmpDic];
                     [_dataSource insertObject:dictionary atIndex:0];
                     [self.tableView reloadData];
+                    
                     return;
                 }
             }
             
             [_dataSource insertObject:dictionary atIndex:0];
+            [self.tableView reloadData];
         }
     }
 }
