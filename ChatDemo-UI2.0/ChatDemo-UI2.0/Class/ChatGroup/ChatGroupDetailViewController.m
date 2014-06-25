@@ -469,7 +469,7 @@
 //解散群组
 - (void)dissolveAction
 {
-    __weak ChatGroupDetailViewController *weakSelf = self;
+//    __weak ChatGroupDetailViewController *weakSelf = self;
     [self showHudInView:self.view hint:@"解散群组"];
 //    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
 //        [weakSelf hideHud];
@@ -487,7 +487,7 @@
 //退出群组
 - (void)exitAction
 {
-    __weak ChatGroupDetailViewController *weakSelf = self;
+//    __weak ChatGroupDetailViewController *weakSelf = self;
     [self showHudInView:self.view hint:@"退出群组"];
 //    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
 //        [weakSelf hideHud];
