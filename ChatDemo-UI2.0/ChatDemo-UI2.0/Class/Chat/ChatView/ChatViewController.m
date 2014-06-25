@@ -96,6 +96,7 @@
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(back) name:@"ExitGroup" object:nil];
     #warning 以下三行代码必须写，注册为SDK的ChatManager的delegate
     [[[EaseMob sharedInstance] deviceManager] addDelegate:self onQueue:nil];
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
