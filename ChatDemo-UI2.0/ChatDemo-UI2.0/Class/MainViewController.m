@@ -250,7 +250,9 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
             messageStr = @"[音频]";
         }
             break;
-        case eMessageBodyType_Video:
+        case eMessageBodyType_Video:{
+            messageStr = @"[视频]";
+        }
             break;
         default:
             break;

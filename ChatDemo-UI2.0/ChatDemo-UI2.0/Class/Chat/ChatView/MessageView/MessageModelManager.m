@@ -95,7 +95,13 @@
             model.remotePath = ((EMVoiceMessageBody *)messageBody).remotePath;
         }
             break;
-        case eMessageBodyType_Video:
+        case eMessageBodyType_Video:{
+            EMVideoMessageBody *videoMessageBody = (EMVideoMessageBody*)messageBody;
+            model.thumbnailSize = videoMessageBody.size;
+            model.size = videoMessageBody.size;
+            model.localPath = videoMessageBody.localPath;
+            model.thumbnailImage = [UIImage imageWithContentsOfFile:videoMessageBody.thumbnailLocalPath];
+        }
             break;
         default:
             break;
