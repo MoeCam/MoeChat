@@ -591,6 +591,7 @@
     
     // 弹出照片选择
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
 }
 
@@ -721,10 +722,11 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    if (picker.cameraCaptureMode == UIImagePickerControllerCameraCaptureModeVideo) {
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
         NSURL *videoURL = info[UIImagePickerControllerMediaURL];
         [picker dismissViewControllerAnimated:YES completion:nil];
-        EMChatVideo *chatVideo = [[EMChatVideo alloc] initWithFile:[videoURL absoluteString] displayName:@"video"];
+        EMChatVideo *chatVideo = [[EMChatVideo alloc] initWithFile:[videoURL relativePath] displayName:@"video"];
         [self sendVideoMessage:chatVideo];
         
     }else{
