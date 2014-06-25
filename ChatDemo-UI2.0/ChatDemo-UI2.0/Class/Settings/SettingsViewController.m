@@ -38,6 +38,7 @@
     self.title = @"设置";
     self.view.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
     
+    self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = self.footerView;
 }
 
@@ -81,7 +82,7 @@
     
     if (indexPath.row == 0) {
         cell.textLabel.text = @"自动登录";
-        self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - 60, 8, 50, 35);
+        self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
         [cell.contentView addSubview:self.autoLoginSwitch];
     }
     
@@ -108,23 +109,19 @@
         _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 60)];
         _footerView.backgroundColor = [UIColor clearColor];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 19.5, _footerView.frame.size.width, 0.5)];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _footerView.frame.size.width, 0.5)];
         line.backgroundColor = [UIColor lightGrayColor];
         [_footerView addSubview:line];
         
-        UIButton *logoutButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 40)];
-        [logoutButton setBackgroundColor:[UIColor whiteColor]];
+        UIButton *logoutButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 20, _footerView.frame.size.width - 80, 40)];
+        [logoutButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
         NSDictionary *loginInfo = [[EaseMob sharedInstance].chatManager loginInfo];
         NSString *username = [loginInfo objectForKey:kSDKUsername];
         NSString *logoutButtonTitle = [[NSString alloc] initWithFormat:@"退出登录(%@)", username];
         [logoutButton setTitle:logoutButtonTitle forState:UIControlStateNormal];
-        [logoutButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [logoutButton addTarget:self action:@selector(logoutAction) forControlEvents:UIControlEventTouchUpInside];
         [_footerView addSubview:logoutButton];
-        
-        UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(0, _footerView.frame.size.height - 0.5, _footerView.frame.size.width, 0.5)];
-        line1.backgroundColor = [UIColor lightGrayColor];
-        [_footerView addSubview:line1];
     }
     
     return _footerView;
