@@ -12,6 +12,9 @@
 
 #import "ChatViewController.h"
 
+#import <MediaPlayer/MediaPlayer.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+
 #import "SRRefreshView.h"
 #import "DXChatBarMoreView.h"
 #import "DXRecordView.h"
@@ -598,6 +601,7 @@
     [self showHint:@"模拟器不支持拍照"];
 #elif TARGET_OS_IPHONE
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
 #endif
 }
@@ -610,6 +614,18 @@
     LocationViewController *locationController = [[LocationViewController alloc] initWithNibName:nil bundle:nil];
     locationController.delegate = self;
     [self.navigationController pushViewController:locationController animated:YES];
+}
+
+- (void)moreViewVideoAction:(DXChatBarMoreView *)moreView{
+    [self keyBoardHidden];
+    
+#if TARGET_IPHONE_SIMULATOR
+    [self showHint:@"模拟器不支持拍照"];
+#elif TARGET_OS_IPHONE
+    self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    self.imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie];
+    [self presentViewController:self.imagePicker animated:YES completion:NULL];
+#endif
 }
 
 #pragma mark - LocationViewDelegate
@@ -704,9 +720,17 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
-    [picker dismissViewControllerAnimated:YES completion:nil];
-    [self sendImageMessage:orgImage];
+    if (picker.cameraCaptureMode == UIImagePickerControllerCameraCaptureModeVideo) {
+        NSURL *videoURL = info[UIImagePickerControllerMediaURL];
+        [picker dismissViewControllerAnimated:YES completion:nil];
+        EMChatVideo *chatVideo = [[EMChatVideo alloc] initWithFile:[videoURL absoluteString] displayName:@"video"];
+        [self sendVideoMessage:chatVideo];
+        
+    }else{
+        UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
+        [picker dismissViewControllerAnimated:YES completion:nil];
+        [self sendImageMessage:orgImage];
+    }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -941,6 +965,12 @@
 -(void)sendAudioMessage:(EMChatVoice *)voice
 {
     EMMessage *tempMessage = [ChatSendHelper sendVoice:voice toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
+    [self addChatDataToMessage:tempMessage];
+}
+
+-(void)sendVideoMessage:(EMChatVideo *)video
+{
+    EMMessage *tempMessage = [ChatSendHelper sendVideo:video toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
     [self addChatDataToMessage:tempMessage];
 }
 

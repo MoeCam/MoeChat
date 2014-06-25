@@ -35,13 +35,21 @@
     return [self sendMessage:username messageBody:body isChatGroup:isChatGroup requireEncryption:requireEncryption];
 }
 
-
 +(EMMessage *)sendVoice:(EMChatVoice *)voice
              toUsername:(NSString *)username
             isChatGroup:(BOOL)isChatGroup
       requireEncryption:(BOOL)requireEncryption
 {
     EMVoiceMessageBody *body = [[EMVoiceMessageBody alloc] initWithChatObject:voice];
+    return [self sendMessage:username messageBody:body isChatGroup:isChatGroup requireEncryption:requireEncryption];
+}
+
++(EMMessage *)sendVideo:(EMChatVideo *)video
+             toUsername:(NSString *)username
+            isChatGroup:(BOOL)isChatGroup
+      requireEncryption:(BOOL)requireEncryption
+{
+    EMVideoMessageBody *body = [[EMVideoMessageBody alloc] initWithChatObject:video];
     return [self sendMessage:username messageBody:body isChatGroup:isChatGroup requireEncryption:requireEncryption];
 }
 
