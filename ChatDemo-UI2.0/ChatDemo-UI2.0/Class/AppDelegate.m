@@ -43,13 +43,13 @@
     }
 
 #warning SDK注册 APNS文件的名字, 需要与后台上传证书时的名字一一对应
-    NSString *apnsFilename = nil;
+    NSString *apnsCertName = nil;
 #if DEBUG
-    apnsFilename = @"chatdemoui_dev";
+    apnsCertName = @"chatdemoui_dev";
 #else
-    apnsFilename = @"chatdemoui";
+    apnsCertName = @"chatdemoui";
 #endif
-    [[EaseMob sharedInstance] registerSDKWithAppKey:@"easemob-demo#chatdemoui" apnsFilename:apnsFilename];
+    [[EaseMob sharedInstance] registerSDKWithAppKey:@"easemob-demo#chatdemoui" apnsCertName:apnsCertName];
     [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
     [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     
