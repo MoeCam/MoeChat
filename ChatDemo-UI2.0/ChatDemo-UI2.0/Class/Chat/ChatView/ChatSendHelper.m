@@ -11,10 +11,6 @@
   */
 
 #import "ChatSendHelper.h"
-#import "EMMessage.h"
-#import "EMChatText.h"
-#import "EMTextMessageBody.h"
-#import "EaseMob.h"
 
 @implementation ChatSendHelper
 
