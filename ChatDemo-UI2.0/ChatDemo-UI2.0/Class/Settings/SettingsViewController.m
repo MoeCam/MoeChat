@@ -18,6 +18,8 @@
 
 @property (strong, nonatomic) UIView *footerView;
 
+@property (strong, nonatomic) UISwitch *autoLoginSwitch;
+
 @end
 
 @implementation SettingsViewController
@@ -44,11 +46,29 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - getter
+
+- (UISwitch *)autoLoginSwitch
+{
+    if (_autoLoginSwitch == nil) {
+        _autoLoginSwitch = [[UISwitch alloc] init];
+        [_autoLoginSwitch addTarget:self action:@selector(autoLoginChanged:) forControlEvents:UIControlEventValueChanged];
+        [_autoLoginSwitch setOn:[[EaseMob sharedInstance].chatManager isAutoLoginEnabled] animated:YES];
+    }
+    
+    return _autoLoginSwitch;
+}
+
 #pragma mark - Table view datasource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -57,6 +77,12 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    
+    if (indexPath.row == 0) {
+        cell.textLabel.text = @"自动登录";
+        self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - 60, 8, 50, 35);
+        [cell.contentView addSubview:self.autoLoginSwitch];
     }
     
     return cell;
@@ -105,6 +131,11 @@
 }
 
 #pragma mark - action
+
+- (void)autoLoginChanged:(UISwitch *)autoSwitch
+{
+    [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:NO];
+}
 
 - (void)logoutAction
 {
