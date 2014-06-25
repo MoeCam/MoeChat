@@ -11,6 +11,7 @@
   */
 
 #import "EMChatViewCell.h"
+#import "EMChatVideoBubbleView.h"
 #import "UIResponder+Router.h"
 
 NSString *const kResendButtonTapEventName = @"kResendButtonTapEventName";
@@ -167,7 +168,11 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
             return [[EMChatLocationBubbleView alloc] init];
         }
             break;
-            
+        case eMessageBodyType_Video:
+        {
+            return [[EMChatVideoBubbleView alloc] init];
+        }
+            break;
         default:
             break;
     }
@@ -198,7 +203,11 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
             return [EMChatLocationBubbleView heightForBubbleWithObject:messageModel];
         }
             break;
-            
+        case eMessageBodyType_Video:
+        {
+            return [EMChatVideoBubbleView heightForBubbleWithObject:messageModel];
+        }
+            break;
         default:
             break;
     }
@@ -210,7 +219,7 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
 
 + (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath withObject:(MessageModel *)model
 {
-    NSInteger bubbleHeight = [EMChatViewCell bubbleViewHeightForMessageModel:model];
+    NSInteger bubbleHeight = [self bubbleViewHeightForMessageModel:model];
     NSInteger headHeight = HEAD_PADDING * 2 + HEAD_SIZE;
     if (model.isChatGroup && !model.isSender) {
         headHeight += NAME_LABEL_HEIGHT;
