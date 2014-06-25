@@ -99,7 +99,6 @@
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(back) name:@"ExitGroup" object:nil];
     #warning 以下三行代码必须写，注册为SDK的ChatManager的delegate
     [[[EaseMob sharedInstance] deviceManager] addDelegate:self onQueue:nil];
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
@@ -107,6 +106,7 @@
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllMessages:) name:@"RemoveAllMessages" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitGroup) name:@"ExitGroup" object:nil];
     
     _messageQueue = dispatch_queue_create("easemob.com", NULL);
     //通过会话管理者获取已收发消息
@@ -947,6 +947,12 @@
     
     [_menuController setTargetRect:showInView.frame inView:showInView.superview];
     [_menuController setMenuVisible:YES animated:YES];
+}
+
+- (void)exitGroup
+{
+    [self.navigationController popToViewController:self animated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - send message

@@ -49,6 +49,8 @@
 #else
     apnsFilename = @"chatdemoui";
 #endif
+    [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:YES];
+    
     [[EaseMob sharedInstance] registerSDKWithAppKey:@"easemob-demo#chatdemoui" apnsFilename:apnsFilename];
     [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
     [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];

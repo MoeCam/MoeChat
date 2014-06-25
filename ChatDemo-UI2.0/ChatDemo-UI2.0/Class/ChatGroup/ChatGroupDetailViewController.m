@@ -16,28 +16,7 @@
 
 #pragma mark - ChatGroupContactView
 
-@interface ChatGroupContactView()<EMChatManagerDelegate> {
-}
-
-- (void)registerNotifications;
-- (void)unregisterNotifications;
-
-@end
-
 @implementation ChatGroupContactView
-
-- (void)registerNotifications {
-    [self unregisterNotifications];
-    [[[EaseMob sharedInstance] chatManager] addDelegate:self delegateQueue:nil];
-}
-
-- (void)unregisterNotifications {
-    [[[EaseMob sharedInstance] chatManager] removeDelegate:self];
-}
-
-- (void)dealloc {
-    [self unregisterNotifications];
-}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -48,7 +27,6 @@
         [_deleteButton setImage:[UIImage imageNamed:@"group_invitee_delete"] forState:UIControlStateNormal];
         _deleteButton.hidden = YES;
         [self addSubview:_deleteButton];
-        [self registerNotifications];
     }
     
     return self;
@@ -142,6 +120,15 @@
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
 
+- (void)registerNotifications {
+    [self unregisterNotifications];
+    [[[EaseMob sharedInstance] chatManager] addDelegate:self delegateQueue:nil];
+}
+
+- (void)unregisterNotifications {
+    [[[EaseMob sharedInstance] chatManager] removeDelegate:self];
+}
+
 #pragma mark - getter
 
 - (UIScrollView *)scrollView
@@ -154,7 +141,6 @@
         [_addButton setImage:[UIImage imageNamed:@"group_participant_add"] forState:UIControlStateNormal];
         [_addButton setImage:[UIImage imageNamed:@"group_participant_addHL"] forState:UIControlStateHighlighted];
         [_addButton addTarget:self action:@selector(addContact:) forControlEvents:UIControlEventTouchUpInside];
-//        [_scrollView addSubview:_addButton];
         
         _longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deleteContactBegin:)];
         _longPress.minimumPressDuration = 0.5;
@@ -483,28 +469,36 @@
 //解散群组
 - (void)dissolveAction
 {
-    //__weak ChatGroupDetailViewController *weakSelf = self;
+    __weak ChatGroupDetailViewController *weakSelf = self;
     [self showHudInView:self.view hint:@"解散群组"];
-    /*[[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
-        [weakSelf hideHud];
-        if (error) {
-            [weakSelf showHint:@"解散群组失败"];
-        }
-    } onQueue:nil];*/
+//    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
+//        [weakSelf hideHud];
+//        if (error) {
+//            [weakSelf showHint:@"解散群组失败"];
+//        }
+//        else{
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroup" object:nil];
+//        }
+//    } onQueue:nil];
+    
     [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId];
 }
 
 //退出群组
 - (void)exitAction
 {
-    //__weak ChatGroupDetailViewController *weakSelf = self;
+    __weak ChatGroupDetailViewController *weakSelf = self;
     [self showHudInView:self.view hint:@"退出群组"];
-    /*[[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
-        [weakSelf hideHud];
-        if (error) {
-            [weakSelf showHint:@"退出群组失败"];
-        }
-    } onQueue:nil];*/
+//    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
+//        [weakSelf hideHud];
+//        if (error) {
+//            [weakSelf showHint:@"退出群组失败"];
+//        }
+//        else{
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroup" object:nil];
+//        }
+//    } onQueue:nil];
+    
     [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId];
 }
 

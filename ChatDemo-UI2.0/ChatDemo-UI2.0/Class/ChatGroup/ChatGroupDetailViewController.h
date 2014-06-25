@@ -32,7 +32,7 @@ typedef enum{
     GroupMemberTypeNormal,//普通
 }GroupMemberType;
 
-@interface ChatGroupDetailViewController : UITableViewController
+@interface ChatGroupDetailViewController : UITableViewController<IChatManagerDelegate>
 
 - (instancetype)initWithGroup:(EMGroup *)chatGroup;
 
