@@ -59,7 +59,7 @@
     [_videoButton setImage:[UIImage imageNamed:@"chatBar_colorMore_camera"] forState:UIControlStateNormal];
     [_videoButton setImage:[UIImage imageNamed:@"chatBar_colorMore_cameraSelected"] forState:UIControlStateHighlighted];
     [_videoButton addTarget:self action:@selector(takeVideoAction) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_videoButton];
+//    [self addSubview:_videoButton];
 }
 
 #pragma mark - action
