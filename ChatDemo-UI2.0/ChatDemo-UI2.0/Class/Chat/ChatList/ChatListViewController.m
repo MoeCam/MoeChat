@@ -269,6 +269,8 @@
                 break;
             case eMessageBodyType_Location:
                 ret = @"[位置]";
+            case eMessageBodyType_Video:
+                ret = @"[视频]";
             default:
                 break;
         }
