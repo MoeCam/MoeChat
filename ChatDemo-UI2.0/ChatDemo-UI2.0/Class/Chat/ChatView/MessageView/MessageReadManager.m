@@ -144,18 +144,18 @@ static MessageReadManager *detailInstance = nil;
                       updateViewCompletion:(void (^)(MessageModel *prevAudioModel, MessageModel *currentAudioModel))updateCompletion
 {
     BOOL isPrepare = NO;
-    MessageModel *prevAudioModel = self.audioMessageModel;
-    MessageModel *currentAudioModel = messageModel;
-    self.audioMessageModel = messageModel;
-    
-    prevAudioModel.isPlaying = NO;
     
     if(messageModel.type == eMessageBodyType_Voice)
     {
+        MessageModel *prevAudioModel = self.audioMessageModel;
+        MessageModel *currentAudioModel = messageModel;
+        self.audioMessageModel = messageModel;
+        
         BOOL isPlaying = messageModel.isPlaying;
         if (isPlaying) {
             messageModel.isPlaying = NO;
             self.audioMessageModel = nil;
+//            prevAudioModel.isPlaying = NO;
             currentAudioModel = nil;
             
             [[EaseMob sharedInstance].chatManager stopPlayingAudio];
@@ -163,6 +163,7 @@ static MessageReadManager *detailInstance = nil;
         }
         else {
             messageModel.isPlaying = YES;
+            prevAudioModel.isPlaying = NO;
             isPrepare = YES;
             
             if (!messageModel.isPlayed) {
@@ -178,10 +179,10 @@ static MessageReadManager *detailInstance = nil;
                 }
             }
         }
-    }
-    
-    if (updateCompletion) {
-        updateCompletion(prevAudioModel, currentAudioModel);
+        
+        if (updateCompletion) {
+            updateCompletion(prevAudioModel, currentAudioModel);
+        }
     }
     
     return isPrepare;

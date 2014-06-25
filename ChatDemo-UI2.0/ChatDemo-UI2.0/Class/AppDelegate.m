@@ -51,8 +51,7 @@
 #endif
     [[EaseMob sharedInstance] registerSDKWithAppKey:@"easemob-demo#chatdemoui" apnsFilename:apnsFilename];
     [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
-    [[EaseMob sharedInstance] application:application
-            didFinishLaunchingWithOptions:launchOptions];
+    [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     
 #warning 注册为SDK的ChatManager的delegate (及时监听到申请和通知)
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
