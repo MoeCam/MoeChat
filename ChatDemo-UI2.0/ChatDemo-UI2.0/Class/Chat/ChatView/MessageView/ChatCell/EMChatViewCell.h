@@ -15,6 +15,7 @@
 #import "EMChatTextBubbleView.h"
 #import "EMChatImageBubbleView.h"
 #import "EMChatAudioBubbleView.h"
+#import "EMChatVideoBubbleView.h"
 #import "EMChatLocationBubbleView.h"
 
 #define SEND_STATUS_SIZE 20 // 发送状态View的Size

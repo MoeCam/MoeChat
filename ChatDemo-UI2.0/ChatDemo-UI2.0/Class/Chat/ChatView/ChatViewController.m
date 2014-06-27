@@ -45,6 +45,7 @@
     dispatch_queue_t _messageQueue;
 }
 
+@property (strong, nonatomic)MPMoviePlayerViewController *theMoviPlayer;
 @property (nonatomic) BOOL isChatGroup;
 @property (strong, nonatomic) EMGroup *chatGroup;
 
@@ -405,6 +406,8 @@
         [self.tableView endUpdates];
         id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
         [chatManager asyncResendMessage:messageModel.message progress:nil];
+    }else if([eventName isEqualToString:kRouterEventChatCellVideoTapEventName]){
+        [self chatVideoCellPressed:model];
     }
 }
 
@@ -457,6 +460,30 @@
     [self.navigationController pushViewController:locationController animated:YES];
 }
 
+- (void)chatVideoCellPressed:(MessageModel *)model{
+    __weak ChatViewController *weakSelf = self;
+    id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
+    [weakSelf showHudInView:weakSelf.view hint:@"正在获取视频..."];
+    [chatManager asyncFetchMessage:model.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
+        [weakSelf hideHud];
+        if (!error) {
+            NSString *localPath = aMessage == nil ? model.localPath : [[aMessage.messageBodies firstObject] localPath];
+            if (localPath && localPath.length > 0) {
+                [weakSelf playVideoWithVideoPath:localPath];
+            }
+        }else{
+            [weakSelf showHint:@"视频获取失败!"];
+        }
+    } onQueue:nil];
+}
+
+- (void)playVideoWithVideoPath:(NSString *)videoPath{
+    NSURL *videoURL = [NSURL fileURLWithPath:videoPath];
+    self.theMoviPlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
+    _theMoviPlayer.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+    [self presentViewController:_theMoviPlayer animated:YES completion:nil];
+}
+
 // 图片的bubble被点击
 -(void)chatImageCellBubblePressed:(MessageModel *)model
 {
@@ -487,6 +514,18 @@
                     [weakSelf showHint:@"缩略图获取失败!"];
                 }
                 
+            } onQueue:nil];
+        }
+    }else if ([model.messageBody messageBodyType] == eMessageBodyType_Video) {
+        //获取缩略图
+        EMVideoMessageBody *videoBody = (EMVideoMessageBody *)model.messageBody;
+        if (videoBody.thumbnailDownloadSatus != EMAttachmentDownloadSuccessed) {
+            [chatManager asyncFetchMessageThumbnail:model.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
+                if (!error) {
+                    [weakSelf reloadTableViewDataWithMessage:model.message];
+                }else{
+                    [weakSelf showHint:@"缩略图获取失败!"];
+                }
             } onQueue:nil];
         }
     }
