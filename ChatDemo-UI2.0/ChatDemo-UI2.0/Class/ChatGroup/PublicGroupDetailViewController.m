@@ -18,6 +18,7 @@
 @property (strong, nonatomic) EMGroup *group;
 @property (strong, nonatomic) UIView *headerView;
 @property (strong, nonatomic) UIView *footerView;
+@property (strong, nonatomic) UIButton *footerButton;
 
 @property (strong, nonatomic) UILabel *nameLabel;
 
@@ -50,7 +51,6 @@
     
     // Uncomment the following line to preserve selection between presentations.
     
-//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableHeaderView = self.headerView;
     self.tableView.tableFooterView = self.footerView;
@@ -105,12 +105,13 @@
         line.backgroundColor = [UIColor lightGrayColor];
         [_footerView addSubview:line];
         
-        UIButton *joinButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 20, _footerView.frame.size.width - 80, 40)];
-        [joinButton setTitle:@"加入群组" forState:UIControlStateNormal];
-        [joinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [joinButton addTarget:self action:@selector(joinAction) forControlEvents:UIControlEventTouchUpInside];
-        [joinButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
-        [_footerView addSubview:joinButton];
+        _footerButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 20, _footerView.frame.size.width - 80, 40)];
+        [_footerButton setTitle:@"加入群组" forState:UIControlStateNormal];
+        [_footerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_footerButton addTarget:self action:@selector(joinAction) forControlEvents:UIControlEventTouchUpInside];
+        [_footerButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
+        _footerButton.enabled = NO;
+        [_footerView addSubview:_footerButton];
     }
     
     return _footerView;
@@ -168,6 +169,20 @@
 
 #pragma mark - action
 
+- (BOOL)isJoined:(EMGroup *)group
+{
+    if (group) {
+        NSArray *groupList = [[EaseMob sharedInstance].chatManager groupList];
+        for (EMGroup *tmpGroup in groupList) {
+            if (tmpGroup.isPublic == group.isPublic && [group.groupId isEqualToString:tmpGroup.groupId]) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
 - (void)fetchGroupInfo
 {
     [self showHudInView:self.view hint:@"加载数据..."];
@@ -184,6 +199,14 @@
     __weak PublicGroupDetailViewController *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         weakSelf.nameLabel.text = (_group.groupSubject && _group.groupSubject.length) > 0 ? _group.groupSubject : _group.groupId;
+        if ([weakSelf isJoined:weakSelf.group]) {
+            weakSelf.footerButton.enabled = NO;
+            [weakSelf.footerButton setTitle:@"已加入" forState:UIControlStateNormal | UIControlStateDisabled];
+        }
+        else{
+            weakSelf.footerButton.enabled = YES;
+            [weakSelf.footerButton setTitle:@"加入群组" forState:UIControlStateNormal];
+        }
         [weakSelf.tableView reloadData];
     });
 }
@@ -193,6 +216,7 @@
     [self showHudInView:self.view hint:@"加入群组..."];
     __weak PublicGroupDetailViewController *weakSelf = self;
     [[EaseMob sharedInstance].chatManager asyncJoinPublicGroup:_groupId completion:^(EMGroup *group, EMError *error) {
+        [weakSelf hideHud];
         if(!error)
         {
             [weakSelf.navigationController popViewControllerAnimated:YES];

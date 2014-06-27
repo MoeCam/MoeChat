@@ -141,6 +141,7 @@
             
             EMGroup *group = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             PublicGroupDetailViewController *detailController = [[PublicGroupDetailViewController alloc] initWithGroupId:group.groupId];
+            detailController.title = group.groupSubject;
             [weakSelf.navigationController pushViewController:detailController animated:YES];
         }];
     }
@@ -258,7 +259,6 @@
     [self reloadDataSource];
     [_slimeView endRefresh];
 }
-
 
 #pragma mark - data
 
