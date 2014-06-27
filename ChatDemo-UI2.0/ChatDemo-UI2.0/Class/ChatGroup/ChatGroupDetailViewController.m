@@ -13,6 +13,7 @@
 #import "ChatGroupDetailViewController.h"
 
 #import "ContactSelectionViewController.h"
+#import "EMError.h"
 
 #pragma mark - ChatGroupContactView
 
@@ -370,7 +371,7 @@
                             [weakSelf refreshScrollView];
                         }
                         else{
-                            [weakSelf showHint:@"删除成员失败"];
+                            [weakSelf showHint:error.description];
                         }
                     } onQueue:nil];
                 }];
