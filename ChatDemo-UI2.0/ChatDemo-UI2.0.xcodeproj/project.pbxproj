@@ -291,6 +291,8 @@
 		90911137192EEC91008A48AA /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911135192EEC91008A48AA /* LoginViewController.m */; };
 		90911138192EEC91008A48AA /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90911136192EEC91008A48AA /* LoginViewController.xib */; };
 		90911145192EEE6E008A48AA /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911143192EEE6E008A48AA /* MainViewController.m */; };
+		909308BE19604821005013BD /* Emoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 909308BB19604821005013BD /* Emoji.m */; };
+		909308BF19604821005013BD /* EmojiEmoticons.m in Sources */ = {isa = PBXBuildFile; fileRef = 909308BD19604821005013BD /* EmojiEmoticons.m */; };
 		90EF2CEC192F2B4E00BDC549 /* sr_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */; };
 		90EF2CED192F2B4E00BDC549 /* sr_refresh@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */; };
 		90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */; };
@@ -734,6 +736,10 @@
 		90911136192EEC91008A48AA /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		90911142192EEE6E008A48AA /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		90911143192EEE6E008A48AA /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		909308BA19604821005013BD /* Emoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Emoji.h; sourceTree = "<group>"; };
+		909308BB19604821005013BD /* Emoji.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Emoji.m; sourceTree = "<group>"; };
+		909308BC19604821005013BD /* EmojiEmoticons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmojiEmoticons.h; sourceTree = "<group>"; };
+		909308BD19604821005013BD /* EmojiEmoticons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmojiEmoticons.m; sourceTree = "<group>"; };
 		90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sr_refresh.png; sourceTree = "<group>"; };
 		90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sr_refresh@2X.png"; sourceTree = "<group>"; };
 		90EF2CE7192F2B4E00BDC549 /* SRDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRDefine.h; sourceTree = "<group>"; };
@@ -1498,6 +1504,7 @@
 		90911056192EEAED008A48AA /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
+				909308B919604821005013BD /* Emoji */,
 				9003D9191939D9C300DC38A4 /* UMeng */,
 				3C0CE53A193895E200219149 /* macros.h */,
 				905326B219333E8E00F064D7 /* TTGlobalUICommon */,
@@ -1706,6 +1713,17 @@
 				9091112E192EEC0F008A48AA /* SettingsViewController.m */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		909308B919604821005013BD /* Emoji */ = {
+			isa = PBXGroup;
+			children = (
+				909308BA19604821005013BD /* Emoji.h */,
+				909308BB19604821005013BD /* Emoji.m */,
+				909308BC19604821005013BD /* EmojiEmoticons.h */,
+				909308BD19604821005013BD /* EmojiEmoticons.m */,
+			);
+			path = Emoji;
 			sourceTree = "<group>";
 		};
 		90EF2CE4192F2B4E00BDC549 /* SlimeRefresh */ = {
@@ -2003,6 +2021,7 @@
 				3C914D8419514BBD0002DAD3 /* GroupListViewController.m in Sources */,
 				9003D8681939D8D000DC38A4 /* ChatListCell.m in Sources */,
 				9003D9061939D8D000DC38A4 /* HPTextViewInternal.m in Sources */,
+				909308BE19604821005013BD /* Emoji.m in Sources */,
 				90911111192EEAED008A48AA /* SDWebImagePrefetcher.m in Sources */,
 				90911105192EEAED008A48AA /* PSTGridLayoutItem.m in Sources */,
 				905326B519333E8E00F064D7 /* TTGlobalUICommon.m in Sources */,
@@ -2054,6 +2073,7 @@
 				909110F8192EEAED008A48AA /* MWTapDetectingView.m in Sources */,
 				90911109192EEAED008A48AA /* MKAnnotationView+WebCache.m in Sources */,
 				9003D86F1939D8D000DC38A4 /* ChatSendHelper.m in Sources */,
+				909308BF19604821005013BD /* EmojiEmoticons.m in Sources */,
 				90911112192EEAED008A48AA /* UIButton+WebCache.m in Sources */,
 				9091111C192EEAED008A48AA /* UIViewController+HUD.m in Sources */,
 				9003D9081939D8D000DC38A4 /* MessageModel.m in Sources */,
