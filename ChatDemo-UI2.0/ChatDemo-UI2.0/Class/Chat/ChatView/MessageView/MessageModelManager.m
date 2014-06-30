@@ -1,17 +1,17 @@
 /************************************************************
-  *  * EaseMob CONFIDENTIAL 
-  * __________________ 
-  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved. 
-  *  
-  * NOTICE: All information contained herein is, and remains 
-  * the property of EaseMob Technologies.
-  * Dissemination of this information or reproduction of this material 
-  * is strictly forbidden unless prior written permission is obtained
-  * from EaseMob Technologies.
-  */
+ *  * EaseMob CONFIDENTIAL
+ * __________________
+ * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of EaseMob Technologies.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from EaseMob Technologies.
+ */
 
 #import "MessageModelManager.h"
-
+#import "ConvertToCommonEmoticonsHelper.h"
 #import "MessageModel.h"
 #import "EaseMob.h"
 
@@ -48,11 +48,14 @@
         model.headImageURL = nil;
         model.status = eMessageDeliveryState_Delivered;
     }
-
+    
     switch (messageBody.messageBodyType) {
         case eMessageBodyType_Text:
         {
-            model.content = ((EMTextMessageBody *)messageBody).text;
+            // 表情映射。
+            NSString *didReceiveText = [ConvertToCommonEmoticonsHelper
+                                        convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
+            model.content = didReceiveText;
         }
             break;
         case eMessageBodyType_Image:
