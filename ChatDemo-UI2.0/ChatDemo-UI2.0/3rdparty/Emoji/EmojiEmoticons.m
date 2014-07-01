@@ -43,52 +43,53 @@
                                  [Emoji emojiWithCode:0x1f31e],
                                  [Emoji emojiWithCode:0x1F308],
                                  [Emoji emojiWithCode:0x1F60d],
+                                 [Emoji emojiWithCode:0x1F61a],
                                  [Emoji emojiWithCode:0x1F48b],
                                  [Emoji emojiWithCode:0x1F339],
                                  [Emoji emojiWithCode:0x1F342],
                                  [Emoji emojiWithCode:0x1F44d],
-                                 [Emoji emojiWithCode:0x1F61a],
+                                 
                                  /*[Emoji emojiWithCode:0x1F602],
-                                 [Emoji emojiWithCode:0x1F603],
-                                 [Emoji emojiWithCode:0x1F604],
-                                 [Emoji emojiWithCode:0x1F609],
-                                 [Emoji emojiWithCode:0x1F613],
-                                 [Emoji emojiWithCode:0x1F614],
-                                 [Emoji emojiWithCode:0x1F616],
-                                 [Emoji emojiWithCode:0x1F618],
-                                 [Emoji emojiWithCode:0x1F61a],
-                                 [Emoji emojiWithCode:0x1F61c],
-                                 [Emoji emojiWithCode:0x1F61d],
-                                 [Emoji emojiWithCode:0x1F61e],
-                                 [Emoji emojiWithCode:0x1F620],
-                                 [Emoji emojiWithCode:0x1F621],
-                                 [Emoji emojiWithCode:0x1F622],
-                                 [Emoji emojiWithCode:0x1F623],
-                                 [Emoji emojiWithCode:0x1F628],
-                                 [Emoji emojiWithCode:0x1F62a],
-                                 [Emoji emojiWithCode:0x1F62d],
-                                 [Emoji emojiWithCode:0x1F630],
-                                 [Emoji emojiWithCode:0x1F631],
-                                 [Emoji emojiWithCode:0x1F632],
-                                 [Emoji emojiWithCode:0x1F633],
-                                 [Emoji emojiWithCode:0x1F645],
-                                 [Emoji emojiWithCode:0x1F646],
-                                 [Emoji emojiWithCode:0x1F647],
-                                 [Emoji emojiWithCode:0x1F64c],
-                                 [Emoji emojiWithCode:0x1F6a5],
-                                 [Emoji emojiWithCode:0x1F6a7],
-                                 [Emoji emojiWithCode:0x1F6b2],
-                                 [Emoji emojiWithCode:0x1F6b6],
-                                 [Emoji emojiWithCode:0x1F302],
-                                 [Emoji emojiWithCode:0x1F319],
-                                 [Emoji emojiWithCode:0x1F31f],*/
-                                nil];
+                                  [Emoji emojiWithCode:0x1F603],
+                                  [Emoji emojiWithCode:0x1F604],
+                                  [Emoji emojiWithCode:0x1F609],
+                                  [Emoji emojiWithCode:0x1F613],
+                                  [Emoji emojiWithCode:0x1F614],
+                                  [Emoji emojiWithCode:0x1F616],
+                                  [Emoji emojiWithCode:0x1F618],
+                                  [Emoji emojiWithCode:0x1F61a],
+                                  [Emoji emojiWithCode:0x1F61c],
+                                  [Emoji emojiWithCode:0x1F61d],
+                                  [Emoji emojiWithCode:0x1F61e],
+                                  [Emoji emojiWithCode:0x1F620],
+                                  [Emoji emojiWithCode:0x1F621],
+                                  [Emoji emojiWithCode:0x1F622],
+                                  [Emoji emojiWithCode:0x1F623],
+                                  [Emoji emojiWithCode:0x1F628],
+                                  [Emoji emojiWithCode:0x1F62a],
+                                  [Emoji emojiWithCode:0x1F62d],
+                                  [Emoji emojiWithCode:0x1F630],
+                                  [Emoji emojiWithCode:0x1F631],
+                                  [Emoji emojiWithCode:0x1F632],
+                                  [Emoji emojiWithCode:0x1F633],
+                                  [Emoji emojiWithCode:0x1F645],
+                                  [Emoji emojiWithCode:0x1F646],
+                                  [Emoji emojiWithCode:0x1F647],
+                                  [Emoji emojiWithCode:0x1F64c],
+                                  [Emoji emojiWithCode:0x1F6a5],
+                                  [Emoji emojiWithCode:0x1F6a7],
+                                  [Emoji emojiWithCode:0x1F6b2],
+                                  [Emoji emojiWithCode:0x1F6b6],
+                                  [Emoji emojiWithCode:0x1F302],
+                                  [Emoji emojiWithCode:0x1F319],
+                                  [Emoji emojiWithCode:0x1F31f],*/
+                                 nil];
     [array addObjectsFromArray:localAry];
-//    for (int i=0x1F600; i<=0x1F64F; i++) {
-//        if (i < 0x1F641 || i > 0x1F644) {
-//            [array addObject:[Emoji emojiWithCode:i]];
-//        }
-//    }
+    //    for (int i=0x1F600; i<=0x1F64F; i++) {
+    //        if (i < 0x1F641 || i > 0x1F644) {
+    //            [array addObject:[Emoji emojiWithCode:i]];
+    //        }
+    //    }
     return array;
 }
 
