@@ -18,6 +18,7 @@
 #import "RealtimeSearchUtil.h"
 #import "ChatViewController.h"
 #import "EMSearchDisplayController.h"
+#import "ConvertToCommonEmoticonsHelper.h"
 
 @interface ChatListViewController ()<UITableViewDelegate,UITableViewDataSource, UISearchDisplayDelegate,SRRefreshDelegate, UISearchBarDelegate, IChatManagerDelegate>
 
@@ -260,7 +261,10 @@
             }
                 break;
             case eMessageBodyType_Text:{
-                ret = ((EMTextMessageBody *)messageBody).text;
+                // 表情映射。
+                NSString *didReceiveText = [ConvertToCommonEmoticonsHelper
+                                            convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
+                ret = didReceiveText;
             }
                 break;
             case eMessageBodyType_Voice:{

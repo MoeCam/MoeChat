@@ -12,6 +12,7 @@
 
 #import "EMChatTextBubbleView.h"
 
+
 NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTapEventName";
 
 @interface EMChatTextBubbleView ()
@@ -76,7 +77,6 @@ NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTap
 - (void)setModel:(MessageModel *)model
 {
     [super setModel:model];
-    
     _textLabel.text = self.model.content;
 }
 
