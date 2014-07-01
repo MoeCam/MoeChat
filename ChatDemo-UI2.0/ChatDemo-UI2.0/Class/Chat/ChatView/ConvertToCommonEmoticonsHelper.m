@@ -222,10 +222,20 @@
         
         range.location = 0;
         range.length = retText.length;
-        [retText replaceOccurrencesOfString:@"👫"
+        
+        [retText replaceOccurrencesOfString:@"😚"
+                                 withString:@"[(})]"
+                                    options:NSLiteralSearch
+                                      range:range];
+        
+        range.location = 0;
+        range.length = retText.length;
+        
+        [retText replaceOccurrencesOfString:@"😍"
                                  withString:@"[({)]"
                                     options:NSLiteralSearch
                                       range:range];
+
         
         range.location = 0;
         range.length = retText.length;
@@ -469,10 +479,21 @@
         
         range.location = 0;
         range.length = retText.length;
-        [retText replaceOccurrencesOfString:@"[({)]"
-                                 withString:@"👫"
+        
+        [retText replaceOccurrencesOfString:@"[(})]"
+                                 withString:@"😚"
                                     options:NSLiteralSearch
                                       range:range];
+        
+        range.location = 0;
+        range.length = retText.length;
+        
+        [retText replaceOccurrencesOfString:@"[({)]"
+                                 withString:@"😍"
+                                    options:NSLiteralSearch
+                                      range:range];
+
+        
         
         range.location = 0;
         range.length = retText.length;
