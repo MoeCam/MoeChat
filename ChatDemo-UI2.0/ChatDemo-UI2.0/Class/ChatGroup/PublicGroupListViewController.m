@@ -232,6 +232,14 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
+    
+//    [[EaseMob sharedInstance].chatManager asyncSearchPublicGroupWithGroupId:searchBar.text completion:^(EMGroup *group, EMError *error) {
+//        if (!error) {
+//            [self.searchController.resultsSource removeAllObjects];
+//            [self.searchController.resultsSource addObject:group];
+//            [self.searchController.searchResultsTableView reloadData];
+//        }
+//    }];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
