@@ -19,6 +19,8 @@
 @property (strong, nonatomic) UIView *footerView;
 
 @property (strong, nonatomic) UISwitch *autoLoginSwitch;
+@property (strong, nonatomic) UISwitch *beInvitedSwitch;
+@property (strong, nonatomic) UILabel *beInvitedLabel;
 
 @end
 
@@ -60,6 +62,26 @@
     return _autoLoginSwitch;
 }
 
+- (UISwitch *)beInvitedSwitch
+{
+    if (_beInvitedSwitch == nil) {
+        _beInvitedSwitch = [[UISwitch alloc] init];
+        [_beInvitedSwitch addTarget:self action:@selector(beInvitedChanged:) forControlEvents:UIControlEventValueChanged];
+        [_beInvitedSwitch setOn:[[EaseMob sharedInstance].chatManager autoAcceptGroupInvitation] animated:YES];
+    }
+    
+    return _beInvitedSwitch;
+}
+
+- (UILabel *)beInvitedLabel
+{
+//    if (_beInvitedLabel == nil) {
+//        <#statements#>
+//    }
+    
+    return _beInvitedLabel;
+}
+
 #pragma mark - Table view datasource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -69,7 +91,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -82,6 +104,12 @@
     
     if (indexPath.row == 0) {
         cell.textLabel.text = @"自动登录";
+        self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
+        [cell.contentView addSubview:self.autoLoginSwitch];
+    }
+    else if (indexPath.row == 1)
+    {
+        cell.textLabel.text = @"被邀请人权限";
         self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
         [cell.contentView addSubview:self.autoLoginSwitch];
     }
@@ -132,6 +160,11 @@
 - (void)autoLoginChanged:(UISwitch *)autoSwitch
 {
     [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:autoSwitch.isOn];
+}
+
+- (void)beInvitedChanged:(UISwitch *)beInvitedSwitch
+{
+    
 }
 
 - (void)logoutAction

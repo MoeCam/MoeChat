@@ -57,7 +57,7 @@
 
 @interface ChatGroupDetailViewController ()<IChatManagerDelegate, EMChooseViewDelegate>
 
-@property (nonatomic) GroupMemberType memberType;
+@property (nonatomic) GroupOccupantType occupantType;
 @property (strong, nonatomic) EMGroup *chatGroup;
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
@@ -81,7 +81,7 @@
         // Custom initialization
         _chatGroup = chatGroup;
         _dataSource = [NSMutableArray array];
-        _memberType = GroupMemberTypeNormal;
+        _occupantType = GroupOccupantTypeVisitor;
     }
     return self;
 }
@@ -141,9 +141,6 @@
         
         _longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deleteContactBegin:)];
         _longPress.minimumPressDuration = 0.5;
-        if (_memberType != GroupMemberTypeNormal) {
-            [_scrollView addGestureRecognizer:_longPress];
-        }
     }
     
     return _scrollView;
@@ -283,20 +280,30 @@
 - (void)reloadDataSource
 {
     [self.dataSource removeAllObjects];
-    self.memberType = GroupMemberTypeNormal;
+    
+    self.occupantType = GroupOccupantTypeVisitor;
     NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
     NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
     for (NSString *str in self.chatGroup.owners) {
         if ([str isEqualToString:loginUsername]) {
-            self.memberType = GroupMemberTypeOwner;
+            self.occupantType = GroupOccupantTypeOwner;
             break;
         }
     }
     
-    if (self.memberType == GroupMemberTypeNormal) {
+    if (self.occupantType == GroupOccupantTypeVisitor) {
         for (NSString *str in self.chatGroup.admins) {
             if ([str isEqualToString:loginUsername]) {
-                self.memberType = GroupMemberTypeAdmin;
+                self.occupantType = GroupOccupantTypeAdmin;
+                break;
+            }
+        }
+    }
+    
+    if (self.occupantType == GroupOccupantTypeVisitor) {
+        for (NSString *str in self.chatGroup.members) {
+            if ([str isEqualToString:loginUsername]) {
+                self.occupantType = GroupOccupantTypeMember;
                 break;
             }
         }
@@ -319,13 +326,18 @@
 - (void)refreshScrollView
 {
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.scrollView removeGestureRecognizer:_longPress];
+    [self.addButton removeFromSuperview];
     
-    if (self.memberType != GroupMemberTypeNormal) {
+    BOOL showAddButton = NO;
+    if (self.occupantType == GroupOccupantTypeOwner) {
         [self.scrollView addGestureRecognizer:_longPress];
         [self.scrollView addSubview:self.addButton];
+        showAddButton = YES;
     }
-    else{
-        [self.scrollView removeGestureRecognizer:_longPress];
+    else if (self.chatGroup.groupSetting.groupStyle == EMGroupStylePrivateMemberCanInvite && self.occupantType == GroupOccupantTypeMember) {
+        [self.scrollView addSubview:self.addButton];
+        showAddButton = YES;
     }
     
     int tmp = ([self.dataSource count] + 1) % kColOfRow;
@@ -375,7 +387,7 @@
                 [self.scrollView addSubview:contactView];
             }
             else{
-                if(_memberType != GroupMemberTypeNormal && index == self.dataSource.count)
+                if(showAddButton && index == self.dataSource.count)
                 {
                     self.addButton.frame = CGRectMake(j * kContactSize + 5, i * kContactSize + 10, kContactSize - 10, kContactSize - 10);
                 }
@@ -395,7 +407,7 @@
 
 - (void)refreshFooterView
 {
-    if (_memberType != GroupMemberTypeNormal) {
+    if (self.occupantType == GroupOccupantTypeOwner || self.occupantType == GroupOccupantTypeAdmin) {
         [_exitButton removeFromSuperview];
         [_footerView addSubview:self.dissolveButton];
     }
