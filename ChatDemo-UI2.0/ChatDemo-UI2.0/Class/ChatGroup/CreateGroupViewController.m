@@ -18,11 +18,15 @@
 @interface CreateGroupViewController ()<UITextFieldDelegate, UITextViewDelegate, EMChooseViewDelegate>
 
 @property (nonatomic) BOOL isPublic;
+@property (nonatomic) BOOL isOtherOn;
 @property (strong, nonatomic) UIBarButtonItem *rightItem;
 @property (strong, nonatomic) UITextField *textField;
 @property (strong, nonatomic) EMTextView *textView;
 @property (strong, nonatomic) UIView *switchView;
 @property (strong, nonatomic) UILabel *groupTypeLabel;
+@property (strong, nonatomic) UILabel *groupOtherTitleLabel;
+@property (strong, nonatomic) UISwitch *groupOtherSwitch;
+@property (strong, nonatomic) UILabel *groupOtherLabel;
 
 @end
 
@@ -34,6 +38,7 @@
     if (self) {
         // Custom initialization
         _isPublic = NO;
+        _isOtherOn = NO;
     }
     return self;
 }
@@ -118,11 +123,12 @@
 - (UIView *)switchView
 {
     if (_switchView == nil) {
-        _switchView = [[UIView alloc] initWithFrame:CGRectMake(10, 160, 300, 35)];
+        _switchView = [[UIView alloc] initWithFrame:CGRectMake(10, 160, 300, 80)];
         _switchView.backgroundColor = [UIColor clearColor];
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, _switchView.frame.size.height)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 35)];
         label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont systemFontOfSize:14.0];
         label.text = @"群组权限";
         [_switchView addSubview:label];
         
@@ -130,16 +136,29 @@
         [switchControl addTarget:self action:@selector(groupTypeChange:) forControlEvents:UIControlEventValueChanged];
         [_switchView addSubview:switchControl];
         
-//        _groupTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(160, 0, 100, _switchView.frame.size.height)];
-        _groupTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(switchControl.frame.origin.x + switchControl.frame.size.width,
-                                                                    switchControl.frame.origin.y,
-                                                                    100,
-                                                                    _switchView.frame.size.height)];
+        _groupTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(switchControl.frame.origin.x + switchControl.frame.size.width + 5, 0, 100, 35)];
         _groupTypeLabel.backgroundColor = [UIColor clearColor];
-        _groupTypeLabel.font = [UIFont systemFontOfSize:14.0];
+        _groupTypeLabel.font = [UIFont systemFontOfSize:12.0];
         _groupTypeLabel.textColor = [UIColor grayColor];
         _groupTypeLabel.text = @"私有群";
         [_switchView addSubview:_groupTypeLabel];
+        
+        _groupOtherTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _switchView.frame.size.height - 35, 100, 35)];
+        _groupOtherTitleLabel.font = [UIFont systemFontOfSize:14.0];
+        _groupOtherTitleLabel.backgroundColor = [UIColor clearColor];
+        _groupOtherTitleLabel.text = @"成员邀请权限";
+        [_switchView addSubview:_groupOtherTitleLabel];
+        
+        _groupOtherSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(100, _switchView.frame.size.height - 35, 50, 35)];
+        [_groupOtherSwitch addTarget:self action:@selector(groupOtherChange:) forControlEvents:UIControlEventValueChanged];
+        [_switchView addSubview:_groupOtherSwitch];
+        
+        _groupOtherLabel = [[UILabel alloc] initWithFrame:CGRectMake(_groupOtherSwitch.frame.origin.x + _groupOtherSwitch.frame.size.width + 5, _groupOtherTitleLabel.frame.origin.y, 150, 35)];
+        _groupOtherLabel.backgroundColor = [UIColor clearColor];
+        _groupOtherLabel.font = [UIFont systemFontOfSize:12.0];
+        _groupOtherLabel.textColor = [UIColor grayColor];
+        _groupOtherLabel.text = @"不允许群成员邀请其他人";
+        [_switchView addSubview:_groupOtherLabel];
     }
     
     return _switchView;
@@ -178,45 +197,105 @@
         [source addObject:buddy.username];
     }
     
-    __weak CreateGroupViewController *weakSelf = self;
+    EMGroupStyleSetting *setting = [[EMGroupStyleSetting alloc] init];
     if (_isPublic) {
-        [[EaseMob sharedInstance].chatManager asyncCreatePublicGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
-            [weakSelf hideHud];
-            if (group && !error) {
-                [weakSelf showHint:@"创建群组成功"];
-                [weakSelf.navigationController popViewControllerAnimated:YES];
-            }
-            else{
-                [weakSelf showHint:@"创建群组失败，请重新操作"];
-            }
-        } onQueue:nil];
+        if(_isOtherOn)
+        {
+            setting.groupStyle = EMGroupStylePublicOpenJoin;
+        }
+        else{
+            setting.groupStyle = EMGroupStylePublicJoinNeedApproval;
+        }
     }
     else{
-        [[EaseMob sharedInstance].chatManager asyncCreatePrivateGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
-            [weakSelf hideHud];
-            if (group && !error) {
-                [weakSelf showHint:@"创建群组成功"];
-                [weakSelf.navigationController popViewControllerAnimated:YES];
-            }
-            else{
-                [weakSelf showHint:@"创建群组失败，请重新操作"];
-            }
-        } onQueue:nil];
+        if(_isOtherOn)
+        {
+            setting.groupStyle = EMGroupStylePrivateMemberCanInvite;
+        }
+        else{
+            setting.groupStyle = EMGroupStylePrivateOnlyOwnerInvite;
+        }
     }
+    
+    __weak CreateGroupViewController *weakSelf = self;
+    [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:@"" styleSetting:setting completion:^(EMGroup *group, EMError *error) {
+        [weakSelf hideHud];
+        if (group && !error) {
+            [weakSelf showHint:@"创建群组成功"];
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }
+        else{
+            [weakSelf showHint:@"创建群组失败，请重新操作"];
+        }
+    } onQueue:nil];
+    
+//    if (_isPublic) {
+//        [[EaseMob sharedInstance].chatManager asyncCreatePublicGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
+//            [weakSelf hideHud];
+//            if (group && !error) {
+//                [weakSelf showHint:@"创建群组成功"];
+//                [weakSelf.navigationController popViewControllerAnimated:YES];
+//            }
+//            else{
+//                [weakSelf showHint:@"创建群组失败，请重新操作"];
+//            }
+//        } onQueue:nil];
+//    }
+//    else{
+//        [[EaseMob sharedInstance].chatManager asyncCreatePrivateGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:@"" completion:^(EMGroup *group, EMError *error) {
+//            [weakSelf hideHud];
+//            if (group && !error) {
+//                [weakSelf showHint:@"创建群组成功"];
+//                [weakSelf.navigationController popViewControllerAnimated:YES];
+//            }
+//            else{
+//                [weakSelf showHint:@"创建群组失败，请重新操作"];
+//            }
+//        } onQueue:nil];
+//    }
 }
 
 #pragma mark - action
 
 - (void)groupTypeChange:(UISwitch *)control
 {
+    _isPublic = control.isOn;
+    
+    [_groupOtherSwitch setOn:NO animated:NO];
+    [self groupOtherChange:_groupOtherSwitch];
+    
     if (control.isOn) {
         _groupTypeLabel.text = @"公有群";
     }
     else{
         _groupTypeLabel.text = @"私有群";
     }
+}
+
+- (void)groupOtherChange:(UISwitch *)control
+{
+    if (_isPublic) {
+        _groupOtherTitleLabel.text = @"成员加入权限";
+        if(control.isOn)
+        {
+            _groupOtherLabel.text = @"随便加入";
+        }
+        else{
+            _groupOtherLabel.text = @"加入群组需要管理员同意";
+        }
+    }
+    else{
+        _groupOtherTitleLabel.text = @"成员邀请权限";
+        if(control.isOn)
+        {
+            _groupOtherLabel.text = @"允许群成员邀请其他人";
+        }
+        else{
+            _groupOtherLabel.text = @"不允许群成员邀请其他人";
+        }
+    }
     
-    _isPublic = control.isOn;
+    _isOtherOn = control.isOn;
 }
 
 - (void)addContacts:(id)sender
