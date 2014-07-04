@@ -116,18 +116,14 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+}
+
 - (void)dealloc
 {
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
-}
-
-- (void)registerNotifications {
-    [self unregisterNotifications];
-    [[[EaseMob sharedInstance] chatManager] addDelegate:self delegateQueue:nil];
-}
-
-- (void)unregisterNotifications {
-    [[[EaseMob sharedInstance] chatManager] removeDelegate:self];
 }
 
 #pragma mark - getter
