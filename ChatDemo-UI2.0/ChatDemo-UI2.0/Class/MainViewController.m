@@ -363,28 +363,6 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     TTAlertNoTitle(message);
 }
 
-- (void)group:(EMGroup *)group didLeave:(EMGroupLeaveReason)reason error:(EMError *)error
-{
-    NSString *tmpStr = group.groupSubject;
-    NSString *str;
-    if (!tmpStr || tmpStr.length == 0) {
-        NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
-        for (EMGroup *obj in groupArray) {
-            if ([obj.groupId isEqualToString:group.groupId]) {
-                tmpStr = obj.groupSubject;
-                break;
-            }
-        }
-    }
-    
-    if (reason == eGroupLeaveReason_BeRemoved) {
-        str = [NSString stringWithFormat:@"你被从群组\'%@\'中踢出", tmpStr];
-    }
-    if (str.length > 0) {
-        TTAlertNoTitle(str);
-    }
-}
-
 #pragma mark - IChatManagerDelegate 登录状态变化
 
 - (void)didLoginFromOtherDevice
