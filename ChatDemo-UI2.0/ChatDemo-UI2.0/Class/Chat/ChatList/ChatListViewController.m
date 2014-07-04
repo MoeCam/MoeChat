@@ -258,25 +258,24 @@
         switch (messageBody.messageBodyType) {
             case eMessageBodyType_Image:{
                 ret = @"[图片]";
-            }
-                break;
+            } break;
             case eMessageBodyType_Text:{
                 // 表情映射。
                 NSString *didReceiveText = [ConvertToCommonEmoticonsHelper
                                             convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
                 ret = didReceiveText;
-            }
-                break;
+            } break;
             case eMessageBodyType_Voice:{
                 ret = @"[声音]";
-            }
-                break;
-            case eMessageBodyType_Location:
+            } break;
+            case eMessageBodyType_Location: {
                 ret = @"[位置]";
-            case eMessageBodyType_Video:
+            } break;
+            case eMessageBodyType_Video: {
                 ret = @"[视频]";
-            default:
-                break;
+            } break;
+            default: {
+            } break;
         }
     }
     
