@@ -45,7 +45,7 @@
     dispatch_queue_t _messageQueue;
 }
 
-@property (strong, nonatomic)MPMoviePlayerViewController *theMoviPlayer;
+@property (strong, nonatomic)MPMoviePlayerViewController *theMoviePlayer;
 @property (nonatomic) BOOL isChatGroup;
 @property (strong, nonatomic) EMGroup *chatGroup;
 
@@ -479,9 +479,10 @@
 
 - (void)playVideoWithVideoPath:(NSString *)videoPath{
     NSURL *videoURL = [NSURL fileURLWithPath:videoPath];
-    self.theMoviPlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
-    _theMoviPlayer.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-    [self presentViewController:_theMoviPlayer animated:YES completion:nil];
+    self.theMoviePlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
+    _theMoviePlayer.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+    //[self presentViewController:_theMoviePlayer animated:YES completion:nil];
+    [self presentMoviePlayerViewControllerAnimated:_theMoviePlayer];
 }
 
 // 图片的bubble被点击
