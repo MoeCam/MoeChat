@@ -272,7 +272,7 @@
     if (buddyName && buddyName.length > 0) {
         [self showHudInView:self.view hint:@"正在发送申请..."];
         EMError *error;
-        [[EaseMob sharedInstance].chatManager addBuddy:buddyName withNickname:buddyName message:message error:&error];
+        [[EaseMob sharedInstance].chatManager addBuddy:buddyName message:message error:&error];
         [self hideHud];
         if (error) {
             [self showHint:@"发送申请失败，请重新操作"];
