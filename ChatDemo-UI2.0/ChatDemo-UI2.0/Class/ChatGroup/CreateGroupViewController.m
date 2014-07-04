@@ -30,11 +30,6 @@
 @property (strong, nonatomic) UISwitch *groupMemberSwitch;
 @property (strong, nonatomic) UILabel *groupMemberLabel;
 
-@property (nonatomic) BOOL isRefuseOn;
-@property (strong, nonatomic) UILabel *groupRefuseTitleLabel;
-@property (strong, nonatomic) UISwitch *groupRefuseSwitch;
-@property (strong, nonatomic) UILabel *groupRefuseLabel;
-
 @end
 
 @implementation CreateGroupViewController
@@ -46,7 +41,6 @@
         // Custom initialization
         _isPublic = NO;
         _isMemberOn = NO;
-        _isRefuseOn = NO;
     }
     return self;
 }
@@ -131,7 +125,7 @@
 - (UIView *)switchView
 {
     if (_switchView == nil) {
-        _switchView = [[UIView alloc] initWithFrame:CGRectMake(10, 160, 300, 145)];
+        _switchView = [[UIView alloc] initWithFrame:CGRectMake(10, 160, 300, 90)];
         _switchView.backgroundColor = [UIColor clearColor];
         
         CGFloat oY = 0;
@@ -169,24 +163,6 @@
         _groupMemberLabel.textColor = [UIColor grayColor];
         _groupMemberLabel.text = @"不允许群成员邀请其他人";
         [_switchView addSubview:_groupMemberLabel];
-        
-        oY += (35 + 20);
-        _groupRefuseTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, oY, 100, 35)];
-        _groupRefuseTitleLabel.font = [UIFont systemFontOfSize:14.0];
-        _groupRefuseTitleLabel.backgroundColor = [UIColor clearColor];
-        _groupRefuseTitleLabel.text = @"被邀请人权限";
-        [_switchView addSubview:_groupRefuseTitleLabel];
-        
-        _groupRefuseSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(100, oY, 50, 35)];
-        [_groupRefuseSwitch addTarget:self action:@selector(groupRefuseChange:) forControlEvents:UIControlEventValueChanged];
-        [_switchView addSubview:_groupRefuseSwitch];
-        
-        _groupRefuseLabel = [[UILabel alloc] initWithFrame:CGRectMake(_groupRefuseSwitch.frame.origin.x + _groupRefuseSwitch.frame.size.width + 5, oY, 150, 35)];
-        _groupRefuseLabel.backgroundColor = [UIColor clearColor];
-        _groupRefuseLabel.font = [UIFont systemFontOfSize:12.0];
-        _groupRefuseLabel.textColor = [UIColor grayColor];
-        _groupRefuseLabel.text = @"自动加入";
-        [_switchView addSubview:_groupRefuseLabel];
     }
     
     return _switchView;
@@ -246,7 +222,10 @@
     }
     
     __weak CreateGroupViewController *weakSelf = self;
-    [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:@"" styleSetting:setting completion:^(EMGroup *group, EMError *error) {
+    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+    NSString *username = [loginInfo objectForKey:kSDKUsername];
+    NSString *messageStr = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, self.textField.text];
+    [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:messageStr styleSetting:setting completion:^(EMGroup *group, EMError *error) {
         [weakSelf hideHud];
         if (group && !error) {
             [weakSelf showHint:@"创建群组成功"];
@@ -266,9 +245,6 @@
     
     [_groupMemberSwitch setOn:NO animated:NO];
     [self groupMemberChange:_groupMemberSwitch];
-    
-    [_groupRefuseSwitch setOn:NO animated:NO];
-    [self groupRefuseChange:_groupRefuseSwitch];
     
     if (control.isOn) {
         _groupTypeLabel.text = @"公有群";
@@ -302,17 +278,6 @@
     }
     
     _isMemberOn = control.isOn;
-}
-
-- (void)groupRefuseChange:(UISwitch *)control
-{
-    _isRefuseOn = control.isOn;
-    if (_isRefuseOn) {
-        _groupRefuseLabel.text = @"允许被邀请人选择";
-    }
-    else{
-        _groupRefuseLabel.text = @"自动加入";
-    }
 }
 
 - (void)addContacts:(id)sender

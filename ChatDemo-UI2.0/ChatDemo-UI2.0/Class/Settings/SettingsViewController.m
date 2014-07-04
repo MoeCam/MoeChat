@@ -13,6 +13,7 @@
 #import "SettingsViewController.h"
 
 #import "ApplyViewController.h"
+#import "EMError.h"
 
 @interface SettingsViewController ()
 
@@ -67,7 +68,8 @@
     if (_beInvitedSwitch == nil) {
         _beInvitedSwitch = [[UISwitch alloc] init];
         [_beInvitedSwitch addTarget:self action:@selector(beInvitedChanged:) forControlEvents:UIControlEventValueChanged];
-        [_beInvitedSwitch setOn:[[EaseMob sharedInstance].chatManager autoAcceptGroupInvitation] animated:YES];
+        BOOL autoAccept = [[EaseMob sharedInstance].chatManager autoAcceptGroupInvitation];
+        [_beInvitedSwitch setOn:!autoAccept animated:YES];
     }
     
     return _beInvitedSwitch;
@@ -75,9 +77,12 @@
 
 - (UILabel *)beInvitedLabel
 {
-//    if (_beInvitedLabel == nil) {
-//        <#statements#>
-//    }
+    if (_beInvitedLabel == nil) {
+        _beInvitedLabel = [[UILabel alloc] init];
+        _beInvitedLabel.backgroundColor = [UIColor clearColor];
+        _beInvitedLabel.font = [UIFont systemFontOfSize:12.0];
+        _beInvitedLabel.textColor = [UIColor grayColor];
+    }
     
     return _beInvitedLabel;
 }
@@ -91,7 +96,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -110,8 +115,13 @@
     else if (indexPath.row == 1)
     {
         cell.textLabel.text = @"被邀请人权限";
-        self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
-        [cell.contentView addSubview:self.autoLoginSwitch];
+        
+        self.beInvitedSwitch.frame = CGRectMake(180, (cell.contentView.frame.size.height - self.beInvitedSwitch.frame.size.height) / 2, self.beInvitedSwitch.frame.size.width, self.beInvitedSwitch.frame.size.height);
+        [cell.contentView addSubview:self.beInvitedSwitch];
+        
+        self.beInvitedLabel.frame = CGRectMake(self.beInvitedSwitch.frame.origin.x + self.beInvitedSwitch.frame.size.width + 5, 0, 80, 50);
+        [cell.contentView addSubview:self.beInvitedLabel];
+        [self beInvitedChanged:_beInvitedSwitch];
     }
     
     return cell;
@@ -164,7 +174,14 @@
 
 - (void)beInvitedChanged:(UISwitch *)beInvitedSwitch
 {
-    
+//    if (beInvitedSwitch.isOn) {
+//        self.beInvitedLabel.text = @"允许选择";
+//    }
+//    else{
+//        self.beInvitedLabel.text = @"自动加入";
+//    }
+//    
+//    [[EaseMob sharedInstance].chatManager setAutoAcceptGroupInvitation:!(beInvitedSwitch.isOn)];
 }
 
 - (void)logoutAction
@@ -174,8 +191,7 @@
     [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
         [weakSelf hideHud];
         if (error) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告" message:@"退出当前账号失败，请重新操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alertView show];
+            [weakSelf showHint:error.description];
         }
         else{
             [[ApplyViewController shareController] clear];

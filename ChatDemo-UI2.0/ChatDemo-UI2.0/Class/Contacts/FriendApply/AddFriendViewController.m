@@ -260,8 +260,18 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if ([alertView cancelButtonIndex] != buttonIndex) {
         UITextField *messageTextField = [alertView textFieldAtIndex:0];
+        
+        NSString *messageStr = @"";
+        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+        NSString *username = [loginInfo objectForKey:kSDKUsername];
+        if (messageTextField.text.length > 0) {
+            messageStr = [NSString stringWithFormat:@"%@：%@", username, messageTextField.text];
+        }
+        else{
+            messageStr = [NSString stringWithFormat:@"%@ 邀请你为好友", username];
+        }
         [self sendFriendApplyAtIndexPath:self.selectedIndexPath
-                                 message:messageTextField.text];
+                                 message:messageStr];
     }
 }
 
