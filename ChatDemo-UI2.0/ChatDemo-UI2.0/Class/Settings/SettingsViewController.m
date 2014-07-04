@@ -65,12 +65,12 @@
 
 - (UISwitch *)beInvitedSwitch
 {
-    if (_beInvitedSwitch == nil) {
-        _beInvitedSwitch = [[UISwitch alloc] init];
-        [_beInvitedSwitch addTarget:self action:@selector(beInvitedChanged:) forControlEvents:UIControlEventValueChanged];
-        BOOL autoAccept = [[EaseMob sharedInstance].chatManager autoAcceptGroupInvitation];
-        [_beInvitedSwitch setOn:!autoAccept animated:YES];
-    }
+//    if (_beInvitedSwitch == nil) {
+//        _beInvitedSwitch = [[UISwitch alloc] init];
+//        [_beInvitedSwitch addTarget:self action:@selector(beInvitedChanged:) forControlEvents:UIControlEventValueChanged];
+//        BOOL autoAccept = [[EaseMob sharedInstance].chatManager autoAcceptGroupInvitation];
+//        [_beInvitedSwitch setOn:!autoAccept animated:YES];
+//    }
     
     return _beInvitedSwitch;
 }
