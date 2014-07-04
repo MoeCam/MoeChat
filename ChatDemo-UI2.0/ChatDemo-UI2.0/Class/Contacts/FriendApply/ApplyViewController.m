@@ -116,12 +116,13 @@ static ApplyViewController *controller = nil;
     NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
     if (dic) {
         cell.indexPath = indexPath;
-        cell.titleLabel.text = [dic objectForKey:@"title"];
         BOOL isGroup = [[dic objectForKey:@"isGroup"] boolValue];
         if (isGroup) {
+            cell.titleLabel.text = @"群组通知";
             cell.headerImageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
         }
         else{
+            cell.titleLabel.text = [dic objectForKey:@"title"];
             cell.headerImageView.image = [UIImage imageNamed:@"chatListCellHead"];
         }
         cell.contentLabel.text = [dic objectForKey:@"applyMessage"];

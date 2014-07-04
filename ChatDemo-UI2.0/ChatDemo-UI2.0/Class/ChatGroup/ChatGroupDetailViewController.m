@@ -252,7 +252,10 @@
             [source addObject:buddy.username];
         }
         
-        _chatGroup = [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:_chatGroup.groupId welcomeMessage:@"" error:nil];
+        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+        NSString *username = [loginInfo objectForKey:kSDKUsername];
+        NSString *messageStr = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, _chatGroup.groupSubject];
+        _chatGroup = [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:_chatGroup.groupId welcomeMessage:messageStr error:nil];
         [self reloadDataSource];
     });
 }
