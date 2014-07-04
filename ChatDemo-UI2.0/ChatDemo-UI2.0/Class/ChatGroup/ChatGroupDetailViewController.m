@@ -246,6 +246,7 @@
 {
     [self showHudInView:self.view hint:@"添加组成员..."];
     
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSMutableArray *source = [NSMutableArray array];
         for (EMBuddy *buddy in selectedSources) {
@@ -254,9 +255,9 @@
         
         NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
         NSString *username = [loginInfo objectForKey:kSDKUsername];
-        NSString *messageStr = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, _chatGroup.groupSubject];
-        _chatGroup = [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:_chatGroup.groupId welcomeMessage:messageStr error:nil];
-        [self reloadDataSource];
+        NSString *messageStr = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, weakSelf.chatGroup.groupSubject];
+        weakSelf.chatGroup = [[EaseMob sharedInstance].chatManager addOccupants:source toGroup:weakSelf.chatGroup.groupId welcomeMessage:messageStr error:nil];
+        [weakSelf reloadDataSource];
     });
 }
 
@@ -374,7 +375,7 @@
                 [contactView setDeleteContact:^(NSInteger index) {
                     [weakSelf showHudInView:weakSelf.view hint:@"正在删除成员..."];
                     NSArray *occupants = [NSArray arrayWithObject:[weakSelf.dataSource objectAtIndex:index]];
-                    [[EaseMob sharedInstance].chatManager asyncRemoveOccupants:occupants fromGroup:_chatGroup.groupId completion:^(EMGroup *group, EMError *error) {
+                    [[EaseMob sharedInstance].chatManager asyncRemoveOccupants:occupants fromGroup:weakSelf.chatGroup.groupId completion:^(EMGroup *group, EMError *error) {
                         [weakSelf hideHud];
                         if (!error) {
                             weakSelf.chatGroup = group;
@@ -470,10 +471,11 @@
 //清空聊天记录
 - (void)clearAction
 {
+    __weak typeof(self) weakSelf = self;
     [WCAlertView showAlertWithTitle:@"提示" message:@"请确认删除" customizationBlock:nil completionBlock:
      ^(NSUInteger buttonIndex, WCAlertView *alertView) {
          if (buttonIndex == 1) {
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveAllMessages" object:_chatGroup.groupId];
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveAllMessages" object:weakSelf.chatGroup.groupId];
          }
      } cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
 }
