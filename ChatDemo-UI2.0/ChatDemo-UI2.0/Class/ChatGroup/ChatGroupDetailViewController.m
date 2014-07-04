@@ -90,9 +90,9 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-#warning 把self注册为SDK的delegate
-    [[EaseMob sharedInstance].chatManager removeDelegate:self];
-    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+//#warning 把self注册为SDK的delegate
+//    [[EaseMob sharedInstance].chatManager removeDelegate:self];
+//    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
@@ -123,7 +123,7 @@
 
 - (void)dealloc
 {
-    [[EaseMob sharedInstance].chatManager removeDelegate:self];
+//    [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
 
 #pragma mark - getter
@@ -265,7 +265,7 @@
 
 - (void)fetchGroupInfo
 {
-    __weak ChatGroupDetailViewController *weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:@"加载数据..."];
     [[EaseMob sharedInstance].chatManager asyncFetchGroupInfo:_chatGroup.groupId completion:^(EMGroup *group, EMError *error) {
         if (!error) {
@@ -339,7 +339,7 @@
         [self.scrollView addSubview:self.addButton];
         showAddButton = YES;
     }
-    else if (self.chatGroup.groupSetting.groupStyle == EMGroupStylePrivateMemberCanInvite && self.occupantType == GroupOccupantTypeMember) {
+    else if (self.chatGroup.groupSetting.groupStyle == eGroupStyle_PrivateMemberCanInvite && self.occupantType == GroupOccupantTypeMember) {
         [self.scrollView addSubview:self.addButton];
         showAddButton = YES;
     }
@@ -371,7 +371,7 @@
                     contactView.editing = isEditing;
                 }
                 
-                __weak ChatGroupDetailViewController *weakSelf = self;
+                __weak typeof(self) weakSelf = self;
                 [contactView setDeleteContact:^(NSInteger index) {
                     [weakSelf showHudInView:weakSelf.view hint:@"正在删除成员..."];
                     NSArray *occupants = [NSArray arrayWithObject:[weakSelf.dataSource objectAtIndex:index]];
@@ -483,49 +483,49 @@
 //解散群组
 - (void)dissolveAction
 {
-//    __weak ChatGroupDetailViewController *weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:@"解散群组"];
-//    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
-//        [weakSelf hideHud];
-//        if (error) {
-//            [weakSelf showHint:@"解散群组失败"];
-//        }
-//        else{
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroup" object:nil];
-//        }
-//    } onQueue:nil];
+    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
+        [weakSelf hideHud];
+        if (error) {
+            [weakSelf showHint:@"解散群组失败"];
+        }
+        else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroup" object:nil];
+        }
+    } onQueue:nil];
     
-    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId];
+//    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId];
 }
 
 //退出群组
 - (void)exitAction
 {
-//    __weak ChatGroupDetailViewController *weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:@"退出群组"];
-//    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
-//        [weakSelf hideHud];
-//        if (error) {
-//            [weakSelf showHint:@"退出群组失败"];
-//        }
-//        else{
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroup" object:nil];
-//        }
-//    } onQueue:nil];
+    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId completion:^(EMGroup *group, EMGroupLeaveReason reason, EMError *error) {
+        [weakSelf hideHud];
+        if (error) {
+            [weakSelf showHint:@"退出群组失败"];
+        }
+        else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroup" object:nil];
+        }
+    } onQueue:nil];
     
-    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId];
+//    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId];
 }
 
-- (void)group:(EMGroup *)group didLeave:(EMGroupLeaveReason)reason error:(EMError *)error {
-    __weak ChatGroupDetailViewController *weakSelf = self;
-    [weakSelf hideHud];
-    if (error) {
-        if (reason == eGroupLeaveReason_UserLeave) {
-            [weakSelf showHint:@"退出群组失败"];
-        } else {
-            [weakSelf showHint:@"解散群组失败"];
-        }
-    }
-}
+//- (void)group:(EMGroup *)group didLeave:(EMGroupLeaveReason)reason error:(EMError *)error {
+//    __weak ChatGroupDetailViewController *weakSelf = self;
+//    [weakSelf hideHud];
+//    if (error) {
+//        if (reason == eGroupLeaveReason_UserLeave) {
+//            [weakSelf showHint:@"退出群组失败"];
+//        } else {
+//            [weakSelf showHint:@"解散群组失败"];
+//        }
+//    }
+//}
 
 @end

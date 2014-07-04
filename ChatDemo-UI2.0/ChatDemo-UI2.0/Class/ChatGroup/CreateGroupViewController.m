@@ -205,19 +205,19 @@
     if (_isPublic) {
         if(_isMemberOn)
         {
-            setting.groupStyle = EMGroupStylePublicOpenJoin;
+            setting.groupStyle = eGroupStyle_PublicOpenJoin;
         }
         else{
-            setting.groupStyle = EMGroupStylePublicJoinNeedApproval;
+            setting.groupStyle = eGroupStyle_PublicJoinNeedApproval;
         }
     }
     else{
         if(_isMemberOn)
         {
-            setting.groupStyle = EMGroupStylePrivateMemberCanInvite;
+            setting.groupStyle = eGroupStyle_PrivateMemberCanInvite;
         }
         else{
-            setting.groupStyle = EMGroupStylePrivateOnlyOwnerInvite;
+            setting.groupStyle = eGroupStyle_PrivateOnlyOwnerInvite;
         }
     }
     
