@@ -120,7 +120,7 @@
     if (!message) {
         message = [NSString stringWithFormat:@"%@ 添加你为好友", username];
     }
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":username, @"username":username, @"applyMessage":message, @"acceptState":@NO, @"isGroup":@NO}];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":username, @"username":username, @"applyMessage":message, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleFriend]}];
     [[ApplyViewController shareController] addNewApply:dic];
 }
 
@@ -138,8 +138,36 @@
     if (!message || message.length == 0) {
         message = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, groupName];
     }
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupName, @"id":groupId, @"username":username, @"applyMessage":message, @"acceptState":@NO, @"isGroup":@YES}];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupName, @"groupId":groupId, @"username":username, @"applyMessage":message, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleGroupInvitation]}];
     [[ApplyViewController shareController] addNewApply:dic];
+}
+
+//接收到入群申请
+- (void)didReceiveApplyToJoinGroup:(NSString *)groupId
+                         groupname:(NSString *)groupname
+                     applyUsername:(NSString *)username
+                            reason:(NSString *)reason
+{
+    if (!groupId || !username) {
+        return;
+    }
+    
+    if (!reason || reason.length == 0) {
+        reason = [NSString stringWithFormat:@"%@ 申请加入群组\'%@\'", username, groupname];
+    }
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupname, @"groupId":groupId, @"username":username, @"groupname":groupname, @"applyMessage":reason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
+    [[ApplyViewController shareController] addNewApply:dic];
+}
+
+- (void)didReceiveRejectApplyToJoinGroupFrom:(NSString *)fromId
+                                   groupname:(NSString *)groupname
+                                      reason:(NSString *)reason
+{
+    if (!reason || reason.length == 0) {
+        reason = [NSString stringWithFormat:@"被拒绝加入群组\'%@\'", groupname];
+    }
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"申请提示" message:reason delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
 }
 
 - (void)group:(EMGroup *)group didLeave:(EMGroupLeaveReason)reason error:(EMError *)error

@@ -12,7 +12,7 @@
 
 #import "PublicGroupDetailViewController.h"
 
-@interface PublicGroupDetailViewController ()
+@interface PublicGroupDetailViewController ()<UIAlertViewDelegate>
 
 @property (strong, nonatomic) NSString *groupId;
 @property (strong, nonatomic) EMGroup *group;
@@ -167,6 +167,25 @@
     }
 }
 
+#pragma mark - alertView delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if ([alertView cancelButtonIndex] != buttonIndex) {
+        UITextField *messageTextField = [alertView textFieldAtIndex:0];
+        
+        NSString *messageStr = @"";
+        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+        NSString *username = [loginInfo objectForKey:kSDKUsername];
+        if (messageTextField.text.length > 0) {
+            messageStr = [NSString stringWithFormat:@"%@：%@", username, messageTextField.text];
+        }
+        else{
+            messageStr = [NSString stringWithFormat:@"%@ 请求加入群组\'%@\'", username, _group.groupSubject];
+        }
+        [self applyJoinGroup:_groupId withGroupname:_group.groupSubject message:messageStr];
+    }
+}
+
 #pragma mark - action
 
 - (BOOL)isJoined:(EMGroup *)group
@@ -198,7 +217,7 @@
 {
     __weak PublicGroupDetailViewController *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        weakSelf.nameLabel.text = (_group.groupSubject && _group.groupSubject.length) > 0 ? _group.groupSubject : _group.groupId;
+        weakSelf.nameLabel.text = (weakSelf.group.groupSubject && weakSelf.group.groupSubject.length) > 0 ? weakSelf.group.groupSubject : weakSelf.group.groupId;
         if ([weakSelf isJoined:weakSelf.group]) {
             weakSelf.footerButton.enabled = NO;
             [weakSelf.footerButton setTitle:@"已加入" forState:UIControlStateNormal | UIControlStateDisabled];
@@ -211,11 +230,29 @@
     });
 }
 
+- (void)showMessageAlertView
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"说点啥子吧" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    [alert show];
+}
+
 - (void)joinAction
+{
+    if (self.group.groupSetting.groupStyle == eGroupStyle_PublicJoinNeedApproval) {
+        [self showMessageAlertView];
+    }
+    else if (self.group.groupSetting.groupStyle == eGroupStyle_PublicOpenJoin)
+    {
+        [self joinGroup:_groupId];
+    }
+}
+
+- (void)joinGroup:(NSString *)groupId
 {
     [self showHudInView:self.view hint:@"加入群组..."];
     __weak PublicGroupDetailViewController *weakSelf = self;
-    [[EaseMob sharedInstance].chatManager asyncJoinPublicGroup:_groupId completion:^(EMGroup *group, EMError *error) {
+    [[EaseMob sharedInstance].chatManager asyncJoinPublicGroup:groupId completion:^(EMGroup *group, EMError *error) {
         [weakSelf hideHud];
         if(!error)
         {
@@ -223,6 +260,21 @@
         }
         else{
             [weakSelf showHint:@"加入群组失败，请重新操作"];
+        }
+    } onQueue:nil];
+}
+
+- (void)applyJoinGroup:(NSString *)groupId withGroupname:(NSString *)groupName message:(NSString *)message
+{
+    [self showHudInView:self.view hint:@"发送加群申请..."];
+    __weak typeof(self) weakSelf = self;
+    [[EaseMob sharedInstance].chatManager asyncApplyJoinPublicGroup:groupId withGroupname:groupName message:message completion:^(EMGroup *group, EMError *error) {
+        [weakSelf hideHud];
+        if (!error) {
+            [weakSelf showHint:@"申请已发送"];
+        }
+        else{
+            [weakSelf showHint:@"申请发送失败"];
         }
     } onQueue:nil];
 }

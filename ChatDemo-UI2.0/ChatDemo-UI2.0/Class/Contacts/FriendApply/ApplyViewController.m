@@ -116,12 +116,17 @@ static ApplyViewController *controller = nil;
     NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
     if (dic) {
         cell.indexPath = indexPath;
-        BOOL isGroup = [[dic objectForKey:@"isGroup"] boolValue];
-        if (isGroup) {
+        ApplyStyle applyStyle = [[dic objectForKey:@"applyStyle"] integerValue];
+        if (applyStyle == ApplyStyleGroupInvitation) {
             cell.titleLabel.text = @"群组通知";
             cell.headerImageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
         }
-        else{
+        else if (applyStyle == ApplyStyleJoinGroup)
+        {
+            cell.titleLabel.text = @"群组通知";
+            cell.headerImageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
+        }
+        else if(applyStyle == ApplyStyleFriend){
             cell.titleLabel.text = [dic objectForKey:@"title"];
             cell.headerImageView.image = [UIImage imageNamed:@"chatListCellHead"];
         }
@@ -164,12 +169,16 @@ static ApplyViewController *controller = nil;
     if (indexPath.row < [self.dataSource count]) {
         [self showHudInView:self.view hint:@"正在发送申请..."];
         NSMutableDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
-        BOOL isGroup = [[dic objectForKey:@"isGroup"] boolValue];
+        ApplyStyle applyStyle = [[dic objectForKey:@"applyStyle"] integerValue];
         EMError *error;
-        if (isGroup) {
-            [[EaseMob sharedInstance].chatManager acceptInvitationFromGroup:[dic objectForKey:@"id"] error:&error];
+        if (applyStyle == ApplyStyleGroupInvitation) {
+            [[EaseMob sharedInstance].chatManager acceptInvitationFromGroup:[dic objectForKey:@"groupId"] error:&error];
         }
-        else{
+        else if (applyStyle == ApplyStyleJoinGroup)
+        {
+            [[EaseMob sharedInstance].chatManager acceptApplyJoinGroup:[dic objectForKey:@"groupId"] groupname:[dic objectForKey:@"groupname"] applicant:[dic objectForKey:@"username"] error:&error];
+        }
+        else if(applyStyle == ApplyStyleFriend){
             [[EaseMob sharedInstance].chatManager acceptBuddyRequest:[dic objectForKey:@"username"] error:&error];
         }
         
@@ -188,12 +197,17 @@ static ApplyViewController *controller = nil;
     if (indexPath.row < [self.dataSource count]) {
         [self showHudInView:self.view hint:@"正在发送申请..."];
         NSMutableDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
-        BOOL isGroup = [[dic objectForKey:@"isGroup"] boolValue];
+        ApplyStyle applyStyle = [[dic objectForKey:@"applyStyle"] integerValue];
         EMError *error;
-        if (isGroup) {
-            [[EaseMob sharedInstance].chatManager rejectInvitationForGroup:[dic objectForKey:@"id"] toInviter:[dic objectForKey:@"username"] reason:@""];
+        if (applyStyle == ApplyStyleGroupInvitation) {
+            [[EaseMob sharedInstance].chatManager rejectInvitationForGroup:[dic objectForKey:@"groupId"] toInviter:[dic objectForKey:@"username"] reason:@""];
         }
-        else{
+        else if (applyStyle == ApplyStyleJoinGroup)
+        {
+            NSString *reason = [NSString stringWithFormat:@"被拒绝加入群组\'%@\'", [dic objectForKey:@"groupname"]];
+            [[EaseMob sharedInstance].chatManager rejectApplyJoinGroup:[dic objectForKey:@"groupId"] groupname:[dic objectForKey:@"groupname"] toApplicant:[dic objectForKey:@"username"] reason:reason];
+        }
+        else if(applyStyle == ApplyStyleFriend){
             [[EaseMob sharedInstance].chatManager rejectBuddyRequest:[dic objectForKey:@"username"] reason:@"" error:&error];
         }
         
