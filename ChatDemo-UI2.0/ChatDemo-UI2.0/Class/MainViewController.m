@@ -363,6 +363,14 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     TTAlertNoTitle(message);
 }
 
+
+- (void)didReceiveAcceptApplyToJoinGroup:(NSString *)groupId
+                               groupname:(NSString *)groupname
+{
+    NSString *message = [NSString stringWithFormat:@"同意加入群组\'%@\'", groupname];
+    [self showHint:message];
+}
+
 #pragma mark - IChatManagerDelegate 登录状态变化
 
 - (void)didLoginFromOtherDevice

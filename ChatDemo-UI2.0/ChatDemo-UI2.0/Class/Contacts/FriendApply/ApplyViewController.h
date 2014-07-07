@@ -12,6 +12,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum{
+    ApplyStyleFriend            = 0,
+    ApplyStyleGroupInvitation,
+    ApplyStyleJoinGroup,
+}ApplyStyle;
+
 @interface ApplyViewController : UITableViewController
 {
     NSMutableArray *_dataSource;
