@@ -45,7 +45,6 @@
     dispatch_queue_t _messageQueue;
 }
 
-@property (strong, nonatomic)MPMoviePlayerViewController *theMoviePlayer;
 @property (nonatomic) BOOL isChatGroup;
 @property (strong, nonatomic) EMGroup *chatGroup;
 
@@ -479,10 +478,10 @@
 
 - (void)playVideoWithVideoPath:(NSString *)videoPath{
     NSURL *videoURL = [NSURL fileURLWithPath:videoPath];
-    self.theMoviePlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
-    _theMoviePlayer.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-    //[self presentViewController:_theMoviePlayer animated:YES completion:nil];
-    [self presentMoviePlayerViewControllerAnimated:_theMoviePlayer];
+    MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
+    [moviePlayerController.moviePlayer prepareToPlay];
+    moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+    [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
 }
 
 // 图片的bubble被点击
@@ -542,7 +541,7 @@
 - (void)reloadTableViewDataWithMessage:(EMMessage *)message{
     __weak ChatViewController *weakSelf = self;
     dispatch_async(_messageQueue, ^{
-        if ([_conversation.chatter isEqualToString:message.conversation.chatter])
+        if ([weakSelf.conversation.chatter isEqualToString:message.conversation.chatter])
         {
             for (int i = 0; i < weakSelf.dataSource.count; i ++) {
                 id object = [weakSelf.dataSource objectAtIndex:i];
@@ -950,22 +949,23 @@
             [_dataSource removeAllObjects];
             [_tableView reloadData];
             [self showHint:@"消息已经清空"];
-            return;
         }
     }
-    
-    [WCAlertView showAlertWithTitle:@"提示"
-                            message:@"请确认删除"
-                 customizationBlock:^(WCAlertView *alertView) {
-                     
-                 } completionBlock:
-     ^(NSUInteger buttonIndex, WCAlertView *alertView) {
-         if (buttonIndex == 1) {
-             [_conversation removeAllMessages];
-             [_dataSource removeAllObjects];
-             [self.tableView reloadData];
-         }
-     } cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    else{
+        __weak typeof(self) weakSelf = self;
+        [WCAlertView showAlertWithTitle:@"提示"
+                                message:@"请确认删除"
+                     customizationBlock:^(WCAlertView *alertView) {
+                         
+                     } completionBlock:
+         ^(NSUInteger buttonIndex, WCAlertView *alertView) {
+             if (buttonIndex == 1) {
+                 [weakSelf.conversation removeAllMessages];
+                 [weakSelf.dataSource removeAllObjects];
+                 [weakSelf.tableView reloadData];
+             }
+         } cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    }
 }
 
 - (void)showMenuViewController:(UIView *)showInView andIndexPath:(NSIndexPath *)indexPath messageType:(MessageBodyType)messageType
