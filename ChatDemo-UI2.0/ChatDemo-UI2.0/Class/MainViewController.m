@@ -391,7 +391,11 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 
 - (void)jumpToChatList
 {
-    
+    if(_chatListVC)
+    {
+        [self.navigationController popToViewController:self animated:NO];
+        [self setSelectedViewController:_chatListVC];
+    }
 }
 
 @end

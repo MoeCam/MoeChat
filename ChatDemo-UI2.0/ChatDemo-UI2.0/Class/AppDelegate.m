@@ -71,10 +71,29 @@
     return YES;
 }
 
--(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
 #warning SDK方法调用
     [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    if (_mainController) {
+        [_mainController jumpToChatList];
+    }
+    
+#warning SDK方法调用
+    [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    if (_mainController) {
+        [_mainController jumpToChatList];
+    }
+#warning SDK方法调用
+    [[EaseMob sharedInstance] application:application didReceiveLocalNotification:notification];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -205,10 +224,13 @@
     }
     
     if (isLogin) {
-        MainViewController *mainVC = [[MainViewController alloc] init];
-        nav = [[UINavigationController alloc] initWithRootViewController:mainVC];
+        if (_mainController == nil) {
+            _mainController = [[MainViewController alloc] init];
+        }
+        nav = [[UINavigationController alloc] initWithRootViewController:_mainController];
     }
     else{
+        _mainController = nil;
         LoginViewController *loginController = [[LoginViewController alloc] init];
         nav = [[UINavigationController alloc] initWithRootViewController:loginController];
         loginController.title = @"环信Demo";

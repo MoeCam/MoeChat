@@ -16,4 +16,6 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate, IChatManagerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) MainViewController *mainController;
+
 @end

@@ -113,24 +113,27 @@ static ApplyViewController *controller = nil;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
-    if (dic) {
-        cell.indexPath = indexPath;
-        ApplyStyle applyStyle = [[dic objectForKey:@"applyStyle"] integerValue];
-        if (applyStyle == ApplyStyleGroupInvitation) {
-            cell.titleLabel.text = @"群组通知";
-            cell.headerImageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
+    if(self.dataSource.count > indexPath.row)
+    {
+        NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
+        if (dic) {
+            cell.indexPath = indexPath;
+            ApplyStyle applyStyle = [[dic objectForKey:@"applyStyle"] integerValue];
+            if (applyStyle == ApplyStyleGroupInvitation) {
+                cell.titleLabel.text = @"群组通知";
+                cell.headerImageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
+            }
+            else if (applyStyle == ApplyStyleJoinGroup)
+            {
+                cell.titleLabel.text = @"群组通知";
+                cell.headerImageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
+            }
+            else if(applyStyle == ApplyStyleFriend){
+                cell.titleLabel.text = [dic objectForKey:@"title"];
+                cell.headerImageView.image = [UIImage imageNamed:@"chatListCellHead"];
+            }
+            cell.contentLabel.text = [dic objectForKey:@"applyMessage"];
         }
-        else if (applyStyle == ApplyStyleJoinGroup)
-        {
-            cell.titleLabel.text = @"群组通知";
-            cell.headerImageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
-        }
-        else if(applyStyle == ApplyStyleFriend){
-            cell.titleLabel.text = [dic objectForKey:@"title"];
-            cell.headerImageView.image = [UIImage imageNamed:@"chatListCellHead"];
-        }
-        cell.contentLabel.text = [dic objectForKey:@"applyMessage"];
     }
     
     return cell;
@@ -251,6 +254,7 @@ static ApplyViewController *controller = nil;
 - (void)clear
 {
     [_dataSource removeAllObjects];
+    [self.tableView reloadData];
 }
 
 @end
