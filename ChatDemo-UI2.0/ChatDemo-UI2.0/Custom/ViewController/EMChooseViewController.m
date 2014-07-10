@@ -291,7 +291,7 @@
     if (_comparisonObjectSelector) {
         for (int i = 0; i < [sortedArray count]; i++) {
             NSArray *tmpArray = [[sortedArray objectAtIndex:i] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-                return _comparisonObjectSelector(obj1, obj2);
+                return self->_comparisonObjectSelector(obj1, obj2);
             }];
             
             [sortedArray replaceObjectAtIndex:i withObject:tmpArray];

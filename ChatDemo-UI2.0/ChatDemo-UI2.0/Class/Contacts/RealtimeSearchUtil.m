@@ -75,19 +75,19 @@ static RealtimeSearchUtil *defaultUtil = nil;
 {
     dispatch_async(self.searchQueue, ^{
         if (string.length == 0) {
-            _resultBlock(_source);
+            self->_resultBlock(self->_source);
         }
         else{
             NSMutableArray *results = [NSMutableArray array];
             NSString *subStr = [string lowercaseString];
-            for (id object in _source) {
+            for (id object in self->_source) {
                 NSString *tmpString = @"";
-                if (_selector) {
-                    if([object respondsToSelector:_selector])
+                if (self->_selector) {
+                    if([object respondsToSelector:self->_selector])
                     {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                        tmpString = [[object performSelector:_selector] lowercaseString];
+                        tmpString = [[object performSelector:self->_selector] lowercaseString];
 #pragma clang diagnostic pop
                         
                     }
@@ -106,7 +106,7 @@ static RealtimeSearchUtil *defaultUtil = nil;
                 }
             }
             
-            _resultBlock(results);
+            self->_resultBlock(results);
         }
     });
 }

@@ -113,7 +113,7 @@
                 @autoreleasepool {
                     @try {
                         ALAssetsLibrary *assetslibrary = [[ALAssetsLibrary alloc] init];
-                        [assetslibrary assetForURL:_photoURL
+                        [assetslibrary assetForURL:self->_photoURL
                                        resultBlock:^(ALAsset *asset){
                                            ALAssetRepresentation *rep = [asset defaultRepresentation];
                                            CGImageRef iref = [rep fullScreenImage];
@@ -140,8 +140,8 @@
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 @autoreleasepool {
                     @try {
-                        self.underlyingImage = [UIImage imageWithContentsOfFile:_photoURL.path];
-                        if (!_underlyingImage) {
+                        self.underlyingImage = [UIImage imageWithContentsOfFile:self->_photoURL.path];
+                        if (!self->_underlyingImage) {
                             MWLog(@"Error loading photo from path: %@", _photoURL.path);
                         }
                     } @finally {
@@ -170,7 +170,7 @@
                                                         if (error) {
                                                             MWLog(@"SDWebImage failed to download image: %@", error);
                                                         }
-                                                        _webImageOperation = nil;
+                                                        self->_webImageOperation = nil;
                                                         self.underlyingImage = image;
                                                         [self imageLoadingComplete];
                                                     }];

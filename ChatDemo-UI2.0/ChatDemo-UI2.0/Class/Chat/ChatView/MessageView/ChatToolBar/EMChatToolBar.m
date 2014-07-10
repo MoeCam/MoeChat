@@ -246,10 +246,10 @@
         CGFloat keyBoardHeight = CGRectGetHeight(_showTableView.frame) - self.frame.origin.y;
         if (keyBoardHeight + _showTableView.contentSize.height > CGRectGetHeight(_showTableView.frame)) {
             [UIView animateWithDuration:0 animations:^(){
-                _showTableView.contentOffset = CGPointMake(0, _showTableView.contentOffset.y + height);
-                UIEdgeInsets contentInset = UIEdgeInsetsMake(0.0, 0.0, _showTableView.contentInset.bottom + height, 0.0);;
-                _showTableView.contentInset = contentInset;
-                _showTableView.scrollIndicatorInsets = contentInset;
+                self->_showTableView.contentOffset = CGPointMake(0, self->_showTableView.contentOffset.y + height);
+                UIEdgeInsets contentInset = UIEdgeInsetsMake(0.0, 0.0, self->_showTableView.contentInset.bottom + height, 0.0);;
+                self->_showTableView.contentInset = contentInset;
+                self->_showTableView.scrollIndicatorInsets = contentInset;
                 
             } completion:^(BOOL finish){
                 
@@ -345,27 +345,27 @@
 	[UIView animateWithDuration:duration animations:^(){
         // bar位置变换
         CGRect frame = self.frame;
-        frame.origin.y = CGRectGetHeight(_dependController.view.frame) - CGRectGetHeight(endRect) - CGRectGetHeight(self.frame);
+        frame.origin.y = CGRectGetHeight(self->_dependController.view.frame) - CGRectGetHeight(endRect) - CGRectGetHeight(self.frame);
         self.frame = frame;
         
-        if (_showTableView) {
+        if (self->_showTableView) {
             UIEdgeInsets contentInsets;
-            CGFloat tableHeight = CGRectGetHeight(_showTableView.frame);
-            CGFloat tableContentHeight = _showTableView.contentSize.height;
+            CGFloat tableHeight = CGRectGetHeight(self->_showTableView.frame);
+            CGFloat tableContentHeight = self->_showTableView.contentSize.height;
             
             // 1. 全部遮挡 contentSize.height > tableView的高度
             if (tableContentHeight > tableHeight) {
-                _showTableView.contentOffset = CGPointMake(0, _showTableView.contentOffset.y + keyBoardHeight);
+                self->_showTableView.contentOffset = CGPointMake(0, self->_showTableView.contentOffset.y + keyBoardHeight);
                 // 2. 部分遮挡  0 < tableHeight - contentHeight < 键盘的高度
             }else if(tableHeight > tableContentHeight &&
                      tableHeight - tableContentHeight < keyBoardHeight){
                 // 计算需要移动的距离
                 CGFloat changeHeight = tableContentHeight + keyBoardHeight - tableHeight;
-                _showTableView.contentOffset = CGPointMake(0,  _showTableView.contentOffset.y + changeHeight);
+                self->_showTableView.contentOffset = CGPointMake(0,  self->_showTableView.contentOffset.y + changeHeight);
             }
             contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyBoardHeight, 0.0);
-            _showTableView.contentInset = contentInsets;
-            _showTableView.scrollIndicatorInsets = contentInsets;
+            self->_showTableView.contentInset = contentInsets;
+            self->_showTableView.scrollIndicatorInsets = contentInsets;
         }
     } completion:^(BOOL finish){
         
@@ -385,27 +385,27 @@
     
    	[UIView animateWithDuration:duration animations:^(){
         CGRect frame = self.frame;
-        frame.origin.y = CGRectGetHeight( _dependController.view.frame) - frame.size.height;
+        frame.origin.y = CGRectGetHeight( self->_dependController.view.frame) - frame.size.height;
         self.frame = frame;
         
-        if (_showTableView) {
-            CGFloat tableHeight = CGRectGetHeight(_showTableView.frame);
-            CGFloat tableContentHeight = _showTableView.contentSize.height;
+        if (self->_showTableView) {
+            CGFloat tableHeight = CGRectGetHeight(self->_showTableView.frame);
+            CGFloat tableContentHeight = self->_showTableView.contentSize.height;
             
             // 1.完全遮挡 contentHeight > tableHeight
             if (tableContentHeight > tableHeight) {
                 // 判断是否需要移动table
-                if (_showTableView.contentOffset.y >= keyBoardHeight) {
-                    _showTableView.contentOffset = CGPointMake(0, _showTableView.contentOffset.y - keyBoardHeight);
+                if (self->_showTableView.contentOffset.y >= keyBoardHeight) {
+                    self->_showTableView.contentOffset = CGPointMake(0, self->_showTableView.contentOffset.y - keyBoardHeight);
                 }
                 // 2.部分遮挡 tableHeight > contentHeight && tableHeight - contentHeight > keyBoardHeight
             }else if (tableHeight > tableContentHeight && tableHeight - tableContentHeight < keyBoardHeight){
                 // 计算需要移动的距离
                 CGFloat changeHeight = tableContentHeight + keyBoardHeight - tableHeight;
-                _showTableView.contentOffset = CGPointMake(0, _showTableView.contentOffset.y - changeHeight);
+                self->_showTableView.contentOffset = CGPointMake(0, self->_showTableView.contentOffset.y - changeHeight);
             }
-            _showTableView.contentInset = UIEdgeInsetsZero;
-            _showTableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+            self->_showTableView.contentInset = UIEdgeInsetsZero;
+            self->_showTableView.scrollIndicatorInsets = UIEdgeInsetsZero;
         }
     } completion:^(BOOL finish){
         

@@ -125,7 +125,7 @@ static LocationViewController *defaultLocation = nil;
     [geocoder reverseGeocodeLocation:userLocation.location completionHandler:^(NSArray *array, NSError *error) {
         if (!error && array.count > 0) {
             CLPlacemark *placemark = [array objectAtIndex:0];
-            _addressString = placemark.name;
+            self->_addressString = placemark.name;
             
             [self removeToLocation:userLocation.coordinate];
         }
