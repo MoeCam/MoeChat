@@ -98,6 +98,8 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 {
     if (alertView.tag == 100) {
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+    } else if (alertView.tag == 101) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
     }
 }
 
@@ -376,8 +378,26 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 - (void)didLoginFromOtherDevice
 {
     [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的账号已在其他地方登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"你的账号已在其他地方登录"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil,
+                                  nil];
         alertView.tag = 100;
+        [alertView show];
+    } onQueue:nil];
+}
+
+- (void)didRemovedFromServer {
+    [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"你的账号已被从服务器端移除"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil,
+                                  nil];
+        alertView.tag = 101;
         [alertView show];
     } onQueue:nil];
 }
