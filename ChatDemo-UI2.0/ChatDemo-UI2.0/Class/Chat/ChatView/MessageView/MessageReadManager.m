@@ -11,7 +11,7 @@
   */
 
 #import "MessageReadManager.h"
-#import "UIImageView+WebCache.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 static MessageReadManager *detailInstance = nil;
 
