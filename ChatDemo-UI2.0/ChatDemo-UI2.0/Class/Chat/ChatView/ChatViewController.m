@@ -109,9 +109,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitGroup) name:@"ExitGroup" object:nil];
     
     _messageQueue = dispatch_queue_create("easemob.com", NULL);
-    //通过会话管理者获取已收发消息
-    NSArray *chats = [_conversation loadNumbersOfMessages:KPageCount before:[_conversation latestMessage].timestamp + 1];
-    [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
+//    //通过会话管理者获取已收发消息
+//    
+//    NSArray *chats = [_conversation loadNumbersOfMessages:KPageCount before:[_conversation latestMessage].timestamp + 1];
+//    [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
     
     [self setupBarButtonItem];
     [self.view addSubview:self.tableView];
@@ -125,6 +126,9 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
     [self.view addGestureRecognizer:tap];
+    
+    //通过会话管理者获取已收发消息
+    [self loadMoreMessages];
 }
 
 - (void)setupBarButtonItem
@@ -843,16 +847,22 @@
 
 - (void)loadMoreMessages
 {
-    NSInteger currentCount = [self.dataSource count];
-    NSArray *chats = [_conversation loadNumbersOfMessages:(currentCount + KPageCount) before:[_conversation latestMessage].timestamp + 1];
-    
-    if ([chats count] > currentCount) {
-        [self.dataSource removeAllObjects];
-        [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
-        [_tableView reloadData];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(_messageQueue, ^{
+        NSInteger currentCount = [weakSelf.dataSource count];
+        NSArray *chats = [weakSelf.conversation loadNumbersOfMessages:(currentCount + KPageCount) before:[weakSelf.conversation latestMessage].timestamp + 1];
         
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.dataSource count] - currentCount inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    }
+        if ([chats count] > currentCount) {
+            [weakSelf.dataSource removeAllObjects];
+            [weakSelf.dataSource addObjectsFromArray:[weakSelf sortChatSource:chats]];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.tableView reloadData];
+                
+                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[weakSelf.dataSource count] - currentCount - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            });
+        }
+    });
 }
 
 - (NSArray *)sortChatSource:(NSArray *)array
