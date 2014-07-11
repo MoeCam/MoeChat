@@ -107,6 +107,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllMessages:) name:@"RemoveAllMessages" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitGroup) name:@"ExitGroup" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:@"applicationDidEnterBackground" object:nil];
     
     _messageQueue = dispatch_queue_create("easemob.com", NULL);
 //    //通过会话管理者获取已收发消息
@@ -1005,6 +1006,16 @@
 {
     [self.navigationController popToViewController:self animated:NO];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)applicationDidEnterBackground
+{
+    [_chatToolBar cancelTouchRecord];
+    
+    // 设置当前conversation的所有message为已读
+    [_conversation markMessagesAsRead:YES];
+    
+    [self stopAudioPlaying];
 }
 
 #pragma mark - send message

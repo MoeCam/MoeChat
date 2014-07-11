@@ -104,6 +104,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidEnterBackground" object:nil];
 #warning SDK方法调用
     [[EaseMob sharedInstance] applicationDidEnterBackground:application];
 }
