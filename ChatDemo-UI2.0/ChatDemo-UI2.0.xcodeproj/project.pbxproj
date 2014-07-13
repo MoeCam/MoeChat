@@ -251,6 +251,7 @@
 		90133E611972D11000C49B56 /* NSString+Valid.m in Sources */ = {isa = PBXBuildFile; fileRef = 90133E601972D11000C49B56 /* NSString+Valid.m */; };
 		90133EB91972D18D00C49B56 /* libEaseMobClientSDKLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90133EB51972D18D00C49B56 /* libEaseMobClientSDKLite.a */; };
 		90133EBA1972D18D00C49B56 /* EaseMob.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 90133EB81972D18D00C49B56 /* EaseMob.bundle */; };
+		90133EC11972DFF400C49B56 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 90133EC01972DFF400C49B56 /* UIViewController+DismissKeyboard.m */; };
 		9026F6621961856500653E79 /* ConvertToCommonEmoticonsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9026F6611961856500653E79 /* ConvertToCommonEmoticonsHelper.m */; };
 		902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902DEC541931D934006CA75E /* libresolv.dylib */; };
 		905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 905325CE1932ED8B00F064D7 /* EMSearchBar.m */; };
@@ -699,6 +700,8 @@
 		90133EB31972D18D00C49B56 /* EMErrorDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMErrorDefs.h; sourceTree = "<group>"; };
 		90133EB51972D18D00C49B56 /* libEaseMobClientSDKLite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libEaseMobClientSDKLite.a; sourceTree = "<group>"; };
 		90133EB81972D18D00C49B56 /* EaseMob.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = EaseMob.bundle; sourceTree = "<group>"; };
+		90133EBF1972DFF400C49B56 /* UIViewController+DismissKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DismissKeyboard.h"; sourceTree = "<group>"; };
+		90133EC01972DFF400C49B56 /* UIViewController+DismissKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DismissKeyboard.m"; sourceTree = "<group>"; };
 		9026F6601961856500653E79 /* ConvertToCommonEmoticonsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConvertToCommonEmoticonsHelper.h; sourceTree = "<group>"; };
 		9026F6611961856500653E79 /* ConvertToCommonEmoticonsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConvertToCommonEmoticonsHelper.m; sourceTree = "<group>"; };
 		902DEC541931D934006CA75E /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
@@ -1913,6 +1916,8 @@
 				909110EC192EEAED008A48AA /* UIViewController+HUD.m */,
 				90133E5F1972D11000C49B56 /* NSString+Valid.h */,
 				90133E601972D11000C49B56 /* NSString+Valid.m */,
+				90133EBF1972DFF400C49B56 /* UIViewController+DismissKeyboard.h */,
+				90133EC01972DFF400C49B56 /* UIViewController+DismissKeyboard.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -2279,6 +2284,7 @@
 				9003D89F1939D8D000DC38A4 /* EMChatAudioBubbleView.m in Sources */,
 				9003D8A01939D8D000DC38A4 /* EMChatBaseBubbleView.m in Sources */,
 				3C9DDAB4193871D8007C765A /* EMSearchDisplayController.m in Sources */,
+				90133EC11972DFF400C49B56 /* UIViewController+DismissKeyboard.m in Sources */,
 				9003D9141939D8D000DC38A4 /* AddFriendViewController.m in Sources */,
 				9003D9121939D8D000DC38A4 /* ContactsViewController.m in Sources */,
 				3C1CEF6F196E9F5400DBA56B /* DACircularProgressView.m in Sources */,
