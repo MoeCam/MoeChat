@@ -75,6 +75,18 @@
 - (IBAction)doRegister:(id)sender {
     if (![self isEmpty]) {
         [self.view endEditing:YES];
+        if ([NSString isChinese:self.usernameTextField.text]) {
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle:@"用户名不支持中文"
+                                  message:nil
+                                  delegate:nil
+                                  cancelButtonTitle:@"确定"
+                                  otherButtonTitles:nil];
+            
+            [alert show];
+            
+            return;
+        }
         [self showHudInView:self.view hint:@"正在注册..."];
         [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:_usernameTextField.text
                                                              password:_passwordTextField.text
@@ -107,6 +119,19 @@
 - (IBAction)doLogin:(id)sender {
     if (![self isEmpty]) {
         [self.view endEditing:YES];
+        if ([NSString isChinese:self.usernameTextField.text]) {
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle:@"用户名不支持中文"
+                                  message:nil
+                                  delegate:nil
+                                  cancelButtonTitle:@"确定"
+                                  otherButtonTitles:nil];
+            
+            [alert show];
+            
+            return;
+        }
+        
         [self showHudInView:self.view hint:@"正在登录..."];
         [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:_usernameTextField.text
                                                             password:_passwordTextField.text
