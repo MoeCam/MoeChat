@@ -51,7 +51,7 @@
 - (IBAction)doRegister:(id)sender {
     if (![self isEmpty]) {
         [self.view endEditing:YES];
-        if ([NSString isChinese:self.usernameTextField.text]) {
+        if ([self.usernameTextField.text isChinese]) {
             UIAlertView *alert = [[UIAlertView alloc]
                                   initWithTitle:@"用户名不支持中文"
                                   message:nil
@@ -95,7 +95,7 @@
 - (IBAction)doLogin:(id)sender {
     if (![self isEmpty]) {
         [self.view endEditing:YES];
-        if ([NSString isChinese:self.usernameTextField.text]) {
+        if ([self.usernameTextField.text isChinese]) {
             UIAlertView *alert = [[UIAlertView alloc]
                                   initWithTitle:@"用户名不支持中文"
                                   message:nil

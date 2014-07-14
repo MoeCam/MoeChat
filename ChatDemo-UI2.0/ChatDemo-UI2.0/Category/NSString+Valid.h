@@ -13,5 +13,5 @@
 #import <Foundation/Foundation.h>
 
 @interface NSString (Valid)
-+(BOOL)isChinese:(NSString *)str;
+-(BOOL)isChinese;
 @end
