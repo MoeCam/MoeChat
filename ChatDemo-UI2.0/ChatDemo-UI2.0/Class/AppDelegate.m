@@ -175,6 +175,9 @@
     if (!reason || reason.length == 0) {
         reason = [NSString stringWithFormat:@"%@ 申请加入群组\'%@\'", username, groupname];
     }
+    else{
+        reason = [NSString stringWithFormat:@"%@ 申请加入群组\'%@\'：%@", username, groupname, reason];
+    }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupname, @"groupId":groupId, @"username":username, @"groupname":groupname, @"applyMessage":reason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
     [[ApplyViewController shareController] addNewApply:dic];
 }
