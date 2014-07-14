@@ -196,6 +196,52 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+#pragma mark - helper
+- (NSURL *)convert2Mp4:(NSURL *)movUrl {
+    NSURL *mp4Url = nil;
+    AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:movUrl options:nil];
+    NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
+    
+    if ([compatiblePresets containsObject:AVAssetExportPresetHighestQuality]) {
+        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc]initWithAsset:avAsset
+                                                                              presetName:AVAssetExportPresetHighestQuality];
+        mp4Url = [movUrl copy];
+        mp4Url = [mp4Url URLByDeletingPathExtension];
+        mp4Url = [mp4Url URLByAppendingPathExtension:@"mp4"];
+        exportSession.outputURL = mp4Url;
+        exportSession.shouldOptimizeForNetworkUse = YES;
+        exportSession.outputFileType = AVFileTypeMPEG4;
+        dispatch_semaphore_t wait = dispatch_semaphore_create(0l);
+        [exportSession exportAsynchronouslyWithCompletionHandler:^{
+            switch ([exportSession status]) {
+                case AVAssetExportSessionStatusFailed: {
+                    NSLog(@"failed.");
+                } break;
+                case AVAssetExportSessionStatusCancelled: {
+                    NSLog(@"cancelled.");
+                } break;
+                case AVAssetExportSessionStatusCompleted: {
+                    NSLog(@"completed.");
+                } break;
+                default: {
+                    NSLog(@"others.");
+                } break;
+            }
+            dispatch_semaphore_signal(wait);
+        }];
+        int timeout = dispatch_semaphore_wait(wait, DISPATCH_TIME_FOREVER);
+        if (timeout) {
+            NSLog(@"timeout.");
+        }
+        if (wait) {
+            //dispatch_release(wait);
+            wait = nil;
+        }
+    }
+    
+    return mp4Url;
+}
+
 #pragma mark - getter
 
 - (NSMutableArray *)dataSource
@@ -770,7 +816,19 @@
     if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
         NSURL *videoURL = info[UIImagePickerControllerMediaURL];
         [picker dismissViewControllerAnimated:YES completion:nil];
-        EMChatVideo *chatVideo = [[EMChatVideo alloc] initWithFile:[videoURL relativePath] displayName:@"video"];
+        // video url:
+        // file:///private/var/mobile/Applications/B3CDD0B2-2F19-432B-9CFA-158700F4DE8F/tmp/capture-T0x16e39100.tmp.9R8weF/capturedvideo.MOV
+        // we will convert it to mp4 format
+        NSURL *mp4 = [self convert2Mp4:videoURL];
+        NSFileManager *fileman = [NSFileManager defaultManager];
+        if ([fileman fileExistsAtPath:videoURL.path]) {
+            NSError *error = nil;
+            [fileman removeItemAtURL:videoURL error:&error];
+            if (error) {
+                NSLog(@"failed to remove file, error:%@.", error);
+            }
+        }
+        EMChatVideo *chatVideo = [[EMChatVideo alloc] initWithFile:[mp4 relativePath] displayName:@"video.mp4"];
         [self sendVideoMessage:chatVideo];
         
     }else{
