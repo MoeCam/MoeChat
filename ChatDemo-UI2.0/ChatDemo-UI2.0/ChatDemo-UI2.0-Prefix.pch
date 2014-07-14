@@ -21,6 +21,9 @@
     #import "UIViewController+DismissKeyboard.h"
     #import "NSString+Valid.h"
 
+    #define MR_SHORTHAND
+    #import "CoreData+MagicalRecord.h"
+
     #import "EaseMob.h"
 
 #endif

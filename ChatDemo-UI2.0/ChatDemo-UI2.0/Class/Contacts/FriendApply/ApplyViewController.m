@@ -13,14 +13,19 @@
 #import "ApplyViewController.h"
 
 #import "ApplyFriendCell.h"
+#import "ApplyEntity.h"
 
 static ApplyViewController *controller = nil;
 
 @interface ApplyViewController ()<ApplyFriendCellDelegate>
 
+@property (strong, nonatomic) NSString *loginUsername;
+
 @end
 
 @implementation ApplyViewController
+
+@synthesize loginUsername = _loginUsername;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -28,6 +33,9 @@ static ApplyViewController *controller = nil;
     if (self) {
         // Custom initialization
         _dataSource = [[NSMutableArray alloc] init];
+        _loginUsername = nil;
+        
+        [self loadDataSourceFromLocalDB];
     }
     return self;
 }
@@ -38,6 +46,10 @@ static ApplyViewController *controller = nil;
     dispatch_once(&onceToken, ^{
         controller = [[self alloc] initWithStyle:UITableViewStylePlain];
     });
+    
+    if (!controller.loginUsername || controller.loginUsername.length == 0) {
+        [controller loadDataSourceFromLocalDB];
+    }
     
     return controller;
 }
@@ -115,10 +127,10 @@ static ApplyViewController *controller = nil;
     
     if(self.dataSource.count > indexPath.row)
     {
-        NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
-        if (dic) {
+        ApplyEntity *entity = [self.dataSource objectAtIndex:indexPath.row];
+        if (entity) {
             cell.indexPath = indexPath;
-            ApplyStyle applyStyle = [[dic objectForKey:@"applyStyle"] integerValue];
+            ApplyStyle applyStyle = [entity.style integerValue];
             if (applyStyle == ApplyStyleGroupInvitation) {
                 cell.titleLabel.text = @"群组通知";
                 cell.headerImageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
@@ -129,10 +141,10 @@ static ApplyViewController *controller = nil;
                 cell.headerImageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
             }
             else if(applyStyle == ApplyStyleFriend){
-                cell.titleLabel.text = [dic objectForKey:@"title"];
+                cell.titleLabel.text = entity.applicantUsername;
                 cell.headerImageView.image = [UIImage imageNamed:@"chatListCellHead"];
             }
-            cell.contentLabel.text = [dic objectForKey:@"applyMessage"];
+            cell.contentLabel.text = entity.reason;
         }
     }
     
@@ -150,8 +162,8 @@ static ApplyViewController *controller = nil;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
-    return [ApplyFriendCell heightWithContent:[dic objectForKey:@"applyMessage"]];
+    ApplyEntity *entity = [self.dataSource objectAtIndex:indexPath.row];
+    return [ApplyFriendCell heightWithContent:entity.reason];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -161,33 +173,32 @@ static ApplyViewController *controller = nil;
 
 #pragma mark - ApplyFriendCellDelegate
 
-- (void)removeDataFromDataSource:(NSDictionary *)dic
-{
-    [self.dataSource removeObject:dic];
-    [self.tableView reloadData];
-}
-
 - (void)applyCellAddFriendAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row < [self.dataSource count]) {
         [self showHudInView:self.view hint:@"正在发送申请..."];
-        NSMutableDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
-        ApplyStyle applyStyle = [[dic objectForKey:@"applyStyle"] integerValue];
+        
+        ApplyEntity *entity = [self.dataSource objectAtIndex:indexPath.row];
+        ApplyStyle applyStyle = [entity.style integerValue];
         EMError *error;
+        
         if (applyStyle == ApplyStyleGroupInvitation) {
-            [[EaseMob sharedInstance].chatManager acceptInvitationFromGroup:[dic objectForKey:@"groupId"] error:&error];
+            [[EaseMob sharedInstance].chatManager acceptInvitationFromGroup:entity.groupId error:&error];
         }
         else if (applyStyle == ApplyStyleJoinGroup)
         {
-            [[EaseMob sharedInstance].chatManager acceptApplyJoinGroup:[dic objectForKey:@"groupId"] groupname:[dic objectForKey:@"groupname"] applicant:[dic objectForKey:@"username"] error:&error];
+            [[EaseMob sharedInstance].chatManager acceptApplyJoinGroup:entity.groupId groupname:entity.groupSubject applicant:entity.applicantUsername error:&error];
         }
         else if(applyStyle == ApplyStyleFriend){
-            [[EaseMob sharedInstance].chatManager acceptBuddyRequest:[dic objectForKey:@"username"] error:&error];
+            [[EaseMob sharedInstance].chatManager acceptBuddyRequest:entity.applicantUsername error:&error];
         }
         
         [self hideHud];
         if (!error) {
-            [self removeDataFromDataSource:dic];
+            [self.dataSource removeObject:entity];
+            [entity deleteEntity];
+            [self.tableView reloadData];
+            [self save];
         }
         else{
             [self showHint:@"接受失败"];
@@ -199,24 +210,28 @@ static ApplyViewController *controller = nil;
 {
     if (indexPath.row < [self.dataSource count]) {
         [self showHudInView:self.view hint:@"正在发送申请..."];
-        NSMutableDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
-        ApplyStyle applyStyle = [[dic objectForKey:@"applyStyle"] integerValue];
+        ApplyEntity *entity = [self.dataSource objectAtIndex:indexPath.row];
+        ApplyStyle applyStyle = [entity.style integerValue];
         EMError *error;
+        
         if (applyStyle == ApplyStyleGroupInvitation) {
-            [[EaseMob sharedInstance].chatManager rejectInvitationForGroup:[dic objectForKey:@"groupId"] toInviter:[dic objectForKey:@"username"] reason:@""];
+            [[EaseMob sharedInstance].chatManager rejectInvitationForGroup:entity.groupId toInviter:entity.applicantUsername reason:@""];
         }
         else if (applyStyle == ApplyStyleJoinGroup)
         {
-            NSString *reason = [NSString stringWithFormat:@"被拒绝加入群组\'%@\'", [dic objectForKey:@"groupname"]];
-            [[EaseMob sharedInstance].chatManager rejectApplyJoinGroup:[dic objectForKey:@"groupId"] groupname:[dic objectForKey:@"groupname"] toApplicant:[dic objectForKey:@"username"] reason:reason];
+            NSString *reason = [NSString stringWithFormat:@"被拒绝加入群组\'%@\'", entity.groupSubject];
+            [[EaseMob sharedInstance].chatManager rejectApplyJoinGroup:entity.groupId groupname:entity.groupSubject toApplicant:entity.applicantUsername reason:reason];
         }
         else if(applyStyle == ApplyStyleFriend){
-            [[EaseMob sharedInstance].chatManager rejectBuddyRequest:[dic objectForKey:@"username"] reason:@"" error:&error];
+            [[EaseMob sharedInstance].chatManager rejectBuddyRequest:entity.applicantUsername reason:@"" error:&error];
         }
         
         [self hideHud];
         if (!error) {
-            [self removeDataFromDataSource:dic];
+            [self.dataSource removeObject:entity];
+            [entity deleteEntity];
+            [self.tableView reloadData];
+            [self save];
         }
         else{
             [self showHint:@"拒绝失败"];
@@ -229,30 +244,77 @@ static ApplyViewController *controller = nil;
 - (void)addNewApply:(NSDictionary *)dictionary
 {
     if (dictionary && [dictionary count] > 0) {
-        NSString *newUsername = [dictionary objectForKey:@"username"];
-        BOOL isGroup = [[dictionary objectForKey:@"isGroup"] boolValue];
-        if (newUsername && newUsername.length > 0) {
-            for (NSDictionary *tmpDic in _dataSource) {
-                NSString *tmpUsername = [tmpDic objectForKey:@"username"];
-                BOOL tmpIsGroup = [[tmpDic objectForKey:@"isGroup"] boolValue];
-                if (isGroup == tmpIsGroup && [tmpUsername isEqualToString:newUsername]) {
+        NSString *applyUsername = [dictionary objectForKey:@"username"];
+        ApplyStyle style = [[dictionary objectForKey:@"applyStyle"] intValue];
+        
+        if (applyUsername && applyUsername.length > 0) {
+            for (int i = ([_dataSource count] - 1); i >= 0; i--) {
+                ApplyEntity *oldEntity = [_dataSource objectAtIndex:i];
+                ApplyStyle oldStyle = [oldEntity.style intValue];
+                if (oldStyle == style && [applyUsername isEqualToString:oldEntity.applicantUsername]) {
+                    if(style != ApplyStyleFriend)
+                    {
+                        NSString *newGroupid = [dictionary objectForKey:@"groupname"];
+                        if (newGroupid || [newGroupid length] > 0 || [newGroupid isEqualToString:oldEntity.groupId]) {
+                            break;
+                        }
+                    }
                     
-                    [_dataSource removeObject:tmpDic];
-                    [_dataSource insertObject:dictionary atIndex:0];
+                    oldEntity.reason = [dictionary objectForKey:@"applyMessage"];
+                    [_dataSource removeObject:oldEntity];
+                    [_dataSource insertObject:oldEntity atIndex:0];
                     [self.tableView reloadData];
+                    [self save];
                     
                     return;
                 }
             }
             
-            [_dataSource insertObject:dictionary atIndex:0];
+            //new apply
+            ApplyEntity *newEntity = [ApplyEntity createEntity];
+            newEntity.applicantUsername = [dictionary objectForKey:@"username"];
+            newEntity.style = [dictionary objectForKey:@"applyStyle"];
+            newEntity.reason = [dictionary objectForKey:@"applyMessage"];
+            
+            NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+            NSString *loginName = [loginInfo objectForKey:kSDKUsername];
+            newEntity.receiverUsername = loginName;
+            
+            NSString *groupId = [dictionary objectForKey:@"groupId"];
+            newEntity.groupId = (groupId && groupId.length > 0) ? groupId : @"";
+            
+            NSString *groupSubject = [dictionary objectForKey:@"groupname"];
+            newEntity.groupSubject = (groupSubject && groupSubject.length > 0) ? groupSubject : @"";
+            
+            [_dataSource insertObject:newEntity atIndex:0];
             [self.tableView reloadData];
+            [self save];
         }
     }
 }
 
+- (void)loadDataSourceFromLocalDB
+{
+    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+    NSString *loginName = [loginInfo objectForKey:kSDKUsername];
+    if(loginName && [loginName length] > 0)
+    {
+        self.loginUsername = loginName;
+        NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"receiverUsername = %@", loginName];
+        NSFetchRequest *request = [ApplyEntity requestAllWithPredicate:searchPredicate];
+        NSArray *applyArray = [ApplyEntity executeFetchRequest:request];
+        [self.dataSource addObjectsFromArray:applyArray];
+    }
+}
+
+- (void)save
+{
+    [[NSManagedObjectContext defaultContext] saveToPersistentStoreAndWait];
+}
+
 - (void)clear
 {
+    _loginUsername = nil;
     [_dataSource removeAllObjects];
     [self.tableView reloadData];
 }

@@ -342,16 +342,19 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 {
 #if !TARGET_IPHONE_SIMULATOR
     [self playSoundAndVibration];
+#endif
     
-    BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
-    if (!isAppActivity) {
-        //发送本地推送
-//        UILocalNotification *notification = [[UILocalNotification alloc] init];
-//        notification.fireDate = [NSDate date]; //触发通知的时间
-//        notification.alertBody = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, groupName];
-//        notification.alertAction = @"打开";
-//        notification.timeZone = [NSTimeZone defaultTimeZone];
-    }
+    [_contactsVC reloadGroupView];
+}
+
+//接收到入群申请
+- (void)didReceiveApplyToJoinGroup:(NSString *)groupId
+                         groupname:(NSString *)groupname
+                     applyUsername:(NSString *)username
+                            reason:(NSString *)reason
+{
+#if !TARGET_IPHONE_SIMULATOR
+    [self playSoundAndVibration];
 #endif
     
     [_contactsVC reloadGroupView];
