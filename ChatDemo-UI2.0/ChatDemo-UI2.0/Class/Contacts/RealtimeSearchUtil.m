@@ -15,11 +15,12 @@
 static RealtimeSearchUtil *defaultUtil = nil;
 
 @interface RealtimeSearchUtil()
-{
-    id _source;
-    SEL _selector;
-    RealtimeSearchResultsBlock _resultBlock;
-}
+
+@property (strong, nonatomic) id source;
+
+@property (nonatomic) SEL selector;
+
+@property (copy, nonatomic) RealtimeSearchResultsBlock resultBlock;
 
 /**
  *  当前搜索线程
@@ -33,6 +34,10 @@ static RealtimeSearchUtil *defaultUtil = nil;
 @end
 
 @implementation RealtimeSearchUtil
+
+@synthesize source = _source;
+@synthesize selector = _selector;
+@synthesize resultBlock = _resultBlock;
 
 - (instancetype)init
 {
@@ -73,21 +78,22 @@ static RealtimeSearchUtil *defaultUtil = nil;
 
 - (void)searchBegin:(NSString *)string
 {
+    __weak typeof(self) weakSelf = self;
     dispatch_async(self.searchQueue, ^{
         if (string.length == 0) {
-            self->_resultBlock(self->_source);
+            weakSelf.resultBlock(weakSelf.source);
         }
         else{
             NSMutableArray *results = [NSMutableArray array];
             NSString *subStr = [string lowercaseString];
-            for (id object in self->_source) {
+            for (id object in weakSelf.source) {
                 NSString *tmpString = @"";
-                if (self->_selector) {
-                    if([object respondsToSelector:self->_selector])
+                if (weakSelf.selector) {
+                    if([object respondsToSelector:weakSelf.selector])
                     {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                        tmpString = [[object performSelector:self->_selector] lowercaseString];
+                        tmpString = [[object performSelector:weakSelf.selector] lowercaseString];
 #pragma clang diagnostic pop
                         
                     }
@@ -106,7 +112,7 @@ static RealtimeSearchUtil *defaultUtil = nil;
                 }
             }
             
-            self->_resultBlock(results);
+            weakSelf.resultBlock(results);
         }
     });
 }

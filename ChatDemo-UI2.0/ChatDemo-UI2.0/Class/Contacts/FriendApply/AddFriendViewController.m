@@ -15,7 +15,7 @@
 #import "ApplyViewController.h"
 #import "UIViewController+HUD.h"
 #import "AddFriendCell.h"
-#import "EaseMob.h"
+#import "ApplyEntity.h"
 #import "WCAlertView.h"
 
 @interface AddFriendViewController ()<UITextFieldDelegate, UIAlertViewDelegate>
@@ -210,9 +210,10 @@
         //判断是否已发来申请
         NSArray *applyArray = [[ApplyViewController shareController] dataSource];
         if (applyArray && [applyArray count] > 0) {
-            for (NSDictionary *dic in applyArray) {
-                BOOL isGroup = [[dic objectForKey:@"isGroup"] boolValue];
-                if (!isGroup && [[dic objectForKey:@"title"] isEqualToString:_textField.text]) {
+            for (ApplyEntity *entity in applyArray) {
+                ApplyStyle style = [entity.style intValue];
+                BOOL isGroup = style == ApplyStyleFriend ? NO : YES;
+                if (!isGroup && [entity.applicantUsername isEqualToString:_textField.text]) {
                     NSString *str = [NSString stringWithFormat:@"%@已经给你发来了申请", _textField.text];
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:str delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                     [alertView show];

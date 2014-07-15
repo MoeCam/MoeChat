@@ -24,13 +24,16 @@ static LocationViewController *defaultLocation = nil;
     MKPointAnnotation *_annotation;
     
     CLLocationCoordinate2D _currentLocationCoordinate;
-    NSString *_addressString;
     BOOL _isSendLocation;
 }
+
+@property (strong, nonatomic) NSString *addressString;
 
 @end
 
 @implementation LocationViewController
+
+@synthesize addressString = _addressString;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -121,11 +124,12 @@ static LocationViewController *defaultLocation = nil;
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
+    __weak typeof(self) weakSelf = self;
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder reverseGeocodeLocation:userLocation.location completionHandler:^(NSArray *array, NSError *error) {
         if (!error && array.count > 0) {
             CLPlacemark *placemark = [array objectAtIndex:0];
-            self->_addressString = placemark.name;
+            weakSelf.addressString = placemark.name;
             
             [self removeToLocation:userLocation.coordinate];
         }
