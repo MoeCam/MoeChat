@@ -304,6 +304,8 @@ static ApplyViewController *controller = nil;
         NSFetchRequest *request = [ApplyEntity requestAllWithPredicate:searchPredicate];
         NSArray *applyArray = [ApplyEntity executeFetchRequest:request];
         [self.dataSource addObjectsFromArray:applyArray];
+        
+        [self.tableView reloadData];
     }
 }
 
