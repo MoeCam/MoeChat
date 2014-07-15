@@ -287,7 +287,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     application.applicationIconBadgeNumber += 1;
 }
 
-#pragma mark - IChatManagerDelegate 登陆回调
+#pragma mark - IChatManagerDelegate 登陆回调（主要用于监听自动登录是否成功）
 
 - (void)didLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error
 {

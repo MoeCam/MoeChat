@@ -59,6 +59,9 @@
 #endif
     [[EaseMob sharedInstance] registerSDKWithAppKey:@"easemob-demo#chatdemoui" apnsCertName:apnsCertName];
     [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
+    
+    //以下一行代码的方法里实现了自动登录，异步登录，需要监听[didLoginWithInfo: error:]
+    //demo中此监听方法在MainViewController中
     [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     
 #warning 注册为SDK的ChatManager的delegate (及时监听到申请和通知)
