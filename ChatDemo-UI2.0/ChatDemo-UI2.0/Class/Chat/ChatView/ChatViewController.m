@@ -215,7 +215,7 @@
         [exportSession exportAsynchronouslyWithCompletionHandler:^{
             switch ([exportSession status]) {
                 case AVAssetExportSessionStatusFailed: {
-                    NSLog(@"failed.");
+                    NSLog(@"failed, error:%@.", exportSession.error);
                 } break;
                 case AVAssetExportSessionStatusCancelled: {
                     NSLog(@"cancelled.");
