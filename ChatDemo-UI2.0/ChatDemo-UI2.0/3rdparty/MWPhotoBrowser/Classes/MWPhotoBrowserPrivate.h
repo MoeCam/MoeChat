@@ -55,6 +55,7 @@
     UIImage *_previousNavigationBarBackgroundImageLandscapePhone;
     
     // Misc
+    BOOL _hasBelongedToViewController;
     BOOL _isVCBasedStatusBarAppearance;
     BOOL _statusBarShouldBeHidden;
     BOOL _displayActionButton;
@@ -123,7 +124,6 @@
 - (id<MWPhoto>)thumbPhotoAtIndex:(NSUInteger)index;
 - (UIImage *)imageForPhoto:(id<MWPhoto>)photo;
 - (BOOL)photoIsSelectedAtIndex:(NSUInteger)index;
-- (BOOL)canPhotoSelectedAtIndex:(NSUInteger)index willSelected:(BOOL)willSelected;
 - (void)setPhotoSelected:(BOOL)selected atIndex:(NSUInteger)index;
 - (void)loadAdjacentPhotosIfNecessary:(id<MWPhoto>)photo;
 - (void)releaseAllUnderlyingPhotos:(BOOL)preserveCurrent;

@@ -177,10 +177,7 @@
         NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
         NSString *username = [loginInfo objectForKey:kSDKUsername];
         if (messageTextField.text.length > 0) {
-            messageStr = [NSString stringWithFormat:@"%@：%@", username, messageTextField.text];
-        }
-        else{
-            messageStr = [NSString stringWithFormat:@"%@ 请求加入群组\'%@\'", username, _group.groupSubject];
+            messageStr = messageTextField.text;
         }
         [self applyJoinGroup:_groupId withGroupname:_group.groupSubject message:messageStr];
     }

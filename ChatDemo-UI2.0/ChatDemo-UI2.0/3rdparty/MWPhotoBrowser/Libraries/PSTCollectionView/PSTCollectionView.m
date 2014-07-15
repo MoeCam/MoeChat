@@ -1236,45 +1236,45 @@ static void PSTCollectionViewCommonSetup(PSTCollectionView *_self) {
             NSEnumerator *keys = [layoutInterchangeData keyEnumerator];
             for (PSTCollectionViewItemKey *key in keys) {
                 // TODO: This is most likely not 100% the same time as in UICollectionView. Needs to be investigated.
-                PSTCollectionViewCell *cell = (PSTCollectionViewCell *)_allVisibleViewsDict[key];
-                [cell willTransitionFromLayout:_layout toLayout:layout];
+                PSTCollectionViewCell *cell = (PSTCollectionViewCell *)self->_allVisibleViewsDict[key];
+                [cell willTransitionFromLayout:self->_layout toLayout:layout];
                 [cell applyLayoutAttributes:layoutInterchangeData[key][@"newLayoutInfos"]];
-                [cell didTransitionFromLayout:_layout toLayout:layout];
+                [cell didTransitionFromLayout:self->_layout toLayout:layout];
             }
         };
 
         void (^freeUnusedViews)(void) = ^{
             NSMutableSet *toRemove = [NSMutableSet set];
-            for (PSTCollectionViewItemKey *key in [_allVisibleViewsDict keyEnumerator]) {
+            for (PSTCollectionViewItemKey *key in [self->_allVisibleViewsDict keyEnumerator]) {
                 if (![newlyVisibleItemsKeys containsObject:key]) {
                     if (key.type == PSTCollectionViewItemTypeCell) {
-                        [self reuseCell:_allVisibleViewsDict[key]];
+                        [self reuseCell:self->_allVisibleViewsDict[key]];
                         [toRemove addObject:key];
                     }
                     else if (key.type == PSTCollectionViewItemTypeSupplementaryView) {
-                        [self reuseSupplementaryView:_allVisibleViewsDict[key]];
+                        [self reuseSupplementaryView:self->_allVisibleViewsDict[key]];
                         [toRemove addObject:key];
                     }
                     else if (key.type == PSTCollectionViewItemTypeDecorationView) {
-                        [self reuseDecorationView:_allVisibleViewsDict[key]];
+                        [self reuseDecorationView:self->_allVisibleViewsDict[key]];
                         [toRemove addObject:key];
                     }
                 }
             }
 
             for (id key in toRemove)
-                [_allVisibleViewsDict removeObjectForKey:key];
+                [self->_allVisibleViewsDict removeObjectForKey:key];
         };
 
         if (animated) {
             [UIView animateWithDuration:.3 animations:^{
-                _collectionViewFlags.updatingLayout = YES;
+                self->_collectionViewFlags.updatingLayout = YES;
                 self.contentOffset = targetOffset;
                 self.contentSize = contentRect.size;
                 applyNewLayoutBlock();
             } completion:^(BOOL finished) {
                 freeUnusedViews();
-                _collectionViewFlags.updatingLayout = NO;
+                self->_collectionViewFlags.updatingLayout = NO;
 
                 // layout subviews for updating content offset or size while updating layout
                 if (!CGPointEqualToPoint(self.contentOffset, targetOffset)
@@ -1795,7 +1795,7 @@ static void PSTCollectionViewCommonSetup(PSTCollectionView *_self) {
     };
 
     [UIView animateWithDuration:.3 animations:^{
-        _collectionViewFlags.updatingLayout = YES;
+        self->_collectionViewFlags.updatingLayout = YES;
 
         [CATransaction begin];
         [CATransaction setAnimationDuration:.3];
@@ -1829,7 +1829,7 @@ static void PSTCollectionViewCommonSetup(PSTCollectionView *_self) {
                     }
                 }
             }];
-            _collectionViewFlags.updatingLayout = NO;
+            self->_collectionViewFlags.updatingLayout = NO;
         }];
 
         for (NSDictionary *animation in animations) {
@@ -1840,9 +1840,9 @@ static void PSTCollectionViewCommonSetup(PSTCollectionView *_self) {
         [CATransaction commit];
     } completion:^(BOOL finished) {
 
-        if (_updateCompletionHandler) {
-            _updateCompletionHandler(finished);
-            _updateCompletionHandler = nil;
+        if (self->_updateCompletionHandler) {
+            self->_updateCompletionHandler(finished);
+            self->_updateCompletionHandler = nil;
         }
     }];
 

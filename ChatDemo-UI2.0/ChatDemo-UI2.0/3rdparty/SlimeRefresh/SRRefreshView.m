@@ -157,11 +157,11 @@
                           duration:0.3f
                            options:UIViewAnimationOptionBeginFromCurrentState
                         animations:^{
-                            UIEdgeInsets inset = _scrollView.contentInset;
-                            inset.top = _upInset;
-                            _scrollView.contentInset = inset;
-                            if (_scrollView.contentOffset.y == -_upInset &&
-                                _slimeMissWhenGoingBack) {
+                            UIEdgeInsets inset = self->_scrollView.contentInset;
+                            inset.top = self->_upInset;
+                            self->_scrollView.contentInset = inset;
+                            if (self->_scrollView.contentOffset.y == -self->_upInset &&
+                                self->_slimeMissWhenGoingBack) {
                                 self.alpha = 0.0f;
                             }
                         } completion:^(BOOL finished) {
@@ -269,9 +269,9 @@
                               duration:0.2
                                options:UIViewAnimationOptionBeginFromCurrentState
                             animations:^{
-                                UIEdgeInsets inset = _scrollView.contentInset;
-                                inset.top = _upInset + _dragingHeight;
-                                _scrollView.contentInset = inset;
+                                UIEdgeInsets inset = self->_scrollView.contentInset;
+                                inset.top = self->_upInset + self->_dragingHeight;
+                                self->_scrollView.contentInset = inset;
                             } completion:^(BOOL finished) {
                                 self.broken = NO;
                             }];
@@ -305,12 +305,12 @@
                        options:UIViewAnimationOptionAllowUserInteraction
                     animations:^
      {
-         _activityIndicatorView.layer.transform = CATransform3DRotate(
+         self->_activityIndicatorView.layer.transform = CATransform3DRotate(
                                                                       CATransform3DMakeScale(0.01f, 0.01f, 0.1f), -M_PI, 0, 0, 1);
      } completion:^(BOOL finished)
      {
          self.loading = NO;
-         _slime.state = SRSlimeStateNormal;
+         self->_slime.state = SRSlimeStateNormal;
  //some bug here.
  //             CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:
  //                                            @"transform"];

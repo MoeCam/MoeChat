@@ -65,16 +65,37 @@
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
+    //demo coredata, .pch中又相关头文件引用
+    [MagicalRecord setupCoreDataStackWithStoreNamed:[NSString stringWithFormat:@"%@.sqlite", @"UIDemo"]];
 
     [self loginStateChange:nil];
     [self.window makeKeyAndVisible];
     return YES;
 }
 
--(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
 #warning SDK方法调用
     [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    if (_mainController) {
+        [_mainController jumpToChatList];
+    }
+    
+#warning SDK方法调用
+    [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    if (_mainController) {
+        [_mainController jumpToChatList];
+    }
+#warning SDK方法调用
+    [[EaseMob sharedInstance] application:application didReceiveLocalNotification:notification];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -85,6 +106,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidEnterBackground" object:nil];
 #warning SDK方法调用
     [[EaseMob sharedInstance] applicationDidEnterBackground:application];
 }
@@ -155,6 +177,9 @@
     if (!reason || reason.length == 0) {
         reason = [NSString stringWithFormat:@"%@ 申请加入群组\'%@\'", username, groupname];
     }
+    else{
+        reason = [NSString stringWithFormat:@"%@ 申请加入群组\'%@\'：%@", username, groupname, reason];
+    }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupname, @"groupId":groupId, @"username":username, @"groupname":groupname, @"applyMessage":reason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
     [[ApplyViewController shareController] addNewApply:dic];
 }
@@ -205,10 +230,13 @@
     }
     
     if (isLogin) {
-        MainViewController *mainVC = [[MainViewController alloc] init];
-        nav = [[UINavigationController alloc] initWithRootViewController:mainVC];
+        if (_mainController == nil) {
+            _mainController = [[MainViewController alloc] init];
+        }
+        nav = [[UINavigationController alloc] initWithRootViewController:_mainController];
     }
     else{
+        _mainController = nil;
         LoginViewController *loginController = [[LoginViewController alloc] init];
         nav = [[UINavigationController alloc] initWithRootViewController:loginController];
         loginController.title = @"环信Demo";

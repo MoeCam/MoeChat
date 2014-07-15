@@ -57,9 +57,9 @@
     if (_autoLoginSwitch == nil) {
         _autoLoginSwitch = [[UISwitch alloc] init];
         [_autoLoginSwitch addTarget:self action:@selector(autoLoginChanged:) forControlEvents:UIControlEventValueChanged];
-        [_autoLoginSwitch setOn:[[EaseMob sharedInstance].chatManager isAutoLoginEnabled] animated:YES];
     }
     
+    [_autoLoginSwitch setOn:[[EaseMob sharedInstance].chatManager isAutoLoginEnabled] animated:YES];
     return _autoLoginSwitch;
 }
 

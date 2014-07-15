@@ -148,9 +148,9 @@
                 cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             }
             
-            EMBuddy *buudy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-            cell.textLabel.text = buudy.username;
+            cell.textLabel.text = buddy.username;
             
             return cell;
         }];
@@ -241,9 +241,9 @@
         cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    EMBuddy *buudy = [[_dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    EMBuddy *buddy = [[_dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-    cell.textLabel.text = buudy.username;
+    cell.textLabel.text = buddy.username;
     
     return cell;
 }

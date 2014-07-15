@@ -159,9 +159,9 @@
                 cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             }
             
-            EMBuddy *buudy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-            cell.textLabel.text = buudy.username;
+            cell.textLabel.text = buddy.username;
             
             return cell;
         }];
@@ -237,16 +237,13 @@
         }
         
         if (indexPath.section == 0 && indexPath.row == 1) {
-            if (indexPath.row == 1)
-            {
-                cell.imageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
-                cell.textLabel.text = @"群组";
-            }
+            cell.imageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
+            cell.textLabel.text = @"群组";
         }
         else{
-            EMBuddy *buudy = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+            EMBuddy *buddy = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
             cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-            cell.textLabel.text = buudy.username;
+            cell.textLabel.text = buddy.username;
         }
     }
     

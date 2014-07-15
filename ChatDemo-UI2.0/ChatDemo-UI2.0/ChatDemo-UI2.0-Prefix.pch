@@ -18,6 +18,11 @@
     #import "WCAlertView.h"
     #import "TTGlobalUICommon.h"
     #import "UIViewController+HUD.h"
+    #import "UIViewController+DismissKeyboard.h"
+    #import "NSString+Valid.h"
+
+    #define MR_SHORTHAND
+    #import "CoreData+MagicalRecord.h"
 
     #import "EaseMob.h"
 

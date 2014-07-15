@@ -107,11 +107,13 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllMessages:) name:@"RemoveAllMessages" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitGroup) name:@"ExitGroup" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:@"applicationDidEnterBackground" object:nil];
     
     _messageQueue = dispatch_queue_create("easemob.com", NULL);
-    //通过会话管理者获取已收发消息
-    NSArray *chats = [_conversation loadNumbersOfMessages:KPageCount before:[_conversation latestMessage].timestamp + 1];
-    [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
+//    //通过会话管理者获取已收发消息
+//    
+//    NSArray *chats = [_conversation loadNumbersOfMessages:KPageCount before:[_conversation latestMessage].timestamp + 1];
+//    [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
     
     [self setupBarButtonItem];
     [self.view addSubview:self.tableView];
@@ -125,6 +127,9 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
     [self.view addGestureRecognizer:tap];
+    
+    //通过会话管理者获取已收发消息
+    [self loadMoreMessages];
 }
 
 - (void)setupBarButtonItem
@@ -189,6 +194,52 @@
     }
     
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - helper
+- (NSURL *)convert2Mp4:(NSURL *)movUrl {
+    NSURL *mp4Url = nil;
+    AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:movUrl options:nil];
+    NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
+    
+    if ([compatiblePresets containsObject:AVAssetExportPresetHighestQuality]) {
+        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc]initWithAsset:avAsset
+                                                                              presetName:AVAssetExportPresetHighestQuality];
+        mp4Url = [movUrl copy];
+        mp4Url = [mp4Url URLByDeletingPathExtension];
+        mp4Url = [mp4Url URLByAppendingPathExtension:@"mp4"];
+        exportSession.outputURL = mp4Url;
+        exportSession.shouldOptimizeForNetworkUse = YES;
+        exportSession.outputFileType = AVFileTypeMPEG4;
+        dispatch_semaphore_t wait = dispatch_semaphore_create(0l);
+        [exportSession exportAsynchronouslyWithCompletionHandler:^{
+            switch ([exportSession status]) {
+                case AVAssetExportSessionStatusFailed: {
+                    NSLog(@"failed, error:%@.", exportSession.error);
+                } break;
+                case AVAssetExportSessionStatusCancelled: {
+                    NSLog(@"cancelled.");
+                } break;
+                case AVAssetExportSessionStatusCompleted: {
+                    NSLog(@"completed.");
+                } break;
+                default: {
+                    NSLog(@"others.");
+                } break;
+            }
+            dispatch_semaphore_signal(wait);
+        }];
+        int timeout = dispatch_semaphore_wait(wait, DISPATCH_TIME_FOREVER);
+        if (timeout) {
+            NSLog(@"timeout.");
+        }
+        if (wait) {
+            //dispatch_release(wait);
+            wait = nil;
+        }
+    }
+    
+    return mp4Url;
 }
 
 #pragma mark - getter
@@ -765,7 +816,19 @@
     if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
         NSURL *videoURL = info[UIImagePickerControllerMediaURL];
         [picker dismissViewControllerAnimated:YES completion:nil];
-        EMChatVideo *chatVideo = [[EMChatVideo alloc] initWithFile:[videoURL relativePath] displayName:@"video"];
+        // video url:
+        // file:///private/var/mobile/Applications/B3CDD0B2-2F19-432B-9CFA-158700F4DE8F/tmp/capture-T0x16e39100.tmp.9R8weF/capturedvideo.MOV
+        // we will convert it to mp4 format
+        NSURL *mp4 = [self convert2Mp4:videoURL];
+        NSFileManager *fileman = [NSFileManager defaultManager];
+        if ([fileman fileExistsAtPath:videoURL.path]) {
+            NSError *error = nil;
+            [fileman removeItemAtURL:videoURL error:&error];
+            if (error) {
+                NSLog(@"failed to remove file, error:%@.", error);
+            }
+        }
+        EMChatVideo *chatVideo = [[EMChatVideo alloc] initWithFile:[mp4 relativePath] displayName:@"video.mp4"];
         [self sendVideoMessage:chatVideo];
         
     }else{
@@ -843,16 +906,22 @@
 
 - (void)loadMoreMessages
 {
-    NSInteger currentCount = [self.dataSource count];
-    NSArray *chats = [_conversation loadNumbersOfMessages:(currentCount + KPageCount) before:[_conversation latestMessage].timestamp + 1];
-    
-    if ([chats count] > currentCount) {
-        [self.dataSource removeAllObjects];
-        [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
-        [_tableView reloadData];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(_messageQueue, ^{
+        NSInteger currentCount = [weakSelf.dataSource count];
+        NSArray *chats = [weakSelf.conversation loadNumbersOfMessages:(currentCount + KPageCount) before:[weakSelf.conversation latestMessage].timestamp + 1];
         
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.dataSource count] - currentCount inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    }
+        if ([chats count] > currentCount) {
+            [weakSelf.dataSource removeAllObjects];
+            [weakSelf.dataSource addObjectsFromArray:[weakSelf sortChatSource:chats]];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.tableView reloadData];
+                
+                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[weakSelf.dataSource count] - currentCount - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            });
+        }
+    });
 }
 
 - (NSArray *)sortChatSource:(NSArray *)array
@@ -936,7 +1005,6 @@
 
 - (void)removeAllMessages:(id)sender
 {
-    [_conversation loadAllMessages];
     if (_conversation.messages.count == 0) {
         [self showHint:@"消息已经清空"];
         return;
@@ -995,6 +1063,16 @@
 {
     [self.navigationController popToViewController:self animated:NO];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)applicationDidEnterBackground
+{
+    [_chatToolBar cancelTouchRecord];
+    
+    // 设置当前conversation的所有message为已读
+    [_conversation markMessagesAsRead:YES];
+    
+    [self stopAudioPlaying];
 }
 
 #pragma mark - send message

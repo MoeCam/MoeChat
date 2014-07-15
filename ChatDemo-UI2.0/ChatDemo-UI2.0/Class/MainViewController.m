@@ -98,6 +98,8 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 {
     if (alertView.tag == 100) {
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+    } else if (alertView.tag == 101) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
     }
 }
 
@@ -340,16 +342,19 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 {
 #if !TARGET_IPHONE_SIMULATOR
     [self playSoundAndVibration];
+#endif
     
-    BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
-    if (!isAppActivity) {
-        //发送本地推送
-//        UILocalNotification *notification = [[UILocalNotification alloc] init];
-//        notification.fireDate = [NSDate date]; //触发通知的时间
-//        notification.alertBody = [NSString stringWithFormat:@"%@ 邀请你加入群组\'%@\'", username, groupName];
-//        notification.alertAction = @"打开";
-//        notification.timeZone = [NSTimeZone defaultTimeZone];
-    }
+    [_contactsVC reloadGroupView];
+}
+
+//接收到入群申请
+- (void)didReceiveApplyToJoinGroup:(NSString *)groupId
+                         groupname:(NSString *)groupname
+                     applyUsername:(NSString *)username
+                            reason:(NSString *)reason
+{
+#if !TARGET_IPHONE_SIMULATOR
+    [self playSoundAndVibration];
 #endif
     
     [_contactsVC reloadGroupView];
@@ -376,8 +381,26 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 - (void)didLoginFromOtherDevice
 {
     [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的账号已在其他地方登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"你的账号已在其他地方登录"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil,
+                                  nil];
         alertView.tag = 100;
+        [alertView show];
+    } onQueue:nil];
+}
+
+- (void)didRemovedFromServer {
+    [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"你的账号已被从服务器端移除"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil,
+                                  nil];
+        alertView.tag = 101;
         [alertView show];
     } onQueue:nil];
 }
@@ -391,7 +414,11 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 
 - (void)jumpToChatList
 {
-    
+    if(_chatListVC)
+    {
+        [self.navigationController popToViewController:self animated:NO];
+        [self setSelectedViewController:_chatListVC];
+    }
 }
 
 @end

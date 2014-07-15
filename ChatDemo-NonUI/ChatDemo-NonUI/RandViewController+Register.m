@@ -58,6 +58,7 @@
     }
     randString = [NSString stringWithFormat:@"%s",tmp];
     randString = [randString substringToIndex:10];
+    randString = [randString lowercaseString];
     [self showHudInView:self.view hint:@"正在生成..."];
     [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:randString
                                                          password:@"123456"
