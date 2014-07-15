@@ -153,15 +153,16 @@
         _slime.hidden = NO;
         _refleshView.hidden = NO;
         _refleshView.layer.transform = CATransform3DIdentity;
+        __weak typeof(self) weakSelf = self;
         [UIView transitionWithView:_scrollView
                           duration:0.3f
                            options:UIViewAnimationOptionBeginFromCurrentState
                         animations:^{
-                            UIEdgeInsets inset = self->_scrollView.contentInset;
-                            inset.top = self->_upInset;
-                            self->_scrollView.contentInset = inset;
-                            if (self->_scrollView.contentOffset.y == -self->_upInset &&
-                                self->_slimeMissWhenGoingBack) {
+                            UIEdgeInsets inset = weakSelf.scrollView.contentInset;
+                            inset.top = weakSelf.upInset;
+                            weakSelf.scrollView.contentInset = inset;
+                            if (weakSelf.scrollView.contentOffset.y == -weakSelf.upInset &&
+                                weakSelf.slimeMissWhenGoingBack) {
                                 self.alpha = 0.0f;
                             }
                         } completion:^(BOOL finished) {
