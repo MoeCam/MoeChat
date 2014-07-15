@@ -828,13 +828,6 @@
                 NSLog(@"failed to remove file, error:%@.", error);
             }
         }
-        if ([fileman fileExistsAtPath:mp4.path]) {
-            NSError *error = nil;
-            [fileman removeItemAtURL:mp4 error:&error];
-            if (error) {
-                NSLog(@"failed to remove file, error:%@", error);
-            }
-        }
         EMChatVideo *chatVideo = [[EMChatVideo alloc] initWithFile:[mp4 relativePath] displayName:@"video.mp4"];
         [self sendVideoMessage:chatVideo];
         
@@ -1012,7 +1005,6 @@
 
 - (void)removeAllMessages:(id)sender
 {
-    [_conversation loadAllMessages];
     if (_conversation.messages.count == 0) {
         [self showHint:@"消息已经清空"];
         return;
