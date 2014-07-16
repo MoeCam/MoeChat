@@ -71,15 +71,11 @@
         options.displayStyle = _pushDisplayStyle;
         isUpdate = YES;
     }
-    else if (_isNoDisturbing != options.noDisturbing){
+    else if (_isNoDisturbing != options.noDisturbing || options.noDisturbingStartH != _noDisturbingStart || options.noDisturbingEndH != _noDisturbingEnd){
         isUpdate = YES;
         options.noDisturbing = _isNoDisturbing;
-        if (_isNoDisturbing) {
-            if (_noDisturbingStart != -1 && _noDisturbingEnd != -1) {
-                options.noDisturbingStartH = _noDisturbingStart;
-                options.noDisturbingEndH = _noDisturbingEnd;
-            }
-        }
+        options.noDisturbingStartH = _noDisturbingStart;
+        options.noDisturbingEndH = _noDisturbingEnd;
     }
     
     if (isUpdate) {
