@@ -16,12 +16,21 @@
 #import "EMError.h"
 
 @interface SettingsViewController ()
+{
+    EMPushNotificationDisplayStyle _pushDisplayStyle;
+    BOOL _isNoDisturbing;
+    NSInteger _noDisturbingStart;
+    NSInteger _noDisturbingEnd;
+}
 
 @property (strong, nonatomic) UIView *footerView;
 
 @property (strong, nonatomic) UISwitch *autoLoginSwitch;
+
 @property (strong, nonatomic) UISwitch *beInvitedSwitch;
 @property (strong, nonatomic) UILabel *beInvitedLabel;
+
+@property (strong, nonatomic) UISwitch *pushDisplaySwitch;
 
 @end
 
@@ -31,6 +40,8 @@
 {
     self = [super initWithStyle:style];
     if (self) {
+        _noDisturbingStart = -1;
+        _noDisturbingEnd = -1;
     }
     return self;
 }
@@ -50,6 +61,32 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    BOOL isUpdate = NO;
+    EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
+    if (_pushDisplayStyle != options.displayStyle) {
+        options.displayStyle = _pushDisplayStyle;
+        isUpdate = YES;
+    }
+    else if (_isNoDisturbing != options.noDisturbing){
+        isUpdate = YES;
+        options.noDisturbing = _isNoDisturbing;
+        if (_isNoDisturbing) {
+            if (_noDisturbingStart != -1 && _noDisturbingEnd != -1) {
+                options.noDisturbingStartH = _noDisturbingStart;
+                options.noDisturbingEndH = _noDisturbingEnd;
+            }
+        }
+    }
+    
+    if (isUpdate) {
+        [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options error:nil];
+    }
+}
+
 #pragma mark - getter
 
 - (UISwitch *)autoLoginSwitch
@@ -59,7 +96,6 @@
         [_autoLoginSwitch addTarget:self action:@selector(autoLoginChanged:) forControlEvents:UIControlEventValueChanged];
     }
     
-    [_autoLoginSwitch setOn:[[EaseMob sharedInstance].chatManager isAutoLoginEnabled] animated:YES];
     return _autoLoginSwitch;
 }
 
@@ -87,17 +123,59 @@
     return _beInvitedLabel;
 }
 
+- (UISwitch *)pushDisplaySwitch
+{
+    if (_pushDisplaySwitch == nil) {
+        _pushDisplaySwitch = [[UISwitch alloc] init];
+        [_pushDisplaySwitch addTarget:self action:@selector(pushDisplayChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+    
+    return _pushDisplaySwitch;
+}
+
 #pragma mark - Table view datasource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    //section == 0, 自动登录, 消息推送显示样式
+    //section == 1, 消息推送免打扰模式
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    if (section == 0) {
+        return 2;
+    }
+    else if (section == 1)
+    {
+        return 3;
+    }
+    
+    return 0;
 }
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 1) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == 1) {
+        return @"功能消息免打扰";
+    }
+    return nil;
+}
+
+//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -107,21 +185,62 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
-    if (indexPath.row == 0) {
-        cell.textLabel.text = @"自动登录";
-        self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
-        [cell.contentView addSubview:self.autoLoginSwitch];
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            cell.textLabel.text = @"自动登录";
+            self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
+            [cell.contentView addSubview:self.autoLoginSwitch];
+        }
+        else if (indexPath.row == 1)
+        {
+            cell.textLabel.text = @"通知显示消息详情";
+            
+            self.pushDisplaySwitch.frame = CGRectMake(self.tableView.frame.size.width - self.pushDisplaySwitch.frame.size.width - 10, (cell.contentView.frame.size.height - self.pushDisplaySwitch.frame.size.height) / 2, self.pushDisplaySwitch.frame.size.width, self.pushDisplaySwitch.frame.size.height);
+            [cell.contentView addSubview:self.pushDisplaySwitch];
+        }
+        else if (indexPath.row == 2)
+        {
+            cell.textLabel.text = @"被邀请人权限";
+            
+            self.beInvitedSwitch.frame = CGRectMake(180, (cell.contentView.frame.size.height - self.beInvitedSwitch.frame.size.height) / 2, self.beInvitedSwitch.frame.size.width, self.beInvitedSwitch.frame.size.height);
+            [cell.contentView addSubview:self.beInvitedSwitch];
+            
+            self.beInvitedLabel.frame = CGRectMake(self.beInvitedSwitch.frame.origin.x + self.beInvitedSwitch.frame.size.width + 5, 0, 80, 50);
+            [cell.contentView addSubview:self.beInvitedLabel];
+        }
     }
-    else if (indexPath.row == 1)
+    else if (indexPath.section == 1)
     {
-        cell.textLabel.text = @"被邀请人权限";
-        
-        self.beInvitedSwitch.frame = CGRectMake(180, (cell.contentView.frame.size.height - self.beInvitedSwitch.frame.size.height) / 2, self.beInvitedSwitch.frame.size.width, self.beInvitedSwitch.frame.size.height);
-        [cell.contentView addSubview:self.beInvitedSwitch];
-        
-        self.beInvitedLabel.frame = CGRectMake(self.beInvitedSwitch.frame.origin.x + self.beInvitedSwitch.frame.size.width + 5, 0, 80, 50);
-        [cell.contentView addSubview:self.beInvitedLabel];
-        [self beInvitedChanged:_beInvitedSwitch];
+        if (indexPath.row == 0) {
+            cell.textLabel.text = @"开启";
+            
+            BOOL isOn = _isNoDisturbing;
+            if (_noDisturbingStart == 0 && _noDisturbingEnd == 24) {
+                isOn = YES;
+            }
+            else{
+                isOn = NO;
+            }
+            cell.accessoryType = isOn == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        }
+        else if (indexPath.row == 1)
+        {
+            cell.textLabel.text = @"只在夜间开启 (22:00 - 7:00)";
+            
+            BOOL isOn = _isNoDisturbing;
+            if (_noDisturbingStart == 22 && _noDisturbingEnd == 7) {
+                isOn = YES;
+            }
+            else{
+                isOn = NO;
+            }
+            cell.accessoryType = isOn == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        }
+        else if (indexPath.row == 2)
+        {
+            cell.textLabel.text = @"关闭";
+            cell.accessoryType = _isNoDisturbing == YES ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
+        }
     }
     
     return cell;
@@ -134,9 +253,53 @@
     return 50;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 0;
+    }
+    else if (section == 1)
+    {
+        return 30;
+    }
+    
+    return 0;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.section == 1) {
+        switch (indexPath.row) {
+            case 0:
+            {
+                _noDisturbingStart = 0;
+                _noDisturbingEnd = 24;
+                _isNoDisturbing = YES;
+            }
+                break;
+            case 1:
+            {
+                _noDisturbingStart = 22;
+                _noDisturbingEnd = 7;
+                _isNoDisturbing = YES;
+            }
+                break;
+            case 2:
+            {
+                _noDisturbingStart = -1;
+                _noDisturbingEnd = -1;
+                _isNoDisturbing = NO;
+            }
+                break;
+                
+            default:
+                break;
+        }
+        
+        [tableView reloadData];
+    }
 }
 
 #pragma mark - getter
@@ -182,6 +345,34 @@
 //    }
 //    
 //    [[EaseMob sharedInstance].chatManager setAutoAcceptGroupInvitation:!(beInvitedSwitch.isOn)];
+}
+
+- (void)pushDisplayChanged:(UISwitch *)pushDisplaySwitch
+{
+    if (pushDisplaySwitch.isOn) {
+        _pushDisplayStyle = ePushNotificationDisplayStyle_messageSummary;
+    }
+    else{
+        _pushDisplayStyle = ePushNotificationDisplayStyle_simpleBanner;
+    }
+}
+
+- (void)refreshConfig
+{
+    EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
+    _pushDisplayStyle = options.displayStyle;
+    _isNoDisturbing = options.noDisturbing;
+    if (_isNoDisturbing) {
+        _noDisturbingStart = options.noDisturbingStartH;
+        _noDisturbingEnd = options.noDisturbingEndH;
+    }
+    
+    BOOL isDisplayOn = _pushDisplayStyle == ePushNotificationDisplayStyle_simpleBanner ? NO : YES;
+    [self.pushDisplaySwitch setOn:isDisplayOn animated:YES];
+
+    [self.autoLoginSwitch setOn:[[EaseMob sharedInstance].chatManager isAutoLoginEnabled] animated:YES];
+    
+    [self.tableView reloadData];
 }
 
 - (void)logoutAction

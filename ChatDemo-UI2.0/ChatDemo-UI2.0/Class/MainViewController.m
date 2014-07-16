@@ -89,6 +89,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     }else if (item.tag == 2){
         self.title = @"设置";
         self.navigationItem.rightBarButtonItem = nil;
+        [_settingsVC refreshConfig];
     }
 }
 

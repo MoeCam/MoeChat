@@ -220,6 +220,15 @@
     }
 }
 
+#pragma mark - push
+
+- (void)didBindDeviceWithError:(EMError *)error
+{
+    if (error) {
+        TTAlertNoTitle(@"消息推送与设备绑定失败");
+    }
+}
+
 #pragma mark - private
 
 -(void)loginStateChange:(NSNotification *)notification

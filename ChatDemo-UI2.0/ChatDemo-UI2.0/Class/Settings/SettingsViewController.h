@@ -14,4 +14,6 @@
 
 @interface SettingsViewController : UITableViewController
 
+- (void)refreshConfig;
+
 @end
