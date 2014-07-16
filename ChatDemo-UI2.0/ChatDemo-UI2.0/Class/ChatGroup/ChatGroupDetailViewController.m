@@ -13,7 +13,6 @@
 #import "ChatGroupDetailViewController.h"
 
 #import "ContactSelectionViewController.h"
-#import "EMError.h"
 
 #pragma mark - ChatGroupContactView
 

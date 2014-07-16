@@ -34,14 +34,14 @@
     }
     
     //友盟
-    NSString *bundleID = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
-    if ([bundleID isEqualToString:@"com.easemob.enterprise.demo.ui"]) {
-        [MobClick startWithAppkey:@"5389bb7f56240ba94208ac97"
-                     reportPolicy:BATCH
-                        channelId:Nil];
-        
-        [MobClick setLogEnabled:YES];
-    }
+//    NSString *bundleID = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+//    if ([bundleID isEqualToString:@"com.easemob.enterprise.demo.ui"]) {
+//        [MobClick startWithAppkey:@"5389bb7f56240ba94208ac97"
+//                     reportPolicy:BATCH
+//                        channelId:Nil];
+//        
+//        [MobClick setLogEnabled:YES];
+//    }
    
 #if !TARGET_IPHONE_SIMULATOR
     UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeBadge |
@@ -59,6 +59,12 @@
 #endif
     [[EaseMob sharedInstance] registerSDKWithAppKey:@"easemob-demo#chatdemoui" apnsCertName:apnsCertName];
     [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
+    
+#if DEBUG
+    [[EaseMob sharedInstance] enableUncaughtExceptionHandler];
+#endif
+    //以下一行代码的方法里实现了自动登录，异步登录，需要监听[didLoginWithInfo: error:]
+    //demo中此监听方法在MainViewController中
     [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     
 #warning 注册为SDK的ChatManager的delegate (及时监听到申请和通知)
@@ -214,6 +220,15 @@
     }
     if (str.length > 0) {
         TTAlertNoTitle(str);
+    }
+}
+
+#pragma mark - push
+
+- (void)didBindDeviceWithError:(EMError *)error
+{
+    if (error) {
+        TTAlertNoTitle(@"消息推送与设备绑定失败");
     }
 }
 

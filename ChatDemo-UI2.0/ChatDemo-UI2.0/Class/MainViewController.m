@@ -89,6 +89,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     }else if (item.tag == 2){
         self.title = @"设置";
         self.navigationItem.rightBarButtonItem = nil;
+        [_settingsVC refreshConfig];
     }
 }
 
@@ -96,7 +97,10 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 100) {
+    if (alertView.tag == 99) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+    }
+    else if (alertView.tag == 100) {
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
     } else if (alertView.tag == 101) {
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
@@ -282,6 +286,22 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
     UIApplication *application = [UIApplication sharedApplication];
     application.applicationIconBadgeNumber += 1;
+}
+
+#pragma mark - IChatManagerDelegate 登陆回调（主要用于监听自动登录是否成功）
+
+- (void)didLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error
+{
+    if (error) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"你的账号登录失败，请重新登陆"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil,
+                                  nil];
+        alertView.tag = 99;
+        [alertView show];
+    }
 }
 
 #pragma mark - IChatManagerDelegate 好友变化
