@@ -266,10 +266,13 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    BOOL needReload = YES;
+    
     if (indexPath.section == 1) {
         switch (indexPath.row) {
             case 0:
             {
+                needReload = NO;
                 [WCAlertView showAlertWithTitle:@"设置提醒"
                                         message:@"此设置会导致全天都处于免打扰模式, 不会再收到推送消息. 是否继续?"
                              customizationBlock:^(WCAlertView *alertView) {
@@ -305,7 +308,9 @@
                 break;
         }
         
-        [tableView reloadData];
+        if (needReload) {
+            [tableView reloadData];
+        }
     }
 }
 
