@@ -236,21 +236,19 @@
 
 -(void)loginStateChange:(NSNotification *)notification
 {
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
     UINavigationController *nav = nil;
+
+    BOOL isAutoLogin = [[[EaseMob sharedInstance] chatManager] isAutoLoginEnabled];
+    BOOL loginSuccess = [notification.object boolValue];
     
-    BOOL isLogin = loginInfo && [loginInfo count] > 0;
-    if (notification.object) {
-        isLogin = [notification.object boolValue] && isLogin;
-    }
-    
-    if (isLogin) {
+    if (isAutoLogin || loginSuccess) {
         if (_mainController == nil) {
             _mainController = [[MainViewController alloc] init];
+            nav = [[UINavigationController alloc] initWithRootViewController:_mainController];
+        }else{
+            nav  = _mainController.navigationController;
         }
-        nav = [[UINavigationController alloc] initWithRootViewController:_mainController];
-    }
-    else{
+    }else{
         _mainController = nil;
         LoginViewController *loginController = [[LoginViewController alloc] init];
         nav = [[UINavigationController alloc] initWithRootViewController:loginController];
