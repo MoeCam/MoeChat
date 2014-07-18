@@ -11,7 +11,7 @@
   */
 
 #import "SettingsViewController.h"
-
+#import "WCAlertView.h"
 #import "ApplyViewController.h"
 #import "EMError.h"
 
@@ -270,11 +270,22 @@
         switch (indexPath.row) {
             case 0:
             {
-                _noDisturbingStart = 0;
-                _noDisturbingEnd = 24;
-                _isNoDisturbing = YES;
-            }
-                break;
+                [WCAlertView showAlertWithTitle:@"设置提醒"
+                                        message:@"此设置会导致全天都处于免打扰模式, 不会再收到推送消息. 是否继续?"
+                             customizationBlock:^(WCAlertView *alertView) {
+                             } completionBlock:^(NSUInteger buttonIndex, WCAlertView *alertView) {
+                                 switch (buttonIndex) {
+                                     case 0: {
+                                     } break;
+                                     default: {
+                                         self->_noDisturbingStart = 0;
+                                         self->_noDisturbingEnd = 24;
+                                         self->_isNoDisturbing = YES;
+                                         [tableView reloadData];
+                                     } break;
+                                 }
+                             } cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+            } break;
             case 1:
             {
                 _noDisturbingStart = 22;
