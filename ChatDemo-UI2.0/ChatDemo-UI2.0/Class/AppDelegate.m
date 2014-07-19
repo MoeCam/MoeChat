@@ -58,7 +58,7 @@
     apnsCertName = @"chatdemoui";
 #endif
     [[EaseMob sharedInstance] registerSDKWithAppKey:@"easemob-demo#chatdemoui" apnsCertName:apnsCertName];
-    [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
+//    [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
     
 #if DEBUG
     [[EaseMob sharedInstance] enableUncaughtExceptionHandler];
