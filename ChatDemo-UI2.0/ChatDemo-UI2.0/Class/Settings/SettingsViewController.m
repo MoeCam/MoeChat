@@ -11,17 +11,13 @@
   */
 
 #import "SettingsViewController.h"
-#import "WCAlertView.h"
+
 #import "ApplyViewController.h"
+#import "PushNotificationViewController.h"
+#import "WCAlertView.h"
 #import "EMError.h"
 
 @interface SettingsViewController ()
-{
-    EMPushNotificationDisplayStyle _pushDisplayStyle;
-    BOOL _isNoDisturbing;
-    NSInteger _noDisturbingStart;
-    NSInteger _noDisturbingEnd;
-}
 
 @property (strong, nonatomic) UIView *footerView;
 
@@ -29,8 +25,6 @@
 
 @property (strong, nonatomic) UISwitch *beInvitedSwitch;
 @property (strong, nonatomic) UILabel *beInvitedLabel;
-
-@property (strong, nonatomic) UISwitch *pushDisplaySwitch;
 
 @end
 
@@ -40,8 +34,7 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        _noDisturbingStart = -1;
-        _noDisturbingEnd = -1;
+        
     }
     return self;
 }
@@ -59,28 +52,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    BOOL isUpdate = NO;
-    EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
-    if (_pushDisplayStyle != options.displayStyle) {
-        options.displayStyle = _pushDisplayStyle;
-        isUpdate = YES;
-    }
-    else if (_isNoDisturbing != options.noDisturbing || options.noDisturbingStartH != _noDisturbingStart || options.noDisturbingEndH != _noDisturbingEnd){
-        isUpdate = YES;
-        options.noDisturbing = _isNoDisturbing;
-        options.noDisturbingStartH = _noDisturbingStart;
-        options.noDisturbingEndH = _noDisturbingEnd;
-    }
-    
-    if (isUpdate) {
-        [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options error:nil];
-    }
 }
 
 #pragma mark - getter
@@ -119,59 +90,18 @@
     return _beInvitedLabel;
 }
 
-- (UISwitch *)pushDisplaySwitch
-{
-    if (_pushDisplaySwitch == nil) {
-        _pushDisplaySwitch = [[UISwitch alloc] init];
-        [_pushDisplaySwitch addTarget:self action:@selector(pushDisplayChanged:) forControlEvents:UIControlEventValueChanged];
-    }
-    
-    return _pushDisplaySwitch;
-}
-
 #pragma mark - Table view datasource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    //section == 0, 自动登录, 消息推送显示样式
-    //section == 1, 消息推送免打扰模式
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 2;
-    }
-    else if (section == 1)
-    {
-        return 3;
-    }
-    
-    return 0;
+    return 2;
+//    return 3;
 }
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 1) {
-        return YES;
-    }
-    
-    return NO;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (section == 1) {
-        return @"功能消息免打扰";
-    }
-    return nil;
-}
-
-//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -184,15 +114,14 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"自动登录";
+            cell.accessoryType = UITableViewCellAccessoryNone;
             self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
             [cell.contentView addSubview:self.autoLoginSwitch];
         }
         else if (indexPath.row == 1)
         {
-            cell.textLabel.text = @"通知显示消息详情";
-            
-            self.pushDisplaySwitch.frame = CGRectMake(self.tableView.frame.size.width - self.pushDisplaySwitch.frame.size.width - 10, (cell.contentView.frame.size.height - self.pushDisplaySwitch.frame.size.height) / 2, self.pushDisplaySwitch.frame.size.width, self.pushDisplaySwitch.frame.size.height);
-            [cell.contentView addSubview:self.pushDisplaySwitch];
+            cell.textLabel.text = @"消息推送设置";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
         else if (indexPath.row == 2)
         {
@@ -203,39 +132,6 @@
             
             self.beInvitedLabel.frame = CGRectMake(self.beInvitedSwitch.frame.origin.x + self.beInvitedSwitch.frame.size.width + 5, 0, 80, 50);
             [cell.contentView addSubview:self.beInvitedLabel];
-        }
-    }
-    else if (indexPath.section == 1)
-    {
-        if (indexPath.row == 0) {
-            cell.textLabel.text = @"开启";
-            
-            BOOL isOn = _isNoDisturbing;
-            if (_noDisturbingStart == 0 && _noDisturbingEnd == 24) {
-                isOn = YES;
-            }
-            else{
-                isOn = NO;
-            }
-            cell.accessoryType = isOn == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-        }
-        else if (indexPath.row == 1)
-        {
-            cell.textLabel.text = @"只在夜间开启 (22:00 - 7:00)";
-            
-            BOOL isOn = _isNoDisturbing;
-            if (_noDisturbingStart == 22 && _noDisturbingEnd == 7) {
-                isOn = YES;
-            }
-            else{
-                isOn = NO;
-            }
-            cell.accessoryType = isOn == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-        }
-        else if (indexPath.row == 2)
-        {
-            cell.textLabel.text = @"关闭";
-            cell.accessoryType = _isNoDisturbing == YES ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
         }
     }
     
@@ -249,68 +145,12 @@
     return 50;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == 0) {
-        return 0;
-    }
-    else if (section == 1)
-    {
-        return 30;
-    }
-    
-    return 0;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    BOOL needReload = YES;
-    
-    if (indexPath.section == 1) {
-        switch (indexPath.row) {
-            case 0:
-            {
-                needReload = NO;
-                [WCAlertView showAlertWithTitle:@"设置提醒"
-                                        message:@"此设置会导致全天都处于免打扰模式, 不会再收到推送消息. 是否继续?"
-                             customizationBlock:^(WCAlertView *alertView) {
-                             } completionBlock:^(NSUInteger buttonIndex, WCAlertView *alertView) {
-                                 switch (buttonIndex) {
-                                     case 0: {
-                                     } break;
-                                     default: {
-                                         self->_noDisturbingStart = 0;
-                                         self->_noDisturbingEnd = 24;
-                                         self->_isNoDisturbing = YES;
-                                         [tableView reloadData];
-                                     } break;
-                                 }
-                             } cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
-            } break;
-            case 1:
-            {
-                _noDisturbingStart = 22;
-                _noDisturbingEnd = 7;
-                _isNoDisturbing = YES;
-            }
-                break;
-            case 2:
-            {
-                _noDisturbingStart = -1;
-                _noDisturbingEnd = -1;
-                _isNoDisturbing = NO;
-            }
-                break;
-                
-            default:
-                break;
-        }
-        
-        if (needReload) {
-            [tableView reloadData];
-        }
+    if (indexPath.row == 1) {
+        PushNotificationViewController *pushController = [[PushNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
+        [self.navigationController pushViewController:pushController animated:YES];
     }
 }
 
@@ -359,29 +199,9 @@
 //    [[EaseMob sharedInstance].chatManager setAutoAcceptGroupInvitation:!(beInvitedSwitch.isOn)];
 }
 
-- (void)pushDisplayChanged:(UISwitch *)pushDisplaySwitch
-{
-    if (pushDisplaySwitch.isOn) {
-        _pushDisplayStyle = ePushNotificationDisplayStyle_messageSummary;
-    }
-    else{
-        _pushDisplayStyle = ePushNotificationDisplayStyle_simpleBanner;
-    }
-}
 
 - (void)refreshConfig
 {
-    EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
-    _pushDisplayStyle = options.displayStyle;
-    _isNoDisturbing = options.noDisturbing;
-    if (_isNoDisturbing) {
-        _noDisturbingStart = options.noDisturbingStartH;
-        _noDisturbingEnd = options.noDisturbingEndH;
-    }
-    
-    BOOL isDisplayOn = _pushDisplayStyle == ePushNotificationDisplayStyle_simpleBanner ? NO : YES;
-    [self.pushDisplaySwitch setOn:isDisplayOn animated:YES];
-
     [self.autoLoginSwitch setOn:[[EaseMob sharedInstance].chatManager isAutoLoginEnabled] animated:YES];
     
     [self.tableView reloadData];

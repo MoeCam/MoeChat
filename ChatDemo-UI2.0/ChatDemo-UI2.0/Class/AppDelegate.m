@@ -71,9 +71,9 @@
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
-    //demo coredata, .pch中又相关头文件引用
+    //demo coredata, .pch中有相关头文件引用
     [MagicalRecord setupCoreDataStackWithStoreNamed:[NSString stringWithFormat:@"%@.sqlite", @"UIDemo"]];
-
+    
     [self loginStateChange:nil];
     [self.window makeKeyAndVisible];
     return YES;
