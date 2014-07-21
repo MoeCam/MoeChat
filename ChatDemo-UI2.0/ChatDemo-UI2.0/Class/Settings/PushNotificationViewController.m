@@ -258,6 +258,8 @@
     if (isUpdate) {
         [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options error:nil];
     }
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)pushDisplayChanged:(UISwitch *)pushDisplaySwitch
