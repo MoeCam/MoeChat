@@ -239,7 +239,7 @@
 //            [self.searchController.resultsSource addObject:group];
 //            [self.searchController.searchResultsTableView reloadData];
 //        }
-//    }];
+//    } onQueue:nil];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
