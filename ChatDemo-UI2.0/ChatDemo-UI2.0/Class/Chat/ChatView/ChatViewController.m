@@ -43,6 +43,8 @@
     NSInteger _recordingCount;
     
     dispatch_queue_t _messageQueue;
+    
+    BOOL _isScrollToBottom;
 }
 
 @property (nonatomic) BOOL isChatGroup;
@@ -58,6 +60,8 @@
 @property (strong, nonatomic) MessageReadManager *messageReadManager;//message阅读的管理者
 @property (strong, nonatomic) EMConversation *conversation;//会话管理者
 @property (strong, nonatomic) NSDate *chatTagDate;
+
+@property (nonatomic) BOOL isScrollToBottom;
 
 @end
 
@@ -110,6 +114,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:@"applicationDidEnterBackground" object:nil];
     
     _messageQueue = dispatch_queue_create("easemob.com", NULL);
+    _isScrollToBottom = YES;
 //    //通过会话管理者获取已收发消息
 //    
 //    NSArray *chats = [_conversation loadNumbersOfMessages:KPageCount before:[_conversation latestMessage].timestamp + 1];
@@ -164,7 +169,12 @@
 {
     [super viewWillAppear:animated];
     
-    [self scrollViewToBottom:YES];
+    if (_isScrollToBottom) {
+        [self scrollViewToBottom:YES];
+    }
+    else{
+        _isScrollToBottom = YES;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -506,6 +516,7 @@
 // 位置的bubble被点击
 -(void)chatLocationCellBubblePressed:(MessageModel *)model
 {
+    _isScrollToBottom = NO;
     LocationViewController *locationController = [[LocationViewController alloc] initWithLocation:CLLocationCoordinate2DMake(model.latitude, model.longitude)];
     [self.navigationController pushViewController:locationController animated:YES];
 }
@@ -527,7 +538,9 @@
     } onQueue:nil];
 }
 
-- (void)playVideoWithVideoPath:(NSString *)videoPath{
+- (void)playVideoWithVideoPath:(NSString *)videoPath
+{
+    _isScrollToBottom = NO;
     NSURL *videoURL = [NSURL fileURLWithPath:videoPath];
     MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
     [moviePlayerController.moviePlayer prepareToPlay];
@@ -550,6 +563,7 @@
                     NSString *localPath = aMessage == nil ? model.localPath : [[aMessage.messageBodies firstObject] localPath];
                     if (localPath && localPath.length > 0) {
                         NSURL *url = [NSURL fileURLWithPath:localPath];
+                        weakSelf.isScrollToBottom = NO;
                         [weakSelf.messageReadManager showBrowserWithImages:@[url]];
                         return ;
                     }
