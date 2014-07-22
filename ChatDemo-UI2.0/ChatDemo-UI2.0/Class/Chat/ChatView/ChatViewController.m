@@ -501,13 +501,13 @@
             __weak ChatViewController *weakSelf = self;
             [[[EaseMob sharedInstance] deviceManager] enableProximitySensor];
             [[EaseMob sharedInstance].chatManager asyncPlayAudio:model.chatVoice completion:^(EMError *error) {
-                [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
                 [weakSelf.messageReadManager stopMessageAudioModel];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.tableView reloadData];
+                    
+                    [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
                 });
-                
             } onQueue:nil];
         }
     }
