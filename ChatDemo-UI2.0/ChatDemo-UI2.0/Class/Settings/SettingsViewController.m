@@ -184,7 +184,7 @@
 
 - (void)autoLoginChanged:(UISwitch *)autoSwitch
 {
-    [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:autoSwitch.isOn updateAutoLoginInfo:YES];
+    [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:autoSwitch.isOn];
 }
 
 - (void)beInvitedChanged:(UISwitch *)beInvitedSwitch
