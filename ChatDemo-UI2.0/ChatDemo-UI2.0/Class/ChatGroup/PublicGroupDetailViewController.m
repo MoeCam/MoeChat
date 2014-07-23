@@ -174,8 +174,6 @@
         UITextField *messageTextField = [alertView textFieldAtIndex:0];
         
         NSString *messageStr = @"";
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *username = [loginInfo objectForKey:kSDKUsername];
         if (messageTextField.text.length > 0) {
             messageStr = messageTextField.text;
         }

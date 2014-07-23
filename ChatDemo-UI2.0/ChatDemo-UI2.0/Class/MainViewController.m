@@ -64,6 +64,8 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [addButton setImage:[UIImage imageNamed:@"add.png"] forState:UIControlStateNormal];
     [addButton addTarget:_contactsVC action:@selector(addFriendAction) forControlEvents:UIControlEventTouchUpInside];
     _addFriendItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
+    
+    [self setupUnreadMessageCount];
 }
 
 - (void)didReceiveMemoryWarning
@@ -180,11 +182,12 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     for (EMConversation *conversation in conversations) {
         unreadCount += conversation.unreadMessagesCount;
     }
-    UIViewController *vc = [self.viewControllers objectAtIndex:0];
-    if (unreadCount > 0) {
-        vc.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",unreadCount];
-    }else{
-        vc.tabBarItem.badgeValue = nil;
+    if (_chatListVC) {
+        if (unreadCount > 0) {
+            _chatListVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",unreadCount];
+        }else{
+            _chatListVC.tabBarItem.badgeValue = nil;
+        }
     }
 }
 
@@ -428,6 +431,21 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 - (void)didConnectionStateChanged:(EMConnectionState)connectionState
 {
     [_chatListVC networkChanged:connectionState];
+}
+
+#pragma mark - 
+
+- (void)willAutoReconnect{
+    [self showHudInView:self.view hint:@"正在重连中..."];
+}
+
+- (void)didAutoReconnectFinishedWithError:(NSError *)error{
+    [self hideHud];
+    if (error) {
+        [self showHint:@"重连失败，稍候将继续重连"];
+    }else{
+        [self showHint:@"重连成功！"];
+    }
 }
 
 #pragma mark - public
