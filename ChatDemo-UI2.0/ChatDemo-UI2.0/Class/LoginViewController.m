@@ -92,6 +92,47 @@
     }
 }
 
+- (void)loginWithUsername:(NSString *)username password:(NSString *)password
+{
+    [self showHudInView:self.view hint:@"正在登录..."];
+    [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:username
+                                                        password:password
+                                                      completion:
+     ^(NSDictionary *loginInfo, EMError *error) {
+         [self hideHud];
+         if (loginInfo && !error) {
+             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
+         }else {
+             switch (error.errorCode) {
+                 case EMErrorServerNotReachable:
+                     TTAlertNoTitle(@"连接服务器失败!");
+                     break;
+                 case EMErrorServerAuthenticationFailure:
+                     TTAlertNoTitle(@"用户名或密码错误");
+                     break;
+                 case EMErrorServerTimeout:
+                     TTAlertNoTitle(@"连接服务器超时!");
+                     break;
+                 default:
+                     TTAlertNoTitle(@"登录失败");
+                     break;
+             }
+         }
+     } onQueue:nil];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if ([alertView cancelButtonIndex] != buttonIndex) {
+        UITextField *nameTextField = [alertView textFieldAtIndex:0];
+        if(nameTextField.text.length > 0)
+        {
+            [[EaseMob sharedInstance].chatManager setNickname:nameTextField.text];
+        }
+    }
+    
+    [self loginWithUsername:_usernameTextField.text password:_passwordTextField.text];
+}
+
 - (IBAction)doLogin:(id)sender {
     if (![self isEmpty]) {
         [self.view endEditing:YES];
@@ -107,32 +148,15 @@
             
             return;
         }
-        
-        [self showHudInView:self.view hint:@"正在登录..."];
-        [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:_usernameTextField.text
-                                                            password:_passwordTextField.text
-                                                          completion:
-         ^(NSDictionary *loginInfo, EMError *error) {
-             [self hideHud];
-             if (loginInfo && !error) {
-                 [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
-             }else {
-                 switch (error.errorCode) {
-                     case EMErrorServerNotReachable:
-                         TTAlertNoTitle(@"连接服务器失败!");
-                         break;
-                     case EMErrorServerAuthenticationFailure:
-                         TTAlertNoTitle(@"用户名或密码错误");
-                         break;
-                     case EMErrorServerTimeout:
-                         TTAlertNoTitle(@"连接服务器超时!");
-                         break;
-                     default:
-                         TTAlertNoTitle(@"登录失败");
-                         break;
-                 }
-             }
-         } onQueue:nil];
+#if !TARGET_IPHONE_SIMULATOR
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"填写推送消息时使用的昵称" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        UITextField *nameTextField = [alert textFieldAtIndex:0];
+        nameTextField.text = self.usernameTextField.text;
+        [alert show];
+#elif TARGET_IPHONE_SIMULATOR
+        [self loginWithUsername:_usernameTextField.text password:_passwordTextField.text];
+#endif
     }
 }
 
