@@ -923,7 +923,15 @@
     __weak typeof(self) weakSelf = self;
     dispatch_async(_messageQueue, ^{
         NSInteger currentCount = [weakSelf.dataSource count];
-        NSArray *chats = [weakSelf.conversation loadNumbersOfMessages:(currentCount + KPageCount) before:[weakSelf.conversation latestMessage].timestamp + 1];
+        EMMessage *latestMessage = [weakSelf.conversation latestMessage];
+        NSTimeInterval beforeTime = 0;
+        if (latestMessage) {
+            beforeTime = latestMessage.timestamp;
+        }else{
+            beforeTime = [[NSDate date] timeIntervalSince1970] * 1000 + 10;
+        }
+        
+        NSArray *chats = [weakSelf.conversation loadNumbersOfMessages:(currentCount + KPageCount) before:beforeTime];
         
         if ([chats count] > currentCount) {
             [weakSelf.dataSource removeAllObjects];
