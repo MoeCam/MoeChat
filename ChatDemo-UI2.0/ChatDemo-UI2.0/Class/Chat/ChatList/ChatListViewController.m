@@ -216,7 +216,7 @@
     NSArray* sorte = [conversations sortedArrayUsingComparator:
            ^(EMConversation *obj1, EMConversation* obj2){
                EMMessage *message1 = [obj1 latestMessage];
-               EMMessage *message2 = [obj1 latestMessage];
+               EMMessage *message2 = [obj2 latestMessage];
                if(message1.timestamp > message2.timestamp) {
                    return(NSComparisonResult)NSOrderedAscending;
                }else {
