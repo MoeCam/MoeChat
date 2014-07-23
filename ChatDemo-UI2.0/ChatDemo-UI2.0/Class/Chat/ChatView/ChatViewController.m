@@ -926,9 +926,9 @@
         EMMessage *latestMessage = [weakSelf.conversation latestMessage];
         NSTimeInterval beforeTime = 0;
         if (latestMessage) {
-            beforeTime = latestMessage.timestamp;
+            beforeTime = latestMessage.timestamp + 1;
         }else{
-            beforeTime = [[NSDate date] timeIntervalSince1970] * 1000 + 10;
+            beforeTime = [[NSDate date] timeIntervalSince1970] * 1000 + 1;
         }
         
         NSArray *chats = [weakSelf.conversation loadNumbersOfMessages:(currentCount + KPageCount) before:beforeTime];
