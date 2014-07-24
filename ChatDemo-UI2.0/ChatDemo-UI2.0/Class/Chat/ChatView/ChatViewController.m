@@ -62,6 +62,7 @@
 @property (strong, nonatomic) NSDate *chatTagDate;
 
 @property (nonatomic) BOOL isScrollToBottom;
+@property (nonatomic) BOOL isPlayingAudio;
 
 @end
 
@@ -72,7 +73,7 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization
-        _isChatGroup = NO;
+        _isPlayingAudio = NO;
         
         //根据接收者的username获取当前会话的管理者
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:chatter isGroup:_isChatGroup];
@@ -498,6 +499,7 @@
         }];
         
         if (isPrepare) {
+            _isPlayingAudio = YES;
             __weak ChatViewController *weakSelf = self;
             [[[EaseMob sharedInstance] deviceManager] enableProximitySensor];
             [[EaseMob sharedInstance].chatManager asyncPlayAudio:model.chatVoice completion:^(EMError *error) {
@@ -506,9 +508,13 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.tableView reloadData];
                     
-                    [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
+                    weakSelf.isPlayingAudio = NO;
+//                    [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
                 });
             } onQueue:nil];
+        }
+        else{
+            _isPlayingAudio = NO;
         }
     }
 }
@@ -1126,6 +1132,7 @@
 #pragma mark - EMDeviceManagerProximitySensorDelegate
 
 - (void)proximitySensorChanged:(BOOL)isCloseToUser{
+    _isCloseToUser = isCloseToUser;
     //如果此时手机靠近面部放在耳朵旁，那么声音将通过听筒输出，并将屏幕变暗（省电啊）
     if (isCloseToUser)//黑屏
     {
@@ -1134,6 +1141,9 @@
     } else {
         // 使用扬声器播放
         [[EaseMob sharedInstance].deviceManager switchAudioOutputDevice:eAudioOutputDevice_speaker];
+        if (!_isPlayingAudio) {
+            [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
+        }
     }
 }
 
