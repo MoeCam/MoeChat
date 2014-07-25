@@ -429,7 +429,7 @@
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)recognizer
 {
-	if (recognizer.state == UIGestureRecognizerStateBegan) {
+	if (recognizer.state == UIGestureRecognizerStateBegan && [self.dataSource count] > 0) {
         CGPoint location = [recognizer locationInView:self.tableView];
         NSIndexPath * indexPath = [self.tableView indexPathForRowAtPoint:location];
         id object = [self.dataSource objectAtIndex:indexPath.row];
