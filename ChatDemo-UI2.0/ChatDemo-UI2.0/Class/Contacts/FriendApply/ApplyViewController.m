@@ -288,7 +288,10 @@ static ApplyViewController *controller = nil;
             
             [_dataSource insertObject:newEntity atIndex:0];
             [self.tableView reloadData];
-            [self save];
+            
+            if (style != ApplyStyleFriend) {
+                [self save];
+            }
         }
     }
 }
@@ -299,6 +302,9 @@ static ApplyViewController *controller = nil;
     NSString *loginName = [loginInfo objectForKey:kSDKUsername];
     if(loginName && [loginName length] > 0)
     {
+        NSPredicate *deletePredicate = [NSPredicate predicateWithFormat:@"receiverUsername = %@ and style = %i", loginName, ApplyStyleFriend];
+        [ApplyEntity deleteAllMatchingPredicate:deletePredicate];
+        
         self.loginUsername = loginName;
         NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"receiverUsername = %@", loginName];
         NSFetchRequest *request = [ApplyEntity requestAllWithPredicate:searchPredicate];
