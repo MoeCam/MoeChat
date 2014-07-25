@@ -1132,7 +1132,6 @@
 #pragma mark - EMDeviceManagerProximitySensorDelegate
 
 - (void)proximitySensorChanged:(BOOL)isCloseToUser{
-    _isCloseToUser = isCloseToUser;
     //如果此时手机靠近面部放在耳朵旁，那么声音将通过听筒输出，并将屏幕变暗（省电啊）
     if (isCloseToUser)//黑屏
     {
