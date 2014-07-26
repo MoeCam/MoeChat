@@ -322,6 +322,12 @@
 		90F1BED11930493200121AEC /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED01930493100121AEC /* libiconv.dylib */; };
 		90F1BED31930493F00121AEC /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED21930493F00121AEC /* libstdc++.dylib */; };
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
+		C09DF1F21983ABC1001C0D0D /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = C09DF1EC1983ABC1001C0D0D /* 114.png */; };
+		C09DF1F31983ABC1001C0D0D /* 120.png in Resources */ = {isa = PBXBuildFile; fileRef = C09DF1ED1983ABC1001C0D0D /* 120.png */; };
+		C09DF1F41983ABC1001C0D0D /* 29.png in Resources */ = {isa = PBXBuildFile; fileRef = C09DF1EE1983ABC1001C0D0D /* 29.png */; };
+		C09DF1F51983ABC1001C0D0D /* 57.png in Resources */ = {isa = PBXBuildFile; fileRef = C09DF1EF1983ABC1001C0D0D /* 57.png */; };
+		C09DF1F61983ABC1001C0D0D /* 58.png in Resources */ = {isa = PBXBuildFile; fileRef = C09DF1F01983ABC1001C0D0D /* 58.png */; };
+		C09DF1F71983ABC1001C0D0D /* 80.png in Resources */ = {isa = PBXBuildFile; fileRef = C09DF1F11983ABC1001C0D0D /* 80.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -780,6 +786,12 @@
 		90F1BED01930493100121AEC /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		90F1BED21930493F00121AEC /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		90F1BED41930495800121AEC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		C09DF1EC1983ABC1001C0D0D /* 114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 114.png; sourceTree = "<group>"; };
+		C09DF1ED1983ABC1001C0D0D /* 120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 120.png; sourceTree = "<group>"; };
+		C09DF1EE1983ABC1001C0D0D /* 29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 29.png; sourceTree = "<group>"; };
+		C09DF1EF1983ABC1001C0D0D /* 57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 57.png; sourceTree = "<group>"; };
+		C09DF1F01983ABC1001C0D0D /* 58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 58.png; sourceTree = "<group>"; };
+		C09DF1F11983ABC1001C0D0D /* 80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 80.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1026,6 +1038,7 @@
 		3C3E18E919751D2A00D1658E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C09DF1EB1983ABC1001C0D0D /* appicon */,
 				3C3E18EA19751D2A00D1658E /* chatListCell */,
 				3C3E18ED19751D2A00D1658E /* ChatView */,
 				3C3E194E19751D2A00D1658E /* Login */,
@@ -1760,6 +1773,19 @@
 			path = SlimeRefresh;
 			sourceTree = "<group>";
 		};
+		C09DF1EB1983ABC1001C0D0D /* appicon */ = {
+			isa = PBXGroup;
+			children = (
+				C09DF1EC1983ABC1001C0D0D /* 114.png */,
+				C09DF1ED1983ABC1001C0D0D /* 120.png */,
+				C09DF1EE1983ABC1001C0D0D /* 29.png */,
+				C09DF1EF1983ABC1001C0D0D /* 57.png */,
+				C09DF1F01983ABC1001C0D0D /* 58.png */,
+				C09DF1F11983ABC1001C0D0D /* 80.png */,
+			);
+			path = appicon;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1842,6 +1868,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C09DF1F41983ABC1001C0D0D /* 29.png in Resources */,
 				3C3E19C719751D2A00D1658E /* password@2x.png in Resources */,
 				3C3E196D19751D2A00D1658E /* chatFire_audioPlaying2.png in Resources */,
 				3C3E19A719751D2A00D1658E /* chat_location_detail_disclosure@2x.png in Resources */,
@@ -1877,6 +1904,7 @@
 				3C3E198D19751D2A00D1658E /* VoiceSearchFeedback015.png in Resources */,
 				3C3E19CE19751D2A00D1658E /* tabbar_contacts.png in Resources */,
 				9003D8941939D8D000DC38A4 /* chatBar_more_cameraSelected@2x.png in Resources */,
+				C09DF1F71983ABC1001C0D0D /* 80.png in Resources */,
 				3C3E19AA19751D2A00D1658E /* chat_location_preview.png in Resources */,
 				3C3E19A819751D2A00D1658E /* chat_location_detail_disclosureHL.png in Resources */,
 				3C3E197E19751D2A00D1658E /* VoiceSearchFeedback007@2x.png in Resources */,
@@ -1919,11 +1947,13 @@
 				3C3E198019751D2A00D1658E /* VoiceSearchFeedback008@2x.png in Resources */,
 				3C3E197519751D2A00D1658E /* VoiceSearchFeedback003.png in Resources */,
 				3C3E19BD19751D2A00D1658E /* chat_sender_audio_playing_002@2x.png in Resources */,
+				C09DF1F61983ABC1001C0D0D /* 58.png in Resources */,
 				3C3E19A019751D2A00D1658E /* chatBar_more_faceSelected.png in Resources */,
 				3C3E196E19751D2A00D1658E /* chatFire_audioPlaying2@2x.png in Resources */,
 				3C06AAA219401A2E0076FF0B /* back@2x.png in Resources */,
 				3C3E19B619751D2A00D1658E /* chat_receiver_bg.png in Resources */,
 				9003D89B1939D8D000DC38A4 /* chatBar_more_photoSelected.png in Resources */,
+				C09DF1F21983ABC1001C0D0D /* 114.png in Resources */,
 				3C3E197319751D2A00D1658E /* VoiceSearchFeedback002.png in Resources */,
 				3C3E19D619751D2A00D1658E /* tabbarBackground.png in Resources */,
 				3C3E199419751D2A00D1658E /* VoiceSearchFeedback018@2x.png in Resources */,
@@ -1937,6 +1967,7 @@
 				3C3E197C19751D2A00D1658E /* VoiceSearchFeedback006@2x.png in Resources */,
 				3C3E19C619751D2A00D1658E /* password.png in Resources */,
 				3C3E197219751D2A00D1658E /* VoiceSearchFeedback001@2x.png in Resources */,
+				C09DF1F31983ABC1001C0D0D /* 120.png in Resources */,
 				3C3E199919751D2A00D1658E /* chat_video_play.png in Resources */,
 				3C3E199219751D2A00D1658E /* VoiceSearchFeedback017@2x.png in Resources */,
 				3C3E196A19751D2A00D1658E /* chatFire_audioPlaying0@2x.png in Resources */,
@@ -2010,6 +2041,7 @@
 				3C3E197619751D2A00D1658E /* VoiceSearchFeedback003@2x.png in Resources */,
 				3C3E198619751D2A00D1658E /* VoiceSearchFeedback011@2x.png in Resources */,
 				3C3E199F19751D2A00D1658E /* chatBar_more_face@2x.png in Resources */,
+				C09DF1F51983ABC1001C0D0D /* 57.png in Resources */,
 				3C3E19A519751D2A00D1658E /* chat_location_annotation_someone@2x.png in Resources */,
 				3C3E199C19751D2A00D1658E /* chatBar_more_cardSelected.png in Resources */,
 				3C3E199E19751D2A00D1658E /* chatBar_more_face.png in Resources */,
@@ -2266,7 +2298,6 @@
 		90911051192EEA70008A48AA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Ji Fang (4BQ5R7ZSAG)";
@@ -2301,7 +2332,6 @@
 		90911052192EEA70008A48AA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Ji Fang (4BQ5R7ZSAG)";

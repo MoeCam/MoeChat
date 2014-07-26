@@ -8,6 +8,21 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>80</string>
+				<string>58</string>
+				<string>29</string>
+				<string>120</string>
+				<string>114</string>
+				<string>57</string>
+			</array>
+		</dict>
+	</dict>
 	<key>CFBundleIdentifier</key>
 	<string>com.easemob.enterprise.demo.ui</string>
 	<key>CFBundleInfoDictionaryVersion</key>
