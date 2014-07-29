@@ -86,6 +86,12 @@
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     [[EaseMob sharedInstance] application:application didFailToRegisterForRemoteNotificationsWithError:error];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"注册推送失败"
+                                                    message:error.description
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
