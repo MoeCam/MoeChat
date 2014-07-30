@@ -67,6 +67,7 @@
 		3C1CEF7D196E9F5400DBA56B /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3C1CEF66196E9F5400DBA56B /* MWPhotoBrowser.bundle */; };
 		3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C1CEF7E196EA37600DBA56B /* ImageIO.framework */; };
 		3C1CEF81196EA49200DBA56B /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C1CEF80196EA49200DBA56B /* SDWebImage.framework */; };
+		3C2923B11988E13300DCCD40 /* BlackListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2923B01988E13300DCCD40 /* BlackListViewController.m */; };
 		3C3527361931D1BE00385240 /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3527351931D1BE00385240 /* BaseTableViewCell.m */; };
 		3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527441931D37900385240 /* SystemConfiguration.framework */; };
 		3C3E196719751D2A00D1658E /* chatListCellHead.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C3E18EB19751D2A00D1658E /* chatListCellHead.png */; };
@@ -461,6 +462,8 @@
 		3C1CEF66196E9F5400DBA56B /* MWPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MWPhotoBrowser.bundle; sourceTree = "<group>"; };
 		3C1CEF7E196EA37600DBA56B /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3C1CEF80196EA49200DBA56B /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = "ChatDemo-UI2.0/3rdparty/SDWebImage.framework"; sourceTree = "<group>"; };
+		3C2923AF1988E13300DCCD40 /* BlackListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlackListViewController.h; sourceTree = "<group>"; };
+		3C2923B01988E13300DCCD40 /* BlackListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlackListViewController.m; sourceTree = "<group>"; };
 		3C3527341931D1BE00385240 /* BaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableViewCell.h; sourceTree = "<group>"; };
 		3C3527351931D1BE00385240 /* BaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableViewCell.m; sourceTree = "<group>"; };
 		3C3527401931D32C00385240 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1744,6 +1747,8 @@
 				9091112E192EEC0F008A48AA /* SettingsViewController.m */,
 				3C117120197D243B00E2DBEC /* PushNotificationViewController.h */,
 				3C117121197D243B00E2DBEC /* PushNotificationViewController.m */,
+				3C2923AF1988E13300DCCD40 /* BlackListViewController.h */,
+				3C2923B01988E13300DCCD40 /* BlackListViewController.m */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2141,6 +2146,7 @@
 				9091111C192EEAED008A48AA /* UIViewController+HUD.m in Sources */,
 				9003D9081939D8D000DC38A4 /* MessageModel.m in Sources */,
 				3C1614F31973D4B700564BF5 /* MagicalRecord+Actions.m in Sources */,
+				3C2923B11988E13300DCCD40 /* BlackListViewController.m in Sources */,
 				9003D8A71939D8D000DC38A4 /* EMChatViewCell.m in Sources */,
 				3C1614E91973D4B700564BF5 /* NSManagedObject+MagicalFinders.m in Sources */,
 				9003D8A51939D8D000DC38A4 /* EMChatTimeCell.m in Sources */,

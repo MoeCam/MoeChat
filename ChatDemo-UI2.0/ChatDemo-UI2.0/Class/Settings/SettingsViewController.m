@@ -14,8 +14,8 @@
 
 #import "ApplyViewController.h"
 #import "PushNotificationViewController.h"
+#import "BlackListViewController.h"
 #import "WCAlertView.h"
-#import "EMError.h"
 
 @interface SettingsViewController ()
 
@@ -99,8 +99,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
-//    return 3;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -125,14 +124,19 @@
         }
         else if (indexPath.row == 2)
         {
-            cell.textLabel.text = @"被邀请人权限";
-            
-            self.beInvitedSwitch.frame = CGRectMake(180, (cell.contentView.frame.size.height - self.beInvitedSwitch.frame.size.height) / 2, self.beInvitedSwitch.frame.size.width, self.beInvitedSwitch.frame.size.height);
-            [cell.contentView addSubview:self.beInvitedSwitch];
-            
-            self.beInvitedLabel.frame = CGRectMake(self.beInvitedSwitch.frame.origin.x + self.beInvitedSwitch.frame.size.width + 5, 0, 80, 50);
-            [cell.contentView addSubview:self.beInvitedLabel];
+            cell.textLabel.text = @"黑名单";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
+//        else if (indexPath.row == 3)
+//        {
+//            cell.textLabel.text = @"被邀请人权限";
+//            
+//            self.beInvitedSwitch.frame = CGRectMake(180, (cell.contentView.frame.size.height - self.beInvitedSwitch.frame.size.height) / 2, self.beInvitedSwitch.frame.size.width, self.beInvitedSwitch.frame.size.height);
+//            [cell.contentView addSubview:self.beInvitedSwitch];
+//            
+//            self.beInvitedLabel.frame = CGRectMake(self.beInvitedSwitch.frame.origin.x + self.beInvitedSwitch.frame.size.width + 5, 0, 80, 50);
+//            [cell.contentView addSubview:self.beInvitedLabel];
+//        }
     }
     
     return cell;
@@ -152,6 +156,11 @@
         PushNotificationViewController *pushController = [[PushNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:pushController animated:YES];
     }
+    else if (indexPath.row == 2)
+    {
+        BlackListViewController *blackController = [[BlackListViewController alloc] initWithNibName:nil bundle:nil];
+        [self.navigationController pushViewController:blackController animated:YES];
+    }
 }
 
 #pragma mark - getter
@@ -159,12 +168,19 @@
 - (UIView *)footerView
 {
     if (_footerView == nil) {
-        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 60)];
+        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
         _footerView.backgroundColor = [UIColor clearColor];
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _footerView.frame.size.width, 0.5)];
         line.backgroundColor = [UIColor lightGrayColor];
         [_footerView addSubview:line];
+        
+//        UIButton *uploadLogButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 20, _footerView.frame.size.width - 80, 40)];
+//        [uploadLogButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
+//        [uploadLogButton setTitle:@"上传运行日志" forState:UIControlStateNormal];
+//        [uploadLogButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        [uploadLogButton addTarget:self action:@selector(uploadLogAction) forControlEvents:UIControlEventTouchUpInside];
+//        [_footerView addSubview:uploadLogButton];
         
         UIButton *logoutButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 20, _footerView.frame.size.width - 80, 40)];
         [logoutButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
@@ -206,6 +222,21 @@
     
     [self.tableView reloadData];
 }
+
+//- (void)uploadLogAction
+//{
+//    __weak typeof(self) weakSelf = self;
+//    [self showHudInView:self.view hint:@"正在上传..."];
+//    [[EaseMob sharedInstance] asyncUploadLogToServerWithCompletion:^(EMError *error) {
+//        [weakSelf hideHud];
+//        if (error) {
+//            [weakSelf showHint:error.description];
+//        }
+//        else{
+//            [weakSelf showHint:@"上传成功"];
+//        }
+//    }];
+//}
 
 - (void)logoutAction
 {
