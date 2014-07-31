@@ -437,7 +437,7 @@
         [self.tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:_currentLongPressIndex] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView  endUpdates];
         
-        [[EaseMob sharedInstance].chatManager blockBuddy:buddy.username reason:nil];
+        [[EaseMob sharedInstance].chatManager blockBuddy:buddy.username relationship:eRelationshipBoth];
     }
     
     _currentLongPressIndex = nil;

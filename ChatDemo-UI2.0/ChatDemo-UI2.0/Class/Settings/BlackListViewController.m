@@ -58,11 +58,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-
 #pragma mark - getter
 
 - (SRRefreshView *)slimeView
@@ -139,12 +134,10 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *username = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-        [tableView beginUpdates];
-        [[self.dataSource objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
-        [tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        [tableView  endUpdates];
+        [[EaseMob sharedInstance].chatManager unblockBuddy:username];
         
-        [[EaseMob sharedInstance].chatManager unblockBuddy:username reason:nil];
+        [[self.dataSource objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
+        [tableView reloadData];
     }
 }
 
@@ -218,15 +211,6 @@
     [self reloadDataSource];
     [_slimeView endRefresh];
 }
-
-#pragma mark - IChatManagerDelegate
-
-- (void)didUpdateBlockedList:(NSArray *)blockedList
-{
-    [_dataSource addObjectsFromArray:[self sortDataArray:blockedList]];
-    [self.tableView reloadData];
-}
-
 
 #pragma mark - data
 
