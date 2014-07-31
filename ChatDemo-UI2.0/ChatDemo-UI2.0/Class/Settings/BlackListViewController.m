@@ -70,7 +70,7 @@
     if (_slimeView == nil) {
         _slimeView = [[SRRefreshView alloc] init];
         _slimeView.delegate = self;
-        _slimeView.upInset = 20;
+        _slimeView.upInset = 0;
         _slimeView.slimeMissWhenGoingBack = YES;
         _slimeView.slime.bodyColor = [UIColor grayColor];
         _slimeView.slime.skinColor = [UIColor grayColor];
@@ -197,6 +197,18 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewCellEditingStyleDelete;
+}
+
+#pragma mark - scrollView delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_slimeView scrollViewDidScroll];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [_slimeView scrollViewDidEndDraging];
 }
 
 #pragma mark - slimeRefresh delegate
