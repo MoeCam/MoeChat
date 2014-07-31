@@ -45,9 +45,26 @@
     // Uncomment the following line to preserve selection between presentations.
     self.title = @"黑名单";
     
-    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    [self.view addSubview:self.tableView];
-    [self.tableView addSubview:self.slimeView];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    _tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.tableFooterView = [[UIView alloc] init];
+    [self.view addSubview:_tableView];
+    
+    _slimeView = [[SRRefreshView alloc] init];
+    _slimeView.delegate = self;
+    _slimeView.upInset = 0;
+    _slimeView.slimeMissWhenGoingBack = YES;
+    _slimeView.slime.bodyColor = [UIColor grayColor];
+    _slimeView.slime.skinColor = [UIColor grayColor];
+    _slimeView.slime.lineWith = 1;
+    _slimeView.slime.shadowBlur = 4;
+    _slimeView.slime.shadowColor = [UIColor grayColor];
+    [self.tableView addSubview:_slimeView];
     
     [self.slimeView setLoadingWithExpansion];
 }
@@ -58,39 +75,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - getter
-
-- (SRRefreshView *)slimeView
+- (void)dealloc
 {
-    if (_slimeView == nil) {
-        _slimeView = [[SRRefreshView alloc] init];
-        _slimeView.delegate = self;
-        _slimeView.upInset = 0;
-        _slimeView.slimeMissWhenGoingBack = YES;
-        _slimeView.slime.bodyColor = [UIColor grayColor];
-        _slimeView.slime.skinColor = [UIColor grayColor];
-        _slimeView.slime.lineWith = 1;
-        _slimeView.slime.shadowBlur = 4;
-        _slimeView.slime.shadowColor = [UIColor grayColor];
-    }
-    
-    return _slimeView;
-}
-
-- (UITableView *)tableView
-{
-    if (_tableView == nil)
-    {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.backgroundColor = [UIColor whiteColor];
-        _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        _tableView.delegate = self;
-        _tableView.dataSource = self;
-        _tableView.tableFooterView = [[UIView alloc] init];
-    }
-    
-    return _tableView;
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+    _slimeView.delegate = nil;
 }
 
 #pragma mark - Table view data source
