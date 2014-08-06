@@ -168,21 +168,21 @@
 - (UIView *)footerView
 {
     if (_footerView == nil) {
-        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
+        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 140)];
         _footerView.backgroundColor = [UIColor clearColor];
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _footerView.frame.size.width, 0.5)];
         line.backgroundColor = [UIColor lightGrayColor];
         [_footerView addSubview:line];
         
-//        UIButton *uploadLogButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 20, _footerView.frame.size.width - 80, 40)];
-//        [uploadLogButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
-//        [uploadLogButton setTitle:@"上传运行日志" forState:UIControlStateNormal];
-//        [uploadLogButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//        [uploadLogButton addTarget:self action:@selector(uploadLogAction) forControlEvents:UIControlEventTouchUpInside];
-//        [_footerView addSubview:uploadLogButton];
+        UIButton *uploadLogButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 20, _footerView.frame.size.width - 80, 40)];
+        [uploadLogButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
+        [uploadLogButton setTitle:@"上传运行日志" forState:UIControlStateNormal];
+        [uploadLogButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [uploadLogButton addTarget:self action:@selector(uploadLogAction) forControlEvents:UIControlEventTouchUpInside];
+        [_footerView addSubview:uploadLogButton];
         
-        UIButton *logoutButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 20, _footerView.frame.size.width - 80, 40)];
+        UIButton *logoutButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 80, _footerView.frame.size.width - 80, 40)];
         [logoutButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
         NSDictionary *loginInfo = [[EaseMob sharedInstance].chatManager loginInfo];
         NSString *username = [loginInfo objectForKey:kSDKUsername];
@@ -223,20 +223,20 @@
     [self.tableView reloadData];
 }
 
-//- (void)uploadLogAction
-//{
-//    __weak typeof(self) weakSelf = self;
-//    [self showHudInView:self.view hint:@"正在上传..."];
-//    [[EaseMob sharedInstance] asyncUploadLogToServerWithCompletion:^(EMError *error) {
-//        [weakSelf hideHud];
-//        if (error) {
-//            [weakSelf showHint:error.description];
-//        }
-//        else{
-//            [weakSelf showHint:@"上传成功"];
-//        }
-//    }];
-//}
+- (void)uploadLogAction
+{
+    __weak typeof(self) weakSelf = self;
+    [self showHudInView:self.view hint:@"正在上传..."];
+    [[EaseMob sharedInstance] asyncUploadLogToServerWithCompletion:^(EMError *error) {
+        [weakSelf hideHud];
+        if (error) {
+            [weakSelf showHint:error.description];
+        }
+        else{
+            [weakSelf showHint:@"上传成功"];
+        }
+    }];
+}
 
 - (void)logoutAction
 {

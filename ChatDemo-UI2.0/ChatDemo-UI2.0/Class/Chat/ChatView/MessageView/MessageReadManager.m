@@ -159,7 +159,6 @@ static MessageReadManager *detailInstance = nil;
             currentAudioModel = nil;
             
             [[EaseMob sharedInstance].chatManager stopPlayingAudio];
-//            [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
         }
         else {
             messageModel.isPlaying = YES;
