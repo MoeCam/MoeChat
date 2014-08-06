@@ -85,6 +85,7 @@
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+#warning SDK方法调用
     [[EaseMob sharedInstance] application:application didFailToRegisterForRemoteNotificationsWithError:error];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"注册推送失败"
                                                     message:error.description

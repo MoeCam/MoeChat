@@ -436,6 +436,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 #pragma mark - 
 
 - (void)willAutoReconnect{
+    [self hideHud];
     [self showHudInView:self.view hint:@"正在重连中..."];
 }
 
