@@ -235,54 +235,62 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [[EaseMob sharedInstance].deviceManager asyncPlayVibration];
 }
 
-- (void)showNotificationWithMessage:(EMMessage *)message{
-    id<IEMMessageBody> messageBody = [message.messageBodies firstObject];
-    NSString *messageStr = nil;
-    switch (messageBody.messageBodyType) {
-        case eMessageBodyType_Text:
-        {
-            messageStr = ((EMTextMessageBody *)messageBody).text;
-        }
-            break;
-        case eMessageBodyType_Image:
-        {
-            messageStr = @"[图片]";
-        }
-            break;
-        case eMessageBodyType_Location:
-        {
-            messageStr = @"[位置]";
-        }
-            break;
-        case eMessageBodyType_Voice:
-        {
-            messageStr = @"[音频]";
-        }
-            break;
-        case eMessageBodyType_Video:{
-            messageStr = @"[视频]";
-        }
-            break;
-        default:
-            break;
-    }
-    
+- (void)showNotificationWithMessage:(EMMessage *)message
+{
+    EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
     //发送本地推送
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     notification.fireDate = [NSDate date]; //触发通知的时间
     
-    NSString *title = message.from;
-    if (message.isGroup) {
-        NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
-        for (EMGroup *group in groupArray) {
-            if ([group.groupId isEqualToString:message.conversation.chatter]) {
-                title = [NSString stringWithFormat:@"%@(%@)", message.groupSenderName, group.groupSubject];
+    if (options.displayStyle == ePushNotificationDisplayStyle_messageSummary) {
+        id<IEMMessageBody> messageBody = [message.messageBodies firstObject];
+        NSString *messageStr = nil;
+        switch (messageBody.messageBodyType) {
+            case eMessageBodyType_Text:
+            {
+                messageStr = ((EMTextMessageBody *)messageBody).text;
+            }
                 break;
+            case eMessageBodyType_Image:
+            {
+                messageStr = @"[图片]";
+            }
+                break;
+            case eMessageBodyType_Location:
+            {
+                messageStr = @"[位置]";
+            }
+                break;
+            case eMessageBodyType_Voice:
+            {
+                messageStr = @"[音频]";
+            }
+                break;
+            case eMessageBodyType_Video:{
+                messageStr = @"[视频]";
+            }
+                break;
+            default:
+                break;
+        }
+        
+        NSString *title = message.from;
+        if (message.isGroup) {
+            NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
+            for (EMGroup *group in groupArray) {
+                if ([group.groupId isEqualToString:message.conversation.chatter]) {
+                    title = [NSString stringWithFormat:@"%@(%@)", message.groupSenderName, group.groupSubject];
+                    break;
+                }
             }
         }
+        
+        notification.alertBody = [NSString stringWithFormat:@"%@:%@", title, messageStr];
+    }
+    else{
+        notification.alertBody = @"您有一条新消息";
     }
     
-    notification.alertBody = [NSString stringWithFormat:@"%@:%@", title, messageStr];
     notification.alertAction = @"打开";
     notification.timeZone = [NSTimeZone defaultTimeZone];
     //发送通知
