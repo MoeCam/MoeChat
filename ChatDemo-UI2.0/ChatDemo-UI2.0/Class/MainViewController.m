@@ -17,7 +17,7 @@
 #import "EaseMob.h"
 
 //两次提示的默认间隔
-const CGFloat kDefaultPlaySoundInterval = 3.0;
+static const CGFloat kDefaultPlaySoundInterval = 3.0;
 
 @interface MainViewController () <UIAlertViewDelegate, IChatManagerDelegate>
 {
