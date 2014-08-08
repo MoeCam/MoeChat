@@ -822,7 +822,11 @@
          if (!error) {
              [self sendAudioMessage:aChatVoice];
          }else{
-             [self showHint:error.domain];
+             if (error.code == EMErrorAudioRecordNotStarted) {
+                 [self showHint:error.domain yOffset:-40];
+             } else {
+                 [self showHint:error.domain];
+             }
          }
          
      } onQueue:nil];
