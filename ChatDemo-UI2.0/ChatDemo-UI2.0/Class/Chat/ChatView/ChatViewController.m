@@ -189,7 +189,8 @@
 
 - (void)dealloc
 {
-    [self stopAudioPlaying];
+    [[EaseMob sharedInstance].chatManager stopPlayingAudio];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 #warning 以下第一行代码必须写，将self从ChatManager的代理中移除
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
@@ -1104,7 +1105,6 @@
     // 设置当前conversation的所有message为已读
     [_conversation markMessagesAsRead:YES];
     
-    [self stopAudioPlaying];
 }
 
 #pragma mark - send message
