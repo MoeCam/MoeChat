@@ -14,7 +14,7 @@
 #import "ChatListViewController.h"
 #import "ContactsViewController.h"
 #import "SettingsViewController.h"
-#import "EaseMob.h"
+#import "ApplyViewController.h"
 
 //两次提示的默认间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
@@ -66,6 +66,7 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
     _addFriendItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
     
     [self setupUnreadMessageCount];
+    [self setupUntreatedApplyCount];
 }
 
 - (void)didReceiveMemoryWarning
@@ -187,6 +188,18 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
             _chatListVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",unreadCount];
         }else{
             _chatListVC.tabBarItem.badgeValue = nil;
+        }
+    }
+}
+
+- (void)setupUntreatedApplyCount
+{
+    NSInteger unreadCount = [[[ApplyViewController shareController] dataSource] count];
+    if (_contactsVC) {
+        if (unreadCount > 0) {
+            _contactsVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",unreadCount];
+        }else{
+            _contactsVC.tabBarItem.badgeValue = nil;
         }
     }
 }

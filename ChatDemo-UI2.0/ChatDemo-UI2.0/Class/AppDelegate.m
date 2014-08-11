@@ -161,6 +161,9 @@
     }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":username, @"username":username, @"applyMessage":message, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleFriend]}];
     [[ApplyViewController shareController] addNewApply:dic];
+    if (_mainController) {
+        [_mainController setupUntreatedApplyCount];
+    }
 }
 
 #pragma mark - IChatManagerDelegate 群组变化
@@ -179,6 +182,9 @@
     }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupName, @"groupId":groupId, @"username":username, @"applyMessage":message, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleGroupInvitation]}];
     [[ApplyViewController shareController] addNewApply:dic];
+    if (_mainController) {
+        [_mainController setupUntreatedApplyCount];
+    }
 }
 
 //接收到入群申请
@@ -199,6 +205,9 @@
     }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupname, @"groupId":groupId, @"username":username, @"groupname":groupname, @"applyMessage":reason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
     [[ApplyViewController shareController] addNewApply:dic];
+    if (_mainController) {
+        [_mainController setupUntreatedApplyCount];
+    }
 }
 
 - (void)didReceiveRejectApplyToJoinGroupFrom:(NSString *)fromId
