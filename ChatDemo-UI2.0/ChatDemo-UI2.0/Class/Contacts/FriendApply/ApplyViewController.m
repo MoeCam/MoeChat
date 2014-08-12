@@ -83,11 +83,6 @@ static ApplyViewController *controller = nil;
 //    [self.tableView reloadData];
 }
 
-- (void)back
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 #pragma mark - getter
 
 - (NSMutableArray *)dataSource
@@ -313,6 +308,12 @@ static ApplyViewController *controller = nil;
         
         [self.tableView reloadData];
     }
+}
+
+- (void)back
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"setupUntreatedApplyCount" object:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)save

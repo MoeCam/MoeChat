@@ -56,6 +56,7 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
     [self didUnreadMessagesCountChanged];
 #warning 把self注册为SDK的delegate
     [self registerNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUntreatedApplyCount) name:@"setupUntreatedApplyCount" object:nil];
     
     [self setupSubviews];
     self.selectedIndex = 0;
@@ -399,12 +400,15 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
                          groupname:(NSString *)groupname
                      applyUsername:(NSString *)username
                             reason:(NSString *)reason
+                             error:(EMError *)error
 {
+    if (!error) {
 #if !TARGET_IPHONE_SIMULATOR
-    [self playSoundAndVibration];
+        [self playSoundAndVibration];
 #endif
-    
-    [_contactsVC reloadGroupView];
+        
+        [_contactsVC reloadGroupView];
+    }
 }
 
 - (void)didReceiveGroupRejectFrom:(NSString *)groupId

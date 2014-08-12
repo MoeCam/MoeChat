@@ -192,6 +192,7 @@
                          groupname:(NSString *)groupname
                      applyUsername:(NSString *)username
                             reason:(NSString *)reason
+                             error:(EMError *)error
 {
     if (!groupId || !username) {
         return;
@@ -203,10 +204,18 @@
     else{
         reason = [NSString stringWithFormat:@"%@ 申请加入群组\'%@\'：%@", username, groupname, reason];
     }
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupname, @"groupId":groupId, @"username":username, @"groupname":groupname, @"applyMessage":reason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
-    [[ApplyViewController shareController] addNewApply:dic];
-    if (_mainController) {
-        [_mainController setupUntreatedApplyCount];
+    
+    if (error) {
+        NSString *message = [NSString stringWithFormat:@"发送申请失败:%@\n原因：%@", reason, error.description];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+    }
+    else{
+        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupname, @"groupId":groupId, @"username":username, @"groupname":groupname, @"applyMessage":reason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
+        [[ApplyViewController shareController] addNewApply:dic];
+        if (_mainController) {
+            [_mainController setupUntreatedApplyCount];
+        }
     }
 }
 
