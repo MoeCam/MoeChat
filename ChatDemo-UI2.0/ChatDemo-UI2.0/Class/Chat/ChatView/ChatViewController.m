@@ -189,6 +189,16 @@
 
 - (void)dealloc
 {
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+    _tableView = nil;
+    
+    _slimeView.delegate = nil;
+    _slimeView = nil;
+    
+    _chatToolBar.delegate = nil;
+    _chatToolBar = nil;
+    
     [[EaseMob sharedInstance].chatManager stopPlayingAudio];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -404,12 +414,16 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [_slimeView scrollViewDidScroll];
+    if (_slimeView) {
+        [_slimeView scrollViewDidScroll];
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    [_slimeView scrollViewDidEndDraging];
+    if (_slimeView) {
+        [_slimeView scrollViewDidEndDraging];
+    }
 }
 
 #pragma mark - slimeRefresh delegate
@@ -1104,13 +1118,17 @@
     
     // 设置当前conversation的所有message为已读
     [_conversation markMessagesAsRead:YES];
-    
 }
 
 #pragma mark - send message
 
 -(void)sendTextMessage:(NSString *)textMessage
 {
+//    for (int i = 0; i < 100; i++) {
+//        NSString *str = [NSString stringWithFormat:@"%@--%i", _conversation.chatter, i];
+//        EMMessage *tempMessage = [ChatSendHelper sendTextMessageWithString:str toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
+//        [self addChatDataToMessage:tempMessage];
+//    }
     EMMessage *tempMessage = [ChatSendHelper sendTextMessageWithString:textMessage toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
     [self addChatDataToMessage:tempMessage];
 }
