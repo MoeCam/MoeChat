@@ -34,6 +34,9 @@
                       requireEncryption:(BOOL)requireEncryption
 {
     EMChatImage *chatImage = [[EMChatImage alloc] initWithUIImage:image displayName:@"image.jpg"];
+    id <EMChatImageOptions> options = [[EMChatImageOptions alloc] init];
+    [options setCompressionQuality:0.6];
+    [chatImage setImageOptions:options];
     EMImageMessageBody *body = [[EMImageMessageBody alloc] initWithImage:chatImage thumbnailImage:nil];
     return [self sendMessage:username messageBody:body isChatGroup:isChatGroup requireEncryption:requireEncryption];
 }
