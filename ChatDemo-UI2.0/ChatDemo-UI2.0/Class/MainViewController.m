@@ -321,8 +321,33 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
 - (void)didLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error
 {
     if (error) {
+        /*NSString *hintText = @"";
+        if (error.errorCode != EMErrorServerMaxRetryCountExceeded) {
+            if (![[[EaseMob sharedInstance] chatManager] isAutoLoginEnabled]) {
+                hintText = @"你的账号登录失败，请重新登陆";
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                    message:hintText
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"确定"
+                                                          otherButtonTitles:nil,
+                                          nil];
+                alertView.tag = 99;
+                [alertView show];
+            }
+        } else {
+            hintText = @"已达到最大登陆重试次数，请重新登陆";
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:hintText
+                                                               delegate:self
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil,
+                                      nil];
+            alertView.tag = 99;
+            [alertView show];
+        }*/
+        NSString *hintText = @"你的账号登录失败，请重新登陆";
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                            message:@"你的账号登录失败，请重新登陆"
+                                                            message:hintText
                                                            delegate:self
                                                   cancelButtonTitle:@"确定"
                                                   otherButtonTitles:nil,
