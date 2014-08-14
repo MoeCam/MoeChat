@@ -16,4 +16,6 @@
 
 - (void)jumpToChatList;
 
+- (void)setupUntreatedApplyCount;
+
 @end

@@ -11,8 +11,17 @@
  */
 
 #import "ChatSendHelper.h"
-#import "EaseMob.h"
 #import "ConvertToCommonEmoticonsHelper.h"
+
+@interface ChatImageOptions : NSObject<IChatImageOptions>
+
+@property (assign, nonatomic) CGFloat compressionQuality;
+
+@end
+
+@implementation ChatImageOptions
+
+@end
 
 @implementation ChatSendHelper
 
@@ -34,6 +43,9 @@
                       requireEncryption:(BOOL)requireEncryption
 {
     EMChatImage *chatImage = [[EMChatImage alloc] initWithUIImage:image displayName:@"image.jpg"];
+    id <IChatImageOptions> options = [[ChatImageOptions alloc] init];
+    [options setCompressionQuality:0.6];
+    [chatImage setImageOptions:options];
     EMImageMessageBody *body = [[EMImageMessageBody alloc] initWithImage:chatImage thumbnailImage:nil];
     return [self sendMessage:username messageBody:body isChatGroup:isChatGroup requireEncryption:requireEncryption];
 }

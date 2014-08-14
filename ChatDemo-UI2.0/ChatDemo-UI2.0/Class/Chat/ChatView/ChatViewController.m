@@ -62,6 +62,7 @@
 @property (strong, nonatomic) NSDate *chatTagDate;
 
 @property (nonatomic) BOOL isScrollToBottom;
+@property (nonatomic) BOOL isPlayingAudio;
 
 @end
 
@@ -72,7 +73,7 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization
-        _isChatGroup = NO;
+        _isPlayingAudio = NO;
         
         //根据接收者的username获取当前会话的管理者
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:chatter isGroup:_isChatGroup];
@@ -184,11 +185,22 @@
     // 设置当前conversation的所有message为已读
     [_conversation markMessagesAsRead:YES];
     
-    [self stopAudioPlaying];
 }
 
 - (void)dealloc
 {
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+    _tableView = nil;
+    
+    _slimeView.delegate = nil;
+    _slimeView = nil;
+    
+    _chatToolBar.delegate = nil;
+    _chatToolBar = nil;
+    
+    [[EaseMob sharedInstance].chatManager stopPlayingAudio];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 #warning 以下第一行代码必须写，将self从ChatManager的代理中移除
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
@@ -402,12 +414,16 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [_slimeView scrollViewDidScroll];
+    if (_slimeView) {
+        [_slimeView scrollViewDidScroll];
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    [_slimeView scrollViewDidEndDraging];
+    if (_slimeView) {
+        [_slimeView scrollViewDidEndDraging];
+    }
 }
 
 #pragma mark - slimeRefresh delegate
@@ -428,7 +444,7 @@
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)recognizer
 {
-	if (recognizer.state == UIGestureRecognizerStateBegan) {
+	if (recognizer.state == UIGestureRecognizerStateBegan && [self.dataSource count] > 0) {
         CGPoint location = [recognizer locationInView:self.tableView];
         NSIndexPath * indexPath = [self.tableView indexPathForRowAtPoint:location];
         id object = [self.dataSource objectAtIndex:indexPath.row];
@@ -498,6 +514,7 @@
         }];
         
         if (isPrepare) {
+            _isPlayingAudio = YES;
             __weak ChatViewController *weakSelf = self;
             [[[EaseMob sharedInstance] deviceManager] enableProximitySensor];
             [[EaseMob sharedInstance].chatManager asyncPlayAudio:model.chatVoice completion:^(EMError *error) {
@@ -506,9 +523,13 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.tableView reloadData];
                     
-                    [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
+                    weakSelf.isPlayingAudio = NO;
+//                    [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
                 });
             } onQueue:nil];
+        }
+        else{
+            _isPlayingAudio = NO;
         }
     }
 }
@@ -816,7 +837,11 @@
          if (!error) {
              [self sendAudioMessage:aChatVoice];
          }else{
-             [self showHint:error.domain];
+             if (error.code == EMErrorAudioRecordNotStarted) {
+                 [self showHint:error.domain yOffset:-40];
+             } else {
+                 [self showHint:error.domain];
+             }
          }
          
      } onQueue:nil];
@@ -926,9 +951,9 @@
         EMMessage *latestMessage = [weakSelf.conversation latestMessage];
         NSTimeInterval beforeTime = 0;
         if (latestMessage) {
-            beforeTime = latestMessage.timestamp;
+            beforeTime = latestMessage.timestamp + 1;
         }else{
-            beforeTime = [[NSDate date] timeIntervalSince1970] * 1000 + 10;
+            beforeTime = [[NSDate date] timeIntervalSince1970] * 1000 + 1;
         }
         
         NSArray *chats = [weakSelf.conversation loadNumbersOfMessages:(currentCount + KPageCount) before:beforeTime];
@@ -1008,10 +1033,10 @@
 
 - (void)scrollViewToBottom:(BOOL)animated
 {
-    if (self.dataSource.count > 0) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(self.dataSource.count - 1) inSection:0];
-        
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
+    {
+        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+        [self.tableView setContentOffset:offset animated:YES];
     }
 }
 
@@ -1093,14 +1118,17 @@
     
     // 设置当前conversation的所有message为已读
     [_conversation markMessagesAsRead:YES];
-    
-    [self stopAudioPlaying];
 }
 
 #pragma mark - send message
 
 -(void)sendTextMessage:(NSString *)textMessage
 {
+//    for (int i = 0; i < 100; i++) {
+//        NSString *str = [NSString stringWithFormat:@"%@--%i", _conversation.chatter, i];
+//        EMMessage *tempMessage = [ChatSendHelper sendTextMessageWithString:str toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
+//        [self addChatDataToMessage:tempMessage];
+//    }
     EMMessage *tempMessage = [ChatSendHelper sendTextMessageWithString:textMessage toUsername:_conversation.chatter isChatGroup:_isChatGroup requireEncryption:NO];
     [self addChatDataToMessage:tempMessage];
 }
@@ -1134,6 +1162,9 @@
     } else {
         // 使用扬声器播放
         [[EaseMob sharedInstance].deviceManager switchAudioOutputDevice:eAudioOutputDevice_speaker];
+        if (!_isPlayingAudio) {
+            [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
+        }
     }
 }
 

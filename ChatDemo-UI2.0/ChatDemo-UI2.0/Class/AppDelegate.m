@@ -70,6 +70,7 @@
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
+#warning 如果使用MagicalRecord, 要加上这句初始化MagicalRecord
     //demo coredata, .pch中有相关头文件引用
     [MagicalRecord setupCoreDataStackWithStoreNamed:[NSString stringWithFormat:@"%@.sqlite", @"UIDemo"]];
     
@@ -82,6 +83,17 @@
 {
 #warning SDK方法调用
     [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+#warning SDK方法调用
+    [[EaseMob sharedInstance] application:application didFailToRegisterForRemoteNotificationsWithError:error];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"注册推送失败"
+                                                    message:error.description
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -149,6 +161,9 @@
     }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":username, @"username":username, @"applyMessage":message, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleFriend]}];
     [[ApplyViewController shareController] addNewApply:dic];
+    if (_mainController) {
+        [_mainController setupUntreatedApplyCount];
+    }
 }
 
 #pragma mark - IChatManagerDelegate 群组变化
@@ -167,6 +182,9 @@
     }
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupName, @"groupId":groupId, @"username":username, @"applyMessage":message, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleGroupInvitation]}];
     [[ApplyViewController shareController] addNewApply:dic];
+    if (_mainController) {
+        [_mainController setupUntreatedApplyCount];
+    }
 }
 
 //接收到入群申请
@@ -174,6 +192,7 @@
                          groupname:(NSString *)groupname
                      applyUsername:(NSString *)username
                             reason:(NSString *)reason
+                             error:(EMError *)error
 {
     if (!groupId || !username) {
         return;
@@ -185,8 +204,19 @@
     else{
         reason = [NSString stringWithFormat:@"%@ 申请加入群组\'%@\'：%@", username, groupname, reason];
     }
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupname, @"groupId":groupId, @"username":username, @"groupname":groupname, @"applyMessage":reason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
-    [[ApplyViewController shareController] addNewApply:dic];
+    
+    if (error) {
+        NSString *message = [NSString stringWithFormat:@"发送申请失败:%@\n原因：%@", reason, error.description];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+    }
+    else{
+        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":groupname, @"groupId":groupId, @"username":username, @"groupname":groupname, @"applyMessage":reason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
+        [[ApplyViewController shareController] addNewApply:dic];
+        if (_mainController) {
+            [_mainController setupUntreatedApplyCount];
+        }
+    }
 }
 
 - (void)didReceiveRejectApplyToJoinGroupFrom:(NSString *)fromId

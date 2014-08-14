@@ -14,10 +14,10 @@
 #import "ChatListViewController.h"
 #import "ContactsViewController.h"
 #import "SettingsViewController.h"
-#import "EaseMob.h"
+#import "ApplyViewController.h"
 
 //两次提示的默认间隔
-const CGFloat kDefaultPlaySoundInterval = 3.0;
+static const CGFloat kDefaultPlaySoundInterval = 3.0;
 
 @interface MainViewController () <UIAlertViewDelegate, IChatManagerDelegate>
 {
@@ -56,6 +56,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [self didUnreadMessagesCountChanged];
 #warning 把self注册为SDK的delegate
     [self registerNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUntreatedApplyCount) name:@"setupUntreatedApplyCount" object:nil];
     
     [self setupSubviews];
     self.selectedIndex = 0;
@@ -66,6 +67,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     _addFriendItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
     
     [self setupUnreadMessageCount];
+    [self setupUntreatedApplyCount];
 }
 
 - (void)didReceiveMemoryWarning
@@ -100,7 +102,12 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 99) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+        if (buttonIndex != [alertView cancelButtonIndex]) {
+            [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
+                [[ApplyViewController shareController] clear];
+                [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+            } onQueue:nil];
+        }
     }
     else if (alertView.tag == 100) {
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
@@ -191,6 +198,18 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     }
 }
 
+- (void)setupUntreatedApplyCount
+{
+    NSInteger unreadCount = [[[ApplyViewController shareController] dataSource] count];
+    if (_contactsVC) {
+        if (unreadCount > 0) {
+            _contactsVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",unreadCount];
+        }else{
+            _contactsVC.tabBarItem.badgeValue = nil;
+        }
+    }
+}
+
 #pragma mark - IChatManagerDelegate 消息变化
 
 - (void)didUpdateConversationList:(NSArray *)conversationList
@@ -235,54 +254,65 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [[EaseMob sharedInstance].deviceManager asyncPlayVibration];
 }
 
-- (void)showNotificationWithMessage:(EMMessage *)message{
-    id<IEMMessageBody> messageBody = [message.messageBodies firstObject];
-    NSString *messageStr = nil;
-    switch (messageBody.messageBodyType) {
-        case eMessageBodyType_Text:
-        {
-            messageStr = ((EMTextMessageBody *)messageBody).text;
-        }
-            break;
-        case eMessageBodyType_Image:
-        {
-            messageStr = @"[图片]";
-        }
-            break;
-        case eMessageBodyType_Location:
-        {
-            messageStr = @"[位置]";
-        }
-            break;
-        case eMessageBodyType_Voice:
-        {
-            messageStr = @"[音频]";
-        }
-            break;
-        case eMessageBodyType_Video:{
-            messageStr = @"[视频]";
-        }
-            break;
-        default:
-            break;
-    }
-    
+- (void)showNotificationWithMessage:(EMMessage *)message
+{
+    EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
     //发送本地推送
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     notification.fireDate = [NSDate date]; //触发通知的时间
     
-    NSString *title = message.from;
-    if (message.isGroup) {
-        NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
-        for (EMGroup *group in groupArray) {
-            if ([group.groupId isEqualToString:message.conversation.chatter]) {
-                title = [NSString stringWithFormat:@"%@(%@)", message.groupSenderName, group.groupSubject];
+    if (options.displayStyle == ePushNotificationDisplayStyle_messageSummary) {
+        id<IEMMessageBody> messageBody = [message.messageBodies firstObject];
+        NSString *messageStr = nil;
+        switch (messageBody.messageBodyType) {
+            case eMessageBodyType_Text:
+            {
+                messageStr = ((EMTextMessageBody *)messageBody).text;
+            }
                 break;
+            case eMessageBodyType_Image:
+            {
+                messageStr = @"[图片]";
+            }
+                break;
+            case eMessageBodyType_Location:
+            {
+                messageStr = @"[位置]";
+            }
+                break;
+            case eMessageBodyType_Voice:
+            {
+                messageStr = @"[音频]";
+            }
+                break;
+            case eMessageBodyType_Video:{
+                messageStr = @"[视频]";
+            }
+                break;
+            default:
+                break;
+        }
+        
+        NSString *title = message.from;
+        if (message.isGroup) {
+            NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
+            for (EMGroup *group in groupArray) {
+                if ([group.groupId isEqualToString:message.conversation.chatter]) {
+                    title = [NSString stringWithFormat:@"%@(%@)", message.groupSenderName, group.groupSubject];
+                    break;
+                }
             }
         }
+        
+        notification.alertBody = [NSString stringWithFormat:@"%@:%@", title, messageStr];
+    }
+    else{
+        notification.alertBody = @"您有一条新消息";
     }
     
-    notification.alertBody = [NSString stringWithFormat:@"%@:%@", title, messageStr];
+#warning 去掉注释会显示[本地]开头, 方便在开发中区分是否为本地推送
+    //notification.alertBody = [[NSString alloc] initWithFormat:@"[本地]%@", notification.alertBody];
+    
     notification.alertAction = @"打开";
     notification.timeZone = [NSTimeZone defaultTimeZone];
     //发送通知
@@ -296,11 +326,36 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 - (void)didLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error
 {
     if (error) {
+        /*NSString *hintText = @"";
+        if (error.errorCode != EMErrorServerMaxRetryCountExceeded) {
+            if (![[[EaseMob sharedInstance] chatManager] isAutoLoginEnabled]) {
+                hintText = @"你的账号登录失败，请重新登陆";
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                    message:hintText
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"确定"
+                                                          otherButtonTitles:nil,
+                                          nil];
+                alertView.tag = 99;
+                [alertView show];
+            }
+        } else {
+            hintText = @"已达到最大登陆重试次数，请重新登陆";
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:hintText
+                                                               delegate:self
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil,
+                                      nil];
+            alertView.tag = 99;
+            [alertView show];
+        }*/
+        NSString *hintText = @"你的账号登录失败，正在重试中... \n点击 '登出' 按钮跳转到登录页面 \n点击 '继续等待' 按钮等待重连成功";
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                            message:@"你的账号登录失败，请重新登陆"
+                                                            message:hintText
                                                            delegate:self
-                                                  cancelButtonTitle:@"确定"
-                                                  otherButtonTitles:nil,
+                                                  cancelButtonTitle:@"继续等待"
+                                                  otherButtonTitles:@"登出",
                                   nil];
         alertView.tag = 99;
         [alertView show];
@@ -375,12 +430,15 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
                          groupname:(NSString *)groupname
                      applyUsername:(NSString *)username
                             reason:(NSString *)reason
+                             error:(EMError *)error
 {
+    if (!error) {
 #if !TARGET_IPHONE_SIMULATOR
-    [self playSoundAndVibration];
+        [self playSoundAndVibration];
 #endif
-    
-    [_contactsVC reloadGroupView];
+        
+        [_contactsVC reloadGroupView];
+    }
 }
 
 - (void)didReceiveGroupRejectFrom:(NSString *)groupId
@@ -436,6 +494,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 #pragma mark - 
 
 - (void)willAutoReconnect{
+    [self hideHud];
     [self showHudInView:self.view hint:@"正在重连中..."];
 }
 

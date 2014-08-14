@@ -23,7 +23,10 @@
 #import "GroupListViewController.h"
 #import "ChatViewController.h"
 
-@interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, SRRefreshDelegate>
+@interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIActionSheetDelegate, BaseTableCellDelegate, SRRefreshDelegate>
+{
+    NSIndexPath *_currentLongPressIndex;
+}
 
 @property (strong, nonatomic) NSMutableArray *contactsSource;
 @property (strong, nonatomic) NSMutableArray *dataSource;
@@ -234,8 +237,10 @@
         // Configure the cell...
         if (cell == nil) {
             cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            cell.delegate = self;
         }
         
+        cell.indexPath = indexPath;
         if (indexPath.section == 0 && indexPath.row == 1) {
             cell.imageView.image = [UIImage imageNamed:@"groupPrivateHeader"];
             cell.textLabel.text = @"群组";
@@ -420,7 +425,23 @@
     [searchBar setShowsCancelButton:NO animated:YES];
 }
 
-#pragma mark - UISearchDisplayDelegate
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != actionSheet.cancelButtonIndex && _currentLongPressIndex) {
+        EMBuddy *buddy = [[self.dataSource objectAtIndex:(_currentLongPressIndex.section - 1)] objectAtIndex:_currentLongPressIndex.row];
+        [self.tableView beginUpdates];
+        [[self.dataSource objectAtIndex:(_currentLongPressIndex.section - 1)] removeObjectAtIndex:_currentLongPressIndex.row];
+        [self.contactsSource removeObject:buddy];
+        [self.tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:_currentLongPressIndex] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView  endUpdates];
+        
+        [[EaseMob sharedInstance].chatManager blockBuddy:buddy.username relationship:eRelationshipBoth];
+    }
+    
+    _currentLongPressIndex = nil;
+}
 
 #pragma mark - scrollView delegate
 
@@ -440,6 +461,23 @@
 {
     [self reloadDataSource];
     [_slimeView endRefresh];
+}
+
+#pragma mark - BaseTableCellDelegate
+
+- (void)cellImageViewLongPressAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+    EMBuddy *buddy = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+    if ([buddy.username isEqualToString:loginUsername])
+    {
+        return;
+    }
+    
+    _currentLongPressIndex = indexPath;
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"加入黑名单" otherButtonTitles:nil, nil];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 
 #pragma mark - private
