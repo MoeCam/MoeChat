@@ -11,8 +11,9 @@
   */
 
 #import "ChatGroupDetailViewController.h"
-
 #import "ContactSelectionViewController.h"
+#import "EaseMob.h"
+#import "EMGroup.h"
 
 #pragma mark - ChatGroupContactView
 
@@ -56,6 +57,9 @@
 
 @interface ChatGroupDetailViewController ()<IChatManagerDelegate, EMChooseViewDelegate>
 
+- (void)unregisterNotifications;
+- (void)registerNotifications;
+
 @property (nonatomic) GroupOccupantType occupantType;
 @property (strong, nonatomic) EMGroup *chatGroup;
 
@@ -67,11 +71,30 @@
 @property (strong, nonatomic) UIButton *clearButton;
 @property (strong, nonatomic) UIButton *exitButton;
 @property (strong, nonatomic) UIButton *dissolveButton;
+@property (strong, nonatomic) UIButton *configureButton;
 @property (strong, nonatomic) UILongPressGestureRecognizer *longPress;
+
+- (void)dissolveAction;
+- (void)clearAction;
+- (void)exitAction;
+- (void)configureAction;
 
 @end
 
 @implementation ChatGroupDetailViewController
+
+- (void)registerNotifications {
+    [self unregisterNotifications];
+    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+}
+
+- (void)unregisterNotifications {
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
+}
+
+- (void)dealloc {
+    [self unregisterNotifications];
+}
 
 - (instancetype)initWithGroup:(EMGroup *)chatGroup
 {
@@ -81,6 +104,7 @@
         _chatGroup = chatGroup;
         _dataSource = [NSMutableArray array];
         _occupantType = GroupOccupantTypeVisitor;
+        [self registerNotifications];
     }
     return self;
 }
@@ -89,9 +113,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-//#warning 把self注册为SDK的delegate
-//    [[EaseMob sharedInstance].chatManager removeDelegate:self];
-//    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
@@ -118,11 +139,6 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-}
-
-- (void)dealloc
-{
-//    [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
 
 #pragma mark - getter
@@ -158,6 +174,21 @@
     return _clearButton;
 }
 
+- (UIButton *)configureButton {
+// todo
+    if (_configureButton == nil) {
+        _configureButton = [[UIButton alloc] init];
+        NSString *title = [[NSString alloc] initWithFormat:@"群组设置(%d)", _chatGroup.isPushNotificationEnabled];
+        [_configureButton setTitle:title
+                          forState:UIControlStateNormal];
+        [_configureButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_configureButton addTarget:self action:@selector(configureAction) forControlEvents:UIControlEventTouchUpInside];
+        [_configureButton setBackgroundColor:[UIColor cyanColor]];
+    }
+    
+    return _configureButton;
+}
+
 - (UIButton *)dissolveButton
 {
     if (_dissolveButton == nil) {
@@ -191,10 +222,13 @@
         
         self.clearButton.frame = CGRectMake(20, 40, _footerView.frame.size.width - 40, 35);
         [_footerView addSubview:self.clearButton];
+// todo
+        self.configureButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
+        [_footerView addSubview:self.configureButton];
         
-        self.dissolveButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
+        self.dissolveButton.frame = CGRectMake(20, CGRectGetMaxY(self.configureButton.frame) + 30, _footerView.frame.size.width - 40, 35);
         
-        self.exitButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
+        self.exitButton.frame = CGRectMake(20, CGRectGetMaxY(self.configureButton.frame) + 30, _footerView.frame.size.width - 40, 35);
     }
     
     return _footerView;
@@ -497,6 +531,17 @@
 //    [[EaseMob sharedInstance].chatManager asyncLeaveGroup:_chatGroup.groupId];
 }
 
+//设置群组
+- (void)configureAction {
+// todo
+    [[[EaseMob sharedInstance] chatManager] asyncIgnoreGroupPushNotification:_chatGroup.groupId
+                                                                    isIgnore:_chatGroup.isPushNotificationEnabled];
+
+    return;
+    UIViewController *viewController = [[UIViewController alloc] init];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 //退出群组
 - (void)exitAction
 {
@@ -526,5 +571,10 @@
 //        }
 //    }
 //}
+
+- (void)didIgnoreGroupPushNotification:(NSArray *)ignoredGroupList error:(EMError *)error {
+// todo
+    NSLog(@"ignored group list:%@.", ignoredGroupList);
+}
 
 @end
