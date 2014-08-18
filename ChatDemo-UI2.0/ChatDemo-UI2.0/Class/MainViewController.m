@@ -223,6 +223,38 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
     [self setupUnreadMessageCount];
 }
 
+- (BOOL)needShowNotification {
+    BOOL ret = NO;
+    EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
+    
+    do {
+        if (options.noDisturbing) {
+            break;
+        }
+        
+        NSDate *now = [NSDate date];
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute
+                                                                       fromDate:now];
+        
+        NSInteger hour = [components hour];
+//        NSInteger minute= [components minute];
+        
+        NSUInteger startH = options.noDisturbingStartH;
+        NSUInteger endH = options.noDisturbingEndH;
+        if (startH>endH) {
+            endH += 24;
+        }
+        
+        if (hour>=startH && hour<=endH) {
+            break;
+        }
+        
+        ret = YES;
+    } while (0);
+    
+    return ret;
+}
+
 // 收到消息回调
 -(void)didReceiveMessage:(EMMessage *)message{
     
@@ -231,7 +263,10 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
     
     BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
     if (!isAppActivity) {
-        [self showNotificationWithMessage:message];
+        BOOL needShowNotification = [self needShowNotification];
+        if (needShowNotification) {
+            [self showNotificationWithMessage:message];
+        }
     }
 #endif
 }
