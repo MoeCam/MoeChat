@@ -587,7 +587,7 @@
     id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
     if ([model.messageBody messageBodyType] == eMessageBodyType_Image) {
         EMImageMessageBody *imageBody = (EMImageMessageBody *)model.messageBody;
-        if (imageBody.thumbnailDownloadSatus == EMAttachmentDownloadSuccessed) {
+        if (imageBody.thumbnailDownloadStatus == EMAttachmentDownloadSuccessed) {
             [weakSelf showHudInView:weakSelf.view hint:@"正在获取大图..."];
             [chatManager asyncFetchMessage:model.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
                 [weakSelf hideHud];
@@ -616,7 +616,7 @@
     }else if ([model.messageBody messageBodyType] == eMessageBodyType_Video) {
         //获取缩略图
         EMVideoMessageBody *videoBody = (EMVideoMessageBody *)model.messageBody;
-        if (videoBody.thumbnailDownloadSatus != EMAttachmentDownloadSuccessed) {
+        if (videoBody.thumbnailDownloadStatus != EMAttachmentDownloadSuccessed) {
             [chatManager asyncFetchMessageThumbnail:model.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
                 if (!error) {
                     [weakSelf reloadTableViewDataWithMessage:model.message];
@@ -667,13 +667,13 @@
         id<IEMFileMessageBody>fileBody = (id<IEMFileMessageBody>)[message.messageBodies firstObject];
         if ([fileBody messageBodyType] == eMessageBodyType_Image) {
             EMImageMessageBody *imageBody = (EMImageMessageBody *)fileBody;
-            if ([imageBody thumbnailDownloadSatus] == EMAttachmentDownloadSuccessed)
+            if ([imageBody thumbnailDownloadStatus] == EMAttachmentDownloadSuccessed)
             {
                 [self reloadTableViewDataWithMessage:message];
             }
         }else if([fileBody messageBodyType] == eMessageBodyType_Video){
             EMVideoMessageBody *videoBody = (EMVideoMessageBody *)fileBody;
-            if ([videoBody thumbnailDownloadSatus] == EMAttachmentDownloadSuccessed)
+            if ([videoBody thumbnailDownloadStatus] == EMAttachmentDownloadSuccessed)
             {
                 [self reloadTableViewDataWithMessage:message];
             }
