@@ -17,7 +17,7 @@
 #define TEXTLABEL_MAX_WIDTH 200 //　textLaebl 最大宽度
 #define LABEL_FONT_SIZE 14
 
-extern NSString *const kRouterEventTextBubbleTapEventName;
+extern NSString *const kRouterEventTextURLTapEventName;
 
 @interface EMChatTextBubbleView : EMChatBaseBubbleView
 

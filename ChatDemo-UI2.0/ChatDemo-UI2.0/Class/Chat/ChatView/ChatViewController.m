@@ -462,7 +462,10 @@
 - (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
 {
     MessageModel *model = [userInfo objectForKey:KMESSAGEKEY];
-    if ([eventName isEqualToString:kRouterEventAudioBubbleTapEventName]) {
+    if ([eventName isEqualToString:kRouterEventTextURLTapEventName]) {
+        [self chatTextCellUrlPressed:[userInfo objectForKey:@"url"]];
+    }
+    else if ([eventName isEqualToString:kRouterEventAudioBubbleTapEventName]) {
         [self chatAudioCellBubblePressed:model];
     }
     else if ([eventName isEqualToString:kRouterEventImageBubbleTapEventName]){
@@ -484,6 +487,14 @@
         [chatManager asyncResendMessage:messageModel.message progress:nil];
     }else if([eventName isEqualToString:kRouterEventChatCellVideoTapEventName]){
         [self chatVideoCellPressed:model];
+    }
+}
+
+//链接被点击
+- (void)chatTextCellUrlPressed:(NSURL *)url
+{
+    if (url) {
+        [[UIApplication sharedApplication] openURL:url];
     }
 }
 
