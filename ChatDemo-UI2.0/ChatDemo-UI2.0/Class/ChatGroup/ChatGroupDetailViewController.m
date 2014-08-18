@@ -55,7 +55,7 @@
 #define kColOfRow 5
 #define kContactSize 60
 
-@interface ChatGroupDetailViewController ()<IChatManagerDelegate, EMChooseViewDelegate>
+@interface ChatGroupDetailViewController ()<IChatManagerDelegate, EMChooseViewDelegate, UIActionSheetDelegate>
 
 - (void)unregisterNotifications;
 - (void)registerNotifications;
@@ -120,7 +120,7 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
     
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = self.footerView;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapView:)];
@@ -223,12 +223,12 @@
         self.clearButton.frame = CGRectMake(20, 40, _footerView.frame.size.width - 40, 35);
         [_footerView addSubview:self.clearButton];
 // todo
-        self.configureButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
-        [_footerView addSubview:self.configureButton];
+//        self.configureButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
+//        [_footerView addSubview:self.configureButton];
         
-        self.dissolveButton.frame = CGRectMake(20, CGRectGetMaxY(self.configureButton.frame) + 30, _footerView.frame.size.width - 40, 35);
+        self.dissolveButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
         
-        self.exitButton.frame = CGRectMake(20, CGRectGetMaxY(self.configureButton.frame) + 30, _footerView.frame.size.width - 40, 35);
+        self.exitButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
     }
     
     return _footerView;
@@ -245,7 +245,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 1;
+    return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -254,11 +254,23 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     // Configure the cell...
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     
-    [cell.contentView addSubview:self.scrollView];
+    if (indexPath.row == 0) {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.contentView addSubview:self.scrollView];
+    }
+    else if (indexPath.row == 1)
+    {
+        cell.textLabel.text = @"群消息设置";
+        if (_chatGroup.isPushNotificationEnabled) {
+            cell.detailTextLabel.text = @"接收并提示";
+        }
+        else{
+            cell.detailTextLabel.text = @"只接收不提示";
+        }
+    }
     
     return cell;
 }
@@ -267,11 +279,50 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int row = self.scrollView.tag;
+    int row = indexPath.row;
     if (row == 0) {
-        return self.scrollView.frame.size.height + 10;
+        return self.scrollView.frame.size.height + 40;
     }
-    return row * kContactSize + 10;
+    else {
+        return 50;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.row == 1) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"群消息设置" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"接收并提示", @"只接收不提示", nil];
+        [actionSheet showInView:self.view];
+    }
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != actionSheet.cancelButtonIndex) {
+        
+        BOOL isIgnore = NO;
+        if (buttonIndex == 1)
+        {
+            isIgnore = YES;
+        }
+        
+        __weak typeof(self) weakSelf = self;
+        [self showHudInView:self.view hint:@"设置属性"];
+        [[EaseMob sharedInstance].chatManager asyncIgnoreGroupPushNotification:_chatGroup.groupId isIgnore:isIgnore completion:^(NSArray *ignoreGroupsList, EMError *error) {
+            [weakSelf hideHud];
+            if (!error) {
+                [weakSelf showHint:@"设置成功"];
+                [weakSelf.tableView reloadData];
+            }
+            else{
+                [weakSelf showHint:@"设置失败"];
+            }
+        } onQueue:nil];
+    }
 }
 
 #pragma mark - EMChooseViewDelegate
