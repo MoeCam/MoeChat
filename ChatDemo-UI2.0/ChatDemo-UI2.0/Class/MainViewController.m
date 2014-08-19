@@ -223,6 +223,10 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
     [self setupUnreadMessageCount];
 }
 
+- (void)didFinishedReceiveOfflineMessages{
+    [self setupUnreadMessageCount];
+}
+
 // 收到消息回调
 -(void)didReceiveMessage:(EMMessage *)message{
     
