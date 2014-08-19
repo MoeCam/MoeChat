@@ -144,8 +144,8 @@ NSString *const kRouterEventTextURLTapEventName = @"kRouterEventTextURLTapEventN
      {
         NSMutableParagraphStyle* paragraphStyle = [value mutableCopy];
         
-        if ([paragraphStyle lineBreakMode] == kCTLineBreakByTruncatingTail) {
-            [paragraphStyle setLineBreakMode:kCTLineBreakByWordWrapping];
+        if ([paragraphStyle lineBreakMode] == NSLineBreakByTruncatingTail) {
+            [paragraphStyle setLineBreakMode:NSLineBreakByWordWrapping];
         }
         
         [optimizedAttributedText removeAttribute:(NSString*)kCTParagraphStyleAttributeName range:range];
