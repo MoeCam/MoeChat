@@ -120,7 +120,6 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
     
-//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = self.footerView;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapView:)];
@@ -174,21 +173,6 @@
     return _clearButton;
 }
 
-- (UIButton *)configureButton {
-// todo
-    if (_configureButton == nil) {
-        _configureButton = [[UIButton alloc] init];
-        NSString *title = [[NSString alloc] initWithFormat:@"群组设置(%d)", _chatGroup.isPushNotificationEnabled];
-        [_configureButton setTitle:title
-                          forState:UIControlStateNormal];
-        [_configureButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_configureButton addTarget:self action:@selector(configureAction) forControlEvents:UIControlEventTouchUpInside];
-        [_configureButton setBackgroundColor:[UIColor cyanColor]];
-    }
-    
-    return _configureButton;
-}
-
 - (UIButton *)dissolveButton
 {
     if (_dissolveButton == nil) {
@@ -219,12 +203,10 @@
 {
     if (_footerView == nil) {
         _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 160)];
+        _footerView.backgroundColor = [UIColor clearColor];
         
         self.clearButton.frame = CGRectMake(20, 40, _footerView.frame.size.width - 40, 35);
         [_footerView addSubview:self.clearButton];
-// todo
-//        self.configureButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
-//        [_footerView addSubview:self.configureButton];
         
         self.dissolveButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
         

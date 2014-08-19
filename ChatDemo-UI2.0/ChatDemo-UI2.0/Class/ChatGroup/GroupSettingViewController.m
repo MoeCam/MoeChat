@@ -11,8 +11,7 @@
 @interface GroupSettingViewController ()
 {
     EMGroup *_group;
-    UISwitch *_igSwitch;
-    UISwitch *_allSwitch;
+    UISwitch *_switch;
 }
 
 @end
@@ -43,6 +42,13 @@
     [super viewDidLoad];
     
     self.title = @"群设置";
+    
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    [self.navigationItem setLeftBarButtonItem:backItem];
+    
     self.tableView.tableFooterView = [[UIView alloc] init];
 }
 
@@ -63,7 +69,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 2;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -76,27 +82,23 @@
     }
     
     if (indexPath.row == 0) {
-        cell.textLabel.text = @"接收并提示群消息";
-        
-        if (_allSwitch == nil) {
-            _allSwitch = [[UISwitch alloc] init];
-            _allSwitch.frame = CGRectMake(self.tableView.frame.size.width - (_allSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - _allSwitch.frame.size.height) / 2, _allSwitch.frame.size.width, _allSwitch.frame.size.height);
-            [_allSwitch addTarget:self action:@selector(allSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+        if (_switch == nil) {
+            _switch = [[UISwitch alloc] init];
+            _switch.frame = CGRectMake(self.tableView.frame.size.width - (_switch.frame.size.width + 10), (cell.contentView.frame.size.height - _switch.frame.size.height) / 2, _switch.frame.size.width, _switch.frame.size.height);
+            [_switch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         }
-        [_allSwitch setOn:_group.isPushNotificationEnabled animated:YES];
-        [cell.contentView addSubview:_allSwitch];
-    }
-    else if (indexPath.row == 1)
-    {
-        cell.textLabel.text = @"只接收不提示群消息";
+        BOOL isOn = _group.isPushNotificationEnabled;
+        [_switch setOn:isOn animated:YES];
         
-        if (_igSwitch == nil) {
-            _igSwitch = [[UISwitch alloc] init];
-            _igSwitch.frame = CGRectMake(self.tableView.frame.size.width - (_igSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - _igSwitch.frame.size.height) / 2, _igSwitch.frame.size.width, _igSwitch.frame.size.height);
-            [_igSwitch addTarget:self action:@selector(igSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+        if (isOn) {
+            cell.textLabel.text = @"接收并提示群消息";
         }
-        [_igSwitch setOn:!_group.isPushNotificationEnabled animated:YES];
-        [cell.contentView addSubview:_igSwitch];
+        else{
+            cell.textLabel.text = @"只接收不提示群消息";
+        }
+        
+        [cell.contentView addSubview:_switch];
+        [cell.contentView bringSubviewToFront:_switch];
     }
     
     return cell;
@@ -115,10 +117,7 @@
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            [self allSwitchChanged:_allSwitch];
-        }
-        else{
-            [self igSwitchChanged:_igSwitch];
+            [self switchChanged:_switch];
         }
     }
 }
@@ -143,24 +142,15 @@
 
 #pragma mark - action
 
-- (void)allSwitchChanged:(id)sender
+- (void)back
 {
-    BOOL toOn = _allSwitch.isOn;
-    if (toOn && _igSwitch.isOn == YES) {
-        [_igSwitch setOn:NO animated:YES];
-    }
-    [_allSwitch setOn:toOn animated:YES];
-    [self isIgnoreGroup:!toOn];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)igSwitchChanged:(id)sender
+- (void)switchChanged:(id)sender
 {
-    BOOL toOn = _igSwitch.isOn;
-    if (toOn && _allSwitch.isOn == YES) {
-        [_allSwitch setOn:NO animated:YES];
-    }
-    [_igSwitch setOn:toOn animated:YES];
-    [self isIgnoreGroup:toOn];
+    BOOL toOn = _switch.isOn;
+    [self isIgnoreGroup:!toOn];
 }
 
 @end

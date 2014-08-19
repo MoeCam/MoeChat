@@ -27,10 +27,22 @@
 {
     [super viewDidLoad];
     
-    self.title = @"调试";
+    self.title = @"诊断";
+    
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    [self.navigationItem setLeftBarButtonItem:backItem];
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
     footerView.backgroundColor = [UIColor clearColor];
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(10, 0, footerView.frame.size.width - 10, 0.5)];
+        line.backgroundColor = [UIColor lightGrayColor];
+        [footerView addSubview:line];
+    }
     
     UIButton *uploadLogButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 20, footerView.frame.size.width - 80, 40)];
     [uploadLogButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
@@ -79,6 +91,11 @@
 }
 
 #pragma mark - action
+
+- (void)back
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 - (void)uploadLogAction
 {

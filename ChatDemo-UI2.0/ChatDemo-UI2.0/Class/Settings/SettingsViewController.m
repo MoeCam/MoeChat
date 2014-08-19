@@ -130,7 +130,7 @@
         }
         else if (indexPath.row == 3)
         {
-            cell.textLabel.text = @"调试";
+            cell.textLabel.text = @"诊断";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
 //        else if (indexPath.row == 3)
@@ -182,7 +182,7 @@
         _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
         _footerView.backgroundColor = [UIColor clearColor];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _footerView.frame.size.width, 0.5)];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(10, 0, _footerView.frame.size.width - 10, 0.5)];
         line.backgroundColor = [UIColor lightGrayColor];
         [_footerView addSubview:line];
         
