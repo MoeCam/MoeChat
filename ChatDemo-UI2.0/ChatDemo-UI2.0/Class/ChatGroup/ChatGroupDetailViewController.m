@@ -12,6 +12,7 @@
 
 #import "ChatGroupDetailViewController.h"
 #import "ContactSelectionViewController.h"
+#import "GroupSettingViewController.h"
 #import "EaseMob.h"
 #import "EMGroup.h"
 
@@ -55,7 +56,7 @@
 #define kColOfRow 5
 #define kContactSize 60
 
-@interface ChatGroupDetailViewController ()<IChatManagerDelegate, EMChooseViewDelegate, UIActionSheetDelegate>
+@interface ChatGroupDetailViewController ()<IChatManagerDelegate, EMChooseViewDelegate>
 
 - (void)unregisterNotifications;
 - (void)registerNotifications;
@@ -263,13 +264,8 @@
     }
     else if (indexPath.row == 1)
     {
-        cell.textLabel.text = @"群消息设置";
-        if (_chatGroup.isPushNotificationEnabled) {
-            cell.detailTextLabel.text = @"接收并提示";
-        }
-        else{
-            cell.detailTextLabel.text = @"只接收不提示";
-        }
+        cell.textLabel.text = @"群设置";
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     return cell;
@@ -292,37 +288,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.row == 1) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"群消息设置" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"接收并提示", @"只接收不提示", nil];
-        [actionSheet showInView:self.view];
-    }
-}
-
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != actionSheet.cancelButtonIndex) {
-        
-        BOOL isIgnore = NO;
-        if (buttonIndex == 1)
-        {
-            isIgnore = YES;
-        }
-        
-        __weak typeof(self) weakSelf = self;
-        [self showHudInView:self.view hint:@"设置属性"];
-        [[EaseMob sharedInstance].chatManager asyncIgnoreGroupPushNotification:_chatGroup.groupId isIgnore:isIgnore completion:^(NSArray *ignoreGroupsList, EMError *error) {
-            [weakSelf hideHud];
-            if (!error) {
-                [weakSelf showHint:@"设置成功"];
-                [weakSelf.tableView reloadData];
-            }
-            else{
-                [weakSelf showHint:@"设置失败"];
-            }
-        } onQueue:nil];
-    }
+    GroupSettingViewController *settingController = [[GroupSettingViewController alloc] initWithGroup:_chatGroup];
+    [self.navigationController pushViewController:settingController animated:YES];
 }
 
 #pragma mark - EMChooseViewDelegate
