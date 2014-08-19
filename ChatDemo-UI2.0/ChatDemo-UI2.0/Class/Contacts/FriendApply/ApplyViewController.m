@@ -19,13 +19,9 @@ static ApplyViewController *controller = nil;
 
 @interface ApplyViewController ()<ApplyFriendCellDelegate>
 
-@property (strong, nonatomic) NSString *loginUsername;
-
 @end
 
 @implementation ApplyViewController
-
-@synthesize loginUsername = _loginUsername;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -33,9 +29,6 @@ static ApplyViewController *controller = nil;
     if (self) {
         // Custom initialization
         _dataSource = [[NSMutableArray alloc] init];
-        _loginUsername = nil;
-        
-        [self loadDataSourceFromLocalDB];
     }
     return self;
 }
@@ -46,10 +39,6 @@ static ApplyViewController *controller = nil;
     dispatch_once(&onceToken, ^{
         controller = [[self alloc] initWithStyle:UITableViewStylePlain];
     });
-    
-    if (!controller.loginUsername || controller.loginUsername.length == 0) {
-        [controller loadDataSourceFromLocalDB];
-    }
     
     return controller;
 }
@@ -68,6 +57,8 @@ static ApplyViewController *controller = nil;
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
+    
+    [self loadDataSourceFromLocalDB];
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,6 +83,12 @@ static ApplyViewController *controller = nil;
     }
     
     return _dataSource;
+}
+
+- (NSString *)loginUsername
+{
+    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+    return [loginInfo objectForKey:kSDKUsername];
 }
 
 #pragma mark - Table view data source
@@ -293,6 +290,7 @@ static ApplyViewController *controller = nil;
 
 - (void)loadDataSourceFromLocalDB
 {
+    [_dataSource removeAllObjects];
     NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
     NSString *loginName = [loginInfo objectForKey:kSDKUsername];
     if(loginName && [loginName length] > 0)
@@ -300,7 +298,6 @@ static ApplyViewController *controller = nil;
         NSPredicate *deletePredicate = [NSPredicate predicateWithFormat:@"receiverUsername = %@ and style = %i", loginName, ApplyStyleFriend];
         [ApplyEntity deleteAllMatchingPredicate:deletePredicate];
         
-        self.loginUsername = loginName;
         NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"receiverUsername = %@", loginName];
         NSFetchRequest *request = [ApplyEntity requestAllWithPredicate:searchPredicate];
         NSArray *applyArray = [ApplyEntity executeFetchRequest:request];
@@ -323,7 +320,6 @@ static ApplyViewController *controller = nil;
 
 - (void)clear
 {
-    _loginUsername = nil;
     [_dataSource removeAllObjects];
     [self.tableView reloadData];
 }

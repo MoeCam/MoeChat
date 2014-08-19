@@ -271,6 +271,7 @@
     BOOL loginSuccess = [notification.object boolValue];
     
     if (isAutoLogin || loginSuccess) {
+        [[ApplyViewController shareController] loadDataSourceFromLocalDB];
         if (_mainController == nil) {
             _mainController = [[MainViewController alloc] init];
             nav = [[UINavigationController alloc] initWithRootViewController:_mainController];
