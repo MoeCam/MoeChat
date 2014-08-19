@@ -186,7 +186,6 @@
 		3C3E19D719751D2A00D1658E /* tabbarBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C3E196419751D2A00D1658E /* tabbarBackground@2x.png */; };
 		3C3E19D819751D2A00D1658E /* tabbarSelectBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C3E196519751D2A00D1658E /* tabbarSelectBg.png */; };
 		3C3E19D919751D2A00D1658E /* tabbarSelectBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C3E196619751D2A00D1658E /* tabbarSelectBg@2x.png */; };
-		3C3EB14E1953E5B600E1AE9E /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9003D91A1939D9C300DC38A4 /* libMobClickLibrary.a */; };
 		3C3EB24D1954356900E1AE9E /* groupPublicHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C3EB24C1954356900E1AE9E /* groupPublicHeader@2x.png */; };
 		3C3EB2FC19545FFD00E1AE9E /* PublicGroupListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3EB2FB19545FFD00E1AE9E /* PublicGroupListViewController.m */; };
 		3C3EB2FF195465D100E1AE9E /* PublicGroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3EB2FE195465D100E1AE9E /* PublicGroupDetailViewController.m */; };
@@ -812,7 +811,6 @@
 				3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */,
 				3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */,
 				3CA4C82E196B8ED100B9116C /* libEaseMobClientSDKLite.a in Frameworks */,
-				3C3EB14E1953E5B600E1AE9E /* libMobClickLibrary.a in Frameworks */,
 				3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */,
 				3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */,
 				902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */,
