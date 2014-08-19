@@ -13,7 +13,6 @@
 #import "ChatGroupDetailViewController.h"
 #import "ContactSelectionViewController.h"
 #import "GroupSettingViewController.h"
-#import "EaseMob.h"
 #import "EMGroup.h"
 
 #pragma mark - ChatGroupContactView
@@ -246,7 +245,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 2;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -263,6 +262,18 @@
         [cell.contentView addSubview:self.scrollView];
     }
     else if (indexPath.row == 1)
+    {
+        cell.textLabel.text = @"群组ID";
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.detailTextLabel.text = _chatGroup.groupId;
+    }
+    else if (indexPath.row == 2)
+    {
+        cell.textLabel.text = @"群组人数";
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", _chatGroup.groupOccupantsCount, _chatGroup.groupSetting.groupMaxUsersCount];
+    }
+    else if (indexPath.row == 3)
     {
         cell.textLabel.text = @"群设置";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -288,8 +299,10 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    GroupSettingViewController *settingController = [[GroupSettingViewController alloc] initWithGroup:_chatGroup];
-    [self.navigationController pushViewController:settingController animated:YES];
+    if (indexPath.row == 3) {
+        GroupSettingViewController *settingController = [[GroupSettingViewController alloc] initWithGroup:_chatGroup];
+        [self.navigationController pushViewController:settingController animated:YES];
+    }
 }
 
 #pragma mark - EMChooseViewDelegate
