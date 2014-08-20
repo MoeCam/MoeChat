@@ -223,9 +223,17 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
     [self setupUnreadMessageCount];
 }
 
+- (void)didFinishedReceiveOfflineMessages{
+    [self setupUnreadMessageCount];
+}
+
 - (BOOL)needShowNotification:(NSString *)fromChatter
 {
     BOOL ret = YES;
+}
+
+// 收到消息回调
+-(void)didReceiveMessage:(EMMessage *)message{
     
     NSArray *igGroupIds = [[EaseMob sharedInstance].chatManager ignoredGroupList];
     for (NSString *str in igGroupIds) {
