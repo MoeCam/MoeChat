@@ -223,7 +223,7 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
     [self setupUnreadMessageCount];
 }
 
-- (void)didFinishedReceiveOfflineMessages{
+- (void)didFinishedReceiveOfflineMessages:(NSArray *)offlineMessages{
     [self setupUnreadMessageCount];
 }
 

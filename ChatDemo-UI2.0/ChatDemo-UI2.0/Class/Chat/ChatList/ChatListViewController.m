@@ -481,7 +481,7 @@
     NSLog(@"开始接收离线消息");
 }
 
-- (void)didFinishedReceiveOfflineMessages{
+- (void)didFinishedReceiveOfflineMessages:(NSArray *)offlineMessages{
     NSLog(@"离线消息接收成功");
     [self refreshDataSource];
 }
