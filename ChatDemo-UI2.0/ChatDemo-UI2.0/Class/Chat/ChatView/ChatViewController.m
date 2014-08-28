@@ -934,6 +934,29 @@
 
 #pragma mark - private
 
+- (BOOL)canRecord
+{
+    __block BOOL bCanRecord = YES;
+    if ([[[UIDevice currentDevice] systemVersion] compare:@"7.0"] != NSOrderedAscending)
+    {
+        dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        if ([audioSession respondsToSelector:@selector(requestRecordPermission:)]) {
+            [audioSession performSelector:@selector(requestRecordPermission:) withObject:^(BOOL granted) {
+                if (granted) {
+                    bCanRecord = YES;
+                } else {
+                    bCanRecord = NO;
+                }
+            }];
+        }
+        
+        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+    }
+    
+    return bCanRecord;
+}
+
 - (void)stopAudioPlaying
 {
     //停止音频播放及播放动画

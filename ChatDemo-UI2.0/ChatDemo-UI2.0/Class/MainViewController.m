@@ -243,26 +243,23 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
         
         do {
             if (options.noDisturbing) {
-                ret = NO;
-                break;
-            }
-            
-            NSDate *now = [NSDate date];
-            NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute
-                                                                           fromDate:now];
-            
-            NSInteger hour = [components hour];
-            //        NSInteger minute= [components minute];
-            
-            NSUInteger startH = options.noDisturbingStartH;
-            NSUInteger endH = options.noDisturbingEndH;
-            if (startH>endH) {
-                endH += 24;
-            }
-            
-            if (hour>=startH && hour<=endH) {
-                ret = NO;
-                break;
+                NSDate *now = [NSDate date];
+                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute
+                                                                               fromDate:now];
+                
+                NSInteger hour = [components hour];
+                //        NSInteger minute= [components minute];
+                
+                NSUInteger startH = options.noDisturbingStartH;
+                NSUInteger endH = options.noDisturbingEndH;
+                if (startH>endH) {
+                    endH += 24;
+                }
+                
+                if (hour>=startH && hour<=endH) {
+                    ret = NO;
+                    break;
+                }
             }
         } while (0);
     }
@@ -273,7 +270,7 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
 // 收到消息回调
 -(void)didReceiveMessage:(EMMessage *)message
 {
-    BOOL needShowNotification = [self needShowNotification:message.conversation.chatter];
+    BOOL needShowNotification = message.isGroup ? [self needShowNotification:message.conversation.chatter] : YES;
     if (needShowNotification) {
 #if !TARGET_IPHONE_SIMULATOR
         [self playSoundAndVibration];
