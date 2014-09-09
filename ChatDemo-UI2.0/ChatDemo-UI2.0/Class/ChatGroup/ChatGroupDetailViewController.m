@@ -361,11 +361,13 @@
     }
     
     [self.dataSource addObjectsFromArray:self.chatGroup.owners];
-    for (NSString *str in self.chatGroup.occupants) {
-        if (![self.chatGroup.owners containsObject:str]) {
-            [self.dataSource addObject:str];
-        }
-    }
+    [self.dataSource addObjectsFromArray:self.chatGroup.admins];
+    [self.dataSource addObjectsFromArray:self.chatGroup.members];
+//    for (NSString *str in self.chatGroup.occupants) {
+//        if (![self.chatGroup.owners containsObject:str]) {
+//            [self.dataSource addObject:str];
+//        }
+//    }
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self refreshScrollView];
