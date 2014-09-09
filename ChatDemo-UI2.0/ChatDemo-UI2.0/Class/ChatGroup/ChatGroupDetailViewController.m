@@ -314,16 +314,17 @@
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:@"加载数据..."];
     [[EaseMob sharedInstance].chatManager asyncFetchGroupInfo:_chatGroup.groupId completion:^(EMGroup *group, EMError *error) {
-        if (!error) {
-            weakSelf.chatGroup = group;
-            [weakSelf reloadDataSource];
-        }
-        else{
-            dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!error) {
+                weakSelf.chatGroup = group;
+                [weakSelf reloadDataSource];
+            }
+            else{
                 [weakSelf hideHud];
                 [weakSelf showHint:@"获取群组详情失败，请稍后重试"];
-            });
-        }
+                [weakSelf reloadDataSource];
+            }
+        });
     } onQueue:nil];
 }
 
