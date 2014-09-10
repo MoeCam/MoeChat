@@ -102,7 +102,7 @@
             EMVideoMessageBody *videoMessageBody = (EMVideoMessageBody*)messageBody;
             model.thumbnailSize = videoMessageBody.size;
             model.size = videoMessageBody.size;
-            model.localPath = videoMessageBody.localPath;
+            model.localPath = videoMessageBody.thumbnailLocalPath;
             model.thumbnailImage = [UIImage imageWithContentsOfFile:videoMessageBody.thumbnailLocalPath];
         }
             break;
