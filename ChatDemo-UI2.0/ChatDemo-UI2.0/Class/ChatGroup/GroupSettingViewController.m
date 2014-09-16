@@ -157,7 +157,6 @@
         [weakSelf hideHud];
         if (!error) {
             [weakSelf showHint:@"设置成功"];
-//            [weakSelf.tableView reloadData];
         }
         else{
             [weakSelf showHint:@"设置失败"];
@@ -178,6 +177,7 @@
         BOOL toOn = _pushSwitch.isOn;
         [self isIgnoreGroup:!toOn];
     }
+    [self.tableView reloadData];
 }
 
 - (void)blockSwitchChanged:(id)sender
@@ -205,7 +205,7 @@
     }
     
     if (_pushSwitch.isOn != _group.isPushNotificationEnabled) {
-        [self isIgnoreGroup:_pushSwitch.isOn];
+        [self isIgnoreGroup:!_pushSwitch.isOn];
     }
 }
 
