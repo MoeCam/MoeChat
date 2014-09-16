@@ -104,6 +104,7 @@
             model.size = videoMessageBody.size;
             model.localPath = videoMessageBody.thumbnailLocalPath;
             model.thumbnailImage = [UIImage imageWithContentsOfFile:videoMessageBody.thumbnailLocalPath];
+            model.image = model.thumbnailImage;
         }
             break;
         default:
