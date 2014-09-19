@@ -1017,7 +1017,11 @@
                 [resultArray addObject:[createDate formattedTime]];
                 self.chatTagDate = createDate;
             }
-            [resultArray addObject:[MessageModelManager modelWithMessage:message]];
+            
+            MessageModel *model = [MessageModelManager modelWithMessage:message];
+            if (model) {
+                [resultArray addObject:model];
+            }
         }
     }
     
@@ -1034,7 +1038,10 @@
         self.chatTagDate = createDate;
     }
     
-    [ret addObject:[MessageModelManager modelWithMessage:message]];
+    MessageModel *model = [MessageModelManager modelWithMessage:message];
+    if (model) {
+        [ret addObject:model];
+    }
     
     return ret;
 }
