@@ -993,14 +993,22 @@
         NSArray *chats = [weakSelf.conversation loadNumbersOfMessages:(currentCount + KPageCount) before:beforeTime];
         
         if ([chats count] > currentCount) {
-            [weakSelf.dataSource removeAllObjects];
-            [weakSelf.dataSource addObjectsFromArray:[weakSelf sortChatSource:chats]];
-            
+            weakSelf.dataSource.array = [weakSelf sortChatSource:chats];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.tableView reloadData];
                 
                 [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[weakSelf.dataSource count] - currentCount - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
             });
+            
+            
+//            [weakSelf.dataSource removeAllObjects];
+//            [weakSelf.dataSource addObjectsFromArray:[weakSelf sortChatSource:chats]];
+//            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [weakSelf.tableView reloadData];
+//                
+//                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[weakSelf.dataSource count] - currentCount - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+//            });
         }
     });
 }
