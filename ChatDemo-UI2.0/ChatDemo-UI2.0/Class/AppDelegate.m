@@ -57,7 +57,7 @@
 #else
     apnsCertName = @"chatdemoui";
 #endif
-    [[EaseMob sharedInstance] registerSDKWithAppKey:@"easemob-demo#chatdemoui" apnsCertName:apnsCertName];
+    [[EaseMob sharedInstance] registerSDKWithAppKey:@"picapica#moecam" apnsCertName:apnsCertName];
     
 #if DEBUG
     [[EaseMob sharedInstance] enableUncaughtExceptionHandler];
