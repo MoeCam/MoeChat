@@ -299,7 +299,7 @@
 		90911042192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
 		90911043192EEA70008A48AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9091102B192EEA70008A48AA /* UIKit.framework */; };
 		9091104B192EEA70008A48AA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 90911049192EEA70008A48AA /* InfoPlist.strings */; };
-		9091104D192EEA70008A48AA /* ChatDemo_UI2_0Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9091104C192EEA70008A48AA /* ChatDemo_UI2_0Tests.m */; };
+		9091104D192EEA70008A48AA /* MoeCamTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9091104C192EEA70008A48AA /* MoeCamTests.m */; };
 		909110F0192EEAED008A48AA /* MBProgressHUD+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911086192EEAED008A48AA /* MBProgressHUD+Add.m */; };
 		909110F1192EEAED008A48AA /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911088192EEAED008A48AA /* MBProgressHUD.m */; };
 		90911117192EEAED008A48AA /* THProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 909110E0192EEAED008A48AA /* THProgressView.m */; };
@@ -830,7 +830,7 @@
 		90911040192EEA70008A48AA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		90911048192EEA70008A48AA /* ChatDemo-UI2.0Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ChatDemo-UI2.0Tests-Info.plist"; sourceTree = "<group>"; };
 		9091104A192EEA70008A48AA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		9091104C192EEA70008A48AA /* ChatDemo_UI2_0Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatDemo_UI2_0Tests.m; sourceTree = "<group>"; };
+		9091104C192EEA70008A48AA /* MoeCamTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoeCamTests.m; sourceTree = "<group>"; };
 		90911085192EEAED008A48AA /* MBProgressHUD+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+Add.h"; sourceTree = "<group>"; };
 		90911086192EEAED008A48AA /* MBProgressHUD+Add.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+Add.m"; sourceTree = "<group>"; };
 		90911087192EEAED008A48AA /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
@@ -851,7 +851,7 @@
 		90911122192EEBB8008A48AA /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		9091112D192EEC0F008A48AA /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		9091112E192EEC0F008A48AA /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
-		90911133192EEC59008A48AA /* ChatDemoUIDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatDemoUIDefine.h; sourceTree = "<group>"; };
+		90911133192EEC59008A48AA /* MoeCamUIDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoeCamUIDefine.h; sourceTree = "<group>"; };
 		90911134192EEC91008A48AA /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		90911135192EEC91008A48AA /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		90911136192EEC91008A48AA /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -1872,8 +1872,8 @@
 			isa = PBXGroup;
 			children = (
 				57A17DD519F0F41A00CCB648 /* EaseMobSDK */,
-				9091102D192EEA70008A48AA /* ChatDemo-UI2.0 */,
-				90911046192EEA70008A48AA /* ChatDemo-UI2.0Tests */,
+				9091102D192EEA70008A48AA /* MoeCam */,
+				90911046192EEA70008A48AA /* MoeCamTests */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
 			);
@@ -1916,7 +1916,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		9091102D192EEA70008A48AA /* ChatDemo-UI2.0 */ = {
+		9091102D192EEA70008A48AA /* MoeCam */ = {
 			isa = PBXGroup;
 			children = (
 				3CBF90BC19302F5000AD68AE /* Custom */,
@@ -1926,6 +1926,7 @@
 				90911039192EEA70008A48AA /* Images.xcassets */,
 				9091102E192EEA70008A48AA /* Supporting Files */,
 			);
+			name = MoeCam;
 			path = "ChatDemo-UI2.0";
 			sourceTree = "<group>";
 		};
@@ -1937,17 +1938,18 @@
 				90911030192EEA70008A48AA /* InfoPlist.strings */,
 				90911033192EEA70008A48AA /* main.m */,
 				90911035192EEA70008A48AA /* ChatDemo-UI2.0-Prefix.pch */,
-				90911133192EEC59008A48AA /* ChatDemoUIDefine.h */,
+				90911133192EEC59008A48AA /* MoeCamUIDefine.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		90911046192EEA70008A48AA /* ChatDemo-UI2.0Tests */ = {
+		90911046192EEA70008A48AA /* MoeCamTests */ = {
 			isa = PBXGroup;
 			children = (
-				9091104C192EEA70008A48AA /* ChatDemo_UI2_0Tests.m */,
+				9091104C192EEA70008A48AA /* MoeCamTests.m */,
 				90911047192EEA70008A48AA /* Supporting Files */,
 			);
+			name = MoeCamTests;
 			path = "ChatDemo-UI2.0Tests";
 			sourceTree = "<group>";
 		};
@@ -2507,7 +2509,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9091104D192EEA70008A48AA /* ChatDemo_UI2_0Tests.m in Sources */,
+				9091104D192EEA70008A48AA /* MoeCamTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
