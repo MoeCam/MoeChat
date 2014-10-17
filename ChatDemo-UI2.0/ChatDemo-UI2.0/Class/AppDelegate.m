@@ -282,7 +282,7 @@
         _mainController = nil;
         LoginViewController *loginController = [[LoginViewController alloc] init];
         nav = [[UINavigationController alloc] initWithRootViewController:loginController];
-        loginController.title = @"环信Demo";
+        loginController.title = @"萌照";
     }
 
     if ([UIDevice currentDevice].systemVersion.floatValue < 7.0){
