@@ -2102,9 +2102,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		90911023192EEA70008A48AA /* ChatDemo-UI2.0 */ = {
+		90911023192EEA70008A48AA /* MoeCam */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 90911050192EEA70008A48AA /* Build configuration list for PBXNativeTarget "ChatDemo-UI2.0" */;
+			buildConfigurationList = 90911050192EEA70008A48AA /* Build configuration list for PBXNativeTarget "MoeCam" */;
 			buildPhases = (
 				90911020192EEA70008A48AA /* Sources */,
 				90911021192EEA70008A48AA /* Frameworks */,
@@ -2114,7 +2114,7 @@
 			);
 			dependencies = (
 			);
-			name = "ChatDemo-UI2.0";
+			name = MoeCam;
 			productName = "ChatDemo-UI2.0";
 			productReference = 90911024192EEA70008A48AA /* ChatDemo-UI2.0.app */;
 			productType = "com.apple.product-type.application";
@@ -2171,7 +2171,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				90911023192EEA70008A48AA /* ChatDemo-UI2.0 */,
+				90911023192EEA70008A48AA /* MoeCam */,
 				9091103E192EEA70008A48AA /* ChatDemo-UI2.0Tests */,
 			);
 		};
@@ -2518,7 +2518,7 @@
 /* Begin PBXTargetDependency section */
 		90911045192EEA70008A48AA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 90911023192EEA70008A48AA /* ChatDemo-UI2.0 */;
+			target = 90911023192EEA70008A48AA /* MoeCam */;
 			targetProxy = 90911044192EEA70008A48AA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2736,7 +2736,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		90911050192EEA70008A48AA /* Build configuration list for PBXNativeTarget "ChatDemo-UI2.0" */ = {
+		90911050192EEA70008A48AA /* Build configuration list for PBXNativeTarget "MoeCam" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				90911051192EEA70008A48AA /* Debug */,
