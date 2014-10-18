@@ -817,7 +817,7 @@
 		905325CE1932ED8B00F064D7 /* EMSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchBar.m; sourceTree = "<group>"; };
 		905326B319333E8E00F064D7 /* TTGlobalUICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGlobalUICommon.h; sourceTree = "<group>"; };
 		905326B419333E8E00F064D7 /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
-		90911024192EEA70008A48AA /* ChatDemo-UI2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChatDemo-UI2.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		90911024192EEA70008A48AA /* MoeCam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoeCam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90911027192EEA70008A48AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		90911029192EEA70008A48AA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9091102B192EEA70008A48AA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -1882,7 +1882,7 @@
 		90911025192EEA70008A48AA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				90911024192EEA70008A48AA /* ChatDemo-UI2.0.app */,
+				90911024192EEA70008A48AA /* MoeCam.app */,
 				9091103F192EEA70008A48AA /* ChatDemo-UI2.0Tests.xctest */,
 			);
 			name = Products;
@@ -2116,7 +2116,7 @@
 			);
 			name = MoeCam;
 			productName = "ChatDemo-UI2.0";
-			productReference = 90911024192EEA70008A48AA /* ChatDemo-UI2.0.app */;
+			productReference = 90911024192EEA70008A48AA /* MoeCam.app */;
 			productType = "com.apple.product-type.application";
 		};
 		9091103E192EEA70008A48AA /* ChatDemo-UI2.0Tests */ = {
