@@ -53,9 +53,9 @@
 #warning SDK注册 APNS文件的名字, 需要与后台上传证书时的名字一一对应
     NSString *apnsCertName = nil;
 #if DEBUG
-    apnsCertName = @"chatdemoui_dev";
+    apnsCertName = @"moecam-developement";
 #else
-    apnsCertName = @"chatdemoui";
+    apnsCertName = @"moecam-production";
 #endif
     [[EaseMob sharedInstance] registerSDKWithAppKey:@"picapica#moecam" apnsCertName:apnsCertName];
     
