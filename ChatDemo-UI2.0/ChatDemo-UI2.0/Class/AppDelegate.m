@@ -33,13 +33,13 @@
          [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
     }
     
-    //友盟
+//    //友盟
 //    NSString *bundleID = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
-//    if ([bundleID isEqualToString:@"com.easemob.enterprise.demo.ui"]) {
-//        [MobClick startWithAppkey:@"5389bb7f56240ba94208ac97"
+//    if ([bundleID isEqualToString:@"com.liulantao.MoeCam"]) {
+//        [MobClick startWithAppkey:@"5443acf8fd98c5a63c00616a"
 //                     reportPolicy:BATCH
 //                        channelId:Nil];
-//        
+//
 //        [MobClick setLogEnabled:YES];
 //    }
    

@@ -44,7 +44,7 @@
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HP1-ku-0fl">
                     <rect key="frame" x="35" y="136" width="80" height="44"/>
-                    <color key="backgroundColor" red="0.3411764705882353" green="0.72941176470588232" blue="0.81568627450980391" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.13333333333333333" green="0.69803921568627447" blue="0.43529411764705883" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <state key="normal" title="注册">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -59,7 +59,7 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g7n-mh-wjo">
                     <rect key="frame" x="125" y="136" width="160" height="43"/>
-                    <color key="backgroundColor" red="0.0" green="0.396078431372549" blue="0.4823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.13333333333333333" green="0.69803921568627447" blue="0.43529411764705883" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" size="button"/>
                     <state key="normal" title="登录">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
