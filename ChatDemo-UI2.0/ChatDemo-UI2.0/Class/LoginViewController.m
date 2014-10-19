@@ -17,6 +17,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UILabel *versionLabel;
 
 - (IBAction)doRegister:(id)sender;
 - (IBAction)doLogin:(id)sender;
@@ -40,6 +41,10 @@
     [super viewDidLoad];
     [self setupForDismissKeyboard];
     _usernameTextField.delegate = self;
+
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    self.versionLabel.text = [NSString stringWithFormat:@"v%@", version];
+    [self.versionLabel sizeToFit];
 }
 
 - (void)didReceiveMemoryWarning

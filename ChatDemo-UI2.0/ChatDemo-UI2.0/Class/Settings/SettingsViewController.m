@@ -100,7 +100,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    return 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -132,6 +132,15 @@
         {
             cell.textLabel.text = @"诊断";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        else if (indexPath.row == 4)
+        {
+            NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+            cell.textLabel.text = [NSString stringWithFormat:@"版本号      %@", version];
+        }
+        else if (indexPath.row == 5)
+        {
+            cell.textLabel.text = [NSString stringWithFormat:@"%@      %@", @"支持网址", @"www.MoeCam.com"];
         }
 //        else if (indexPath.row == 3)
 //        {
@@ -171,6 +180,13 @@
     {
         DebugViewController *debugController = [[DebugViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:debugController animated:YES];
+    }
+    else if (indexPath.row == 4)
+    {}
+    else if (indexPath.row == 5)
+    {
+        NSString* launchUrl = @"http://www.moecam.com";
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: launchUrl]];
     }
 }
 
@@ -247,5 +263,5 @@
         }
     } onQueue:nil];
 }
- 
+
 @end
