@@ -50,7 +50,7 @@
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
 #endif
 
-#warning SDK注册 APNS文件的名字, 需要与后台上传证书时的名字一一对应
+//#warning SDK注册 APNS文件的名字, 需要与后台上传证书时的名字一一对应
     NSString *apnsCertName = nil;
 #if DEBUG
     apnsCertName = @"moecam-developement";
@@ -66,11 +66,11 @@
     //demo中此监听方法在MainViewController中
     [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     
-#warning 注册为SDK的ChatManager的delegate (及时监听到申请和通知)
+//#warning 注册为SDK的ChatManager的delegate (及时监听到申请和通知)
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
-#warning 如果使用MagicalRecord, 要加上这句初始化MagicalRecord
+//#warning 如果使用MagicalRecord, 要加上这句初始化MagicalRecord
     //demo coredata, .pch中有相关头文件引用
     [MagicalRecord setupCoreDataStackWithStoreNamed:[NSString stringWithFormat:@"%@.sqlite", @"UIDemo"]];
     
@@ -81,12 +81,12 @@
 
 -(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-#warning SDK方法调用
+//#warning SDK方法调用
     [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-#warning SDK方法调用
+//#warning SDK方法调用
     [[EaseMob sharedInstance] application:application didFailToRegisterForRemoteNotificationsWithError:error];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"注册推送失败"
                                                     message:error.description
@@ -102,7 +102,7 @@
         [_mainController jumpToChatList];
     }
     
-#warning SDK方法调用
+//#warning SDK方法调用
     [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
 }
 
@@ -111,26 +111,26 @@
     if (_mainController) {
         [_mainController jumpToChatList];
     }
-#warning SDK方法调用
+//#warning SDK方法调用
     [[EaseMob sharedInstance] application:application didReceiveLocalNotification:notification];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-#warning SDK方法调用
+//#warning SDK方法调用
     [[EaseMob sharedInstance] applicationWillResignActive:application];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidEnterBackground" object:nil];
-#warning SDK方法调用
+//#warning SDK方法调用
     [[EaseMob sharedInstance] applicationDidEnterBackground:application];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-#warning SDK方法调用
+//#warning SDK方法调用
     [[EaseMob sharedInstance] applicationWillEnterForeground:application];
 }
 
@@ -138,13 +138,13 @@
 {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
-#warning SDK方法调用
+//#warning SDK方法调用
     [[EaseMob sharedInstance] applicationDidBecomeActive:application];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-#warning SDK方法调用
+//#warning SDK方法调用
     [[EaseMob sharedInstance] applicationWillTerminate:application];
 }
 

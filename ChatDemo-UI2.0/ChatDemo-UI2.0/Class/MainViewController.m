@@ -54,7 +54,7 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
     
     //获取未读消息数，此时并没有把self注册为SDK的delegate，读取出的未读数是上次退出程序时的
     [self didUnreadMessagesCountChanged];
-#warning 把self注册为SDK的delegate
+//#warning 把self注册为SDK的delegate
     [self registerNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUntreatedApplyCount) name:@"setupUntreatedApplyCount" object:nil];
     
@@ -357,7 +357,7 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
         notification.alertBody = @"您有一条新消息";
     }
     
-#warning 去掉注释会显示[本地]开头, 方便在开发中区分是否为本地推送
+//#warning 去掉注释会显示[本地]开头, 方便在开发中区分是否为本地推送
     //notification.alertBody = [[NSString alloc] initWithFormat:@"[本地]%@", notification.alertBody];
     
     notification.alertAction = @"打开";

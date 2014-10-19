@@ -55,7 +55,7 @@
     
     self.title = @"萌组";
     
-#warning 把self注册为SDK的delegate
+//#warning 把self注册为SDK的delegate
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
