@@ -195,6 +195,11 @@
         [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [logoutButton addTarget:self action:@selector(logoutAction) forControlEvents:UIControlEventTouchUpInside];
         [_footerView addSubview:logoutButton];
+        
+        UIImageView *imgview = [[UIImageView alloc] initWithFrame:CGRectMake((_footerView.frame.size.width - 80) / 2, 80, 80, 80)];
+        UIImage *moeimg = [UIImage imageNamed:@"80.png"];
+        imgview.image = moeimg;
+        [_footerView addSubview:imgview];
     }
     
     return _footerView;
