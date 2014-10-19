@@ -72,7 +72,7 @@
                         <action selector="doLogin:" destination="-1" eventType="touchUpInside" id="7qQ-wk-5XS"/>
                     </connections>
                 </button>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="80.png" translatesAutoresizingMaskIntoConstraints="NO" id="U5n-K9-ro1">
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="miao.png" translatesAutoresizingMaskIntoConstraints="NO" id="U5n-K9-ro1">
                     <rect key="frame" x="60" y="184" width="200" height="200"/>
                 </imageView>
             </subviews>
@@ -80,8 +80,8 @@
         </view>
     </objects>
     <resources>
-        <image name="80.png" width="200" height="200"/>
         <image name="account.png" width="18" height="18"/>
+        <image name="miao.png" width="200" height="200"/>
         <image name="password.png" width="18" height="18"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

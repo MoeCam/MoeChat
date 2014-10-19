@@ -85,13 +85,13 @@ static const CGFloat kDefaultPlaySoundInterval = 3.0;
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
     if (item.tag == 0) {
-        self.title = @"会话";
+        self.title = @"萌聊";
         self.navigationItem.rightBarButtonItem = nil;
     }else if (item.tag == 1){
-        self.title = @"通讯录";
+        self.title = @"萌友";
         self.navigationItem.rightBarButtonItem = _addFriendItem;
     }else if (item.tag == 2){
-        self.title = @"设置";
+        self.title = @"设定";
         self.navigationItem.rightBarButtonItem = nil;
         [_settingsVC refreshConfig];
     }

@@ -43,7 +43,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"设置";
+    self.title = @"设定";
     self.view.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
     
     self.tableView.backgroundColor = [UIColor whiteColor];
@@ -197,7 +197,7 @@
         [_footerView addSubview:logoutButton];
         
         UIImageView *imgview = [[UIImageView alloc] initWithFrame:CGRectMake((_footerView.frame.size.width - 80) / 2, 80, 80, 80)];
-        UIImage *moeimg = [UIImage imageNamed:@"80.png"];
+        UIImage *moeimg = [UIImage imageNamed:@"miao.png"];
         imgview.image = moeimg;
         [_footerView addSubview:imgview];
     }

@@ -146,7 +146,7 @@
         cell.detailTextLabel.text = [_group.owners objectAtIndex:0];
     }
     else{
-        cell.textLabel.text = @"群组简介";
+        cell.textLabel.text = @"萌组简介";
         cell.detailTextLabel.text = _group.groupDescription;
     }
     

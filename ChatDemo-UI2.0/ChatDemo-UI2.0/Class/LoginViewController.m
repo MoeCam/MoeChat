@@ -148,15 +148,16 @@
             
             return;
         }
-#if !TARGET_IPHONE_SIMULATOR
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"填写推送消息时使用的昵称" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-        UITextField *nameTextField = [alert textFieldAtIndex:0];
-        nameTextField.text = self.usernameTextField.text;
-        [alert show];
-#elif TARGET_IPHONE_SIMULATOR
+//#if !TARGET_IPHONE_SIMULATOR
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"填写推送消息时使用的昵称" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+//        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+//        UITextField *nameTextField = [alert textFieldAtIndex:0];
+//        nameTextField.text = self.usernameTextField.text;
+//        [alert show]; // Don't show annoyance alert
+//#elif TARGET_IPHONE_SIMULATOR
+//        [self loginWithUsername:_usernameTextField.text password:_passwordTextField.text];
+//#endif
         [self loginWithUsername:_usernameTextField.text password:_passwordTextField.text];
-#endif
     }
 }
 

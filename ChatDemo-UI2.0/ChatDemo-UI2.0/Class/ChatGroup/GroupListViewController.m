@@ -53,7 +53,7 @@
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
     
-    self.title = @"群组";
+    self.title = @"萌组";
     
 #warning 把self注册为SDK的delegate
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
