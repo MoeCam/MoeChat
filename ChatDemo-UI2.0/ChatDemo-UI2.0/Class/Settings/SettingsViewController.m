@@ -136,7 +136,8 @@
         else if (indexPath.row == 4)
         {
             NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-            cell.textLabel.text = [NSString stringWithFormat:@"版本号      %@", version];
+            NSString *bundleversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+            cell.textLabel.text = [NSString stringWithFormat:@"版本号      %@ [%@]", version, bundleversion];
         }
         else if (indexPath.row == 5)
         {
